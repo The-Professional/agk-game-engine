@@ -1,0 +1,11 @@
+{
+  "spriteData3d": {
+    "visual": {
+      "mesh": "sphere",
+      "textureMap": "top",
+      "radius": 1,
+      "rows": 10,
+      "columns": 16
+    }
+  }
+}

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Core.cpp" />
+    <ClCompile Include="template.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="template.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="data">
+      <UniqueIdentifier>{c3a7535f-d3e3-445d-a12c-bd8e4cab56b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\3d">
+      <UniqueIdentifier>{086dca5d-2951-4e14-a695-96b901fc3802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\3d\sprites">
+      <UniqueIdentifier>{cf8c2faa-b4f2-476f-9200-0ee0136ee364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\3d\lists">
+      <UniqueIdentifier>{af65dd93-fd82-4dfc-a494-63579ca188f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\3d\sprites\collections">
+      <UniqueIdentifier>{25f1cd68-d4f0-4fba-8f92-9e4baab20234}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="x64\Debug\data\3d\lists\imageList.json">
+      <Filter>data\3d\lists</Filter>
+    </None>
+    <None Include="x64\Debug\data\3d\lists\spriteDataList3d.json">
+      <Filter>data\3d\lists</Filter>
+    </None>
+    <None Include="x64\Debug\data\3d\sprites\ball.json">
+      <Filter>data\3d\sprites</Filter>
+    </None>
+    <None Include="x64\Debug\data\settings.json">
+      <Filter>data</Filter>
+    </None>
+    <None Include="x64\Debug\data\3d\lists\spriteCollectionList3d.json">
+      <Filter>data\3d\lists</Filter>
+    </None>
+    <None Include="x64\Debug\data\3d\sprites\collections\stage0.json">
+      <Filter>data\3d\sprites\collections</Filter>
+    </None>
+    <None Include="x64\Debug\data\3d\sprites\floor.json">
+      <Filter>data\3d\sprites</Filter>
+    </None>
+  </ItemGroup>
+</Project>

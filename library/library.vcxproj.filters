@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="utilities">
+      <UniqueIdentifier>{544dd1c6-be06-464f-bb1c-00ff7412b621}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{cd8d97ab-f60e-4b3b-9076-564672c8203c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3d">
+      <UniqueIdentifier>{acad42fb-9e9e-49b2-961a-830aa0818c0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="managers">
+      <UniqueIdentifier>{f0c2da14-e42f-4841-93e3-78ce1473eac8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="utilities\mathfunc.h">
+      <Filter>utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\settings.h">
+      <Filter>utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="common\bitmask.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\color.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\defs.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\size.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\vector3.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="managers\resourcefile.h">
+      <Filter>managers</Filter>
+    </ClInclude>
+    <ClInclude Include="managers\resourcemanager.h">
+      <Filter>managers</Filter>
+    </ClInclude>
+    <ClInclude Include="managers\stagemanager3d.h">
+      <Filter>managers</Filter>
+    </ClInclude>
+    <ClInclude Include="3d\sprite3d.h">
+      <Filter>3d</Filter>
+    </ClInclude>
+    <ClInclude Include="3d\spritedata3d.h">
+      <Filter>3d</Filter>
+    </ClInclude>
+    <ClInclude Include="3d\spritevisualdata3d.h">
+      <Filter>3d</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\json.hpp">
+      <Filter>utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\jsonparsehelper.h">
+      <Filter>utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\exceptionhandling.h">
+      <Filter>utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="managers\spritemanager.h">
+      <Filter>managers</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\deletefuncs.h">
+      <Filter>utilities</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="utilities\settings.cpp">
+      <Filter>utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="managers\resourcemanager.cpp">
+      <Filter>managers</Filter>
+    </ClCompile>
+    <ClCompile Include="managers\stagemanager3d.cpp">
+      <Filter>managers</Filter>
+    </ClCompile>
+    <ClCompile Include="3d\sprite3d.cpp">
+      <Filter>3d</Filter>
+    </ClCompile>
+    <ClCompile Include="3d\spritedata3d.cpp">
+      <Filter>3d</Filter>
+    </ClCompile>
+    <ClCompile Include="3d\spritevisualdata3d.cpp">
+      <Filter>3d</Filter>
+    </ClCompile>
+    <ClCompile Include="utilities\jsonparsehelper.cpp">
+      <Filter>utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="managers\spritemanager.cpp">
+      <Filter>managers</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

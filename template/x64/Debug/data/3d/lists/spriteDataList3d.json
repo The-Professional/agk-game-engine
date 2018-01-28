@@ -1,0 +1,6 @@
+{
+  "spriteDataList3d": {
+    "ball": "data/3d/sprites/ball.json",
+    "floor": "data/3d/sprites/floor.json"
+  }
+}

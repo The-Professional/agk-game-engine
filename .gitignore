@@ -1,0 +1,12 @@
+/template/.vs/
+/template/x64/Debug/*.obj
+/template/x64/Release/*.obj
+
+*.tlog
+*.exe
+*.lib
+*.log
+*.pdb
+*.ilk
+
+/library/x64

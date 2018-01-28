@@ -1,0 +1,14 @@
+{
+  "settings": {
+
+    "display": {
+      "size": { "w": 1280, "h": 720 },
+      "fullscreen": false,
+      "orientation": "landscape",
+      "vsync": false,
+      "antialias": true
+    }
+    
+
+  }
+}

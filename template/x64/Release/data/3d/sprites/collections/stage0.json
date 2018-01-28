@@ -1,0 +1,14 @@
+{
+  "spriteCollection3d": [
+    {
+      "name": "ball",
+      "position":  {"x": 4, "y": 1, "z": 0}
+    },
+
+    {
+      "name": "floor",
+      "position": {"y": -3},
+      "rotation": {"x": 90}
+    }
+  ]
+}

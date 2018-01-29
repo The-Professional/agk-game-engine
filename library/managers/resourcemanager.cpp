@@ -3,14 +3,13 @@
 
 // Game lib dependencies
 #include <agk.h>
-#include <utilities\json.hpp>
+#include <utilities\generalfuncs.h>
 #include <utilities\exceptionhandling.h>
 
 // Standard lib dependencies
 #include <fstream>
 
 using namespace std;
-using namespace nlohmann;
 
 /// *************************************************************************
 /// <summary> 
@@ -35,60 +34,34 @@ CResourceManager::~CResourceManager()
 
 /// *************************************************************************
 /// <summary> 
-/// Read the file and compile the list of mesh files.
+/// Locate the folder and compile the list of mesh files.
 /// </summary>
-/// <param name="path"> File path to the list of mesh names and files. </param>
 /// *************************************************************************
-void CResourceManager::LoadList( NDefs::EResourceType type, const std::string & path )
+void CResourceManager::LoadMeshList( const std::string & path )
 {
-    try
-    {
-        // Load the list file.
-        ifstream ifile( path );
+    NGeneralFuncs::AddFilesToMap( path, _meshList );
+}
 
-        // Parse the contents into a json object.
-        json j;
-        ifile >> j;
 
-        // So I don't have to rewrite the code below a bunch of times, grab the list the coresponds
-        // to the passed in resource type.
-        map<string, CResourceFile> * pList = nullptr;
-        switch( type )
-        {
-        case NDefs::ERT_MESH:
-            pList = &_meshList;
-            break;
-        case NDefs::ERT_ANIMATED_MESH:
-            pList = &_animatedMeshList;
-            break;
-        case NDefs::ERT_IMAGE:
-            pList = &_imageList;
-            break;
-        }
+/// *************************************************************************
+/// <summary> 
+/// Locate the folder and compile the list of animated mesh files.
+/// </summary>
+/// *************************************************************************
+void CResourceManager::LoadAnimatedMeshList( const std::string & path )
+{
+    NGeneralFuncs::AddFilesToMap( path, _animatedMeshList );
+}
 
-        auto listIter = j.find( "resourceList" );
-        if( listIter != j.end() )
-        {
-            auto iter = listIter->begin();
-            while( iter != listIter->end() )
-            {
-                CResourceFile rf;
-                rf.path = iter->get<string>();
-                pList->insert( pair<string, CResourceFile>( iter.key(), rf ) );
-                ++iter;
-            }
-        }
-    }
-    catch( NExcept::CCriticalException e )
-    {
-        throw e;
-    }
-    catch( exception e )
-    {
-        throw NExcept::CCriticalException( "Error",
-                                           "CResourceManager::LoadList()",
-                                           "Failed to load file '" + path + "' as type '" + to_string(type) + "'.", e );
-    }
+
+/// *************************************************************************
+/// <summary> 
+/// Locate the folder and compile the list of image files.
+/// </summary>
+/// *************************************************************************
+void CResourceManager::LoadImageList( const std::string & path )
+{
+    NGeneralFuncs::AddFilesToMap( path, _imageList );
 }
 
 

@@ -27,7 +27,7 @@ public:
     void SaveSettings();
 
     // Set the file path for loading the settings file.
-    void SetFilePath( const std::string & filePath );
+    void SetPath( const std::string & path );
 
     // Load settings data from xml file
     void LoadSettings();
@@ -58,7 +58,7 @@ private:
 private:
 
     // Path to the settings file.
-    std::string _filePath;
+    std::string _path;
 
     // Resolution of the game window.
     CSize _resolution;

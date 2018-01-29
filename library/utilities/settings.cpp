@@ -3,7 +3,6 @@
 
 // Game lib dependencies
 #include <agk.h>
-#include <utilities\json.hpp>
 #include <utilities\jsonparsehelper.h>
 #include <utilities\exceptionhandling.h>
 
@@ -41,9 +40,9 @@ CSettings::~CSettings()
 /// Set the file path for loading the settings file.
 /// </summary>
 /// *************************************************************************
-void CSettings::SetFilePath( const std::string & filePath )
+void CSettings::SetPath( const std::string & path )
 {
-    _filePath = filePath;
+    _path = path;
 }
 
 
@@ -57,7 +56,7 @@ void CSettings::LoadSettings()
     try
     {
         // Load the settings file.
-        ifstream ifile( _filePath );
+        ifstream ifile( _path );
 
         // Parse the content into a json object.
         json j;
@@ -84,7 +83,7 @@ void CSettings::LoadSettings()
     {
         throw NExcept::CCriticalException( "Error",
                                            "CSettings::LoadSettings()",
-                                           "Failed to open " + _filePath + ".", e );
+                                           "Failed to open " + _path + ".", e );
     }
 }
 

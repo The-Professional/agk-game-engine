@@ -2,10 +2,11 @@
 #include "spritemanager.h"
 
 // Game lib dependencies
-#include <utilities\json.hpp>
+#include <agk.h>
 #include <utilities\jsonparsehelper.h>
 #include <utilities\exceptionhandling.h>
 #include <utilities\deletefuncs.h>
+#include <utilities\generalfuncs.h>
 #include <common\vector3.h>
 #include <3d\spritedata3d.h>
 #include <3d\sprite3d.h>
@@ -44,40 +45,7 @@ CSpriteManager::~CSpriteManager()
 /// *************************************************************************
 void CSpriteManager::LoadDataFileList3D( const std::string & path )
 {
-    try
-    {
-        _spriteDataFileList3d.clear();
-
-        // Load the sprite data list file.
-        ifstream ifile( path );
-
-        // Parse the content into a json object.
-        json j;
-        ifile >> j;
-
-        auto listIter = j.find( "spriteDataList3d" );
-        if( listIter != j.end() )
-        {
-            auto iter = listIter->begin();
-            while( iter != listIter->end() )
-            {
-                string key = iter.key();
-                string value = iter->get<string>();
-                _spriteDataFileList3d.insert( pair<string, string>( key, value ) );
-                ++iter;
-            }
-        }
-    }
-    catch( NExcept::CCriticalException e )
-    {
-        throw e;
-    }
-    catch( exception e )
-    {
-        throw NExcept::CCriticalException( "Error",
-                                           "CSpriteManager::LoadDataFileList3D()",
-                                           "Failed to load file '" + path + "'.", e );
-    }
+    NGeneralFuncs::AddFilesToMap( path, _spriteDataFileList3d );
 }
 
 
@@ -88,40 +56,7 @@ void CSpriteManager::LoadDataFileList3D( const std::string & path )
 /// *************************************************************************
 void CSpriteManager::LoadCollectionFileList3D( const std::string & path )
 {
-    try
-    {
-        _spriteCollectionFileList3d.clear();
-
-        // Load the sprite data list file.
-        ifstream ifile( path );
-
-        // Parse the content into a json object.
-        json j;
-        ifile >> j;
-
-        auto listIter = j.find( "spriteCollectionList3d" );
-        if( listIter != j.end() )
-        {
-            auto iter = listIter->begin();
-            while( iter != listIter->end() )
-            {
-                string key = iter.key();
-                string value = iter->get<string>();
-                _spriteCollectionFileList3d.insert( pair<string, string>( key, value ) );
-                ++iter;
-            }
-        }
-    }
-    catch( NExcept::CCriticalException e )
-    {
-        throw e;
-    }
-    catch( exception e )
-    {
-        throw NExcept::CCriticalException( "Error",
-                                           "CSpriteManager::LoadCollectionFileList3D()",
-                                           "Failed to load file '" + path + "'.", e );
-    }
+    NGeneralFuncs::AddFilesToMap( path, _spriteCollectionFileList3d );
 }
 
 

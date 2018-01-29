@@ -25,7 +25,9 @@ public:
     }
 
     // Read the file and compile the list of resource files.
-    void LoadList( NDefs::EResourceType type, const std::string & path );
+    void LoadMeshList( const std::string & path );
+    void LoadAnimatedMeshList( const std::string & path );
+    void LoadImageList( const std::string & path );
 
     // Get the mesh id.
     uint LoadMesh( const std::string & name );

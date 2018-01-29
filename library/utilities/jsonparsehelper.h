@@ -14,12 +14,18 @@ class CVector3;
 class CSize;
 class CColor;
 class CSpriteData3D;
+class CInputState;
+class CInputMapping;
 
 template <typename type>
 class CBitmask;
 
 namespace NParseHelper
 {
+    ////////////////////////////////////////////////////////////////
+    // General Functions                                          //
+    ////////////////////////////////////////////////////////////////
+
 	// Parse position tag.
 	bool GetPosition( nlohmann::json::const_iterator iter, CVector3 & pos );
 
@@ -78,6 +84,16 @@ namespace NParseHelper
 
     // Parse the dimension tags.
     void GetDimensions( nlohmann::json::const_iterator iter, float & width, float & height, float & length, float & radius, int & rows, int & columns );
+
+    ////////////////////////////////////////////////////////////////
+    // Input Functions                                            //
+    ////////////////////////////////////////////////////////////////
+
+    // Parse the input state tags.
+    void GetInputState( nlohmann::json::const_iterator iter, CInputState & inputState );
+
+    // Parse the input mapping tags.
+    void GetInputMapping( nlohmann::json::const_iterator iter, CInputMapping & mapping );
 }
 
 #endif  // __parse_helper_h__

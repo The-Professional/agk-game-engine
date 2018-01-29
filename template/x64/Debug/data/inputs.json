@@ -1,0 +1,36 @@
+{
+  "inputStateList": [
+
+    {
+      "name": "menu",
+      "input": [
+        {
+          "name": "menu select",
+          "mouse": [ "left" ],
+          "keyboard": [ "enter" ]
+        },
+        {
+          "name": "menu up",
+          "keyboard": [ "up", "w" ]
+        },
+        {
+          "name": "menu down",
+          "keyboard": [ "down", "s" ]
+        },
+        {
+          "name": "menu left",
+          "keyboard": [ "left", "a" ]
+        },
+        {
+          "name": "menu right",
+          "keyboard": [ "right", "d" ]
+        },
+        {
+          "name": "menu back",
+          "keyboard": [ "escape" ]
+        }
+      ]
+    }
+
+  ]
+}

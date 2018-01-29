@@ -2,15 +2,17 @@
 #include "jsonparsehelper.h"
 
 // Game lib dependencies
+#include <agk.h>
 #include <common\size.h>
 #include <common\vector3.h>
 #include <common\color.h>
 #include <common\bitmask.h>
-#include <utilities\json.hpp>
+#include <managers\inputstate.h>
+#include <managers\inputmapping.h>
+#include <managers\inputmanager.h>
 
 // Standard lib dependencies
 #include <utility>
-#include <string>
 
 using namespace nlohmann;
 using namespace std;
@@ -444,5 +446,85 @@ namespace NParseHelper
         dimIter = iter->find( "columns" );
         if( dimIter != iter->end() )
             columns = dimIter->get<int>();
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Parse the input state tags.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// *************************************************************************
+    void GetInputState( json::const_iterator iter, CInputState & inputState )
+    {
+        auto inputIter = iter->find( "input" );
+        if( inputIter != iter->end() )
+        {
+            auto actionIter = inputIter->begin();
+            while( actionIter != inputIter->end() )
+            {
+                string name;
+                GetName( actionIter, name );
+
+                CInputMapping mapping;
+                GetInputMapping( actionIter, mapping );
+
+                inputState.AddAction( name, mapping );
+
+                ++actionIter;
+            }
+        }
+    }
+
+    
+    /// *************************************************************************
+    /// <summary> 
+    /// Parse the input mapping tags.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// *************************************************************************
+    void GetInputMapping( json::const_iterator iter, CInputMapping & mapping )
+    {
+        auto deviceIter = iter->find( "mouse" );
+        if( deviceIter != iter->end() )
+        {
+            auto mappingIter = deviceIter->begin();
+            while( mappingIter != deviceIter->end() )
+            {
+                mapping.AddInput( NDefs::EID_MOUSE, 
+                                  CInputManager::Instance().GetInputID( 
+                                      NDefs::EID_MOUSE, 
+                                      mappingIter->get<string>() ) );
+
+                ++mappingIter;
+            }
+        }
+
+        deviceIter = iter->find( "keyboard" );
+        if( deviceIter != iter->end() )
+        {
+            auto mappingIter = deviceIter->begin();
+            while( mappingIter != deviceIter->end() )
+            {
+                mapping.AddInput( NDefs::EID_KEYBOARD,
+                                  CInputManager::Instance().GetInputID(
+                                      NDefs::EID_KEYBOARD,
+                                      mappingIter->get<string>() ) );
+
+                ++mappingIter;
+            }
+        }
+
+        deviceIter = iter->find( "gamepad" );
+        if( deviceIter != iter->end() )
+        {
+            auto mappingIter = deviceIter->begin();
+            while( mappingIter != deviceIter->end() )
+            {
+                mapping.AddInput( NDefs::EID_GAMEPAD, mappingIter->get<int>() );
+
+                ++mappingIter;
+            }
+        }
     }
 }

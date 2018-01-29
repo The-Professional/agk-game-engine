@@ -2,16 +2,11 @@
 #define __sprite_data_3d_h__
 
 // Game lib dependencies
-#include <utilities\json.hpp>
 #include <3d\spritevisualdata3d.h>
-//#include <objectdata/objectphysicsdata3d.h>
+#include <utilities\jsonparsehelper.h>
 
 // Standard lib dependencies
 #include <string>
-//#include <utility>
-
-// Forward Declarations
-//struct XMLNode;
 
 /// *************************************************************************
 /// <summary>

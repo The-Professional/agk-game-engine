@@ -2,7 +2,7 @@
 #define __sprite_visual_data_3d_h__
 
 // Game lib dependencies
-#include <utilities\json.hpp>
+#include <utilities\jsonparsehelper.h>
 #include <common\defs.h>
 #include <common\color.h>
 

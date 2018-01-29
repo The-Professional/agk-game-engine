@@ -13,6 +13,9 @@
     <Filter Include="managers">
       <UniqueIdentifier>{f0c2da14-e42f-4841-93e3-78ce1473eac8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="2d">
+      <UniqueIdentifier>{051fc22a-3240-4503-857c-747ec6414c30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utilities\mathfunc.h">
@@ -42,9 +45,6 @@
     <ClInclude Include="managers\resourcemanager.h">
       <Filter>managers</Filter>
     </ClInclude>
-    <ClInclude Include="managers\stagemanager3d.h">
-      <Filter>managers</Filter>
-    </ClInclude>
     <ClInclude Include="3d\sprite3d.h">
       <Filter>3d</Filter>
     </ClInclude>
@@ -69,15 +69,27 @@
     <ClInclude Include="utilities\deletefuncs.h">
       <Filter>utilities</Filter>
     </ClInclude>
+    <ClInclude Include="managers\inputmanager.h">
+      <Filter>managers</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\generalfuncs.h">
+      <Filter>utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="managers\inputstate.h">
+      <Filter>managers</Filter>
+    </ClInclude>
+    <ClInclude Include="managers\inputmapping.h">
+      <Filter>managers</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\sprite2d.h">
+      <Filter>2d</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="utilities\settings.cpp">
       <Filter>utilities</Filter>
     </ClCompile>
     <ClCompile Include="managers\resourcemanager.cpp">
-      <Filter>managers</Filter>
-    </ClCompile>
-    <ClCompile Include="managers\stagemanager3d.cpp">
       <Filter>managers</Filter>
     </ClCompile>
     <ClCompile Include="3d\sprite3d.cpp">
@@ -94,6 +106,21 @@
     </ClCompile>
     <ClCompile Include="managers\spritemanager.cpp">
       <Filter>managers</Filter>
+    </ClCompile>
+    <ClCompile Include="managers\inputmanager.cpp">
+      <Filter>managers</Filter>
+    </ClCompile>
+    <ClCompile Include="utilities\generalfuncs.cpp">
+      <Filter>utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="managers\inputstate.cpp">
+      <Filter>managers</Filter>
+    </ClCompile>
+    <ClCompile Include="managers\inputmapping.cpp">
+      <Filter>managers</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\sprite2d.cpp">
+      <Filter>2d</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -64,10 +64,20 @@ namespace NDefs
         EA_BOTTOM   = 8
     };
 
+    // Orientation of the screen.
     enum EOrentation
     {
         EO_LANDSCAPE,
         EO_PORTRAIT
+    };
+
+    // Type of device we can receive inputs from.
+    enum EInputDevice
+    {
+        EID_NULL,
+        EID_MOUSE,
+        EID_KEYBOARD,
+        EID_GAMEPAD
     };
 }
 

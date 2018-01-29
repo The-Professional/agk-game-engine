@@ -146,12 +146,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="x64\Debug\data\3d\lists\imageList.json" />
-    <None Include="x64\Debug\data\3d\lists\spriteCollectionList3d.json" />
-    <None Include="x64\Debug\data\3d\lists\spriteDataList3d.json" />
     <None Include="x64\Debug\data\3d\sprites\ball.json" />
     <None Include="x64\Debug\data\3d\sprites\collections\stage0.json" />
     <None Include="x64\Debug\data\3d\sprites\floor.json" />
+    <None Include="x64\Debug\data\inputs.json" />
     <None Include="x64\Debug\data\settings.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

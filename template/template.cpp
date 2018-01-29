@@ -2,6 +2,7 @@
 #include "template.h"
 
 #include <utilities\settings.h>
+#include <managers\inputmanager.h>
 #include <managers\spritemanager.h>
 #include <managers\resourcemanager.h>
 #include <3d\sprite3d.h>
@@ -15,21 +16,28 @@ CSprite3D * pSprite;
 
 void app::Init()
 {
-    CSettings::Instance().SetFilePath( "data/settings.json" );
+    // Load and apply the settings.
+    CSettings::Instance().SetPath( "data/settings.json" );
     CSettings::Instance().LoadSettings();
     CSettings::Instance().ApplySettings();
+
+    // Load the input mapping.
+    CInputManager::Instance().SetPath( "data/inputs.json" );
+    CInputManager::Instance().LoadInputMap();
+
+    // Load all of our lists.
+    CResourceManager::Instance().LoadImageList( "data/images/" );
+    CSpriteManager::Instance().LoadDataFileList3D( "data/3d/sprites/" );
+    CSpriteManager::Instance().LoadCollectionFileList3D( "data/3d/sprites/collections/" );
 }
 
 void app::Begin()
 {
     agk::SetErrorMode( 2 );
-	agk::SetClearColor( 0, 0, 0 ); // light blue
+	agk::SetClearColor( 0, 0, 0 );
 	agk::SetSyncRate( 0, 0 );
 	agk::SetScissor( 0, 0, 0, 0 );
 
-    CResourceManager::Instance().LoadList( NDefs::ERT_IMAGE, "data/3d/lists/imageList.json" );
-    CSpriteManager::Instance().LoadDataFileList3D( "data/3d/lists/spriteDataList3d.json" );
-    CSpriteManager::Instance().LoadCollectionFileList3D( "data/3d/lists/spriteCollectionList3d.json" );
     CSpriteManager::Instance().CreateSpriteCollection3D( "stage0" );
     pSprite = CSpriteManager::Instance().CreateSprite3D( "ball" );
     pSprite->SetScale( 2 );
@@ -37,7 +45,8 @@ void app::Begin()
 
 int app::Loop()
 {
-    pSprite->IncRot( 0.005f, 0.005f, 0 );
+    if( CInputManager::Instance().IsReleased("menu", "menu select") )
+        pSprite->IncRot( 90.f, 90.f, 0 );
 
 	agk::Print( agk::ScreenFPS() );
 	agk::Sync();

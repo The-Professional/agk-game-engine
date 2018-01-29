@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="2d\sprite2d.h" />
     <ClInclude Include="3d\sprite3d.h" />
     <ClInclude Include="3d\spritedata3d.h" />
     <ClInclude Include="3d\spritevisualdata3d.h" />
@@ -27,24 +28,31 @@
     <ClInclude Include="common\defs.h" />
     <ClInclude Include="common\size.h" />
     <ClInclude Include="common\vector3.h" />
+    <ClInclude Include="managers\inputmanager.h" />
+    <ClInclude Include="managers\inputmapping.h" />
+    <ClInclude Include="managers\inputstate.h" />
     <ClInclude Include="managers\resourcefile.h" />
     <ClInclude Include="managers\resourcemanager.h" />
     <ClInclude Include="managers\spritemanager.h" />
-    <ClInclude Include="managers\stagemanager3d.h" />
     <ClInclude Include="utilities\deletefuncs.h" />
     <ClInclude Include="utilities\exceptionhandling.h" />
+    <ClInclude Include="utilities\generalfuncs.h" />
     <ClInclude Include="utilities\json.hpp" />
     <ClInclude Include="utilities\jsonparsehelper.h" />
     <ClInclude Include="utilities\mathfunc.h" />
     <ClInclude Include="utilities\settings.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="2d\sprite2d.cpp" />
     <ClCompile Include="3d\sprite3d.cpp" />
     <ClCompile Include="3d\spritedata3d.cpp" />
     <ClCompile Include="3d\spritevisualdata3d.cpp" />
+    <ClCompile Include="managers\inputmanager.cpp" />
+    <ClCompile Include="managers\inputmapping.cpp" />
+    <ClCompile Include="managers\inputstate.cpp" />
     <ClCompile Include="managers\resourcemanager.cpp" />
     <ClCompile Include="managers\spritemanager.cpp" />
-    <ClCompile Include="managers\stagemanager3d.cpp" />
+    <ClCompile Include="utilities\generalfuncs.cpp" />
     <ClCompile Include="utilities\jsonparsehelper.cpp" />
     <ClCompile Include="utilities\settings.cpp" />
   </ItemGroup>

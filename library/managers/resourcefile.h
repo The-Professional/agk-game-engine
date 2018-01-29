@@ -21,6 +21,14 @@ public:
 
     // The file path to the data.
     std::string path;
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Constructor
+    /// </summary>
+    /// *************************************************************************
+    CResourceFile( const std::string & p ) : path(p)
+    {}
 };
 
 

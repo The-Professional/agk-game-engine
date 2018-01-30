@@ -1,16 +1,15 @@
 // Physical component dependency
-#include "spritedata3d.h"
+#include "spritedata2d.h"
 
 // Game lib dependencies
 #include <utilities\deletefuncs.h>
-
 
 /// *************************************************************************
 /// <summary>
 /// Constructor
 /// </summary>
 /// *************************************************************************
-CSpriteData3D::CSpriteData3D()
+CSpriteData2D::CSpriteData2D()
 {
 }
 
@@ -20,7 +19,7 @@ CSpriteData3D::CSpriteData3D()
 /// Copy constructor
 /// </summary>
 /// *************************************************************************
-CSpriteData3D::CSpriteData3D( const CSpriteData3D & obj )
+CSpriteData2D::CSpriteData2D( const CSpriteData2D & obj )
 {
     *this = obj;
 }
@@ -31,7 +30,7 @@ CSpriteData3D::CSpriteData3D( const CSpriteData3D & obj )
 /// Destructor
 /// </summary>
 /// *************************************************************************
-CSpriteData3D::~CSpriteData3D()
+CSpriteData2D::~CSpriteData2D()
 {
     NDelFunc::Delete( _pVisualData );
 }
@@ -43,14 +42,14 @@ CSpriteData3D::~CSpriteData3D()
 /// </summary>
 /// <param name="iter"> JSON node to parse. </param>
 /// *************************************************************************
-void CSpriteData3D::LoadFromIter( const std::string & name, nlohmann::json::const_iterator iter )
+void CSpriteData2D::LoadFromIter( const std::string & name, nlohmann::json::const_iterator iter )
 {
     _name = name;
 
     auto visualIter = iter->find( "visual" );
     if( visualIter != iter->end() )
     {
-        _pVisualData = new CSpriteVisualData3D();
+        _pVisualData = new CSpriteVisualData2D();
         _pVisualData->LoadFromIter( visualIter );
     }
 }
@@ -62,7 +61,7 @@ void CSpriteData3D::LoadFromIter( const std::string & name, nlohmann::json::cons
 /// </summary>
 /// <returns> Object holding all of the sprite's visual data. </returns>
 /// *************************************************************************
-const CSpriteVisualData3D * CSpriteData3D::GetVisualData() const
+const CSpriteVisualData2D * CSpriteData2D::GetVisualData() const
 {
     return _pVisualData;
 }
@@ -74,7 +73,7 @@ const CSpriteVisualData3D * CSpriteData3D::GetVisualData() const
 ///// </summary>
 ///// <returns> Object holding all of the sprite's physics data. </returns>
 ///// *************************************************************************
-//const CSpritePhysicsData3D & CSpriteData3D::GetPhysicsData() const
+//const CSpritePhysicsData2D & CSpriteData2D::GetPhysicsData() const
 //{
 //    return _physicsData;
 //}
@@ -86,7 +85,8 @@ const CSpriteVisualData3D * CSpriteData3D::GetVisualData() const
 /// </summary>
 /// <returns> Sprite's name. </returns>
 /// *************************************************************************
-const std::string & CSpriteData3D::GetName() const
+const std::string & CSpriteData2D::GetName() const
 {
     return _name;
 }
+

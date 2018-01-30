@@ -10,7 +10,6 @@
 
 // Forward Declarations
 class CSpriteData3D;
-class CVector3;
 
 /// *************************************************************************
 /// <summary>

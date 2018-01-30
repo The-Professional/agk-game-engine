@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\sprite2d.h" />
+    <ClInclude Include="2d\spritedata2d.h" />
+    <ClInclude Include="2d\spritevisualdata2d.h" />
     <ClInclude Include="3d\sprite3d.h" />
     <ClInclude Include="3d\spritedata3d.h" />
     <ClInclude Include="3d\spritevisualdata3d.h" />
@@ -27,7 +29,9 @@
     <ClInclude Include="common\color.h" />
     <ClInclude Include="common\defs.h" />
     <ClInclude Include="common\size.h" />
+    <ClInclude Include="common\vector2.h" />
     <ClInclude Include="common\vector3.h" />
+    <ClInclude Include="controls\control.h" />
     <ClInclude Include="managers\inputmanager.h" />
     <ClInclude Include="managers\inputmapping.h" />
     <ClInclude Include="managers\inputstate.h" />
@@ -41,12 +45,16 @@
     <ClInclude Include="utilities\jsonparsehelper.h" />
     <ClInclude Include="utilities\mathfunc.h" />
     <ClInclude Include="utilities\settings.h" />
+    <ClInclude Include="utilities\txtparsehelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2d\sprite2d.cpp" />
+    <ClCompile Include="2d\spritedata2d.cpp" />
+    <ClCompile Include="2d\spritevisualdata2d.cpp" />
     <ClCompile Include="3d\sprite3d.cpp" />
     <ClCompile Include="3d\spritedata3d.cpp" />
     <ClCompile Include="3d\spritevisualdata3d.cpp" />
+    <ClCompile Include="controls\control.cpp" />
     <ClCompile Include="managers\inputmanager.cpp" />
     <ClCompile Include="managers\inputmapping.cpp" />
     <ClCompile Include="managers\inputstate.cpp" />
@@ -55,6 +63,7 @@
     <ClCompile Include="utilities\generalfuncs.cpp" />
     <ClCompile Include="utilities\jsonparsehelper.cpp" />
     <ClCompile Include="utilities\settings.cpp" />
+    <ClCompile Include="utilities\txtparsehelper.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

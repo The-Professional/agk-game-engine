@@ -20,6 +20,12 @@
     <Filter Include="data\3d\sprites\collections">
       <UniqueIdentifier>{25f1cd68-d4f0-4fba-8f92-9e4baab20234}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data\2d">
+      <UniqueIdentifier>{251feab0-91ac-410e-b14b-3d3eea0767f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\2d\sprites">
+      <UniqueIdentifier>{bbeee20f-932a-4890-a5d4-4ab69a2630c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="x64\Debug\data\3d\sprites\ball.json">
@@ -36,6 +42,9 @@
     </None>
     <None Include="x64\Debug\data\inputs.json">
       <Filter>data</Filter>
+    </None>
+    <None Include="x64\Debug\data\2d\sprites\test.json">
+      <Filter>data\2d\sprites</Filter>
     </None>
   </ItemGroup>
 </Project>

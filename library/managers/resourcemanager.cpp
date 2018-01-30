@@ -61,7 +61,12 @@ void CResourceManager::LoadAnimatedMeshList( const std::string & path )
 /// *************************************************************************
 void CResourceManager::LoadImageList( const std::string & path )
 {
-    NGeneralFuncs::AddFilesToMap( path, _imageList );
+    NGeneralFuncs::AddFilesToImageList( path, _imageList );
+
+    // Add an extra resource for a solid image.
+    CResourceFile solidImage;
+    solidImage.id = agk::CreateImageColor( 255, 255, 255, 255 );
+    _imageList.insert( pair<string, CResourceFile>( "", solidImage ) );
 }
 
 
@@ -127,8 +132,13 @@ uint CResourceManager::LoadImage( const std::string & name )
     if( iter != _imageList.end() )
     {
         // If the image hasn't been loaded yet, load it.
-        if( iter->second.id == 0 )
+        if( iter->second.id == UNLOADED_IMAGE_ID )
             iter->second.id = agk::LoadImage( iter->second.path.c_str() );
+        else if( iter->second.id == UNLOADED_SUBIMAGE_ID )
+        {
+            uint parentId = LoadImage( iter->second.path );
+            iter->second.id = agk::LoadSubImage( parentId, iter->first.c_str() );
+        }
 
         return iter->second.id;
     }

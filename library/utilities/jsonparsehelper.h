@@ -1,5 +1,5 @@
-#ifndef __parse_helper_h__
-#define __parse_helper_h__
+#ifndef __json_parse_helper_h__
+#define __json_parse_helper_h__
 
 // Game lib dependencies
 #include <common\defs.h>
@@ -9,7 +9,6 @@
 #include <string>
 
 // Forward declarations
-class const_iterator;
 class CVector3;
 class CSize;
 class CColor;
@@ -84,6 +83,7 @@ namespace NParseHelper
 
     // Parse the dimension tags.
     void GetDimensions( nlohmann::json::const_iterator iter, float & width, float & height, float & length, float & radius, int & rows, int & columns );
+    void GetDimensions( nlohmann::json::const_iterator iter, float & width, float & height );
 
     ////////////////////////////////////////////////////////////////
     // Input Functions                                            //
@@ -96,4 +96,4 @@ namespace NParseHelper
     void GetInputMapping( nlohmann::json::const_iterator iter, CInputMapping & mapping );
 }
 
-#endif  // __parse_helper_h__
+#endif  // __json_parse_helper_h__

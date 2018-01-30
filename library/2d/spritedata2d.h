@@ -1,8 +1,8 @@
-#ifndef __sprite_data_3d_h__
-#define __sprite_data_3d_h__
+#ifndef __sprite_data_2d_h__
+#define __sprite_data_2d_h__
 
 // Game lib dependencies
-#include <3d\spritevisualdata3d.h>
+#include <2d\spritevisualdata2d.h>
 #include <utilities\jsonparsehelper.h>
 
 // Standard lib dependencies
@@ -10,26 +10,26 @@
 
 /// *************************************************************************
 /// <summary>
-/// Class containing the default creation data for a 3D sprite.
+/// Class containing the default creation data for a 2D sprite.
 /// </summary>
 /// *************************************************************************
-class CSpriteData3D
+class CSpriteData2D
 {
 public:
 
     // Constructor/Destructor
-    CSpriteData3D();
-    CSpriteData3D( const CSpriteData3D & obj );
-    ~CSpriteData3D();
+    CSpriteData2D();
+    CSpriteData2D( const CSpriteData2D & obj );
+    ~CSpriteData2D();
 
     // Load the sprite data from the passed in iterator.
     void LoadFromIter( const std::string & name, nlohmann::json::const_iterator iter );
 
     // Access functions for the visual data.
-    const CSpriteVisualData3D * GetVisualData() const;
+    const CSpriteVisualData2D * GetVisualData() const;
 
     // Access functions for the physics data.
-    //const CSpritePhysicsData3D & GetPhysicsData() const;
+    //const CSpritePhysicsData2D & GetPhysicsData() const;
 
     // Access functions for the data name.
     const std::string & GetName() const;
@@ -37,13 +37,13 @@ public:
 private:
 
     // Visual data of the object
-    CSpriteVisualData3D * _pVisualData = nullptr;
+    CSpriteVisualData2D * _pVisualData = nullptr;
 
     // Physics data of the object
-    //CSpritePhysicsData3D _physicsData;
+    //CSpritePhysicsData2D _physicsData;
 
     // The name of the object data
     std::string _name;
 };
 
-#endif  // __sprite_data_3d_h__
+#endif  // __sprite_data_2d_h__

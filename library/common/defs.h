@@ -45,13 +45,13 @@ namespace NDefs
         ERT_IMAGE
     };
 
-    // The types of data.
-    enum EDataType
+    enum EControlType
     {
-        EDT_NULL,
-        EDT_STAGE,
-        EDT_SPRITE,
-        EDT_CONTROL
+        ECT_NULL,
+        ECT_BUTTON,
+        ECT_CHECKBOX,
+        ECT_SLIDER,
+        ECT_BUTTON_LIST
     };
     
     // The types of alignment.

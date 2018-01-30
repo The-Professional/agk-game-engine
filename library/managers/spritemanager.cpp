@@ -10,6 +10,8 @@
 #include <common\vector3.h>
 #include <3d\spritedata3d.h>
 #include <3d\sprite3d.h>
+#include <2d\spritedata2d.h>
+#include <2d\sprite2d.h>
 
 // Standard lib dependencies
 #include <fstream>
@@ -46,6 +48,17 @@ CSpriteManager::~CSpriteManager()
 void CSpriteManager::LoadDataFileList3D( const std::string & path )
 {
     NGeneralFuncs::AddFilesToMap( path, _spriteDataFileList3d );
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Read the file and compile the list of sprite data files.
+/// </summary>
+/// *************************************************************************
+void CSpriteManager::LoadDataFileList2D( const std::string & path )
+{
+    NGeneralFuncs::AddFilesToMap( path, _spriteDataFileList2d );
 }
 
 
@@ -118,6 +131,61 @@ const CSpriteData3D * CSpriteManager::GetSpriteData3D( const std::string & name 
 
 /// *************************************************************************
 /// <summary> 
+/// Get the sprite data.
+/// </summary>
+/// <param name="name"> Name of the sprite. </param>
+/// *************************************************************************
+const CSpriteData2D * CSpriteManager::GetSpriteData2D( const std::string & name )
+{
+    try
+    {
+        // See if the sprite data is already loaded.
+        auto loadedIter = _spriteDataList2d.find( name );
+        if( loadedIter != _spriteDataList2d.end() )
+            return loadedIter->second;
+
+        auto unloadedIter = _spriteDataFileList2d.find( name );
+        if( unloadedIter != _spriteDataFileList2d.end() )
+        {
+            // Load the sprite data file.
+            ifstream ifile( unloadedIter->second );
+
+            // Parse the content into a json object.
+            json j;
+            ifile >> j;
+
+            auto spriteIter = j.find( "spriteData2d" );
+            if( spriteIter != j.end() )
+            {
+                CSpriteData2D * pData = new CSpriteData2D();
+                _spriteDataList2d.insert( pair<string, CSpriteData2D *>( unloadedIter->first, pData ) );
+
+                pData->LoadFromIter( unloadedIter->first, spriteIter );
+
+                return pData;
+            }
+        }
+
+        throw NExcept::CCriticalException( "Error",
+                                           "CSpriteManager::LoadSpriteData2D()",
+                                           "No sprite data exists with tha name '" + name + "'." );
+    }
+    catch( NExcept::CCriticalException e )
+    {
+        throw e;
+    }
+    catch( exception e )
+    {
+        throw NExcept::CCriticalException( "Error",
+                                           "CSpriteManager::LoadSpriteData2D()",
+                                           "Failed to get sprite '" + name + "'.", e );
+    }
+
+    return nullptr;
+}
+
+/// *************************************************************************
+/// <summary> 
 /// Create the sprite.
 /// </summary>
 /// <param name="name"> Name of the sprite. </param>
@@ -143,6 +211,40 @@ CSprite3D * CSpriteManager::CreateSprite3D( const std::string & name )
     {
         throw NExcept::CCriticalException( "Error",
                                            "CSpriteManager::CreateSprite3D()",
+                                           "Failed to create sprite '" + name + "'.", e );
+    }
+
+    return nullptr;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Create the sprite.
+/// </summary>
+/// <param name="name"> Name of the sprite. </param>
+/// *************************************************************************
+CSprite2D * CSpriteManager::CreateSprite2D( const std::string & name )
+{
+    try
+    {
+        // Create the sprite object and add it to the sprite list.
+        CSprite2D * pSprite = new CSprite2D();
+        _spriteList2d[name].push_back( pSprite );
+
+        // Initialize the sprite with sprite data.
+        pSprite->Init( GetSpriteData2D( name ) );
+
+        return pSprite;
+    }
+    catch( NExcept::CCriticalException e )
+    {
+        throw e;
+    }
+    catch( exception e )
+    {
+        throw NExcept::CCriticalException( "Error",
+                                           "CSpriteManager::CreateSprite2D()",
                                            "Failed to create sprite '" + name + "'.", e );
     }
 

@@ -448,6 +448,22 @@ namespace NParseHelper
             columns = dimIter->get<int>();
     }
 
+    /// <summary> 
+    /// Parse the dimension tags.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// <returns> If the tag exists. </returns>
+    void GetDimensions( nlohmann::json::const_iterator iter, float & width, float & height )
+    {
+        auto dimIter = iter->find( "width" );
+        if( dimIter != iter->end() )
+            width = dimIter->get<float>();
+
+        dimIter = iter->find( "height" );
+        if( dimIter != iter->end() )
+            height = dimIter->get<float>();
+    }
+
 
     /// *************************************************************************
     /// <summary> 

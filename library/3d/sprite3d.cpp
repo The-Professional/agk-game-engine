@@ -50,79 +50,82 @@ void CSprite3D::Init( const CSpriteData3D * pData )
     Clear();
 
     _pData = pData;
-    const CSpriteVisualData3D & visual = pData->GetVisualData();
+    const CSpriteVisualData3D * pVisual = pData->GetVisualData();
 
-    switch( visual.GetType() )
+    if( pVisual )
     {
-    // Boxes must have a width, height, and length.
-    case NDefs::EOT_BOX:
-        if( visual.GetWidth() > 0 && visual.GetHeight() > 0 && visual.GetLength() > 0 )
-            _id = agk::CreateObjectBox( visual.GetWidth(), visual.GetHeight(), visual.GetLength() );
-        break;
-
-    // Cones must have a height, radius, and at least 3 columns.
-    case NDefs::EOT_CONE:
-        if( visual.GetHeight() > 0 && visual.GetRadius() > 0 && visual.GetColumns() > 2 )
-            _id = agk::CreateObjectCone( visual.GetHeight(), visual.GetDiameter(), visual.GetColumns() );
-        break;
-
-    // Cylinders must have a height, radius, and at least 3 columns.
-    case NDefs::EOT_CYLINDER:
-        if( visual.GetHeight() > 0 && visual.GetRadius() > 0 && visual.GetColumns() > 2 )
-            _id = agk::CreateObjectCylinder( visual.GetHeight(), visual.GetDiameter(), visual.GetColumns() );
-        break;
-
-    // Capsules must have a radius and height.
-    case NDefs::EOT_CAPSULE:
-        if( visual.GetRadius() > 0 && visual.GetHeight() > 0 )
-            _id = agk::CreateObjectCapsule( visual.GetDiameter(), visual.GetHeight(), X_AXIS );
-        break;
-
-    // Planes must have a width and height.
-    case NDefs::EOT_PLANE:
-        if( visual.GetWidth() > 0 && visual.GetHeight() > 0 )
-            _id = agk::CreateObjectPlane( visual.GetWidth(), visual.GetHeight() );
-        break;
-
-    // Spheres must have a radius, at least 2 rows, and at least 3 columns.
-    case NDefs::EOT_SPHERE:
-        if( visual.GetRadius() > 0 && visual.GetRows() > 1 && visual.GetColumns() > 2 )
-            _id = agk::CreateObjectSphere( visual.GetDiameter(), visual.GetRows(), visual.GetColumns() );
-        break;
-
-    // Meshes must have a name.
-    case NDefs::EOT_MESH:
-        if( !visual.GetMesh().empty() )
-            _id = agk::CloneObject( CResourceManager::Instance().LoadMesh( visual.GetMesh() ) );
-        break;
-    }
-
-    // If an object was created, apply any textures, shaders, and coloring.
-    if( _id > 0 )
-    {
-        // Set any texture maps the sprite has.
-        if( !visual.GetTextureMap().empty() )
+        switch( pVisual->GetType() )
         {
-            int imageId = CResourceManager::Instance().LoadImage( visual.GetTextureMap() );
-            agk::SetObjectImage( _id, imageId, NDefs::ETS_TEXTURE );
-        }
-        if( !visual.GetNormalMap().empty() )
-        {
-            int imageId = CResourceManager::Instance().LoadImage( visual.GetNormalMap() );
-            agk::SetObjectNormalMap( _id, imageId );
-        }
-        if( !visual.GetSpecularMap().empty() )
-        {
-            int imageId = CResourceManager::Instance().LoadImage( visual.GetSpecularMap() );
-            agk::SetObjectImage( _id, imageId, NDefs::ETS_SPECULAR );
+            // Boxes must have a width, height, and length.
+        case NDefs::EOT_BOX:
+            if( pVisual->GetWidth() > 0 && pVisual->GetHeight() > 0 && pVisual->GetLength() > 0 )
+                _id = agk::CreateObjectBox( pVisual->GetWidth(), pVisual->GetHeight(), pVisual->GetLength() );
+            break;
+
+            // Cones must have a height, radius, and at least 3 columns.
+        case NDefs::EOT_CONE:
+            if( pVisual->GetHeight() > 0 && pVisual->GetRadius() > 0 && pVisual->GetColumns() > 2 )
+                _id = agk::CreateObjectCone( pVisual->GetHeight(), pVisual->GetDiameter(), pVisual->GetColumns() );
+            break;
+
+            // Cylinders must have a height, radius, and at least 3 columns.
+        case NDefs::EOT_CYLINDER:
+            if( pVisual->GetHeight() > 0 && pVisual->GetRadius() > 0 && pVisual->GetColumns() > 2 )
+                _id = agk::CreateObjectCylinder( pVisual->GetHeight(), pVisual->GetDiameter(), pVisual->GetColumns() );
+            break;
+
+            // Capsules must have a radius and height.
+        case NDefs::EOT_CAPSULE:
+            if( pVisual->GetRadius() > 0 && pVisual->GetHeight() > 0 )
+                _id = agk::CreateObjectCapsule( pVisual->GetDiameter(), pVisual->GetHeight(), Y_AXIS );
+            break;
+
+            // Planes must have a width and height.
+        case NDefs::EOT_PLANE:
+            if( pVisual->GetWidth() > 0 && pVisual->GetHeight() > 0 )
+                _id = agk::CreateObjectPlane( pVisual->GetWidth(), pVisual->GetHeight() );
+            break;
+
+            // Spheres must have a radius, at least 2 rows, and at least 3 columns.
+        case NDefs::EOT_SPHERE:
+            if( pVisual->GetRadius() > 0 && pVisual->GetRows() > 1 && pVisual->GetColumns() > 2 )
+                _id = agk::CreateObjectSphere( pVisual->GetDiameter(), pVisual->GetRows(), pVisual->GetColumns() );
+            break;
+
+            // Meshes must have a name.
+        case NDefs::EOT_MESH:
+            if( !pVisual->GetMesh().empty() )
+                _id = agk::CloneObject( CResourceManager::Instance().LoadMesh( pVisual->GetMesh() ) );
+            break;
         }
 
-        //// Set the sprite's shader.
-        //if( visual.GetShaderID() > 0 )
-        //    agk::SetObjectShader( _objectId, visual.GetShaderID() );
+        // If an object was created, apply any textures, shaders, and coloring.
+        if( _id > 0 )
+        {
+            // Set any texture maps the sprite has.
+            if( !pVisual->GetTextureMap().empty() )
+            {
+                int imageId = CResourceManager::Instance().LoadImage( pVisual->GetTextureMap() );
+                agk::SetObjectImage( _id, imageId, NDefs::ETS_TEXTURE );
+            }
+            if( !pVisual->GetNormalMap().empty() )
+            {
+                int imageId = CResourceManager::Instance().LoadImage( pVisual->GetNormalMap() );
+                agk::SetObjectNormalMap( _id, imageId );
+            }
+            if( !pVisual->GetSpecularMap().empty() )
+            {
+                int imageId = CResourceManager::Instance().LoadImage( pVisual->GetSpecularMap() );
+                agk::SetObjectImage( _id, imageId, NDefs::ETS_SPECULAR );
+            }
 
-        // Set the sprite's color.
-        agk::SetObjectColor( _id, visual.GetColor().r, visual.GetColor().g, visual.GetColor().b, visual.GetColor().a );
+            //// Set the sprite's shader.
+            //if( visual.GetShaderID() > 0 )
+            //    agk::SetObjectShader( _objectId, visual.GetShaderID() );
+
+            // Set the sprite's color.
+            agk::SetObjectColor( _id, pVisual->GetColor().r, pVisual->GetColor().g, pVisual->GetColor().b, pVisual->GetColor().a );
+        }
     }
 }
 

@@ -16,6 +16,9 @@
     <Filter Include="2d">
       <UniqueIdentifier>{051fc22a-3240-4503-857c-747ec6414c30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="controls">
+      <UniqueIdentifier>{b28de89e-f1c5-4b56-9314-c575d7087bdf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utilities\mathfunc.h">
@@ -84,6 +87,21 @@
     <ClInclude Include="2d\sprite2d.h">
       <Filter>2d</Filter>
     </ClInclude>
+    <ClInclude Include="common\vector2.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\spritedata2d.h">
+      <Filter>2d</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\spritevisualdata2d.h">
+      <Filter>2d</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\txtparsehelper.h">
+      <Filter>utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\control.h">
+      <Filter>controls</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="utilities\settings.cpp">
@@ -121,6 +139,18 @@
     </ClCompile>
     <ClCompile Include="2d\sprite2d.cpp">
       <Filter>2d</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\spritedata2d.cpp">
+      <Filter>2d</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\spritevisualdata2d.cpp">
+      <Filter>2d</Filter>
+    </ClCompile>
+    <ClCompile Include="utilities\txtparsehelper.cpp">
+      <Filter>utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\control.cpp">
+      <Filter>controls</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

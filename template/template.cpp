@@ -6,6 +6,7 @@
 #include <managers\spritemanager.h>
 #include <managers\resourcemanager.h>
 #include <3d\sprite3d.h>
+#include <2d\sprite2d.h>
 
 // Namespace
 using namespace AGK;
@@ -13,6 +14,9 @@ using namespace AGK;
 app App;
 
 CSprite3D * pSprite;
+CSprite2D * pSprite2;
+
+//int test, sub;
 
 void app::Init()
 {
@@ -28,7 +32,9 @@ void app::Init()
     // Load all of our lists.
     CResourceManager::Instance().LoadImageList( "data/images/" );
     CSpriteManager::Instance().LoadDataFileList3D( "data/3d/sprites/" );
+    CSpriteManager::Instance().LoadDataFileList2D( "data/2d/sprites/" );
     CSpriteManager::Instance().LoadCollectionFileList3D( "data/3d/sprites/collections/" );
+
 }
 
 void app::Begin()
@@ -41,6 +47,14 @@ void app::Begin()
     CSpriteManager::Instance().CreateSpriteCollection3D( "stage0" );
     pSprite = CSpriteManager::Instance().CreateSprite3D( "ball" );
     pSprite->SetScale( 2 );
+
+    pSprite2 = CSpriteManager::Instance().CreateSprite2D( "test" );
+    
+/*
+    test = agk::LoadImage( "data/images/cube.png" );
+    sub = agk::LoadSubImage( test, "bottom" );
+    agk::SetSpriteImage( pSprite2->GetID(), sub );
+    pSprite2->SetPos( 200.f, 200.f );*/
 }
 
 int app::Loop()

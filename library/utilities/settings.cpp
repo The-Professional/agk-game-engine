@@ -68,7 +68,8 @@ void CSettings::LoadSettings()
             auto displayIter = settingsIter->find( "display" );
             if( displayIter != settingsIter->end() )
             {
-                NParseHelper::GetSize( displayIter, _resolution );
+                NParseHelper::GetResolution( displayIter, _resolution );
+                NParseHelper::GetVirtualResolution( displayIter, _vResolution );
                 NParseHelper::GetFullscreen( displayIter, _fullscreen );
                 NParseHelper::GetOrientation( displayIter, _orientation );
                 NParseHelper::GetAntialias( displayIter, _antialias );
@@ -98,7 +99,7 @@ void CSettings::ApplySettings()
     try
     {
         agk::SetWindowSize( _resolution.w, _resolution.h, _fullscreen );
-        agk::SetVirtualResolution( _resolution.w, _resolution.h );
+        agk::SetVirtualResolution( _vResolution.w, _vResolution.h );
 
         if( !_fullscreen )
         {
@@ -141,6 +142,17 @@ void CSettings::SaveSettings()
 const CSize & CSettings::GetResolution() const
 {
     return _resolution;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get the virtual resolution. This is the resolution your art was made for.
+/// </summary>
+/// *************************************************************************
+const CSize & CSettings::GetVirtualResolution() const
+{
+    return _vResolution;
 }
 
 

@@ -2,7 +2,8 @@
   "settings": {
 
     "display": {
-      "size": { "w": 1280, "h": 720 },
+      "resolution": { "w": 1280, "h": 720 },
+      "vResolution": { "w": 1280, "h": 720 },
       "fullscreen": false,
       "orientation": "landscape",
       "vsync": false,

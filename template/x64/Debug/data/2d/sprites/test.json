@@ -1,9 +1,7 @@
 {
   "spriteData2d": {
     "visual": {
-      "textureMap": "bottom",
-      "width": 256,
-      "height": 256
+      "textureMap": "bottom"
     }
   }
 }

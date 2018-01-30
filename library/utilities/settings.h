@@ -37,6 +37,7 @@ public:
 
     // Get the window resolution.
     const CSize & GetResolution() const;
+    const CSize & GetVirtualResolution() const;
 
     // If the game is full screen.
     bool IsFullscreen() const;
@@ -62,6 +63,10 @@ private:
 
     // Resolution of the game window.
     CSize _resolution;
+
+    // Virtual resolution fo the game window. 
+    // This is the resolution your art was made for.
+    CSize _vResolution;
 
     // Whether game is displaying in fullscreen mode or not.
     bool _fullscreen;

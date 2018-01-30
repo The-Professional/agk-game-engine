@@ -46,12 +46,21 @@ namespace NParseHelper
 	// Parse size tag.
 	bool GetSize( nlohmann::json::const_iterator iter, CSize & size );
 
+    // Parse generic w, h tags.
+    CSize GetWH( nlohmann::json::const_iterator iter );
+
     // Parse name tag.
     bool GetName( nlohmann::json::const_iterator iter, std::string & name );
 
     ////////////////////////////////////////////////////////////////
     // Settings Functions                                         //
     ////////////////////////////////////////////////////////////////
+
+    // Parse resolution tag.
+    bool GetResolution( nlohmann::json::const_iterator iter, CSize & size );
+
+    // Parse virtual resolution tag.
+    bool GetVirtualResolution( nlohmann::json::const_iterator iter, CSize & size );
 
 	// Parse alignment tag.
 	bool GetAlignment( nlohmann::json::const_iterator iter, CBitmask<uint> & alignment );

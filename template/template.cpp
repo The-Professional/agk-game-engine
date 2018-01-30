@@ -49,12 +49,6 @@ void app::Begin()
     pSprite->SetScale( 2 );
 
     pSprite2 = CSpriteManager::Instance().CreateSprite2D( "test" );
-    
-/*
-    test = agk::LoadImage( "data/images/cube.png" );
-    sub = agk::LoadSubImage( test, "bottom" );
-    agk::SetSpriteImage( pSprite2->GetID(), sub );
-    pSprite2->SetPos( 200.f, 200.f );*/
 }
 
 int app::Loop()

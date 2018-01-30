@@ -185,18 +185,33 @@ namespace NParseHelper
         auto sizeIter = iter->find( "size" );
         if ( sizeIter != iter->end() )
         {
-            auto whIter = sizeIter->find( "w" );
-            if( whIter != sizeIter->end() )
-                size.w = whIter->get<int>();
-
-            whIter = sizeIter->find( "h" );
-            if( whIter != sizeIter->end() )
-                size.h = whIter->get<int>();
-
+            size = GetWH( sizeIter );
             return true;
         }
 
         return false;
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Parse generic w, h tags.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// *************************************************************************
+    CSize GetWH( nlohmann::json::const_iterator iter )
+    {
+        CSize size;
+
+        auto whIter = iter->find( "w" );
+        if( whIter != iter->end() )
+            size.w = whIter->get<int>();
+
+        whIter = iter->find( "h" );
+        if( whIter != iter->end() )
+            size.h = whIter->get<int>();
+
+        return size;
     }
 
 
@@ -214,6 +229,48 @@ namespace NParseHelper
         if( nameIter != iter->end() )
         {
             name = nameIter->get<string>();
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Parse resolution tag.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="name"> Loaded resolution. </param>
+    /// <returns> If the tag exists. </returns>
+    /// *************************************************************************
+    bool GetResolution( nlohmann::json::const_iterator iter, CSize & size )
+    {
+        auto resIter = iter->find( "resolution" );
+        if( resIter != iter->end() )
+        {
+            size = GetWH( resIter );
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Parse virtual resolution tag.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="name"> Loaded virtual resolution. </param>
+    /// <returns> If the tag exists. </returns>
+    /// *************************************************************************
+    bool GetVirtualResolution( nlohmann::json::const_iterator iter, CSize & size )
+    {
+        auto resIter = iter->find( "vResolution" );
+        if( resIter != iter->end() )
+        {
+            size = GetWH( resIter );
             return true;
         }
 

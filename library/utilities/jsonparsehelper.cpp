@@ -21,18 +21,19 @@ namespace NParseHelper
 {
     /// *************************************************************************
     /// <summary> 
-    /// Parse position tag.
+    /// Parse a string value.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="vec"> Loaded position. </param>
+    /// <param name="tag"> Tag to find. </param>
+    /// <param name="value"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetPosition( json::const_iterator iter, CVector3 & vec )
+    bool GetString( json::const_iterator iter, const string & tag, string & value )
     {
-        auto posIter = iter->find( "position" );
-        if( posIter != iter->end() )
+        auto strIter = iter->find( tag );
+        if( strIter != iter->end() )
         {
-            vec = GetXYZ( posIter );
+            value = strIter->get<string>();
             return true;
         }
 
@@ -42,18 +43,19 @@ namespace NParseHelper
 
     /// *************************************************************************
     /// <summary> 
-    /// Parse rotation tag.
+    /// Parse an int value.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="vec"> Loaded rotation. </param>
+    /// <param name="tag"> Tag to find. </param>
+    /// <param name="value"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetRotation( json::const_iterator iter, CVector3 & vec)
+    bool GetInt( json::const_iterator iter, const string & tag, int & value )
     {
-        auto rotIter = iter->find( "rotation" );
-        if( rotIter != iter->end() )
+        auto intIter = iter->find( tag );
+        if( intIter != iter->end() )
         {
-            vec = GetXYZ( rotIter );
+            value = intIter->get<int>();
             return true;
         }
 
@@ -63,25 +65,19 @@ namespace NParseHelper
 
     /// *************************************************************************
     /// <summary> 
-    /// Parse scale tag.
+    /// Parse a float value.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="vec"> Loaded scale. </param>
+    /// <param name="tag"> Tag to find. </param>
+    /// <param name="value"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetScale( json::const_iterator iter, CVector3 & vec)
+    bool GetFloat( json::const_iterator iter, const string & tag, float & value )
     {
-        vec = 1;
-
-        auto scaleIter = iter->find( "scale" );
-        if( scaleIter != iter->end() )
+        auto floatIter = iter->find( tag );
+        if( floatIter != iter->end() )
         {
-            auto uniIter = scaleIter->find( "uniform" );
-            if( uniIter != scaleIter->end() )
-                vec = uniIter->get<float>();
-            else
-                vec = GetXYZ( scaleIter );
-
+            value = floatIter->get<float>();
             return true;
         }
 
@@ -91,20 +87,39 @@ namespace NParseHelper
 
     /// *************************************************************************
     /// <summary> 
-    /// Parse center position tag.
+    /// Parse a bool value.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="vec"> Loaded center position. </param>
+    /// <param name="tag"> Tag to find. </param>
+    /// <param name="value"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetCenterPos( json::const_iterator iter, CVector3 & vec)
+    bool GetBool( json::const_iterator iter, const string & tag, bool & value )
     {
-        auto centerIter = iter->find( "center" );
-        if( centerIter != iter->end() )
+        auto boolIter = iter->find( tag );
+        if( boolIter != iter->end() )
         {
-            vec = GetXYZ( centerIter );
+            value = boolIter->get<bool>();
             return true;
         }
+
+        return false;
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Whether the tag exists.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="tag"> Tag to find. </param>
+    /// <returns> If the tag exists. </returns>
+    /// *************************************************************************
+    bool TagExists( json::const_iterator iter, const string & tag )
+    {
+        auto tagIter = iter->find( tag );
+        if( tagIter != iter->end() )
+            return true;
 
         return false;
     }
@@ -116,23 +131,93 @@ namespace NParseHelper
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
     /// *************************************************************************
-    CVector3 GetXYZ( json::const_iterator iter )
+    bool GetXYZ( json::const_iterator iter, const string & tag, CVector3 & vec, bool checkUniform )
     {
-        CVector3 vec;
-
-        auto xyzIter = iter->find( "x" );
+        auto xyzIter = iter->find( tag );
         if( xyzIter != iter->end() )
-            vec.x = xyzIter->get<float>();
-        
-        xyzIter = iter->find( "y" );
-        if( xyzIter != iter->end() )
-            vec.y = xyzIter->get<float>();
+        {
+            float xyz = 0;
+            if( checkUniform && GetFloat( xyzIter, "xyz", xyz ) )
+            {
+                vec = xyz;
+                return true;
+            }
 
-        xyzIter = iter->find( "z" );
-        if( xyzIter != iter->end() )
-            vec.z = xyzIter->get<float>();
+            GetFloat( xyzIter, "x", vec.x );
+            GetFloat( xyzIter, "y", vec.y );
+            GetFloat( xyzIter, "z", vec.z );
 
-        return vec;
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Parse generic w, h tags.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// *************************************************************************
+    bool GetWH( nlohmann::json::const_iterator iter, const string & tag, CSize & size )
+    {
+        auto whIter = iter->find( tag );
+        if( whIter != iter->end() )
+        {
+            GetInt( whIter, "w", size.w );
+            GetInt( whIter, "h", size.h );
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Parse generic top, bottom, left, right and center tags. Only the tags are
+    /// read. The value is ignored.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="tblrc"> Loaded top, bottom, left, right, center tags. </param>
+    /// *************************************************************************
+    bool GetTBLRC( json::const_iterator iter, const string & tag, CBitmask<uint> & tblrc )
+    {
+        auto tblrcIter = iter->find( tag );
+        if( tblrcIter != iter->end() )
+        {
+            if( TagExists( tblrcIter, "left" ) )
+                tblrc.Add( NDefs::EA_LEFT );
+
+            if( TagExists( tblrcIter, "right" ) )
+                tblrc.Add( NDefs::EA_RIGHT );
+
+            if( TagExists( tblrcIter, "top" ) )
+                tblrc.Add( NDefs::EA_TOP );
+
+            if( TagExists( tblrcIter, "bottom" ) )
+                tblrc.Add( NDefs::EA_BOTTOM );
+
+            // The center value is handled a bit differently.
+            if( TagExists( tblrcIter, "center" ) )
+            {
+                // Left and right center alignments also include the top and bottom alignments.
+                if( tblrc == (uint)NDefs::EA_LEFT || tblrc == (uint)NDefs::EA_RIGHT )
+                    tblrc.Add( NDefs::EA_TOP | NDefs::EA_BOTTOM );
+                // Top and bottom center alignments also include the left and right alignments.
+                else if( tblrc == (uint)NDefs::EA_TOP || tblrc == (uint)NDefs::EA_BOTTOM )
+                    tblrc.Add( NDefs::EA_LEFT | NDefs::EA_RIGHT );
+                // Center contains all alignments.
+                else
+                    tblrc.Add( NDefs::EA_CENTER );
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -149,21 +234,10 @@ namespace NParseHelper
         auto colorIter = iter->find("color");
         if( colorIter != iter->end() )
         {
-            auto rgbaIter = colorIter->find( "r" );
-            if( rgbaIter != colorIter->end() )
-                color.r = rgbaIter->get<int>();
-
-            rgbaIter = colorIter->find( "g" );
-            if( rgbaIter != colorIter->end() )
-                color.g = rgbaIter->get<int>();
-
-            rgbaIter = colorIter->find( "b" );
-            if( rgbaIter != colorIter->end() )
-                color.b = rgbaIter->get<int>();
-
-            rgbaIter = colorIter->find( "a" );
-            if( rgbaIter != colorIter->end() )
-                color.a = rgbaIter->get<int>();
+            GetInt( colorIter, "r", color.r );
+            GetInt( colorIter, "g", color.g );
+            GetInt( colorIter, "b", color.b );
+            GetInt( colorIter, "a", color.a );
 
             return true;
         }
@@ -174,170 +248,7 @@ namespace NParseHelper
 
     /// *************************************************************************
     /// <summary> 
-    /// Parse size tag.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="size"> Loaded size. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    bool GetSize( json::const_iterator iter, CSize & size)
-    {
-        auto sizeIter = iter->find( "size" );
-        if ( sizeIter != iter->end() )
-        {
-            size = GetWH( sizeIter );
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse generic w, h tags.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// *************************************************************************
-    CSize GetWH( nlohmann::json::const_iterator iter )
-    {
-        CSize size;
-
-        auto whIter = iter->find( "w" );
-        if( whIter != iter->end() )
-            size.w = whIter->get<int>();
-
-        whIter = iter->find( "h" );
-        if( whIter != iter->end() )
-            size.h = whIter->get<int>();
-
-        return size;
-    }
-
-
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse name tag.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="name"> Loaded name. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    bool GetName( json::const_iterator iter, string & name )
-    {
-        auto nameIter = iter->find( "name" );
-        if( nameIter != iter->end() )
-        {
-            name = nameIter->get<string>();
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse resolution tag.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="name"> Loaded resolution. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    bool GetResolution( nlohmann::json::const_iterator iter, CSize & size )
-    {
-        auto resIter = iter->find( "resolution" );
-        if( resIter != iter->end() )
-        {
-            size = GetWH( resIter );
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse virtual resolution tag.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="name"> Loaded virtual resolution. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    bool GetVirtualResolution( nlohmann::json::const_iterator iter, CSize & size )
-    {
-        auto resIter = iter->find( "vResolution" );
-        if( resIter != iter->end() )
-        {
-            size = GetWH( resIter );
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse alignment tag.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="alignment"> Loaded alignment. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    bool GetAlignment( json::const_iterator iter, CBitmask<uint> & alignment)
-    {
-        auto alignmentIter = iter->find( "alignment" );
-        if( alignmentIter != iter->end() )
-        {
-            auto sideIter = alignmentIter->find( "left" );
-            if( sideIter != alignmentIter->end() )
-                alignment.Add( NDefs::EA_LEFT );
-
-            sideIter = alignmentIter->find( "right" );
-            if( sideIter != alignmentIter->end() )
-                alignment.Add( NDefs::EA_RIGHT );
-
-            sideIter = alignmentIter->find( "top" );
-            if( sideIter != alignmentIter->end() )
-                alignment.Add( NDefs::EA_TOP );
-
-            sideIter = alignmentIter->find( "bottom" );
-            if( sideIter != alignmentIter->end() )
-                alignment.Add( NDefs::EA_BOTTOM );
-
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse fullscreen tag.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="fullscreen"> Loaded fullscreen mode. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    bool GetFullscreen( json::const_iterator iter, bool & fullscreen)
-    {
-        auto fullscreenIter = iter->find( "fullscreen" );
-        if( fullscreenIter != iter->end() )
-        {
-            fullscreen = fullscreenIter->get<bool>();
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse fullscreen tag.
+    /// Parse orientation tag.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
     /// <param name="orientation"> Loaded orientation. </param>
@@ -345,120 +256,13 @@ namespace NParseHelper
     /// *************************************************************************
     bool GetOrientation( json::const_iterator iter, NDefs::EOrentation & orientation)
     {
-        auto orientationIter = iter->find( "orientation" );
-        if( orientationIter != iter->end() )
+        string str;
+        if( GetString( iter, "orientation", str ) )
         {
-            if( orientationIter->get<string>() == "portrait" )
+            if( str == "portrait" )
                 orientation = NDefs::EO_PORTRAIT;
             else
                 orientation = NDefs::EO_LANDSCAPE;
-
-            return true;
-        }
-
-        return false;
-    }
-
-    
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse antialias tag.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="antialias"> Loaded antialias flag. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    bool GetAntialias( nlohmann::json::const_iterator iter, bool & antialias )
-    {
-        auto antialiasIter = iter->find( "antialias" );
-        if( antialiasIter != iter->end() )
-        {
-            antialias = antialiasIter->get<bool>();
-            return true;
-        }
-
-        return false;
-    }
-
-    
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse the mesh tag.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="mesh"> Loaded mesh name. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    bool GetMesh( nlohmann::json::const_iterator iter, std::string & mesh )
-    {
-        auto meshIter = iter->find( "mesh" );
-        if( meshIter != iter->end() )
-        {
-            mesh = meshIter->get<string>();
-            return true;
-        }
-
-        return false;
-    }
-
-    
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse the texture map tag.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="image"> Loaded texture map name. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    bool GetTextureMap( nlohmann::json::const_iterator iter, std::string & image )
-    {
-        auto textureMapIter = iter->find( "textureMap" );
-        if( textureMapIter != iter->end() )
-        {
-            image = textureMapIter->get<string>();
-            return true;
-        }
-
-        return false;
-    }
-
-    
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse the normal map tag.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="image"> Loaded normal map name. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    bool GetNormalMap( nlohmann::json::const_iterator iter, std::string & image )
-    {
-        auto normalMapIter = iter->find( "normalMap" );
-        if( normalMapIter != iter->end() )
-        {
-            image = normalMapIter->get<string>();
-            return true;
-        }
-
-        return false;
-    }
-
-    
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse the specular map tag.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="image"> Loaded specular map name. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    bool GetSpecularMap( nlohmann::json::const_iterator iter, std::string & image )
-    {
-        auto specularMapIter = iter->find( "specularMap" );
-        if( specularMapIter != iter->end() )
-        {
-            image = specularMapIter->get<string>();
-            return true;
         }
 
         return false;
@@ -474,51 +278,18 @@ namespace NParseHelper
     /// *************************************************************************
     void GetDimensions( nlohmann::json::const_iterator iter, float & width, float & height, float & length, float & radius, int & rows, int & columns )
     {
-        auto dimIter = iter->find( "width" );
-        if( dimIter != iter->end() )
-            width = dimIter->get<float>();
+        GetFloat( iter, "width", width );
+        GetFloat( iter, "height", height );
+        GetFloat( iter, "length", length );
 
-        dimIter = iter->find( "height" );
-        if( dimIter != iter->end() )
-            height = dimIter->get<float>();
-
-        dimIter = iter->find( "length" );
-        if( dimIter != iter->end() )
-            length = dimIter->get<float>();
-
-        dimIter = iter->find( "radius" );
-        if( dimIter != iter->end() )
-            radius = dimIter->get<float>();
-        else
+        if( !GetFloat( iter, "radius", radius ) )
         {
-            dimIter = iter->find( "diameter" );
-            if( dimIter != iter->end() )
-                radius = dimIter->get<float>() * 0.5f;
+            GetFloat( iter, "diameter", radius );
+            radius *= 0.5f;
         }
 
-        dimIter = iter->find( "rows" );
-        if( dimIter != iter->end() )
-            rows = dimIter->get<int>();
-
-        dimIter = iter->find( "columns" );
-        if( dimIter != iter->end() )
-            columns = dimIter->get<int>();
-    }
-
-    /// <summary> 
-    /// Parse the dimension tags.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <returns> If the tag exists. </returns>
-    void GetDimensions( nlohmann::json::const_iterator iter, float & width, float & height )
-    {
-        auto dimIter = iter->find( "width" );
-        if( dimIter != iter->end() )
-            width = dimIter->get<float>();
-
-        dimIter = iter->find( "height" );
-        if( dimIter != iter->end() )
-            height = dimIter->get<float>();
+        GetInt( iter, "rows", rows );
+        GetInt( iter, "columns", columns );
     }
 
 
@@ -537,7 +308,7 @@ namespace NParseHelper
             while( actionIter != inputIter->end() )
             {
                 string name;
-                GetName( actionIter, name );
+                GetString( actionIter, "name", name );
 
                 CInputMapping mapping;
                 GetInputMapping( actionIter, mapping );

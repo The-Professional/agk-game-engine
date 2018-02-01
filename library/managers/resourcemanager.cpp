@@ -72,6 +72,17 @@ void CResourceManager::LoadImageList( const std::string & path )
 
 /// *************************************************************************
 /// <summary> 
+/// Locate the folder and compile the list of font files.
+/// </summary>
+/// *************************************************************************
+void CResourceManager::LoadFontList( const std::string & path )
+{
+    NGeneralFuncs::AddFilesToMap( path, _fontList );
+}
+
+
+/// *************************************************************************
+/// <summary> 
 /// Get the mesh id.
 /// </summary>
 /// <param name="name"> Name of the mesh. </param>

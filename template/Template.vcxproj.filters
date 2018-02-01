@@ -26,6 +26,9 @@
     <Filter Include="data\2d\sprites">
       <UniqueIdentifier>{bbeee20f-932a-4890-a5d4-4ab69a2630c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data\2d\text">
+      <UniqueIdentifier>{d0b5ae50-3e63-4646-a189-8194626c887f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="x64\Debug\data\3d\sprites\ball.json">
@@ -45,6 +48,9 @@
     </None>
     <None Include="x64\Debug\data\2d\sprites\test.json">
       <Filter>data\2d\sprites</Filter>
+    </None>
+    <None Include="x64\Debug\data\2d\text\text.json">
+      <Filter>data\2d\text</Filter>
     </None>
   </ItemGroup>
 </Project>

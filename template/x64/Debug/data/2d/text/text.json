@@ -1,0 +1,7 @@
+{
+  "textData": {
+    "font": "titan",
+    "text": "Hi world!\nNew line?",
+    "color": {"r": 0, "g": 255, "b": 255}
+  }
+}

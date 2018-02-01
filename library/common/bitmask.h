@@ -33,8 +33,7 @@ public:
     void Add( const type args )
     {
         bitmask |= args;
-
-    }   // Set
+    }
 
 
     /// *************************************************************************
@@ -45,8 +44,7 @@ public:
     void Remove( const type args )
     {
         bitmask &= args ^ -1;
-
-    }   // Remove
+    }
 
 
     /// *************************************************************************
@@ -57,8 +55,7 @@ public:
     void RemoveAllExcept( const type args )
     {
         bitmask &= args;
-
-    }   // RemoveAllExcept
+    }
 
 
     /// *************************************************************************
@@ -69,8 +66,7 @@ public:
     void Clear()
     {
         bitmask = 0;
-
-    }   // Clear
+    }
     
     
     /// *************************************************************************
@@ -81,8 +77,7 @@ public:
     bool IsEmpty() const
     {
         return (bitmask == 0);
-
-    }   // AreAllSet
+    }
 
 
     /// *************************************************************************
@@ -90,23 +85,10 @@ public:
     /// Check if one of the bit is set.
     /// </summary>
     /// *************************************************************************
-    bool IsSet( const type args ) const
+    bool Contains( const type args ) const
     {
         return (bitmask & args) != 0;
-
-    }   // IsSet
-
-
-    /// *************************************************************************
-    /// <summary> 
-    /// Check if all of the bits are set.
-    /// </summary>
-    /// *************************************************************************
-    bool AreAllSet( const type args ) const
-    {
-        return (bitmask & args) == args;
-
-    }   // AreAllSet
+    }
 
 
     /// *************************************************************************
@@ -117,8 +99,7 @@ public:
     type GetIncluding( const type args ) const
     {
         return bitmask | args;
-
-    }   // GetIncluding
+    }
 
 
     /// *************************************************************************
@@ -129,8 +110,7 @@ public:
     type GetExcluding( const type args ) const
     {
         return bitmask & (args ^ -1);
-
-    }   // GetExcluding
+    }
 
 
     /// *************************************************************************
@@ -141,8 +121,18 @@ public:
     void operator = ( const type value )
     {
         bitmask = value;
+    }
 
-    }   // operator =
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Overloaded equality operator.
+    /// </summary>
+    /// *************************************************************************
+    bool operator == ( const type value )
+    {
+        return bitmask == value;
+    }
 
 private:
 

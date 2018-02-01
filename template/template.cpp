@@ -31,6 +31,7 @@ void app::Init()
 
     // Load all of our lists.
     CResourceManager::Instance().LoadImageList( "data/images/" );
+    CResourceManager::Instance().LoadFontList( "data/fonts/" );
     CSpriteManager::Instance().LoadDataFileList3D( "data/3d/sprites/" );
     CSpriteManager::Instance().LoadDataFileList2D( "data/2d/sprites/" );
     CSpriteManager::Instance().LoadCollectionFileList3D( "data/3d/sprites/collections/" );

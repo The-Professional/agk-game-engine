@@ -4,6 +4,7 @@
 // Game lib dependencies
 #include <utilities\jsonparsehelper.h>
 #include <common\color.h>
+#include <common\size.h>
 
 // Standard lib dependencies
 #include <string>
@@ -32,9 +33,8 @@ public:
     // Get the sprite's image names.
     const std::string & GetTextureMap() const;
 
-    // Get the sprite's dimensions.
-    float GetWidth() const;
-    float GetHeight() const;
+    // Get the sprite's size.
+    const CSize & GetSize() const;
 
 private:
 
@@ -44,8 +44,8 @@ private:
     // Image to map onto the sprite.
     std::string _textureMap;
 
-    // Dimensions used to create the sprite.
-    float _width = 0, _height = 0;
+    // Size of the sprite.
+    CSize _size;
 };
 
 #endif  // __sprite_visual_data_2d_h__

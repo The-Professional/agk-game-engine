@@ -36,12 +36,12 @@ CSpriteVisualData3D::~CSpriteVisualData3D()
 /// *************************************************************************
 void CSpriteVisualData3D::LoadFromIter( nlohmann::json::const_iterator iter )
 {
-    NParseHelper::GetMesh( iter, _mesh );
+    NParseHelper::GetString( iter, "mesh", _mesh );
     //NParseHelper::GetShader( iter, _shader );
     NParseHelper::GetColor( iter, _color );
-    NParseHelper::GetTextureMap( iter, _textureMap );
-    NParseHelper::GetNormalMap( iter, _normalMap );
-    NParseHelper::GetSpecularMap( iter, _specularMap );
+    NParseHelper::GetString( iter, "textureMap", _textureMap );
+    NParseHelper::GetString( iter, "normalMap", _normalMap );
+    NParseHelper::GetString( iter, "specularMap", _specularMap );
     NParseHelper::GetDimensions( iter, _width, _height, _length, _radius, _rows, _columns );
 
     // Set the object type.

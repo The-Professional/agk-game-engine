@@ -22,81 +22,41 @@ class CBitmask;
 namespace NParseHelper
 {
     ////////////////////////////////////////////////////////////////
-    // General Functions                                          //
+    // Primitive Functions                                        //
     ////////////////////////////////////////////////////////////////
 
-	// Parse position tag.
-	bool GetPosition( nlohmann::json::const_iterator iter, CVector3 & pos );
+    // Parse a string value.
+    bool GetString( nlohmann::json::const_iterator iter, const std::string & tag, std::string & value );
 
-	// Parse rotation tag.
-	bool GetRotation( nlohmann::json::const_iterator iter, CVector3 & rot );
+    // Parse an int value.
+    bool GetInt( nlohmann::json::const_iterator iter, const std::string & tag, int & value );
 
-	// Parse scale tag.
-	bool GetScale( nlohmann::json::const_iterator iter, CVector3 & scale );
+    // Parse a float value.
+    bool GetFloat( nlohmann::json::const_iterator iter, const std::string & tag, float & value );
 
-	// Parse center point tag.
-	bool GetCenterPos( nlohmann::json::const_iterator iter, CVector3 & center );
+    // Parse a bool value.
+    bool GetBool( nlohmann::json::const_iterator iter, const std::string & tag, bool & value );
 
-	// Parse generic x, y, z tags.
-	CVector3 GetXYZ( nlohmann::json::const_iterator iter );
+    // Whether the tag exists.
+    bool TagExists( nlohmann::json::const_iterator iter, const std::string & tag );
+
+    // Parse generic x, y, z tags.
+    bool GetXYZ( nlohmann::json::const_iterator iter, const std::string & tag, CVector3 & vec, bool checkUniform = false );
+
+    // Parse generic w, h tags.
+    bool GetWH( nlohmann::json::const_iterator iter, const std::string & tag, CSize & wh );
+
+    // Parse generic top, bottom, left, right, and center tags.
+    bool GetTBLRC( nlohmann::json::const_iterator iter, const std::string & tag, CBitmask<uint> & alignment );
 
 	// Parse color tag.
 	bool GetColor( nlohmann::json::const_iterator iter, CColor & color );
 
-	// Parse size tag.
-	bool GetSize( nlohmann::json::const_iterator iter, CSize & size );
-
-    // Parse generic w, h tags.
-    CSize GetWH( nlohmann::json::const_iterator iter );
-
-    // Parse name tag.
-    bool GetName( nlohmann::json::const_iterator iter, std::string & name );
-
-    ////////////////////////////////////////////////////////////////
-    // Settings Functions                                         //
-    ////////////////////////////////////////////////////////////////
-
-    // Parse resolution tag.
-    bool GetResolution( nlohmann::json::const_iterator iter, CSize & size );
-
-    // Parse virtual resolution tag.
-    bool GetVirtualResolution( nlohmann::json::const_iterator iter, CSize & size );
-
-	// Parse alignment tag.
-	bool GetAlignment( nlohmann::json::const_iterator iter, CBitmask<uint> & alignment );
-
-	// Parse fullscreen tag.
-	bool GetFullscreen( nlohmann::json::const_iterator iter, bool & fullscreen );
-
 	// Parse orientation tag.
 	bool GetOrientation( nlohmann::json::const_iterator iter, NDefs::EOrentation & orientation );
 
-    // Parse antialias tag.
-    bool GetAntialias( nlohmann::json::const_iterator iter, bool & antialias );
-
-    ////////////////////////////////////////////////////////////////
-    // Visual Sprite Data Functions                               //
-    ////////////////////////////////////////////////////////////////
-
-    // Parse the mesh tag.
-    bool GetMesh( nlohmann::json::const_iterator iter, std::string & mesh );
-
-    // Parse the texture map tag.
-    bool GetTextureMap( nlohmann::json::const_iterator iter, std::string & image );
-    
-    // Parse the normal map tag.
-    bool GetNormalMap( nlohmann::json::const_iterator iter, std::string & image );
-
-    // Parse the specular map tag.
-    bool GetSpecularMap( nlohmann::json::const_iterator iter, std::string & image );
-
     // Parse the dimension tags.
     void GetDimensions( nlohmann::json::const_iterator iter, float & width, float & height, float & length, float & radius, int & rows, int & columns );
-    void GetDimensions( nlohmann::json::const_iterator iter, float & width, float & height );
-
-    ////////////////////////////////////////////////////////////////
-    // Input Functions                                            //
-    ////////////////////////////////////////////////////////////////
 
     // Parse the input state tags.
     void GetInputState( nlohmann::json::const_iterator iter, CInputState & inputState );

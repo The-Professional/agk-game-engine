@@ -22,6 +22,8 @@
     <ClInclude Include="2d\sprite2d.h" />
     <ClInclude Include="2d\spritedata2d.h" />
     <ClInclude Include="2d\spritevisualdata2d.h" />
+    <ClInclude Include="2d\textsprite.h" />
+    <ClInclude Include="2d\textspritedata.h" />
     <ClInclude Include="3d\sprite3d.h" />
     <ClInclude Include="3d\spritedata3d.h" />
     <ClInclude Include="3d\spritevisualdata3d.h" />
@@ -51,6 +53,8 @@
     <ClCompile Include="2d\sprite2d.cpp" />
     <ClCompile Include="2d\spritedata2d.cpp" />
     <ClCompile Include="2d\spritevisualdata2d.cpp" />
+    <ClCompile Include="2d\textsprite.cpp" />
+    <ClCompile Include="2d\textspritedata.cpp" />
     <ClCompile Include="3d\sprite3d.cpp" />
     <ClCompile Include="3d\spritedata3d.cpp" />
     <ClCompile Include="3d\spritevisualdata3d.cpp" />

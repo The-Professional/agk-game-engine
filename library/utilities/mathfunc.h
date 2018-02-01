@@ -20,22 +20,22 @@ namespace NMathFunc
     //    // Strip out any fractional component for correct rendering
     //    //defaultHalfSize.Round();
 
-    //    if( m_parameters.IsSet( CDynamicOffset::EDO_LEFT ) )
+    //    if( m_parameters.Contains( CDynamicOffset::EDO_LEFT ) )
     //        pos.x = -(defaultHalfSize.w - point.x);
 
-    //    else if( m_parameters.IsSet( CDynamicOffset::EDO_RIGHT ) )
+    //    else if( m_parameters.Contains( CDynamicOffset::EDO_RIGHT ) )
     //        pos.x = defaultHalfSize.w - point.x;
 
-    //    else if( m_parameters.IsSet( CDynamicOffset::EDO_HORZ_CENTER ) )
+    //    else if( m_parameters.Contains( CDynamicOffset::EDO_HORZ_CENTER ) )
     //        pos.x = point.x;
 
-    //    if( m_parameters.IsSet( CDynamicOffset::EDO_TOP ) )
+    //    if( m_parameters.Contains( CDynamicOffset::EDO_TOP ) )
     //        pos.y = defaultHalfSize.h - point.y;
     //        
-    //    else if( m_parameters.IsSet( CDynamicOffset::EDO_BOTTOM ) )
+    //    else if( m_parameters.Contains( CDynamicOffset::EDO_BOTTOM ) )
     //        pos.y = -(defaultHalfSize.h - point.y);
 
-    //    else if( m_parameters.IsSet( EDO_VERT_CENTER ) )
+    //    else if( m_parameters.Contains( EDO_VERT_CENTER ) )
     //        pos.y = point.y;
 
     //    return pos;

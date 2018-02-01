@@ -102,6 +102,12 @@
     <ClInclude Include="controls\control.h">
       <Filter>controls</Filter>
     </ClInclude>
+    <ClInclude Include="2d\textsprite.h">
+      <Filter>2d</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\textspritedata.h">
+      <Filter>2d</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="utilities\settings.cpp">
@@ -151,6 +157,12 @@
     </ClCompile>
     <ClCompile Include="controls\control.cpp">
       <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\textsprite.cpp">
+      <Filter>2d</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\textspritedata.cpp">
+      <Filter>2d</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

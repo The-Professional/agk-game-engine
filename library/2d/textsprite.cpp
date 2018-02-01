@@ -1,9 +1,9 @@
 // Physical component dependency
-#include "sprite2d.h"
+#include "textsprite.h"
 
 // Game lib dependencies
 #include <agk.h>
-#include <2d\spritedata2d.h>
+#include <2d\textspritedata.h>
 #include <managers\resourcemanager.h>
 
 /// *************************************************************************
@@ -11,7 +11,7 @@
 /// Constructor
 /// </summary>
 /// *************************************************************************
-CSprite2D::CSprite2D()
+CTextSprite::CTextSprite()
 {
 }
 
@@ -22,7 +22,7 @@ CSprite2D::CSprite2D()
 /// </summary>
 /// <param name="pData"> Sprite data used to create the sprite. </param> 
 /// *************************************************************************
-CSprite2D::CSprite2D( const CSpriteData2D * pData )
+CTextSprite::CTextSprite( const CTextSpriteData * pData )
 {
     Init( pData );
 }
@@ -33,7 +33,7 @@ CSprite2D::CSprite2D( const CSpriteData2D * pData )
 /// Destructor
 /// </summary>
 /// *************************************************************************
-CSprite2D::~CSprite2D()
+CTextSprite::~CTextSprite()
 {
     Clear();
 }
@@ -45,23 +45,23 @@ CSprite2D::~CSprite2D()
 /// </summary>
 /// <param name="pData"> Sprite data used to create the sprite. </param>  
 /// *************************************************************************
-void CSprite2D::Init( const CSpriteData2D * pData )
+void CTextSprite::Init( const CTextSpriteData * pData )
 {
     Clear();
 
     _pData = pData;
-    const CSpriteVisualData2D * pVisual = pData->GetVisualData();
+    /*const CSpriteVisualData2D * pVisual = pData->GetVisualData();
 
     if( pVisual )
     {
         int imageId = CResourceManager::Instance().LoadImage( pVisual->GetTextureMap() );
         _id = agk::CreateSprite( imageId );
 
-        if( pVisual->GetSize().w > 0 && pVisual->GetSize().h > 0 )
-            agk::SetSpriteSize( _id, (float)pVisual->GetSize().w, (float)pVisual->GetSize().h );
+        if( pVisual->GetWidth() > 0 && pVisual->GetHeight() > 0 )
+            agk::SetSpriteSize( _id, pVisual->GetWidth(), pVisual->GetHeight() );
 
         agk::SetSpriteColor( _id, pVisual->GetColor().r, pVisual->GetColor().g, pVisual->GetColor().b, pVisual->GetColor().a );
-    }
+    }*/
 }
 
 
@@ -70,7 +70,7 @@ void CSprite2D::Init( const CSpriteData2D * pData )
 /// Get the name of the sprite.
 /// </summary>
 /// *************************************************************************
-const std::string & CSprite2D::GetName() const
+const std::string & CTextSprite::GetName() const
 {
     return _pData->GetName();
 }
@@ -81,7 +81,7 @@ const std::string & CSprite2D::GetName() const
 /// Clears all of the sprites data that belong to it.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::Clear()
+void CTextSprite::Clear()
 {
     if( _id > 0 )
     {
@@ -96,7 +96,7 @@ void CSprite2D::Clear()
 /// Get the id of the sprite.
 /// </summary>
 /// *************************************************************************
-uint CSprite2D::GetID() const
+uint CTextSprite::GetID() const
 {
     return _id;
 }
@@ -107,7 +107,7 @@ uint CSprite2D::GetID() const
 /// Set the sprite's position.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::SetPos( float x, float y )
+void CTextSprite::SetPos( float x, float y )
 {
     agk::SetSpritePosition( _id, x, y );
 }
@@ -115,7 +115,7 @@ void CSprite2D::SetPos( float x, float y )
 /// <summary>
 /// Set the sprite's position and depth.
 /// </summary>
-void CSprite2D::SetPos( float x, float y, int depth )
+void CTextSprite::SetPos( float x, float y, int depth )
 {
     agk::SetSpritePosition( _id, x, y );
     agk::SetSpriteDepth( _id, depth );
@@ -124,7 +124,7 @@ void CSprite2D::SetPos( float x, float y, int depth )
 /// <summary>
 /// Set the sprite's position.
 /// </summary>
-void CSprite2D::SetPos( const CVector2 & pos )
+void CTextSprite::SetPos( const CVector2 & pos )
 {
     agk::SetSpritePosition( _id, pos.x, pos.y );
 }
@@ -132,7 +132,7 @@ void CSprite2D::SetPos( const CVector2 & pos )
 /// <summary>
 /// Set the sprite's position and depth.
 /// </summary>
-void CSprite2D::SetPos( const CVector2 & pos, int depth )
+void CTextSprite::SetPos( const CVector2 & pos, int depth )
 {
     agk::SetSpritePosition( _id, pos.x, pos.y );
     agk::SetSpriteDepth( _id, depth );
@@ -144,7 +144,7 @@ void CSprite2D::SetPos( const CVector2 & pos, int depth )
 /// Set the sprite's depth.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::SetDepth( int depth )
+void CTextSprite::SetDepth( int depth )
 {
     agk::SetSpriteDepth( _id, depth );
 }
@@ -155,7 +155,7 @@ void CSprite2D::SetDepth( int depth )
 /// Get the sprite's position.
 /// </summary>
 /// *************************************************************************
-CVector2 CSprite2D::GetPos() const
+CVector2 CTextSprite::GetPos() const
 {
     return CVector2( agk::GetSpriteX( _id ), agk::GetSpriteX( _id ) );
 }
@@ -163,7 +163,7 @@ CVector2 CSprite2D::GetPos() const
 /// <summary>
 /// Get the sprite's X position.
 /// </summary>
-float CSprite2D::GetPosX() const
+float CTextSprite::GetPosX() const
 {
     return agk::GetObjectX( _id );
 }
@@ -171,7 +171,7 @@ float CSprite2D::GetPosX() const
 /// <summary>
 /// Get the sprite's Y position.
 /// </summary>
-float CSprite2D::GetPosY() const
+float CTextSprite::GetPosY() const
 {
     return agk::GetObjectY( _id );
 }
@@ -182,7 +182,7 @@ float CSprite2D::GetPosY() const
 /// Get the sprite's depth.
 /// </summary>
 /// *************************************************************************
-int CSprite2D::GetDepth() const
+int CTextSprite::GetDepth() const
 {
     return agk::GetSpriteDepth( _id );
 }
@@ -193,7 +193,7 @@ int CSprite2D::GetDepth() const
 /// Set the sprite's rotation.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::SetRot( float angle )
+void CTextSprite::SetRot( float angle )
 {
     agk::SetSpriteAngle( _id, angle );
 }
@@ -204,7 +204,7 @@ void CSprite2D::SetRot( float angle )
 /// Increment the sprite's rotation.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::IncRot( float angle )
+void CTextSprite::IncRot( float angle )
 {
     agk::SetSpriteAngle( _id, GetRot() + angle );
 }
@@ -215,7 +215,7 @@ void CSprite2D::IncRot( float angle )
 /// Get the sprite's rotation.
 /// </summary>
 /// *************************************************************************
-float CSprite2D::GetRot() const
+float CTextSprite::GetRot() const
 {
     return agk::GetSpriteAngle( _id );
 }
@@ -226,13 +226,13 @@ float CSprite2D::GetRot() const
 /// Set the sprite's scale.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::SetScale( float uniform )
+void CTextSprite::SetScale( float uniform )
 {
     _scale = CVector2( uniform );
     agk::SetSpriteScale( _id, uniform, uniform );
 }
 
-void CSprite2D::SetScale( float x, float y )
+void CTextSprite::SetScale( float x, float y )
 {
     _scale = CVector2( x, y );
     agk::SetSpriteScale( _id, x, y );
@@ -241,7 +241,7 @@ void CSprite2D::SetScale( float x, float y )
 /// <summary>
 /// Set the sprite's scale.
 /// </summary>
-void CSprite2D::SetScale( const CVector2 & scale )
+void CTextSprite::SetScale( const CVector2 & scale )
 {
     _scale = scale;
     agk::SetSpriteScale( _id, scale.x, scale.y );
@@ -253,7 +253,7 @@ void CSprite2D::SetScale( const CVector2 & scale )
 /// Get the sprite's scale.
 /// </summary>
 /// *************************************************************************
-const CVector2 & CSprite2D::GetScale() const
+const CVector2 & CTextSprite::GetScale() const
 {
     return _scale;
 }
@@ -261,7 +261,7 @@ const CVector2 & CSprite2D::GetScale() const
 /// <summary>
 /// Get the sprite's X scale.
 /// </summary>
-float CSprite2D::GetScaleX() const
+float CTextSprite::GetScaleX() const
 {
     return _scale.x;
 }
@@ -269,7 +269,7 @@ float CSprite2D::GetScaleX() const
 /// <summary>
 /// Get the sprite's Y scale.
 /// </summary>
-float CSprite2D::GetScaleY() const
+float CTextSprite::GetScaleY() const
 {
     return _scale.y;
 }
@@ -280,7 +280,7 @@ float CSprite2D::GetScaleY() const
 /// Set the sprite's visibility.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::SetVisible( bool visible )
+void CTextSprite::SetVisible( bool visible )
 {
     agk::SetSpriteVisible( _id, visible );
 }
@@ -291,7 +291,7 @@ void CSprite2D::SetVisible( bool visible )
 /// Get the sprite's visibility.
 /// </summary>
 /// *************************************************************************
-bool CSprite2D::IsVisible() const
+bool CTextSprite::IsVisible() const
 {
     return agk::GetSpriteVisible( _id );
 }

@@ -53,15 +53,26 @@ namespace NDefs
         ECT_SLIDER,
         ECT_BUTTON_LIST
     };
+
+    enum EControlState
+    {
+        ECS_NULL,
+        ECS_DISABLED,
+        ECS_INACTIVE,
+        ECS_ACTIVE,
+        ECS_PRESSED
+    };
     
     // The types of alignment.
-    enum EAlignment
+    enum
     {
         EA_NULL     = 0,
         EA_LEFT     = 1,
         EA_RIGHT    = 2,
         EA_TOP      = 4,
-        EA_BOTTOM   = 8
+        EA_BOTTOM   = 8,
+
+        EA_CENTER   = EA_LEFT | EA_RIGHT | EA_TOP | EA_BOTTOM
     };
 
     // Orientation of the screen.

@@ -282,21 +282,21 @@ void CSpriteManager::CreateSpriteCollection3D( const std::string & collectionNam
                     _spriteList3d[mapIter->first].push_back( pSprite );
 
                     string name;
-                    NParseHelper::GetName( iter, name );
+                    NParseHelper::GetString( iter, "name", name );
 
                     // Initialize the sprite with sprite data.
                     pSprite->Init( GetSpriteData3D( name ) );
 
                     CVector3 pos;
-                    if( NParseHelper::GetPosition( iter, pos ) )
+                    if( NParseHelper::GetXYZ( iter, "position", pos ) )
                         pSprite->SetPos( pos );
 
                     CVector3 rot;
-                    if( NParseHelper::GetRotation( iter, rot ) )
+                    if( NParseHelper::GetXYZ( iter, "rotation", rot ) )
                         pSprite->SetRot( rot );
 
                     CVector3 scale;
-                    if( NParseHelper::GetScale( iter, scale ) )
+                    if( NParseHelper::GetXYZ( iter, "scale", scale, true ) )
                         pSprite->SetScale( scale );
 
                     ++iter;

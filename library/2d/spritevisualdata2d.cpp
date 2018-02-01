@@ -36,8 +36,8 @@ CSpriteVisualData2D::~CSpriteVisualData2D()
 void CSpriteVisualData2D::LoadFromIter( nlohmann::json::const_iterator iter )
 {
     NParseHelper::GetColor( iter, _color );
-    NParseHelper::GetTextureMap( iter, _textureMap );
-    NParseHelper::GetDimensions( iter, _width, _height );
+    NParseHelper::GetString( iter, "textureMap", _textureMap );
+    NParseHelper::GetWH( iter, "size", _size );
 }
 
 
@@ -65,21 +65,10 @@ const std::string & CSpriteVisualData2D::GetTextureMap() const
 
 /// *************************************************************************
 /// <summary> 
-/// Get the width of the sprite.
+/// Get the sprite's size.
 /// </summary>
 /// *************************************************************************
-float CSpriteVisualData2D::GetWidth() const
+const CSize & CSpriteVisualData2D::GetSize() const
 {
-    return _width;
-}
-
-
-/// *************************************************************************
-/// <summary> 
-/// Get the height of the sprite.
-/// </summary>
-/// *************************************************************************
-float CSpriteVisualData2D::GetHeight() const
-{
-    return _height;
+    return _size;
 }

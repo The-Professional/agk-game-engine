@@ -68,11 +68,11 @@ void CSettings::LoadSettings()
             auto displayIter = settingsIter->find( "display" );
             if( displayIter != settingsIter->end() )
             {
-                NParseHelper::GetResolution( displayIter, _resolution );
-                NParseHelper::GetVirtualResolution( displayIter, _vResolution );
-                NParseHelper::GetFullscreen( displayIter, _fullscreen );
+                NParseHelper::GetWH( displayIter, "resolution", _resolution );
+                NParseHelper::GetWH( displayIter, "vResolution", _vResolution );
+                NParseHelper::GetBool( displayIter, "fullscreen", _fullscreen );
                 NParseHelper::GetOrientation( displayIter, _orientation );
-                NParseHelper::GetAntialias( displayIter, _antialias );
+                NParseHelper::GetBool( displayIter, "anitalias", _antialias );
             }
         }
     }

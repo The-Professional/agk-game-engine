@@ -28,6 +28,7 @@ public:
     void LoadMeshList( const std::string & path );
     void LoadAnimatedMeshList( const std::string & path );
     void LoadImageList( const std::string & path );
+    void LoadFontList( const std::string & path );
 
     // Get the mesh id.
     uint LoadMesh( const std::string & name );
@@ -58,6 +59,8 @@ private:
     // Map containing the list of images.
     std::map<std::string, CResourceFile> _imageList;
 
+    // Map containing the list of fonts.
+    std::map<std::string, CResourceFile> _fontList;
 };
 
 #endif  // __resource_manager_h__

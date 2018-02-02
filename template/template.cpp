@@ -7,6 +7,7 @@
 #include <managers\resourcemanager.h>
 #include <3d\sprite3d.h>
 #include <2d\sprite2d.h>
+#include <2d\textsprite.h>
 
 // Namespace
 using namespace AGK;
@@ -15,6 +16,7 @@ app App;
 
 CSprite3D * pSprite;
 CSprite2D * pSprite2;
+CTextSprite * pTextSprite;
 
 //int test, sub;
 
@@ -34,8 +36,8 @@ void app::Init()
     CResourceManager::Instance().LoadFontList( "data/fonts/" );
     CSpriteManager::Instance().LoadDataFileList3D( "data/3d/sprites/" );
     CSpriteManager::Instance().LoadDataFileList2D( "data/2d/sprites/" );
+    CSpriteManager::Instance().LoadTextDataFileList( "data/2d/text/" );
     CSpriteManager::Instance().LoadCollectionFileList3D( "data/3d/sprites/collections/" );
-
 }
 
 void app::Begin()
@@ -50,6 +52,9 @@ void app::Begin()
     pSprite->SetScale( 2 );
 
     pSprite2 = CSpriteManager::Instance().CreateSprite2D( "test" );
+    pTextSprite = CSpriteManager::Instance().CreateTextSprite( "text" );
+
+    pTextSprite->SetPosX( 500 );
 }
 
 int app::Loop()

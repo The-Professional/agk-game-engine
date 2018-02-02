@@ -129,7 +129,7 @@ public:
     /// Overloaded equality operator.
     /// </summary>
     /// *************************************************************************
-    bool operator == ( const type value )
+    bool operator == ( const type value ) const
     {
         return bitmask == value;
     }

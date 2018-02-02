@@ -42,7 +42,8 @@ namespace NDefs
         ERT_NULL,
         ERT_MESH,
         ERT_ANIMATED_MESH,
-        ERT_IMAGE
+        ERT_IMAGE,
+        ERT_FONT
     };
 
     enum EControlType
@@ -73,6 +74,14 @@ namespace NDefs
         EA_BOTTOM   = 8,
 
         EA_CENTER   = EA_LEFT | EA_RIGHT | EA_TOP | EA_BOTTOM
+    };
+
+    // The types of text alignment.
+    enum ETextAlignment
+    {
+        ETA_LEFT,
+        ETA_CENTER,
+        ETA_RIGHT
     };
 
     // Orientation of the screen.

@@ -99,6 +99,8 @@ void CSettings::ApplySettings()
     try
     {
         agk::SetWindowSize( _resolution.w, _resolution.h, _fullscreen );
+
+        // Virtual resolution is the resolution your art is designed for in size and position.
         agk::SetVirtualResolution( _vResolution.w, _vResolution.h );
 
         if( !_fullscreen )
@@ -139,7 +141,7 @@ void CSettings::SaveSettings()
 /// Get the window resolution.
 /// </summary>
 /// *************************************************************************
-const CSize & CSettings::GetResolution() const
+const CSize<int> & CSettings::GetResolution() const
 {
     return _resolution;
 }
@@ -150,7 +152,7 @@ const CSize & CSettings::GetResolution() const
 /// Get the virtual resolution. This is the resolution your art was made for.
 /// </summary>
 /// *************************************************************************
-const CSize & CSettings::GetVirtualResolution() const
+const CSize<int> & CSettings::GetVirtualResolution() const
 {
     return _vResolution;
 }

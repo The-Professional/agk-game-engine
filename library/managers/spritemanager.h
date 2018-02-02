@@ -13,8 +13,10 @@
 // Forward declarations
 class CSpriteData3D;
 class CSpriteData2D;
+class CTextSpriteData;
 class CSprite3D;
 class CSprite2D;
+class CTextSprite;
 
 /// *************************************************************************
 /// <summary> 
@@ -34,6 +36,7 @@ public:
     // Read the file and compile the list of sprite data files.
     void LoadDataFileList3D( const std::string & path );
     void LoadDataFileList2D( const std::string & path );
+    void LoadTextDataFileList( const std::string & path );
 
     // Read in the file and compile the list of sprite collection files.
     void LoadCollectionFileList3D( const std::string & path );
@@ -45,10 +48,12 @@ public:
     // Load the sprite data.
     const CSpriteData3D * GetSpriteData3D( const std::string & name );
     const CSpriteData2D * GetSpriteData2D( const std::string & name );
+    const CTextSpriteData * GetTextSpriteData( const std::string & name );
 
     // Create the sprite.
     CSprite3D * CreateSprite3D( const std::string & name );
     CSprite2D * CreateSprite2D( const std::string & name );
+    CTextSprite * CreateTextSprite( const std::string & name );
 
     // Create the collection of sprites.
     void CreateSpriteCollection3D( const std::string & name );
@@ -66,6 +71,7 @@ private:
     // Map containing the list of sprite data files.
     std::map<std::string, std::string> _spriteDataFileList3d;
     std::map<std::string, std::string> _spriteDataFileList2d;
+    std::map<std::string, std::string> _textSpriteDataFileList;
 
     // Map containing the list of sprite collection files.
     std::map<std::string, std::string> _spriteCollectionFileList3d;
@@ -73,11 +79,12 @@ private:
     // Map containing the list of loaded sprite data.
     std::map<std::string, CSpriteData3D *> _spriteDataList3d;
     std::map<std::string, CSpriteData2D *> _spriteDataList2d;
+    std::map<std::string, CTextSpriteData *> _textSpriteDataList;
 
     // Map containing the list of loaded sprites.
     std::map<std::string, std::vector<CSprite3D *>> _spriteList3d;
     std::map<std::string, std::vector<CSprite2D *>> _spriteList2d;
-
+    std::map<std::string, std::vector<CTextSprite *>> _textSpriteList;
 };
 
 #endif  // __sprite_data_manager_h__

@@ -50,18 +50,20 @@ void CTextSprite::Init( const CTextSpriteData * pData )
     Clear();
 
     _pData = pData;
-    /*const CSpriteVisualData2D * pVisual = pData->GetVisualData();
 
-    if( pVisual )
+    _id = agk::CreateText( pData->GetText().c_str() );
+    if( _id > 0 )
     {
-        int imageId = CResourceManager::Instance().LoadImage( pVisual->GetTextureMap() );
-        _id = agk::CreateSprite( imageId );
-
-        if( pVisual->GetWidth() > 0 && pVisual->GetHeight() > 0 )
-            agk::SetSpriteSize( _id, pVisual->GetWidth(), pVisual->GetHeight() );
-
-        agk::SetSpriteColor( _id, pVisual->GetColor().r, pVisual->GetColor().g, pVisual->GetColor().b, pVisual->GetColor().a );
-    }*/
+        _text = pData->GetText();
+        SetFont( CResourceManager::Instance().LoadFont( pData->GetFont() ) );
+        SetTextSpacing( pData->GetTextSpacing() );
+        SetLineSpacing( pData->GetLineSpacing() );
+        SetScale( pData->GetFontSize() );
+        SetMaxWidth( pData->GetMaxWidth() );
+        SetColor( pData->GetColor() );
+        SetTextAlignment( pData->GetTextAlignment() );
+        SetAlignment( pData->GetAlignment() );
+    }
 }
 
 
@@ -85,7 +87,7 @@ void CTextSprite::Clear()
 {
     if( _id > 0 )
     {
-        agk::DeleteSprite( _id );
+        agk::DeleteText( _id );
         _id = 0;
     }
 }
@@ -109,16 +111,16 @@ uint CTextSprite::GetID() const
 /// *************************************************************************
 void CTextSprite::SetPos( float x, float y )
 {
-    agk::SetSpritePosition( _id, x, y );
+    agk::SetTextPosition( _id, x, y );
 }
 
 /// <summary>
 /// Set the sprite's position and depth.
 /// </summary>
-void CTextSprite::SetPos( float x, float y, int depth )
+void CTextSprite::SetPos( float x, float y, float z )
 {
-    agk::SetSpritePosition( _id, x, y );
-    agk::SetSpriteDepth( _id, depth );
+    agk::SetTextPosition( _id, x, y );
+    agk::SetTextDepth( _id, (int)z );
 }
 
 /// <summary>
@@ -126,27 +128,43 @@ void CTextSprite::SetPos( float x, float y, int depth )
 /// </summary>
 void CTextSprite::SetPos( const CVector2 & pos )
 {
-    agk::SetSpritePosition( _id, pos.x, pos.y );
+    agk::SetTextPosition( _id, pos.x, pos.y );
 }
 
 /// <summary>
 /// Set the sprite's position and depth.
 /// </summary>
-void CTextSprite::SetPos( const CVector2 & pos, int depth )
+void CTextSprite::SetPos( const CVector3 & pos )
 {
-    agk::SetSpritePosition( _id, pos.x, pos.y );
-    agk::SetSpriteDepth( _id, depth );
+    agk::SetTextPosition( _id, pos.x, pos.y );
+    agk::SetTextDepth( _id, (int)pos.z );
 }
 
 
 /// *************************************************************************
 /// <summary>
-/// Set the sprite's depth.
+/// Set the sprite's x position.
 /// </summary>
 /// *************************************************************************
-void CTextSprite::SetDepth( int depth )
+void CTextSprite::SetPosX( float x )
 {
-    agk::SetSpriteDepth( _id, depth );
+    agk::SetTextX( _id, x );
+}
+
+/// <summary>
+/// Set the sprite's y position.
+/// </summary>
+void CTextSprite::SetPosY( float y )
+{
+    agk::SetTextY( _id, y );
+}
+
+/// <summary>
+/// Set the sprite's x position.
+/// </summary>
+void CTextSprite::SetPosZ( float z )
+{
+    agk::SetTextDepth( _id, (int)z );
 }
 
 
@@ -155,9 +173,9 @@ void CTextSprite::SetDepth( int depth )
 /// Get the sprite's position.
 /// </summary>
 /// *************************************************************************
-CVector2 CTextSprite::GetPos() const
+CVector3 CTextSprite::GetPos() const
 {
-    return CVector2( agk::GetSpriteX( _id ), agk::GetSpriteX( _id ) );
+    return CVector3( agk::GetTextX( _id ), agk::GetTextY( _id ), (float)agk::GetTextDepth( _id ) );
 }
 
 /// <summary>
@@ -165,7 +183,7 @@ CVector2 CTextSprite::GetPos() const
 /// </summary>
 float CTextSprite::GetPosX() const
 {
-    return agk::GetObjectX( _id );
+    return agk::GetTextX( _id );
 }
 
 /// <summary>
@@ -173,18 +191,15 @@ float CTextSprite::GetPosX() const
 /// </summary>
 float CTextSprite::GetPosY() const
 {
-    return agk::GetObjectY( _id );
+    return agk::GetTextY( _id );
 }
 
-
-/// *************************************************************************
 /// <summary>
-/// Get the sprite's depth.
+/// Get the sprite's Z position.
 /// </summary>
-/// *************************************************************************
-int CTextSprite::GetDepth() const
+float CTextSprite::GetPosZ() const
 {
-    return agk::GetSpriteDepth( _id );
+    return (float)agk::GetTextDepth( _id );
 }
 
 
@@ -195,7 +210,7 @@ int CTextSprite::GetDepth() const
 /// *************************************************************************
 void CTextSprite::SetRot( float angle )
 {
-    agk::SetSpriteAngle( _id, angle );
+    agk::SetTextAngle( _id, angle );
 }
 
 
@@ -206,7 +221,7 @@ void CTextSprite::SetRot( float angle )
 /// *************************************************************************
 void CTextSprite::IncRot( float angle )
 {
-    agk::SetSpriteAngle( _id, GetRot() + angle );
+    agk::SetTextAngle( _id, GetRot() + angle );
 }
 
 
@@ -217,7 +232,8 @@ void CTextSprite::IncRot( float angle )
 /// *************************************************************************
 float CTextSprite::GetRot() const
 {
-    return agk::GetSpriteAngle( _id );
+    // Weirdly enough there's no get angle function. This may or may not work.
+    return agk::GetTextCharAngle( _id, 0 );
 }
 
 
@@ -228,23 +244,7 @@ float CTextSprite::GetRot() const
 /// *************************************************************************
 void CTextSprite::SetScale( float uniform )
 {
-    _scale = CVector2( uniform );
-    agk::SetSpriteScale( _id, uniform, uniform );
-}
-
-void CTextSprite::SetScale( float x, float y )
-{
-    _scale = CVector2( x, y );
-    agk::SetSpriteScale( _id, x, y );
-}
-
-/// <summary>
-/// Set the sprite's scale.
-/// </summary>
-void CTextSprite::SetScale( const CVector2 & scale )
-{
-    _scale = scale;
-    agk::SetSpriteScale( _id, scale.x, scale.y );
+    agk::SetTextSize( _id, uniform );
 }
 
 
@@ -253,25 +253,9 @@ void CTextSprite::SetScale( const CVector2 & scale )
 /// Get the sprite's scale.
 /// </summary>
 /// *************************************************************************
-const CVector2 & CTextSprite::GetScale() const
+float CTextSprite::GetScale() const
 {
-    return _scale;
-}
-
-/// <summary>
-/// Get the sprite's X scale.
-/// </summary>
-float CTextSprite::GetScaleX() const
-{
-    return _scale.x;
-}
-
-/// <summary>
-/// Get the sprite's Y scale.
-/// </summary>
-float CTextSprite::GetScaleY() const
-{
-    return _scale.y;
+    return agk::GetTextSize( _id );
 }
 
 
@@ -294,4 +278,182 @@ void CTextSprite::SetVisible( bool visible )
 bool CTextSprite::IsVisible() const
 {
     return agk::GetSpriteVisible( _id );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Set the text sprite's font.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::SetFont( uint fontId )
+{
+    _fontId = fontId;
+    agk::SetTextFont( _id, fontId );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the text sprite's font.
+/// </summary>
+/// *************************************************************************
+uint CTextSprite::GetFont() const
+{
+    return _fontId;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Set the text sprite's text.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::SetText( const std::string & text )
+{
+    _text = text;
+    agk::SetTextString( _id, text.c_str() );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the text sprite's text.
+/// </summary>
+/// *************************************************************************
+std::string CTextSprite::GetText() const
+{
+    return _text;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Set the text sprite's text spacing.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::SetTextSpacing( float textSpacing )
+{
+    agk::SetTextSpacing( _id, textSpacing );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the text sprite's text spacing.
+/// </summary>
+/// *************************************************************************
+float CTextSprite::GetTextSpacing() const
+{
+    return agk::GetTextSpacing( _id );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Set the text sprite's line spacing.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::SetLineSpacing( float lineSpacing )
+{
+    agk::SetTextLineSpacing( _id, lineSpacing );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the text sprite's line spacing.
+/// </summary>
+/// *************************************************************************
+float CTextSprite::GetLineSpacing() const
+{
+    return agk::GetTextLineSpacing( _id );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Set the text sprite's max width.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::SetMaxWidth( float maxWidth )
+{
+    _maxWidth = maxWidth;
+    agk::SetTextMaxWidth( _id, maxWidth );
+}
+
+/// *************************************************************************
+/// <summary>
+/// Get the text sprite's max width before text begins to wrap.
+/// </summary>
+/// *************************************************************************
+float CTextSprite::GetMaxWidth() const
+{
+    return _maxWidth;
+}
+
+/// *************************************************************************
+/// <summary>
+/// Set the sprite's color.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::SetColor( const CColor & color )
+{
+    agk::SetTextColor( _id, color.r, color.g, color.b, color.a );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the sprite's color.
+/// </summary>
+/// *************************************************************************
+CColor CTextSprite::GetColor() const
+{
+    return CColor( agk::GetTextColorRed( _id ), agk::GetTextColorGreen( _id ), agk::GetTextColorBlue( _id ), agk::GetTextColorAlpha( _id ) );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Set the text sprite's text alignment.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::SetTextAlignment( NDefs::ETextAlignment alignment )
+{
+    _textAlignment = alignment;
+    agk::SetTextAlignment( _id, alignment );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the text sprite's text alignment.
+/// </summary>
+/// *************************************************************************
+NDefs::ETextAlignment CTextSprite::GetTextAlignment() const
+{
+    return _textAlignment;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Set the text sprite's alignment.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::SetAlignment( const CBitmask<uint> & alignment )
+{
+    _alignment = alignment;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the text sprite's alignment.
+/// </summary>
+/// *************************************************************************
+const CBitmask<uint> & CTextSprite::GetAlignment() const
+{
+    return _alignment;
 }

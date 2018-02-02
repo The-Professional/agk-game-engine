@@ -30,14 +30,11 @@ public:
     void LoadImageList( const std::string & path );
     void LoadFontList( const std::string & path );
 
-    // Get the mesh id.
+    // Load the resource if not loaded and return its id.
     uint LoadMesh( const std::string & name );
-
-    // Get the animated mesh id.
     uint LoadAnimatedMesh( const std::string & name );
-
-    // Get the image id.
     uint LoadImage( const std::string & name );
+    uint LoadFont( const std::string & name );
 
     // Free the resources of the passed in type.
     void Clear( NDefs::EResourceType type = NDefs::ERT_NULL );

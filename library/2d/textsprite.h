@@ -4,6 +4,9 @@
 // Game lib dependencies
 #include <common\defs.h>
 #include <common\vector2.h>
+#include <common\vector3.h>
+#include <common\color.h>
+#include <common\bitmask.h>
 
 // Standard lib dependencies
 #include <string>
@@ -37,14 +40,16 @@ public:
 
     // Access functions for the sprite's position.
     void SetPos( float x, float y );
-    void SetPos( float x, float y, int depth );
+    void SetPos( float x, float y, float z );
     void SetPos( const CVector2 & pos );
-    void SetPos( const CVector2 & pos, int depth );
-    void SetDepth( int depth );
-    CVector2 GetPos() const;
+    void SetPos( const CVector3 & pos );
+    void SetPosX( float x );
+    void SetPosY( float y );
+    void SetPosZ( float z );
+    CVector3 GetPos() const;
     float GetPosX() const;
     float GetPosY() const;
-    int GetDepth() const;
+    float GetPosZ() const;
 
     // Access functions for the sprite's rotation.
     void SetRot( float angle );
@@ -53,26 +58,66 @@ public:
 
     // Access functions for the sprite's scale.
     void SetScale( float uniform );
-    void SetScale( float x, float y );
-    void SetScale( const CVector2 & scale );
-    const CVector2 & GetScale() const;
-    float GetScaleX() const;
-    float GetScaleY() const;
+    float GetScale() const;
 
     // Access functions for the sprite's visibility.
     void SetVisible( bool visible );
     bool IsVisible() const;
+
+    // Access functions for the sprite's font.
+    void SetFont( uint fontId );
+    uint GetFont() const;
+
+    // Access functions for the text sprite's text.
+    void SetText( const std::string & text );
+    std::string GetText() const;
+
+    // Access functions for the text sprite's text spacing.
+    void SetTextSpacing( float textSpacing );
+    float GetTextSpacing() const;
+
+    // Access functions for the text sprite's line spacing.
+    void SetLineSpacing( float lineSpacing );
+    float GetLineSpacing() const;
+
+    // Access functions for the text sprite's max width before text begins to wrap.
+    void SetMaxWidth( float maxWidth );
+    float GetMaxWidth() const;
+
+    // Access functions for the sprite's color.
+    void SetColor( const CColor & color );
+    CColor GetColor() const;
+
+    // Access functions for the text sprite's text alignment.
+    void SetTextAlignment( NDefs::ETextAlignment alignment );
+    NDefs::ETextAlignment GetTextAlignment() const;
+
+    // Access functions for the text sprite's alignment.
+    void SetAlignment( const CBitmask<uint> & alignment );
+    const CBitmask<uint> & GetAlignment() const;
 
 private:
 
     // Sprite data this sprite is based off of. The sprite does not own this.
     const CTextSpriteData * _pData = nullptr;
 
-    // ID of the sprite.
+    // ID of the text sprite.
     uint _id = 0;
 
-    // Scale of the sprite (AGK has no functions to retrieve scale).
-    CVector2 _scale;
+    // ID of the font used.
+    uint _fontId = 0;
+    
+    // Text sprite's max width before text begins to wrap.
+    float _maxWidth = 0;
+
+    // The alignment of the text.
+    NDefs::ETextAlignment _textAlignment;
+
+    // The alignment of the sprite.
+    CBitmask<uint> _alignment;
+
+    // Text displayed by the sprite.
+    std::string _text;
 };
 
 

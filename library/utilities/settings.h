@@ -36,8 +36,8 @@ public:
     void ApplySettings();
 
     // Get the window resolution.
-    const CSize & GetResolution() const;
-    const CSize & GetVirtualResolution() const;
+    const CSize<int> & GetResolution() const;
+    const CSize<int> & GetVirtualResolution() const;
 
     // If the game is full screen.
     bool IsFullscreen() const;
@@ -62,11 +62,11 @@ private:
     std::string _path;
 
     // Resolution of the game window.
-    CSize _resolution;
+    CSize<int> _resolution;
 
     // Virtual resolution fo the game window. 
     // This is the resolution your art was made for.
-    CSize _vResolution;
+    CSize<int> _vResolution;
 
     // Whether game is displaying in fullscreen mode or not.
     bool _fullscreen;

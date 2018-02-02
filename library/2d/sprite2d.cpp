@@ -3,6 +3,7 @@
 
 // Game lib dependencies
 #include <agk.h>
+#include <common\size.h>
 #include <2d\spritedata2d.h>
 #include <managers\resourcemanager.h>
 
@@ -157,7 +158,7 @@ void CSprite2D::SetDepth( int depth )
 /// *************************************************************************
 CVector2 CSprite2D::GetPos() const
 {
-    return CVector2( agk::GetSpriteX( _id ), agk::GetSpriteX( _id ) );
+    return CVector2( agk::GetSpriteX( _id ), agk::GetSpriteY( _id ) );
 }
 
 /// <summary>
@@ -165,7 +166,7 @@ CVector2 CSprite2D::GetPos() const
 /// </summary>
 float CSprite2D::GetPosX() const
 {
-    return agk::GetObjectX( _id );
+    return agk::GetSpriteX( _id );
 }
 
 /// <summary>
@@ -173,7 +174,7 @@ float CSprite2D::GetPosX() const
 /// </summary>
 float CSprite2D::GetPosY() const
 {
-    return agk::GetObjectY( _id );
+    return agk::GetSpriteY( _id );
 }
 
 
@@ -272,6 +273,49 @@ float CSprite2D::GetScaleX() const
 float CSprite2D::GetScaleY() const
 {
     return _scale.y;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Set the sprite's size.
+/// </summary>
+/// *************************************************************************
+void CSprite2D::SetSize( const CSize<float> & size )
+{
+    agk::SetSpriteSize( _id, size.w, size.h );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the sprite's size.
+/// </summary>
+/// *************************************************************************
+CSize<float> CSprite2D::GetSize() const
+{
+    return CSize<float>( agk::GetSpriteWidth( _id ), agk::GetSpriteHeight( _id ) );
+}
+
+/// *************************************************************************
+/// <summary>
+/// Set the sprite's color.
+/// </summary>
+/// *************************************************************************
+void CSprite2D::SetColor( const CColor & color )
+{
+    agk::SetSpriteColor( _id, color.r, color.g, color.b, color.a );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the sprite's color.
+/// </summary>
+/// *************************************************************************
+CColor CSprite2D::GetColor() const
+{
+    return CColor( agk::GetSpriteColorRed( _id ), agk::GetSpriteColorGreen( _id ), agk::GetSpriteColorBlue( _id ), agk::GetSpriteColorAlpha( _id ) );
 }
 
 

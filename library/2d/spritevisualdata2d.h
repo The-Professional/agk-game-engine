@@ -9,6 +9,9 @@
 // Standard lib dependencies
 #include <string>
 
+// Forward declarations
+template <typename type>
+class CSize;
 
 /// *************************************************************************
 /// <summary> 
@@ -34,7 +37,7 @@ public:
     const std::string & GetTextureMap() const;
 
     // Get the sprite's size.
-    const CSize & GetSize() const;
+    const CSize<float> & GetSize() const;
 
 private:
 
@@ -45,7 +48,7 @@ private:
     std::string _textureMap;
 
     // Size of the sprite.
-    CSize _size;
+    CSize<float> _size;
 };
 
 #endif  // __sprite_visual_data_2d_h__

@@ -1,7 +1,12 @@
 {
-  "textData": {
+  "textSpriteData": {
     "font": "titan",
     "text": "Hi world!\nNew line?",
+    "fontSize": 50,
+    "textSpacing": 1,
+    "lineSpacing": 2,
+    "maxWidth": 1000,
+    "textAlignment": "center",
     "color": {"r": 0, "g": 255, "b": 255}
   }
 }

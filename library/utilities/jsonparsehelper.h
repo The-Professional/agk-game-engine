@@ -10,7 +10,6 @@
 
 // Forward declarations
 class CVector3;
-class CSize;
 class CColor;
 class CSpriteData3D;
 class CInputState;
@@ -18,6 +17,9 @@ class CInputMapping;
 
 template <typename type>
 class CBitmask;
+
+template <typename type>
+class CSize;
 
 namespace NParseHelper
 {
@@ -44,7 +46,8 @@ namespace NParseHelper
     bool GetXYZ( nlohmann::json::const_iterator iter, const std::string & tag, CVector3 & vec, bool checkUniform = false );
 
     // Parse generic w, h tags.
-    bool GetWH( nlohmann::json::const_iterator iter, const std::string & tag, CSize & wh );
+    bool GetWH( nlohmann::json::const_iterator iter, const std::string & tag, CSize<int> & wh );
+    bool GetWH( nlohmann::json::const_iterator iter, const std::string & tag, CSize<float> & wh );
 
     // Parse generic top, bottom, left, right, and center tags.
     bool GetTBLRC( nlohmann::json::const_iterator iter, const std::string & tag, CBitmask<uint> & alignment );
@@ -54,6 +57,9 @@ namespace NParseHelper
 
 	// Parse orientation tag.
 	bool GetOrientation( nlohmann::json::const_iterator iter, NDefs::EOrentation & orientation );
+
+    // Parse text alignment tag.
+    bool GetTextAlignment( nlohmann::json::const_iterator iter, NDefs::ETextAlignment & alignment );
 
     // Parse the dimension tags.
     void GetDimensions( nlohmann::json::const_iterator iter, float & width, float & height, float & length, float & radius, int & rows, int & columns );

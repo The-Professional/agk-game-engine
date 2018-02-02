@@ -10,6 +10,10 @@
 
 // Forward Declarations
 class CSpriteData2D;
+class CColor;
+
+template <typename type>
+class CSize;
 
 /// *************************************************************************
 /// <summary>
@@ -58,6 +62,14 @@ public:
     const CVector2 & GetScale() const;
     float GetScaleX() const;
     float GetScaleY() const;
+
+    // Access functions for the sprite's size.
+    void SetSize( const CSize<float> & size );
+    CSize<float> GetSize() const;
+
+    // Access functions for the sprite's color.
+    void SetColor( const CColor & color );
+    CColor GetColor() const;
 
     // Access functions for the sprite's visibility.
     void SetVisible( bool visible );

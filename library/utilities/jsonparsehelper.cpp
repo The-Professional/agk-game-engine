@@ -160,13 +160,31 @@ namespace NParseHelper
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
     /// *************************************************************************
-    bool GetWH( nlohmann::json::const_iterator iter, const string & tag, CSize & size )
+    bool GetWH( nlohmann::json::const_iterator iter, const string & tag, CSize<int> & size )
     {
         auto whIter = iter->find( tag );
         if( whIter != iter->end() )
         {
             GetInt( whIter, "w", size.w );
             GetInt( whIter, "h", size.h );
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary> 
+    /// Parse generic w, h tags.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    bool GetWH( nlohmann::json::const_iterator iter, const string & tag, CSize<float> & size )
+    {
+        auto whIter = iter->find( tag );
+        if( whIter != iter->end() )
+        {
+            GetFloat( whIter, "w", size.w );
+            GetFloat( whIter, "h", size.h );
 
             return true;
         }
@@ -254,7 +272,7 @@ namespace NParseHelper
     /// <param name="orientation"> Loaded orientation. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetOrientation( json::const_iterator iter, NDefs::EOrentation & orientation)
+    bool GetOrientation( json::const_iterator iter, NDefs::EOrentation & orientation )
     {
         string str;
         if( GetString( iter, "orientation", str ) )
@@ -263,6 +281,31 @@ namespace NParseHelper
                 orientation = NDefs::EO_PORTRAIT;
             else
                 orientation = NDefs::EO_LANDSCAPE;
+        }
+
+        return false;
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Parse text alignment tag.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="orientation"> Loaded text alignment. </param>
+    /// <returns> If the tag exists. </returns>
+    /// *************************************************************************
+    bool GetTextAlignment( json::const_iterator iter, NDefs::ETextAlignment & alignment )
+    {
+        string str;
+        if( GetString( iter, "textAlignment", str ) )
+        {
+            if( str == "center" )
+                alignment = NDefs::ETA_CENTER;
+            else if( str == "right" )
+                alignment = NDefs::ETA_RIGHT;
+            else
+                alignment = NDefs::ETA_LEFT;
         }
 
         return false;

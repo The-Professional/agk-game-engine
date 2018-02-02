@@ -45,7 +45,15 @@ void CTextSpriteData::LoadFromIter( const std::string & name, nlohmann::json::co
 {
     _name = name;
 
-    
+    NParseHelper::GetString( iter, "font", _font );
+    NParseHelper::GetString( iter, "text", _text );
+    NParseHelper::GetFloat( iter, "fontSize", _fontSize );
+    NParseHelper::GetFloat( iter, "textSpacing", _textSpacing );
+    NParseHelper::GetFloat( iter, "lineSpacing", _lineSpacing );
+    NParseHelper::GetFloat( iter, "maxWidth", _maxWidth );
+    NParseHelper::GetColor( iter, _color );
+    NParseHelper::GetTextAlignment( iter, _textAlignment );
+    NParseHelper::GetTBLRC( iter, "alignment", _alignment );
 }
 
 
@@ -128,10 +136,21 @@ float CTextSpriteData::GetMaxWidth() const
 
 /// *************************************************************************
 /// <summary> 
-/// Get the alignment of the text. (i.e. left, right, center)
+/// Get the color of the text.
 /// </summary>
 /// *************************************************************************
-const CBitmask<uint> & CTextSpriteData::GetTextAlignment() const
+const CColor & CTextSpriteData::GetColor() const
+{
+    return _color;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get the alignment of the text.
+/// </summary>
+/// *************************************************************************
+NDefs::ETextAlignment CTextSpriteData::GetTextAlignment() const
 {
     return _textAlignment;
 }

@@ -6,12 +6,13 @@
 /// Class to hold a width and height value.
 /// </summary>
 /// *************************************************************************
+template <typename type>
 class CSize
 {
 public:
 
-    int w;
-    int h;
+    type w;
+    type h;
 
     /// *************************************************************************
     /// <summary> 
@@ -24,7 +25,7 @@ public:
     /// <summary> 
     /// Constructor
     /// </summary>
-    CSize( int _w, int _h)
+    CSize( type _w, type _h)
     {
         w = _w; h = _h;
     }

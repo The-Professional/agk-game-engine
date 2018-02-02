@@ -3,6 +3,7 @@
 
 // Game lib dependencies
 #include <common\color.h>
+#include <common\size.h>
 #include <utilities\jsonparsehelper.h>
 
 
@@ -68,7 +69,7 @@ const std::string & CSpriteVisualData2D::GetTextureMap() const
 /// Get the sprite's size.
 /// </summary>
 /// *************************************************************************
-const CSize & CSpriteVisualData2D::GetSize() const
+const CSize<float> & CSpriteVisualData2D::GetSize() const
 {
     return _size;
 }

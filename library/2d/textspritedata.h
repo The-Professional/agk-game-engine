@@ -4,6 +4,7 @@
 // Game lib dependencies
 #include <common\defs.h>
 #include <common\bitmask.h>
+#include <common\color.h>
 #include <utilities\jsonparsehelper.h>
 
 // Standard lib dependencies
@@ -34,7 +35,8 @@ public:
     float GetTextSpacing() const;
     float GetLineSpacing() const;
     float GetMaxWidth() const;
-    const CBitmask<uint> & GetTextAlignment() const;
+    const CColor & GetColor() const;
+    NDefs::ETextAlignment GetTextAlignment() const;
     const CBitmask<uint> & GetAlignment() const;
 
 private:
@@ -60,8 +62,11 @@ private:
     // The max distance until the text wraps around.
     float _maxWidth = 100;
 
+    // The color of the text.
+    CColor _color;
+
     // The alignment of the text. (i.e. left, right, center)
-    CBitmask<uint> _textAlignment = NDefs::EA_LEFT;
+    NDefs::ETextAlignment _textAlignment = NDefs::ETA_LEFT;
 
     // The alignment of the sprite.
     CBitmask<uint> _alignment = NDefs::EA_TOP | NDefs::EA_LEFT;

@@ -114,7 +114,7 @@ uint CResourceManager::LoadMesh( const std::string & name )
 /// *************************************************************************
 uint CResourceManager::LoadAnimatedMesh( const std::string & name )
 {
-    // Make sure the mesh we are looking for exists.
+    // Make sure the animated mesh we are looking for exists.
     auto iter = _animatedMeshList.find( name );
     if( iter != _animatedMeshList.end() )
     {
@@ -138,7 +138,7 @@ uint CResourceManager::LoadAnimatedMesh( const std::string & name )
 /// *************************************************************************
 uint CResourceManager::LoadImage( const std::string & name )
 {
-    // Make sure the mesh we are looking for exists.
+    // Make sure the image we are looking for exists.
     auto iter = _imageList.find( name );
     if( iter != _imageList.end() )
     {
@@ -150,6 +150,30 @@ uint CResourceManager::LoadImage( const std::string & name )
             uint parentId = LoadImage( iter->second.path );
             iter->second.id = agk::LoadSubImage( parentId, iter->first.c_str() );
         }
+
+        return iter->second.id;
+    }
+
+    return 0;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get the font id.
+/// </summary>
+/// <param name="name"> Name of the font. </param>
+/// <returns> Loaded font id. </returns>
+/// *************************************************************************
+uint CResourceManager::LoadFont( const std::string & name )
+{
+    // Make sure the font we are looking for exists.
+    auto iter = _fontList.find( name );
+    if( iter != _fontList.end() )
+    {
+        // If the animated mesh hasn't been loaded yet, load it.
+        if( iter->second.id == 0 )
+            iter->second.id = agk::LoadFont( iter->second.path.c_str() );
 
         return iter->second.id;
     }
@@ -187,9 +211,18 @@ void CResourceManager::Clear( NDefs::EResourceType type )
     // Free up any loaded images.
     if( type == NDefs::ERT_IMAGE || type == NDefs::ERT_NULL )
         for( auto & kv : _imageList )
-            if( kv.second.id > 0 )
+            if( kv.second.id != UNLOADED_IMAGE_ID && kv.second.id != UNLOADED_SUBIMAGE_ID )
             {
                 agk::DeleteImage( kv.second.id );
+                kv.second.id = 0;
+            }
+
+    // Free up any loaded images.
+    if( type == NDefs::ERT_FONT || type == NDefs::ERT_NULL )
+        for( auto & kv : _fontList )
+            if( kv.second.id > 0 )
+            {
+                agk::DeleteFont( kv.second.id );
                 kv.second.id = 0;
             }
 }

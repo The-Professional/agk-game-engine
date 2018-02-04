@@ -488,3 +488,38 @@ void CSpriteManager::Clear( CSprite3D * pSprite )
                                                      "Failed to clear the sprite.", e );
     }
 }
+
+
+/// *************************************************************************
+/// <summary> 
+/// Reposition all 2d sprites.
+/// </summary>
+/// *************************************************************************
+void CSpriteManager::RepositionAllSprites2D()
+{
+    auto mapSpriteIter = _spriteList2d.begin();
+    while( mapSpriteIter != _spriteList2d.end() )
+    {
+        auto vecIter = mapSpriteIter->second.begin();
+        while( vecIter != mapSpriteIter->second.end() )
+        {
+            (*vecIter)->Reposition();
+            ++vecIter;
+        }
+
+        ++mapSpriteIter;
+    }
+
+    auto mapTextIter = _textSpriteList.begin();
+    while( mapTextIter != _textSpriteList.end() )
+    {
+        auto vecIter = mapTextIter->second.begin();
+        while( vecIter != mapTextIter->second.end() )
+        {
+            (*vecIter)->Reposition();
+            ++vecIter;
+        }
+
+        ++mapTextIter;
+    }
+}

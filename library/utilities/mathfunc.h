@@ -2,9 +2,8 @@
 #define __math_func_h__
 
 // Game lib dependencies
-#include <common\vector3.h>
-#include <common\size.h>
 #include <common\defs.h>
+#include <common\vector2.h>
 #include <common\bitmask.h>
 
 /// <summary>
@@ -12,35 +11,13 @@
 /// </summary>
 namespace NMathFunc
 {
-    //// Get the dynamic position
-    //CVector3 GetPos( CSize defaultHalfSize )
-    //{
-    //    CVector3 pos;
-    //    
-    //    // Strip out any fractional component for correct rendering
-    //    //defaultHalfSize.Round();
+    // Get whether the two values are approximately equal.
+    bool Approximate( float v1, float v2, float error = 0.0001f );
 
-    //    if( m_parameters.Contains( CDynamicOffset::EDO_LEFT ) )
-    //        pos.x = -(defaultHalfSize.w - point.x);
-
-    //    else if( m_parameters.Contains( CDynamicOffset::EDO_RIGHT ) )
-    //        pos.x = defaultHalfSize.w - point.x;
-
-    //    else if( m_parameters.Contains( CDynamicOffset::EDO_HORZ_CENTER ) )
-    //        pos.x = point.x;
-
-    //    if( m_parameters.Contains( CDynamicOffset::EDO_TOP ) )
-    //        pos.y = defaultHalfSize.h - point.y;
-    //        
-    //    else if( m_parameters.Contains( CDynamicOffset::EDO_BOTTOM ) )
-    //        pos.y = -(defaultHalfSize.h - point.y);
-
-    //    else if( m_parameters.Contains( EDO_VERT_CENTER ) )
-    //        pos.y = point.y;
-
-    //    return pos;
-    //}
-
+    // Get the new position correctly aligned with the window.
+    CVector2 GetAlignedPos( const CBitmask<uint> & alignment, const CVector2 & vPos );
+    float GetAlignedPosX( const CBitmask<uint> & alignment, float x );
+    float GetAlignedPosY( const CBitmask<uint> & alignment, float y );
 }
 
 #endif  // __math_func_h__

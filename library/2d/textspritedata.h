@@ -68,8 +68,8 @@ private:
     // The alignment of the text. (i.e. left, right, center)
     NDefs::ETextAlignment _textAlignment = NDefs::ETA_LEFT;
 
-    // The alignment of the sprite.
-    CBitmask<uint> _alignment = NDefs::EA_TOP | NDefs::EA_LEFT;
+    // The window alignment of the sprite.
+    CBitmask<uint> _alignment = NDefs::EA_CENTER;
 };
 
 #endif  // __text_sprite_data_h__

@@ -408,6 +408,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			agk::UpdateDeviceSize();
 			agk::WindowMoved();
+            CSettings::Instance().SetWindowResized( true );
 			break;
 		}
 

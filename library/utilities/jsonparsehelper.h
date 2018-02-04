@@ -49,8 +49,8 @@ namespace NParseHelper
     bool GetWH( nlohmann::json::const_iterator iter, const std::string & tag, CSize<int> & wh );
     bool GetWH( nlohmann::json::const_iterator iter, const std::string & tag, CSize<float> & wh );
 
-    // Parse generic top, bottom, left, right, and center tags.
-    bool GetTBLRC( nlohmann::json::const_iterator iter, const std::string & tag, CBitmask<uint> & alignment );
+    // Parse alignment tags.
+    bool GetAlignment( nlohmann::json::const_iterator iter, const std::string & tag, CBitmask<uint> & alignment );
 
 	// Parse color tag.
 	bool GetColor( nlohmann::json::const_iterator iter, CColor & color );

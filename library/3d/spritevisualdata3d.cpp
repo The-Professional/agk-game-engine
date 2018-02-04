@@ -43,6 +43,8 @@ void CSpriteVisualData3D::LoadFromIter( nlohmann::json::const_iterator iter )
     NParseHelper::GetString( iter, "normalMap", _normalMap );
     NParseHelper::GetString( iter, "specularMap", _specularMap );
     NParseHelper::GetDimensions( iter, _width, _height, _length, _radius, _rows, _columns );
+    NParseHelper::GetBool( iter, "castShadow", _castShadow );
+    NParseHelper::GetBool( iter, "receiveShadow", _receiveShadow );
 
     // Set the object type.
     if( _mesh == "box" )
@@ -213,4 +215,26 @@ int CSpriteVisualData3D::GetRows() const
 int CSpriteVisualData3D::GetColumns() const
 {
     return _columns;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Whether or not the sprite casts shadows.
+/// </summary>
+/// *************************************************************************
+bool CSpriteVisualData3D::WillCastShadow() const
+{
+    return _castShadow;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Whether or not the sprite will receive shadows cast upon it.
+/// </summary>
+/// *************************************************************************
+bool CSpriteVisualData3D::WillReceiveShadow() const
+{
+    return _receiveShadow;
 }

@@ -61,6 +61,10 @@ public:
     float GetScaleY() const;
     float GetScaleZ() const;
 
+    // Access functions for the sprite's visibility.
+    void SetVisible( bool visible );
+    bool IsVisible() const;
+
 private:
 
     // Sprite data this sprite is based off of. The sprite does not own this.

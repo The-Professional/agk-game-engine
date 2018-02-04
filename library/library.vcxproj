@@ -66,6 +66,7 @@
     <ClCompile Include="managers\spritemanager.cpp" />
     <ClCompile Include="utilities\generalfuncs.cpp" />
     <ClCompile Include="utilities\jsonparsehelper.cpp" />
+    <ClCompile Include="utilities\mathfunc.cpp" />
     <ClCompile Include="utilities\settings.cpp" />
     <ClCompile Include="utilities\txtparsehelper.cpp" />
   </ItemGroup>

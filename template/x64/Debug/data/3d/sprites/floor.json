@@ -4,7 +4,9 @@
       "mesh": "plane",
       "textureMap": "greensmudge",
       "width": 50,
-      "height": 50
+      "height": 50,
+      "castShadow": true,
+      "receiveShadow": true
     }
   }
 }

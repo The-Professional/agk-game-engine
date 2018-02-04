@@ -164,5 +164,8 @@
     <ClCompile Include="2d\textspritedata.cpp">
       <Filter>2d</Filter>
     </ClCompile>
+    <ClCompile Include="utilities\mathfunc.cpp">
+      <Filter>utilities</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

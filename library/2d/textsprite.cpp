@@ -5,6 +5,7 @@
 #include <agk.h>
 #include <2d\textspritedata.h>
 #include <managers\resourcemanager.h>
+#include <utilities\mathfunc.h>
 
 /// *************************************************************************
 /// <summary>
@@ -41,7 +42,7 @@ CTextSprite::~CTextSprite()
 
 /// *************************************************************************
 /// <summary>
-/// Initialize the sprite with the passed in object type.
+/// Initialize the text sprite with the passed in object type.
 /// </summary>
 /// <param name="pData"> Sprite data used to create the sprite. </param>  
 /// *************************************************************************
@@ -69,7 +70,7 @@ void CTextSprite::Init( const CTextSpriteData * pData )
 
 /// *************************************************************************
 /// <summary>
-/// Get the name of the sprite.
+/// Get the name of the text sprite.
 /// </summary>
 /// *************************************************************************
 const std::string & CTextSprite::GetName() const
@@ -80,7 +81,7 @@ const std::string & CTextSprite::GetName() const
 
 /// *************************************************************************
 /// <summary>
-/// Clears all of the sprites data that belong to it.
+/// Clears all of the text sprite's data that belong to it.
 /// </summary>
 /// *************************************************************************
 void CTextSprite::Clear()
@@ -95,7 +96,7 @@ void CTextSprite::Clear()
 
 /// *************************************************************************
 /// <summary>
-/// Get the id of the sprite.
+/// Get the id of the text sprite.
 /// </summary>
 /// *************************************************************************
 uint CTextSprite::GetID() const
@@ -106,61 +107,65 @@ uint CTextSprite::GetID() const
 
 /// *************************************************************************
 /// <summary>
-/// Set the sprite's position.
+/// Set the text sprite's position.
 /// </summary>
 /// *************************************************************************
 void CTextSprite::SetPos( float x, float y )
 {
+    _prevPos.x = x;
+    _prevPos.y = y;
     agk::SetTextPosition( _id, x, y );
 }
 
 /// <summary>
-/// Set the sprite's position and depth.
+/// Set the text sprite's position and depth.
 /// </summary>
 void CTextSprite::SetPos( float x, float y, float z )
 {
-    agk::SetTextPosition( _id, x, y );
+    SetPos( x, y );
     agk::SetTextDepth( _id, (int)z );
 }
 
 /// <summary>
-/// Set the sprite's position.
+/// Set the text sprite's position.
 /// </summary>
 void CTextSprite::SetPos( const CVector2 & pos )
 {
-    agk::SetTextPosition( _id, pos.x, pos.y );
+    SetPos( pos.x, pos.y );
 }
 
 /// <summary>
-/// Set the sprite's position and depth.
+/// Set the text sprite's position and depth.
 /// </summary>
 void CTextSprite::SetPos( const CVector3 & pos )
 {
-    agk::SetTextPosition( _id, pos.x, pos.y );
+    SetPos( pos.x, pos.y );
     agk::SetTextDepth( _id, (int)pos.z );
 }
 
 
 /// *************************************************************************
 /// <summary>
-/// Set the sprite's x position.
+/// Set the text sprite's x position.
 /// </summary>
 /// *************************************************************************
 void CTextSprite::SetPosX( float x )
 {
+    _prevPos.x = x;
     agk::SetTextX( _id, x );
 }
 
 /// <summary>
-/// Set the sprite's y position.
+/// Set the text sprite's y position.
 /// </summary>
 void CTextSprite::SetPosY( float y )
 {
+    _prevPos.y = y;
     agk::SetTextY( _id, y );
 }
 
 /// <summary>
-/// Set the sprite's x position.
+/// Set the text sprite's x position.
 /// </summary>
 void CTextSprite::SetPosZ( float z )
 {
@@ -170,7 +175,7 @@ void CTextSprite::SetPosZ( float z )
 
 /// *************************************************************************
 /// <summary>
-/// Get the sprite's position.
+/// Get the text sprite's position.
 /// </summary>
 /// *************************************************************************
 CVector3 CTextSprite::GetPos() const
@@ -179,7 +184,7 @@ CVector3 CTextSprite::GetPos() const
 }
 
 /// <summary>
-/// Get the sprite's X position.
+/// Get the text sprite's X position.
 /// </summary>
 float CTextSprite::GetPosX() const
 {
@@ -187,7 +192,7 @@ float CTextSprite::GetPosX() const
 }
 
 /// <summary>
-/// Get the sprite's Y position.
+/// Get the text sprite's Y position.
 /// </summary>
 float CTextSprite::GetPosY() const
 {
@@ -195,7 +200,7 @@ float CTextSprite::GetPosY() const
 }
 
 /// <summary>
-/// Get the sprite's Z position.
+/// Get the text sprite's Z position.
 /// </summary>
 float CTextSprite::GetPosZ() const
 {
@@ -205,7 +210,7 @@ float CTextSprite::GetPosZ() const
 
 /// *************************************************************************
 /// <summary>
-/// Set the sprite's rotation.
+/// Set the text sprite's rotation.
 /// </summary>
 /// *************************************************************************
 void CTextSprite::SetRot( float angle )
@@ -216,7 +221,7 @@ void CTextSprite::SetRot( float angle )
 
 /// *************************************************************************
 /// <summary>
-/// Increment the sprite's rotation.
+/// Increment the text sprite's rotation.
 /// </summary>
 /// *************************************************************************
 void CTextSprite::IncRot( float angle )
@@ -227,7 +232,7 @@ void CTextSprite::IncRot( float angle )
 
 /// *************************************************************************
 /// <summary>
-/// Get the sprite's rotation.
+/// Get the text sprite's rotation.
 /// </summary>
 /// *************************************************************************
 float CTextSprite::GetRot() const
@@ -239,7 +244,7 @@ float CTextSprite::GetRot() const
 
 /// *************************************************************************
 /// <summary>
-/// Set the sprite's scale.
+/// Set the text sprite's scale.
 /// </summary>
 /// *************************************************************************
 void CTextSprite::SetScale( float uniform )
@@ -250,7 +255,7 @@ void CTextSprite::SetScale( float uniform )
 
 /// *************************************************************************
 /// <summary>
-/// Get the sprite's scale.
+/// Get the text sprite's scale.
 /// </summary>
 /// *************************************************************************
 float CTextSprite::GetScale() const
@@ -261,23 +266,23 @@ float CTextSprite::GetScale() const
 
 /// *************************************************************************
 /// <summary>
-/// Set the sprite's visibility.
+/// Set the text sprite's visibility.
 /// </summary>
 /// *************************************************************************
 void CTextSprite::SetVisible( bool visible )
 {
-    agk::SetSpriteVisible( _id, visible );
+    agk::SetTextVisible( _id, visible );
 }
 
 
 /// *************************************************************************
 /// <summary>
-/// Get the sprite's visibility.
+/// Get the text sprite's visibility.
 /// </summary>
 /// *************************************************************************
 bool CTextSprite::IsVisible() const
 {
-    return agk::GetSpriteVisible( _id );
+    return agk::GetTextVisible( _id );
 }
 
 
@@ -394,7 +399,7 @@ float CTextSprite::GetMaxWidth() const
 
 /// *************************************************************************
 /// <summary>
-/// Set the sprite's color.
+/// Set the text sprite's color.
 /// </summary>
 /// *************************************************************************
 void CTextSprite::SetColor( const CColor & color )
@@ -405,7 +410,7 @@ void CTextSprite::SetColor( const CColor & color )
 
 /// *************************************************************************
 /// <summary>
-/// Get the sprite's color.
+/// Get the text sprite's color.
 /// </summary>
 /// *************************************************************************
 CColor CTextSprite::GetColor() const
@@ -456,4 +461,16 @@ void CTextSprite::SetAlignment( const CBitmask<uint> & alignment )
 const CBitmask<uint> & CTextSprite::GetAlignment() const
 {
     return _alignment;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Reset the sprite's position using its previous position.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::Reposition()
+{
+    CVector2 newPos = NMathFunc::GetAlignedPos( _alignment, _prevPos );
+    agk::SetTextPosition( _id, newPos.x, newPos.y );
 }

@@ -58,6 +58,9 @@ public:
     // Create the collection of sprites.
     void CreateSpriteCollection3D( const std::string & name );
 
+    // Reposition all 2d sprites.
+    void RepositionAllSprites2D();
+
 private:
 
     // Constructor

@@ -39,6 +39,10 @@ public:
     const CSize<int> & GetResolution() const;
     const CSize<int> & GetVirtualResolution() const;
 
+    // Get the window aspect ratios.
+    float GetAspectRatio() const;
+    float GetVirtualAspectRatio() const;
+
     // If the game is full screen.
     bool IsFullscreen() const;
 
@@ -47,6 +51,31 @@ public:
 
     // If antialias is enabled.
     bool IsAntialias() const;
+
+    // Whether or not shadows are enabled.
+    bool ShadowsEnabled() const;
+
+    // Get the amount to shift a shadow so objects don't cast shadows on themselves and cause artifacts.
+    float GetShadowBias() const;
+
+    // Get the current shadow rendering mode.
+    int GetShadowMode() const;
+
+    // Get the size of the map used for shadows.
+    const CSize<int> & GetShadowSize() const;
+
+    // Get the amount of shadow smoothing. (0 = off, 1 = min, 2 = max)
+    int GetShadowSmoothingLevel() const;
+
+    // Get the distance to stop casting shadows.
+    float GetShadowRange() const;
+
+    // Access functions for when the windows is being resized.
+    void SetWindowResized( bool resized );
+    bool IsWindowResized() const;
+
+    // Check to see if the window has been resized. If so, reposition all sprites with alignments.
+    void CheckForWindowSizeChange();
 
 private:
 
@@ -68,6 +97,10 @@ private:
     // This is the resolution your art was made for.
     CSize<int> _vResolution;
 
+    // Window aspect ratios.
+    float _aspectRatio;
+    float _vAspectRatio;
+
     // Whether game is displaying in fullscreen mode or not.
     bool _fullscreen;
 
@@ -76,6 +109,27 @@ private:
 
     // If antialiasing is active.
     bool _antialias;
+
+    // Whether or not shadows are enabled.
+    bool _shadowsEnabled;
+
+    // The amount to shift a shadow so objects don't cast shadows on themselves and cause artifacts.
+    float _shadowBias;
+
+    // Shadow rendering mode.
+    int _shadowMode;
+
+    // Size of the map used for shadows.
+    CSize<int> _shadowSize;
+
+    // The amount of shadow smoothing. (0 = off, 1 = min, 2 = max)
+    int _shadowSmoothing;
+
+    // Distance to stop casting shadows.
+    float _shadowRange;
+
+    // Whether or not the window has been resized.
+    bool _windowResized;
 };
 
 #endif  // __settings_h__

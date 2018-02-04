@@ -6,6 +6,7 @@
 #include <common\size.h>
 #include <2d\spritedata2d.h>
 #include <managers\resourcemanager.h>
+#include <utilities\mathfunc.h>
 
 /// *************************************************************************
 /// <summary>
@@ -63,6 +64,8 @@ void CSprite2D::Init( const CSpriteData2D * pData )
 
         agk::SetSpriteColor( _id, pVisual->GetColor().r, pVisual->GetColor().g, pVisual->GetColor().b, pVisual->GetColor().a );
     }
+
+    _alignment = pData->GetAlignment();
 }
 
 
@@ -110,16 +113,18 @@ uint CSprite2D::GetID() const
 /// *************************************************************************
 void CSprite2D::SetPos( float x, float y )
 {
+    _vPos.x = x;
+    _vPos.y = y;
     agk::SetSpritePosition( _id, x, y );
 }
 
 /// <summary>
 /// Set the sprite's position and depth.
 /// </summary>
-void CSprite2D::SetPos( float x, float y, int depth )
+void CSprite2D::SetPos( float x, float y, float z )
 {
-    agk::SetSpritePosition( _id, x, y );
-    agk::SetSpriteDepth( _id, depth );
+    SetPos( x, y );
+    agk::SetSpriteDepth( _id, (int)z );
 }
 
 /// <summary>
@@ -127,27 +132,42 @@ void CSprite2D::SetPos( float x, float y, int depth )
 /// </summary>
 void CSprite2D::SetPos( const CVector2 & pos )
 {
-    agk::SetSpritePosition( _id, pos.x, pos.y );
+    SetPos( pos.x, pos.y );
 }
 
 /// <summary>
 /// Set the sprite's position and depth.
 /// </summary>
-void CSprite2D::SetPos( const CVector2 & pos, int depth )
+void CSprite2D::SetPos( const CVector3 & pos )
 {
-    agk::SetSpritePosition( _id, pos.x, pos.y );
-    agk::SetSpriteDepth( _id, depth );
+    SetPos( pos.x, pos.y );
+    agk::SetSpriteDepth( _id, (int)pos.z );
 }
 
-
-/// *************************************************************************
 /// <summary>
-/// Set the sprite's depth.
+/// Set the sprite's x position.
 /// </summary>
-/// *************************************************************************
-void CSprite2D::SetDepth( int depth )
+void CSprite2D::SetPosX( float x )
 {
-    agk::SetSpriteDepth( _id, depth );
+    _vPos.x = x;
+    agk::SetSpriteX( _id, x );
+}
+
+/// <summary>
+/// Set the sprite's y position.
+/// </summary>
+void CSprite2D::SetPosY( float y )
+{
+    _vPos.y = y;
+    agk::SetSpriteY( _id, y );
+}
+
+/// <summary>
+/// Set the sprite's z position.
+/// </summary>
+void CSprite2D::SetPosZ( float z )
+{
+    agk::SetSpriteDepth( _id, (int)z );
 }
 
 
@@ -162,7 +182,7 @@ CVector2 CSprite2D::GetPos() const
 }
 
 /// <summary>
-/// Get the sprite's X position.
+/// Get the sprite's x position.
 /// </summary>
 float CSprite2D::GetPosX() const
 {
@@ -170,22 +190,19 @@ float CSprite2D::GetPosX() const
 }
 
 /// <summary>
-/// Get the sprite's Y position.
+/// Get the sprite's y position.
 /// </summary>
 float CSprite2D::GetPosY() const
 {
     return agk::GetSpriteY( _id );
 }
 
-
-/// *************************************************************************
 /// <summary>
-/// Get the sprite's depth.
+/// Get the sprite's z position.
 /// </summary>
-/// *************************************************************************
-int CSprite2D::GetDepth() const
+float CSprite2D::GetPosZ() const
 {
-    return agk::GetSpriteDepth( _id );
+    return (float)agk::GetSpriteDepth( _id );
 }
 
 
@@ -338,4 +355,16 @@ void CSprite2D::SetVisible( bool visible )
 bool CSprite2D::IsVisible() const
 {
     return agk::GetSpriteVisible( _id );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Reset the sprite's position using its previous position.
+/// </summary>
+/// *************************************************************************
+void CSprite2D::Reposition()
+{
+    CVector2 newPos = NMathFunc::GetAlignedPos( _alignment, _vPos );
+    agk::SetSpritePosition( _id, newPos.x, newPos.y );
 }

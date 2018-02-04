@@ -5,7 +5,9 @@
       "textureMap": "top",
       "radius": 1,
       "rows": 10,
-      "columns": 16
+      "columns": 16,
+      "castShadow": true,
+      "receiveShadow": true
     }
   }
 }

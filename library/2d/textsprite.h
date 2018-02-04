@@ -64,7 +64,7 @@ public:
     void SetVisible( bool visible );
     bool IsVisible() const;
 
-    // Access functions for the sprite's font.
+    // Access functions for the text sprite's font.
     void SetFont( uint fontId );
     uint GetFont() const;
 
@@ -84,7 +84,7 @@ public:
     void SetMaxWidth( float maxWidth );
     float GetMaxWidth() const;
 
-    // Access functions for the sprite's color.
+    // Access functions for the text sprite's color.
     void SetColor( const CColor & color );
     CColor GetColor() const;
 
@@ -96,6 +96,9 @@ public:
     void SetAlignment( const CBitmask<uint> & alignment );
     const CBitmask<uint> & GetAlignment() const;
 
+    // Reset the sprite's position using its previous position.
+    void Reposition();
+
 private:
 
     // Sprite data this sprite is based off of. The sprite does not own this.
@@ -106,6 +109,9 @@ private:
 
     // ID of the font used.
     uint _fontId = 0;
+
+    // The previous set position of the sprite. This is used to retain alignment.
+    CVector2 _prevPos;
     
     // Text sprite's max width before text begins to wrap.
     float _maxWidth = 0;

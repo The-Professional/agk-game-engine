@@ -13,17 +13,20 @@
 // Global values for the app
 class app
 {
-	public:
+public:
+	// constructor
+	app() { memset ( this, 0, sizeof(app)); }
 
-		// constructor
-		app() { memset ( this, 0, sizeof(app)); }
+    void Init();
 
-        void Init();
+	// main app functions - mike to experiment with a derived class for this..
+	void Begin();
+	int Loop();
+	void End();
 
-		// main app functions - mike to experiment with a derived class for this..
-		void Begin();
-		int Loop();
-		void End();
+private:
+
+    
 };
 
 extern app App;

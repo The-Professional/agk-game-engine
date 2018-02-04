@@ -59,6 +59,8 @@ void app::Begin()
 
 int app::Loop()
 {
+    CSettings::Instance().CheckForWindowSizeChange();
+
     if( CInputManager::Instance().IsReleased("menu", "menu select") )
         pSprite->IncRot( 90.f, 90.f, 0 );
 

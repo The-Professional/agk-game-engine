@@ -52,6 +52,8 @@ void CSpriteData2D::LoadFromIter( const std::string & name, nlohmann::json::cons
         _pVisualData = new CSpriteVisualData2D();
         _pVisualData->LoadFromIter( visualIter );
     }
+
+    NParseHelper::GetAlignment( iter, "alignment", _alignment );
 }
 
 
@@ -59,7 +61,6 @@ void CSpriteData2D::LoadFromIter( const std::string & name, nlohmann::json::cons
 /// <summary>
 /// Get the visual data of the sprite.
 /// </summary>
-/// <returns> Object holding all of the sprite's visual data. </returns>
 /// *************************************************************************
 const CSpriteVisualData2D * CSpriteData2D::GetVisualData() const
 {
@@ -83,10 +84,19 @@ const CSpriteVisualData2D * CSpriteData2D::GetVisualData() const
 /// <summary> 
 /// Get the name of the sprite.
 /// </summary>
-/// <returns> Sprite's name. </returns>
 /// *************************************************************************
 const std::string & CSpriteData2D::GetName() const
 {
     return _name;
 }
 
+
+/// *************************************************************************
+/// <summary> 
+/// Get the window alignment of the sprite.
+/// </summary>
+/// *************************************************************************
+const CBitmask<uint> & CSpriteData2D::GetAlignment() const
+{
+    return _alignment;
+}

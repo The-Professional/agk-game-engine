@@ -5,6 +5,7 @@
 #include <agk.h>
 #include <utilities\jsonparsehelper.h>
 #include <utilities\exceptionhandling.h>
+#include <managers\spritemanager.h>
 
 // Standard lib dependencies
 #include <fstream>
@@ -73,6 +74,20 @@ void CSettings::LoadSettings()
                 NParseHelper::GetBool( displayIter, "fullscreen", _fullscreen );
                 NParseHelper::GetOrientation( displayIter, _orientation );
                 NParseHelper::GetBool( displayIter, "anitalias", _antialias );
+
+                _aspectRatio = (float)_resolution.h / (float)_resolution.w;
+                _vAspectRatio = (float)_vResolution.h / (float)_vResolution.w;
+            }
+
+            auto shadowsIter = settingsIter->find( "shadows" );
+            if( shadowsIter != settingsIter->end() )
+            {
+                NParseHelper::GetBool( shadowsIter, "enabled", _shadowsEnabled );
+                NParseHelper::GetFloat( shadowsIter, "bias", _shadowBias );
+                NParseHelper::GetInt( shadowsIter, "shadowMode", _shadowMode );
+                NParseHelper::GetWH( shadowsIter, "size", _shadowSize );
+                NParseHelper::GetInt( shadowsIter, "smoothing", _shadowSmoothing );
+                NParseHelper::GetFloat( shadowsIter, "range", _shadowRange );
             }
         }
     }
@@ -112,6 +127,15 @@ void CSettings::ApplySettings()
         }
 
         agk::SetAntialiasMode( _antialias );
+
+        if( _shadowsEnabled )
+        {
+            agk::SetShadowBias( _shadowBias );
+            agk::SetShadowMappingMode( _shadowMode );
+            agk::SetShadowMapSize( _shadowSize.w, _shadowSize.h );
+            agk::SetShadowSmoothing( _shadowSmoothing );
+            agk::SetShadowRange( _shadowRange );
+        }
     }
     catch( NExcept::CCriticalException e )
     {
@@ -160,6 +184,28 @@ const CSize<int> & CSettings::GetVirtualResolution() const
 
 /// *************************************************************************
 /// <summary> 
+/// Get the window aspect ratio.
+/// </summary>
+/// *************************************************************************
+float CSettings::GetAspectRatio() const
+{
+    return _aspectRatio;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get the virtual aspect ratio.
+/// </summary>
+/// *************************************************************************
+float CSettings::GetVirtualAspectRatio() const
+{
+    return _vAspectRatio;
+}
+
+
+/// *************************************************************************
+/// <summary> 
 /// If the game is full screen.
 /// </summary>
 /// *************************************************************************
@@ -188,4 +234,105 @@ NDefs::EOrentation CSettings::GetOrientation() const
 bool CSettings::IsAntialias() const
 {
     return _antialias;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Whether or not shadows are enabled.
+/// </summary>
+/// *************************************************************************
+bool CSettings::ShadowsEnabled() const
+{
+    return _shadowsEnabled;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get the amount to shift a shadow so objects don't cast shadows on 
+/// themselves and cause artifacts.
+/// </summary>
+/// *************************************************************************
+float CSettings::GetShadowBias() const
+{
+    return _shadowBias;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get the current shadow rendering mode.
+/// </summary>
+/// *************************************************************************
+int CSettings::GetShadowMode() const
+{
+    return _shadowMode;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get the size of the map used for shadows.
+/// </summary>
+/// *************************************************************************
+const CSize<int> & CSettings::GetShadowSize() const
+{
+    return _shadowSize;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get the amount of shadow smoothing. (0 = off, 1 = min, 2 = max)
+/// </summary>
+/// *************************************************************************
+int CSettings::GetShadowSmoothingLevel() const
+{
+    return _shadowSmoothing;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get the distance to stop casting shadows.
+/// </summary>
+/// *************************************************************************
+float CSettings::GetShadowRange() const
+{
+    return _shadowRange;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Set whether the window has been resized.
+/// </summary>
+/// *************************************************************************
+void CSettings::SetWindowResized( bool resized )
+{
+    _windowResized = resized;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get whether the window has been resized.
+/// </summary>
+/// *************************************************************************
+bool CSettings::IsWindowResized() const
+{
+    return _windowResized;
+}
+
+
+// Check to see if the window has been resized. If so, reposition all sprites with alignments.
+void CSettings::CheckForWindowSizeChange()
+{
+    if( _windowResized )
+    {
+        _windowResized = false;
+
+        CSpriteManager::Instance().RepositionAllSprites2D();
+    }
 }

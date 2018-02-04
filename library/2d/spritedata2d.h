@@ -2,11 +2,15 @@
 #define __sprite_data_2d_h__
 
 // Game lib dependencies
+#include <common\bitmask.h>
 #include <2d\spritevisualdata2d.h>
 #include <utilities\jsonparsehelper.h>
 
 // Standard lib dependencies
 #include <string>
+
+// Forward declarations
+class CSpriteVisualData2D;
 
 /// *************************************************************************
 /// <summary>
@@ -34,6 +38,9 @@ public:
     // Access functions for the data name.
     const std::string & GetName() const;
 
+    // Get the window alignment of the sprite.
+    const CBitmask<uint> & GetAlignment() const;
+
 private:
 
     // Visual data of the object
@@ -44,6 +51,9 @@ private:
 
     // The name of the object data
     std::string _name;
+
+    // The window alignment of the sprite.
+    CBitmask<uint> _alignment = NDefs::EA_CENTER;
 };
 
 #endif  // __sprite_data_2d_h__

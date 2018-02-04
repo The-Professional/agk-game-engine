@@ -8,8 +8,16 @@
       "orientation": "landscape",
       "vsync": false,
       "antialias": true
-    }
+    },
     
+    "shadows": {
+      "enabled": true,
+      "bias": 0.001,
+      "shadowMode": 1,
+      "size": { "w": 1024, "h": 1024 },
+      "smoothing": 0,
+      "range": -1
+    }
 
   }
 }

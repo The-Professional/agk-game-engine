@@ -125,6 +125,9 @@ void CSprite3D::Init( const CSpriteData3D * pData )
 
             // Set the sprite's color.
             agk::SetObjectColor( _id, pVisual->GetColor().r, pVisual->GetColor().g, pVisual->GetColor().b, pVisual->GetColor().a );
+
+            agk::SetObjectCastShadow( _id, pVisual->WillCastShadow() );
+            agk::SetObjectReceiveShadow( _id, pVisual->WillReceiveShadow() );
         }
     }
 }
@@ -360,4 +363,26 @@ float CSprite3D::GetScaleY() const
 float CSprite3D::GetScaleZ() const
 {
     return _scale.z;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Set the sprite's visibility.
+/// </summary>
+/// *************************************************************************
+void CSprite3D::SetVisible( bool visible )
+{
+    agk::SetObjectVisible( _id, visible );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the sprite's visibility.
+/// </summary>
+/// *************************************************************************
+bool CSprite3D::IsVisible() const
+{
+    return agk::GetObjectVisible( _id );
 }

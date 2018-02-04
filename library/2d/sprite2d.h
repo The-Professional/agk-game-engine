@@ -4,6 +4,8 @@
 // Game lib dependencies
 #include <common\defs.h>
 #include <common\vector2.h>
+#include <common\vector3.h>
+#include <common\bitmask.h>
 
 // Standard lib dependencies
 #include <string>
@@ -41,14 +43,16 @@ public:
 
     // Access functions for the sprite's position.
     void SetPos( float x, float y );
-    void SetPos( float x, float y, int depth );
+    void SetPos( float x, float y, float z );
     void SetPos( const CVector2 & pos );
-    void SetPos( const CVector2 & pos, int depth );
-    void SetDepth( int depth );
+    void SetPos( const CVector3 & pos );
+    void SetPosX( float x );
+    void SetPosY( float y );
+    void SetPosZ( float z );
     CVector2 GetPos() const;
     float GetPosX() const;
     float GetPosY() const;
-    int GetDepth() const;
+    float GetPosZ() const;
 
     // Access functions for the sprite's rotation.
     void SetRot( float angle);
@@ -75,6 +79,9 @@ public:
     void SetVisible( bool visible );
     bool IsVisible() const;
 
+    // Reset the sprite's position using its previous position.
+    void Reposition();
+
 private:
 
     // Sprite data this sprite is based off of. The sprite does not own this.
@@ -85,6 +92,12 @@ private:
 
     // Scale of the sprite (AGK has no functions to retrieve scale).
     CVector2 _scale;
+
+    // The previous set position of the sprite. This is used to retain alignment.
+    CVector2 _vPos;
+
+    // The window alignment of the sprite.
+    CBitmask<uint> _alignment = NDefs::EA_CENTER;
 };
 
 

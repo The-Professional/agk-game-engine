@@ -2,6 +2,7 @@
   "spriteData2d": {
     "visual": {
       "textureMap": "bottom"
-    }
+    },
+    "alignment": {"horizontal": "left", "vertical": "top"}
   }
 }

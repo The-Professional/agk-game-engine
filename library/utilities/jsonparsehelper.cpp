@@ -195,41 +195,31 @@ namespace NParseHelper
 
     /// *************************************************************************
     /// <summary> 
-    /// Parse generic top, bottom, left, right and center tags. Only the tags are
-    /// read. The value is ignored.
+    /// Parse alignment tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="tblrc"> Loaded top, bottom, left, right, center tags. </param>
+    /// <param name="alignment"> Loaded alignment tags. </param>
     /// *************************************************************************
-    bool GetTBLRC( json::const_iterator iter, const string & tag, CBitmask<uint> & tblrc )
+    bool GetAlignment( json::const_iterator iter, const string & tag, CBitmask<uint> & alignment )
     {
-        auto tblrcIter = iter->find( tag );
-        if( tblrcIter != iter->end() )
+        auto alignIter = iter->find( tag );
+        if( alignIter != iter->end() )
         {
-            if( TagExists( tblrcIter, "left" ) )
-                tblrc.Add( NDefs::EA_LEFT );
-
-            if( TagExists( tblrcIter, "right" ) )
-                tblrc.Add( NDefs::EA_RIGHT );
-
-            if( TagExists( tblrcIter, "top" ) )
-                tblrc.Add( NDefs::EA_TOP );
-
-            if( TagExists( tblrcIter, "bottom" ) )
-                tblrc.Add( NDefs::EA_BOTTOM );
-
-            // The center value is handled a bit differently.
-            if( TagExists( tblrcIter, "center" ) )
+            string align;
+            if( GetString( alignIter, "horizontal", align ) )
             {
-                // Left and right center alignments also include the top and bottom alignments.
-                if( tblrc == (uint)NDefs::EA_LEFT || tblrc == (uint)NDefs::EA_RIGHT )
-                    tblrc.Add( NDefs::EA_TOP | NDefs::EA_BOTTOM );
-                // Top and bottom center alignments also include the left and right alignments.
-                else if( tblrc == (uint)NDefs::EA_TOP || tblrc == (uint)NDefs::EA_BOTTOM )
-                    tblrc.Add( NDefs::EA_LEFT | NDefs::EA_RIGHT );
-                // Center contains all alignments.
-                else
-                    tblrc.Add( NDefs::EA_CENTER );
+                if ( align == "left" )
+                    alignment.Add( NDefs::EA_LEFT );
+                else if ( align == "right" )
+                    alignment.Add( NDefs::EA_RIGHT );
+            }
+
+            if( GetString( alignIter, "vertical", align ) )
+            {
+                if( align == "top" )
+                    alignment.Add( NDefs::EA_TOP );
+                else if( align == "bottom" )
+                    alignment.Add( NDefs::EA_BOTTOM );
             }
 
             return true;

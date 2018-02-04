@@ -53,6 +53,12 @@ public:
     int GetRows() const;
     int GetColumns() const;
 
+    // Whether or not the sprite casts shadows.
+    bool WillCastShadow() const;
+
+    // Whether or not the sprite will receive shadows cast upon it.
+    bool WillReceiveShadow() const;
+
 private:
 
     // Type of object.
@@ -73,6 +79,12 @@ private:
     // Dimensions used to create the sprite.
     float _width = 0, _height = 0, _length = 0, _radius = 0;
     int _rows = 0, _columns = 0;
+
+    // If the sprite casts a shadow.
+    bool _castShadow = false;
+    
+    // If the sprite receives shadows cast upon it.
+    bool _receiveShadow = false;
 };
 
 #endif  // __sprite_visual_data_3d_h__

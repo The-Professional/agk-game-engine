@@ -67,13 +67,11 @@ namespace NDefs
     // The types of alignment.
     enum
     {
-        EA_NULL     = 0,
+        EA_CENTER   = 0,
         EA_LEFT     = 1,
         EA_RIGHT    = 2,
         EA_TOP      = 4,
-        EA_BOTTOM   = 8,
-
-        EA_CENTER   = EA_LEFT | EA_RIGHT | EA_TOP | EA_BOTTOM
+        EA_BOTTOM   = 8
     };
 
     // The types of text alignment.
@@ -98,6 +96,14 @@ namespace NDefs
         EID_MOUSE,
         EID_KEYBOARD,
         EID_GAMEPAD
+    };
+
+    // The types of shadow rendering modes.
+    enum
+    {
+        ESM_UNIFORM = 1,
+        ESM_LIGHT_SPACE_PERSPECTIVE,
+        ESM_CASCADE
     };
 }
 

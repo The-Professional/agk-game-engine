@@ -53,7 +53,7 @@ void CTextSpriteData::LoadFromIter( const std::string & name, nlohmann::json::co
     NParseHelper::GetFloat( iter, "maxWidth", _maxWidth );
     NParseHelper::GetColor( iter, _color );
     NParseHelper::GetTextAlignment( iter, _textAlignment );
-    NParseHelper::GetTBLRC( iter, "alignment", _alignment );
+    NParseHelper::GetAlignment( iter, "alignment", _alignment );
 }
 
 

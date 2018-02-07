@@ -4,6 +4,7 @@
 // Game lib dependencies
 #include <common\size.h>
 #include <common\defs.h>
+#include <common\vector4.h>
 
 // Standard lib dependencies
 #include <string>
@@ -77,6 +78,10 @@ public:
     // Check to see if the window has been resized. If so, reposition all sprites with alignments.
     void CheckForWindowSizeChange();
 
+    // Access functions for the positions of each screen boundary.
+    void SetScreenBounds();
+    const CVector4 & GetScreenBounds() const;
+
 private:
 
     // Constructor
@@ -130,6 +135,9 @@ private:
 
     // Whether or not the window has been resized.
     bool _windowResized;
+
+    // The positions of each screen boundary.
+    CVector4 _screenBounds;
 };
 
 #endif  // __settings_h__

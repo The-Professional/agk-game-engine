@@ -62,7 +62,7 @@ namespace NParseHelper
     bool GetTextAlignment( nlohmann::json::const_iterator iter, NDefs::ETextAlignment & alignment );
 
     // Parse the dimension tags.
-    void GetDimensions( nlohmann::json::const_iterator iter, float & width, float & height, float & length, float & radius, int & rows, int & columns );
+    void GetDimensions( nlohmann::json::const_iterator iter, float & width, float & height, float & depth, float & radius, int & rows, int & columns );
 
     // Parse the input state tags.
     void GetInputState( nlohmann::json::const_iterator iter, CInputState & inputState );

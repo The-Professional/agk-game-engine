@@ -108,6 +108,12 @@
     <ClInclude Include="2d\textspritedata.h">
       <Filter>2d</Filter>
     </ClInclude>
+    <ClInclude Include="common\iobject.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\vector4.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="utilities\settings.cpp">
@@ -166,6 +172,15 @@
     </ClCompile>
     <ClCompile Include="utilities\mathfunc.cpp">
       <Filter>utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="common\iobject.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\vector3.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\vector4.cpp">
+      <Filter>common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

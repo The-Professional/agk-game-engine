@@ -264,12 +264,12 @@ CSprite3D * CSpriteManager::CreateSprite3D( const std::string & name )
 {
     try
     {
-        // Create the sprite object and add it to the sprite list.
-        CSprite3D * pSprite = new CSprite3D();
-        _spriteList3d[name].push_back( pSprite );
+        // Get the data used to create the sprite.
+        auto pData = GetSpriteData3D( name );
 
-        // Initialize the sprite with sprite data.
-        pSprite->Init( GetSpriteData3D( name ) );
+        // Create the sprite object and add it to the sprite list.
+        CSprite3D * pSprite = new CSprite3D( pData );
+        _spriteList3d[name].push_back( pSprite );
 
         return pSprite;
     }
@@ -298,12 +298,12 @@ CSprite2D * CSpriteManager::CreateSprite2D( const std::string & name )
 {
     try
     {
-        // Create the sprite object and add it to the sprite list.
-        CSprite2D * pSprite = new CSprite2D();
-        _spriteList2d[name].push_back( pSprite );
+        // Get the data used to create the sprite.
+        auto pData = GetSpriteData2D( name );
 
-        // Initialize the sprite with sprite data.
-        pSprite->Init( GetSpriteData2D( name ) );
+        // Create the sprite object and add it to the sprite list.
+        CSprite2D * pSprite = new CSprite2D( pData );
+        _spriteList2d[name].push_back( pSprite );
 
         return pSprite;
     }
@@ -332,12 +332,12 @@ CTextSprite * CSpriteManager::CreateTextSprite( const std::string & name )
 {
     try
     {
-        // Create the sprite object and add it to the sprite list.
-        CTextSprite * pSprite = new CTextSprite();
-        _textSpriteList[name].push_back( pSprite );
+        // Get the data used to create the sprite.
+        auto pData = GetTextSpriteData( name );
 
-        // Initialize the sprite with sprite data.
-        pSprite->Init( GetTextSpriteData( name ) );
+        // Create the sprite object and add it to the sprite list.
+        CTextSprite * pSprite = new CTextSprite( pData );
+        _textSpriteList[name].push_back( pSprite );
 
         return pSprite;
     }
@@ -382,14 +382,15 @@ void CSpriteManager::CreateSpriteCollection3D( const std::string & collectionNam
                 auto iter = collectionIter->begin();
                 while( iter != collectionIter->end() )
                 {
-                    CSprite3D * pSprite = new CSprite3D();
-                    _spriteList3d[mapIter->first].push_back( pSprite );
-
                     string name;
                     NParseHelper::GetString( iter, "name", name );
 
-                    // Initialize the sprite with sprite data.
-                    pSprite->Init( GetSpriteData3D( name ) );
+                    // Get the data used to create the sprite.
+                    auto pData = GetSpriteData3D( name );
+
+                    // Create the sprite object and add it to the sprite list.
+                    CSprite3D * pSprite = new CSprite3D( pData );
+                    _spriteList3d[name].push_back( pSprite );
 
                     CVector3 pos;
                     if( NParseHelper::GetXYZ( iter, "position", pos ) )
@@ -398,10 +399,6 @@ void CSpriteManager::CreateSpriteCollection3D( const std::string & collectionNam
                     CVector3 rot;
                     if( NParseHelper::GetXYZ( iter, "rotation", rot ) )
                         pSprite->SetRot( rot );
-
-                    CVector3 scale;
-                    if( NParseHelper::GetXYZ( iter, "scale", scale, true ) )
-                        pSprite->SetScale( scale );
 
                     ++iter;
                 }
@@ -472,7 +469,7 @@ void CSpriteManager::Clear( CSprite3D * pSprite )
 {
     try
     {
-        auto iter = _spriteList3d.find( pSprite->GetName() );
+        auto iter = _spriteList3d.find( pSprite->GetData()->GetName() );
         if( iter != _spriteList3d.end() )
             NDelFunc::DeleteVectorPointer( pSprite, iter->second );
     }
@@ -484,7 +481,7 @@ void CSpriteManager::Clear( CSprite3D * pSprite )
     {
         throw NExcept::CCriticalException( "Error",
                                            "CSpriteManager::Clear()",
-                                           pSprite ? "Failed to clear sprite '" + pSprite->GetName() + "'." :
+                                           pSprite ? "Failed to clear sprite '" + pSprite->GetData()->GetName() + "'." :
                                                      "Failed to clear the sprite.", e );
     }
 }

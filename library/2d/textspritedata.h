@@ -31,7 +31,7 @@ public:
     const std::string & GetName() const;
     const std::string & GetFont() const;
     const std::string & GetText() const;
-    float GetFontSize() const;
+    float GetTextSize() const;
     float GetTextSpacing() const;
     float GetLineSpacing() const;
     float GetMaxWidth() const;
@@ -50,8 +50,8 @@ private:
     // The text to be displayed.
     std::string _text;
 
-    // The size of the font.
-    float _fontSize = 4;
+    // The size of the text.
+    float _size = 4;
 
     // The space between characters.
     float _textSpacing = 0;

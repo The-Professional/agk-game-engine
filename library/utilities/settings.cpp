@@ -118,6 +118,8 @@ void CSettings::ApplySettings()
         // Virtual resolution is the resolution your art is designed for in size and position.
         agk::SetVirtualResolution( _vResolution.w, _vResolution.h );
 
+        SetScreenBounds();
+
         if( !_fullscreen )
         {
             int xPos = (GetSystemMetrics( SM_CXSCREEN ) - _resolution.w) / 2;
@@ -326,13 +328,43 @@ bool CSettings::IsWindowResized() const
 }
 
 
-// Check to see if the window has been resized. If so, reposition all sprites with alignments.
+/// *************************************************************************
+/// <summary> 
+/// Check to see if the window has been resized.
+/// If so, reposition all sprites with alignments.
+/// </summary>
+/// *************************************************************************
 void CSettings::CheckForWindowSizeChange()
 {
     if( _windowResized )
     {
         _windowResized = false;
-
         CSpriteManager::Instance().RepositionAllSprites2D();
+        SetScreenBounds();
     }
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Set the positions of each screen boundary.
+/// </summary>
+/// *************************************************************************
+void CSettings::SetScreenBounds()
+{
+    _screenBounds.top = agk::GetScreenBoundsTop();
+    _screenBounds.bottom = agk::GetScreenBoundsBottom();
+    _screenBounds.left = agk::GetScreenBoundsLeft();
+    _screenBounds.right = agk::GetScreenBoundsRight();
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get the positions of each screen boundary.
+/// </summary>
+/// *************************************************************************
+const CVector4 & CSettings::GetScreenBounds() const
+{
+    return _screenBounds;
 }

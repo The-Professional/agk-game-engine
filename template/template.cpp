@@ -49,7 +49,7 @@ void app::Begin()
 
     CSpriteManager::Instance().CreateSpriteCollection3D( "stage0" );
     pSprite = CSpriteManager::Instance().CreateSprite3D( "ball" );
-    pSprite->SetScale( 2 );
+    //pSprite->SetScale( 2 );
 
     pSprite2 = CSpriteManager::Instance().CreateSprite2D( "test" );
     pTextSprite = CSpriteManager::Instance().CreateTextSprite( "text" );

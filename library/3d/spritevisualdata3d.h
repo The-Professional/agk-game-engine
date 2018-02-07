@@ -47,7 +47,7 @@ public:
     // Get the sprite's dimensions.
     float GetWidth() const;
     float GetHeight() const;
-    float GetLength() const;
+    float GetDepth() const;
     float GetRadius() const;
     float GetDiameter() const;
     int GetRows() const;
@@ -77,7 +77,7 @@ private:
     std::string _textureMap, _normalMap, _specularMap;
 
     // Dimensions used to create the sprite.
-    float _width = 0, _height = 0, _length = 0, _radius = 0;
+    float _width = 0, _height = 0, _depth = 0, _radius = 0;
     int _rows = 0, _columns = 0;
 
     // If the sprite casts a shadow.

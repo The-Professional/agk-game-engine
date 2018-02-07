@@ -309,11 +309,11 @@ namespace NParseHelper
     /// <param name="iter"> JSON node to parse. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    void GetDimensions( nlohmann::json::const_iterator iter, float & width, float & height, float & length, float & radius, int & rows, int & columns )
+    void GetDimensions( nlohmann::json::const_iterator iter, float & width, float & height, float & depth, float & radius, int & rows, int & columns )
     {
         GetFloat( iter, "width", width );
         GetFloat( iter, "height", height );
-        GetFloat( iter, "length", length );
+        GetFloat( iter, "depth", depth );
 
         if( !GetFloat( iter, "radius", radius ) )
         {

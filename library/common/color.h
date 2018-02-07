@@ -34,6 +34,55 @@ public:
     {
         r = red; g = green; b = blue; a = alpha;
     }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Color addition.
+    /// </summary>
+    /// *************************************************************************
+    CColor operator + ( const CColor & color )
+    {
+        return CColor( r + color.r, g + color.g, b + color.b, a + color.a );
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Color addition.
+    /// </summary>
+    /// *************************************************************************
+    void operator += ( const CColor & color )
+    {
+        r += color.r;
+        g += color.g;
+        b += color.b;
+        a += color.a;
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Color subtraction.
+    /// </summary>
+    /// *************************************************************************
+    CColor operator - ( const CColor & color )
+    {
+        return CColor( r - color.r, g - color.g, b - color.b, a - color.a );
+    }
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Color subtraction.
+    /// </summary>
+    /// *************************************************************************
+    void operator -= ( const CColor & color )
+    {
+        r -= color.r;
+        g -= color.g;
+        b -= color.b;
+        a -= color.a;
+    }
 };
 
 

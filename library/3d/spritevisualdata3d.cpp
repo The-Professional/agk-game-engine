@@ -42,7 +42,7 @@ void CSpriteVisualData3D::LoadFromIter( nlohmann::json::const_iterator iter )
     NParseHelper::GetString( iter, "textureMap", _textureMap );
     NParseHelper::GetString( iter, "normalMap", _normalMap );
     NParseHelper::GetString( iter, "specularMap", _specularMap );
-    NParseHelper::GetDimensions( iter, _width, _height, _length, _radius, _rows, _columns );
+    NParseHelper::GetDimensions( iter, _width, _height, _depth, _radius, _rows, _columns );
     NParseHelper::GetBool( iter, "castShadow", _castShadow );
     NParseHelper::GetBool( iter, "receiveShadow", _receiveShadow );
 
@@ -168,9 +168,9 @@ float CSpriteVisualData3D::GetHeight() const
 /// Get the length of the sprite.
 /// </summary>
 /// *************************************************************************
-float CSpriteVisualData3D::GetLength() const
+float CSpriteVisualData3D::GetDepth() const
 {
-    return _length;
+    return _depth;
 }
 
 

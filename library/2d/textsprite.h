@@ -1,6 +1,9 @@
 #ifndef __text_sprite_h__
 #define __text_sprite_h__
 
+// Physical dependency
+#include <common\iobject.h>
+
 // Game lib dependencies
 #include <common\defs.h>
 #include <common\vector2.h>
@@ -19,7 +22,7 @@ class CTextSpriteData;
 /// Class to hold text sprite information. 
 /// </summary>
 /// *************************************************************************
-class CTextSprite
+class CTextSprite : public iObject
 {
 public:
 
@@ -28,90 +31,71 @@ public:
 
     ~CTextSprite();
 
-    // Initialize
-    void Init( const CTextSpriteData * pData );
-    void Clear();
+    // Initialize the sprite using its sprite data.
+    virtual void Init();
 
-    // Get the id of the sprite.
-    uint GetID() const;
+    // Clears all of the text sprite's data that belong to it.
+    virtual void Clear();
 
-    // Get the name of the sprite.
-    const std::string & GetName() const;
+    // Delete the object that belongs to the AGK id.
+    virtual void DeleteObject();
 
-    // Access functions for the sprite's position.
-    void SetPos( float x, float y );
-    void SetPos( float x, float y, float z );
-    void SetPos( const CVector2 & pos );
-    void SetPos( const CVector3 & pos );
-    void SetPosX( float x );
-    void SetPosY( float y );
-    void SetPosZ( float z );
-    CVector3 GetPos() const;
-    float GetPosX() const;
-    float GetPosY() const;
-    float GetPosZ() const;
+    // Access functions for the data used to create the sprite.
+    void SetData( CTextSpriteData * pData );
+    const CTextSpriteData * GetData() const;
 
-    // Access functions for the sprite's rotation.
-    void SetRot( float angle );
-    void IncRot( float angle );
-    float GetRot() const;
-
-    // Access functions for the sprite's scale.
-    void SetScale( float uniform );
-    float GetScale() const;
+    // Update AGK with the current color and transformation data.
+    virtual void UpdatePosAGK();
+    virtual void UpdateRotAGK();
+    virtual void UpdateSizeAGK();
+    virtual void UpdateColorAGK();
 
     // Access functions for the sprite's visibility.
-    void SetVisible( bool visible );
-    bool IsVisible() const;
+    virtual void SetVisible( bool visible );
+    virtual bool IsVisible() const;
 
     // Access functions for the text sprite's font.
-    void SetFont( uint fontId );
-    uint GetFont() const;
+    virtual void SetFont( uint fontId );
+    virtual uint GetFont() const;
 
     // Access functions for the text sprite's text.
-    void SetText( const std::string & text );
-    std::string GetText() const;
+    virtual void SetText( const std::string & text );
+    virtual std::string GetText() const;
+
+    // Access functions for the text sprite's size.
+    virtual void SetTextSize( float size );
+    virtual float GetTextSize() const;
 
     // Access functions for the text sprite's text spacing.
-    void SetTextSpacing( float textSpacing );
-    float GetTextSpacing() const;
+    virtual void SetTextSpacing( float textSpacing );
+    virtual float GetTextSpacing() const;
 
     // Access functions for the text sprite's line spacing.
-    void SetLineSpacing( float lineSpacing );
-    float GetLineSpacing() const;
+    virtual void SetLineSpacing( float lineSpacing );
+    virtual float GetLineSpacing() const;
 
     // Access functions for the text sprite's max width before text begins to wrap.
-    void SetMaxWidth( float maxWidth );
-    float GetMaxWidth() const;
-
-    // Access functions for the text sprite's color.
-    void SetColor( const CColor & color );
-    CColor GetColor() const;
+    virtual void SetMaxWidth( float maxWidth );
+    virtual float GetMaxWidth() const;
 
     // Access functions for the text sprite's text alignment.
-    void SetTextAlignment( NDefs::ETextAlignment alignment );
-    NDefs::ETextAlignment GetTextAlignment() const;
+    virtual void SetTextAlignment( NDefs::ETextAlignment alignment );
+    virtual NDefs::ETextAlignment GetTextAlignment() const;
 
     // Access functions for the text sprite's alignment.
     void SetAlignment( const CBitmask<uint> & alignment );
     const CBitmask<uint> & GetAlignment() const;
 
     // Reset the sprite's position using its previous position.
-    void Reposition();
+    virtual void Reposition();
 
 private:
 
     // Sprite data this sprite is based off of. The sprite does not own this.
     const CTextSpriteData * _pData = nullptr;
 
-    // ID of the text sprite.
-    uint _id = 0;
-
     // ID of the font used.
     uint _fontId = 0;
-
-    // The previous set position of the sprite. This is used to retain alignment.
-    CVector2 _prevPos;
     
     // Text sprite's max width before text begins to wrap.
     float _maxWidth = 0;
@@ -120,7 +104,7 @@ private:
     NDefs::ETextAlignment _textAlignment;
 
     // The alignment of the sprite.
-    CBitmask<uint> _alignment;
+    CBitmask<uint> _alignment = NDefs::EA_CENTER;
 
     // Text displayed by the sprite.
     std::string _text;

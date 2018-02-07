@@ -13,10 +13,10 @@
     "shadows": {
       "enabled": true,
       "bias": 0.001,
-      "shadowMode": 1,
-      "size": { "w": 1024, "h": 1024 },
+      "shadowMode": 2,
+      "size": { "w": 512, "h": 512 },
       "smoothing": 0,
-      "range": -1
+      "range": 50
     }
 
   }

@@ -28,53 +28,49 @@ namespace NMathFunc
 
     /// *************************************************************************
     /// <summary>
-    /// Get the new position correctly aligned with the window 
+    /// Align the passed in position with the change in the screen boundaries. 
     /// </summary>
-    /// <param name="alignment"> Alignment of the sprite with the window. </param>
-    /// <param name="vPos"> Position in virtual space to be converted. </param>
+    /// <param name="alignment"> Alignment of the sprite with the screen. </param>
+    /// <param name="pos"> Position to be converted. </param>
     /// *************************************************************************
-    CVector2 GetAlignedPos( const CBitmask<uint> & alignment, const CVector2 & vPos )
+    void AlignPosition( const CBitmask<uint> & alignment, CVector3 & pos )
     {
         if( alignment == NDefs::EA_CENTER )
-            return vPos;
+            return;
 
-        return CVector2( GetAlignedPosX( alignment, vPos.x ), 
-                         GetAlignedPosY( alignment, vPos.y ) );
+        AlignPositionX( alignment, pos.x );
+        AlignPositionY( alignment, pos.y );
     }
 
 
     /// *************************************************************************
     /// <summary>
-    /// Get the new x position correctly aligned with the window 
+    /// Align the passed in x position with the change in the screen boundaries. 
     /// </summary>
-    /// <param name="alignment"> Alignment of the sprite with the window. </param>
-    /// <param name="vPos"> X position in virtual space to be converted. </param>
+    /// <param name="alignment"> Alignment of the sprite with the screen. </param>
+    /// <param name="x"> X position in virtual space to be converted. </param>
     /// *************************************************************************
-    float GetAlignedPosX( const CBitmask<uint> & alignment, float x )
+    void AlignPositionX( const CBitmask<uint> & alignment, float & x )
     {
         if( alignment.Contains( NDefs::EA_LEFT ) )
-            return x + agk::GetScreenBoundsLeft();
+            x = x - CSettings::Instance().GetScreenBounds().left + agk::GetScreenBoundsLeft();
         else if( alignment.Contains( NDefs::EA_RIGHT ) )
-            return x + agk::GetScreenBoundsRight() - (float)CSettings::Instance().GetVirtualResolution().w;
-
-        return x;
+            x = x - CSettings::Instance().GetScreenBounds().right + agk::GetScreenBoundsRight();
     }
 
 
     /// *************************************************************************
     /// <summary>
-    /// Get the new y position correctly aligned with the window 
+    /// Align the passed in y position with the change in the screen boundaries. 
     /// </summary>
-    /// <param name="alignment"> Alignment of the sprite with the window. </param>
-    /// <param name="vPos"> Y position in virtual space to be converted. </param>
+    /// <param name="alignment"> Alignment of the sprite with the screen. </param>
+    /// <param name="y"> Y position in virtual space to be converted. </param>
     /// *************************************************************************
-    float GetAlignedPosY( const CBitmask<uint> & alignment, float y )
+    void AlignPositionY( const CBitmask<uint> & alignment, float & y )
     {
         if( alignment.Contains( NDefs::EA_TOP ) )
-            return y + agk::GetScreenBoundsTop();
+            y = y - CSettings::Instance().GetScreenBounds().top + agk::GetScreenBoundsTop();
         else if( alignment.Contains( NDefs::EA_BOTTOM ) )
-            return y + agk::GetScreenBoundsBottom() - (float)CSettings::Instance().GetVirtualResolution().h;
-
-        return y;
+            y = y - CSettings::Instance().GetScreenBounds().bottom + agk::GetScreenBoundsBottom();
     }
 }

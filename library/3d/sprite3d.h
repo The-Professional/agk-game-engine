@@ -1,9 +1,11 @@
 #ifndef __sprite_3d_h__
 #define __sprite_3d_h__
 
+// Physical dependency
+#include <common\iobject.h>
+
 // Game lib dependencies
 #include <common\defs.h>
-#include <common\vector3.h>
 
 // Standard lib dependencies
 #include <string>
@@ -16,7 +18,7 @@ class CSpriteData3D;
 /// Class to hold 3D sprite information. 
 /// </summary>
 /// *************************************************************************
-class CSprite3D
+class CSprite3D : public iObject
 {
 public:
 
@@ -25,56 +27,30 @@ public:
 
     ~CSprite3D();
 
-    // Initialize
-    void Init( const CSpriteData3D * objectData );
-    void Clear();
+    // Initialize the sprite using its sprite data.
+    void Init();
 
-    // Get the name of the sprite.
-    const std::string & GetName() const;
+    // Delete the object that belongs to the AGK id.
+    virtual void DeleteObject();
 
-    // Access functions for the sprite's position.
-    void SetPos( float x, float y, float z );
-    void SetPos( const CVector3 & pos );
-    CVector3 GetPos() const;
-    float GetPosX() const;
-    float GetPosY() const;
-    float GetPosZ() const;
+    // Access functions for the data used to create the sprite.
+    void SetData( CSpriteData3D * pData );
+    const CSpriteData3D * GetData() const;
 
-    // Access functions for the sprite's rotation.
-    void SetRot( float x, float y, float z );
-    void SetRot( const CVector3 & rot );
-    void IncRot( float x, float y, float z );
-    void IncRotX( float value );
-    void IncRotY( float value );
-    void IncRotZ( float value );
-    CVector3 GetRot() const;
-    float GetRotX() const;
-    float GetRotY() const;
-    float GetRotZ() const;
-
-    // Access functions for the sprite's scale.
-    void SetScale( float uniform );
-    void SetScale( float x, float y, float z );
-    void SetScale( const CVector3 & scale );
-    const CVector3 & GetScale() const;
-    float GetScaleX() const;
-    float GetScaleY() const;
-    float GetScaleZ() const;
+    // Update AGK with the current color and transformation data.
+    virtual void UpdatePosAGK();
+    virtual void UpdateRotAGK();
+    virtual void UpdateSizeAGK();
+    virtual void UpdateColorAGK();
 
     // Access functions for the sprite's visibility.
-    void SetVisible( bool visible );
-    bool IsVisible() const;
+    virtual void SetVisible( bool visible );
+    virtual bool IsVisible() const;
 
 private:
 
     // Sprite data this sprite is based off of. The sprite does not own this.
-    const CSpriteData3D * _pData;
-
-    // ID of the sprite.
-    uint _id = 0;
-
-    // Scale of the sprite (AGK has no functions to retrieve scale).
-    CVector3 _scale;
+    const CSpriteData3D * _pData = nullptr;
 };
 
 

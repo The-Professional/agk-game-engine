@@ -47,7 +47,7 @@ void CTextSpriteData::LoadFromIter( const std::string & name, nlohmann::json::co
 
     NParseHelper::GetString( iter, "font", _font );
     NParseHelper::GetString( iter, "text", _text );
-    NParseHelper::GetFloat( iter, "fontSize", _fontSize );
+    NParseHelper::GetFloat( iter, "size", _size );
     NParseHelper::GetFloat( iter, "textSpacing", _textSpacing );
     NParseHelper::GetFloat( iter, "lineSpacing", _lineSpacing );
     NParseHelper::GetFloat( iter, "maxWidth", _maxWidth );
@@ -95,9 +95,9 @@ const std::string & CTextSpriteData::GetText() const
 /// Get the size of the font.
 /// </summary>
 /// *************************************************************************
-float CTextSpriteData::GetFontSize() const
+float CTextSpriteData::GetTextSize() const
 {
-    return _fontSize;
+    return _size;
 }
 
 

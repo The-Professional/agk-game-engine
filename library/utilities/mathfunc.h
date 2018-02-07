@@ -15,9 +15,9 @@ namespace NMathFunc
     bool Approximate( float v1, float v2, float error = 0.0001f );
 
     // Get the new position correctly aligned with the window.
-    CVector2 GetAlignedPos( const CBitmask<uint> & alignment, const CVector2 & vPos );
-    float GetAlignedPosX( const CBitmask<uint> & alignment, float x );
-    float GetAlignedPosY( const CBitmask<uint> & alignment, float y );
+    void AlignPosition( const CBitmask<uint> & alignment, CVector3 & vPos );
+    void AlignPositionX( const CBitmask<uint> & alignment, float & x );
+    void AlignPositionY( const CBitmask<uint> & alignment, float & y );
 }
 
 #endif  // __math_func_h__

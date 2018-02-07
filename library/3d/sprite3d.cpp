@@ -5,6 +5,7 @@
 #include <agk.h>
 #include <3d\spritedata3d.h>
 #include <managers\resourcemanager.h>
+#include <utilities\settings.h>
 
 /// *************************************************************************
 /// <summary>
@@ -24,7 +25,8 @@ CSprite3D::CSprite3D()
 /// *************************************************************************
 CSprite3D::CSprite3D( const CSpriteData3D * pData )
 {
-    Init( pData );
+    _pData = pData;
+    Init();
 }
 
 
@@ -41,16 +43,18 @@ CSprite3D::~CSprite3D()
 
 /// *************************************************************************
 /// <summary>
-/// Initialize the sprite with the passed in object type.
+/// Initialize the sprite using its sprite data.
 /// </summary>
-/// <param name="pData"> Sprite data used to create the sprite. </param>  
 /// *************************************************************************
-void CSprite3D::Init( const CSpriteData3D * pData )
+void CSprite3D::Init()
 {
+    // Leave if there's no data to initialize with.
+    if( !_pData )
+        return;
+
     Clear();
 
-    _pData = pData;
-    const CSpriteVisualData3D * pVisual = pData->GetVisualData();
+    const CSpriteVisualData3D * pVisual = _pData->GetVisualData();
 
     if( pVisual )
     {
@@ -58,8 +62,8 @@ void CSprite3D::Init( const CSpriteData3D * pData )
         {
             // Boxes must have a width, height, and length.
         case NDefs::EOT_BOX:
-            if( pVisual->GetWidth() > 0 && pVisual->GetHeight() > 0 && pVisual->GetLength() > 0 )
-                _id = agk::CreateObjectBox( pVisual->GetWidth(), pVisual->GetHeight(), pVisual->GetLength() );
+            if( pVisual->GetWidth() > 0 && pVisual->GetHeight() > 0 && pVisual->GetDepth() > 0 )
+                _id = agk::CreateObjectBox( pVisual->GetWidth(), pVisual->GetHeight(), pVisual->GetDepth() );
             break;
 
             // Cones must have a height, radius, and at least 3 columns.
@@ -119,15 +123,20 @@ void CSprite3D::Init( const CSpriteData3D * pData )
                 agk::SetObjectImage( _id, imageId, NDefs::ETS_SPECULAR );
             }
 
-            //// Set the sprite's shader.
-            //if( visual.GetShaderID() > 0 )
-            //    agk::SetObjectShader( _objectId, visual.GetShaderID() );
+            // Only apply these if shadows are enabled.
+            if( CSettings::Instance().ShadowsEnabled() )
+            {
+                agk::SetObjectCastShadow( _id, pVisual->WillCastShadow() );
+                agk::SetObjectReceiveShadow( _id, pVisual->WillReceiveShadow() );
+            }
+
+            // Get the size of the sprite.
+            _size.x = std::abs( agk::GetObjectSizeMaxX( _id ) - agk::GetObjectSizeMinX( _id ) );
+            _size.y = std::abs( agk::GetObjectSizeMaxY( _id ) - agk::GetObjectSizeMinY( _id ) );
+            _size.z = std::abs( agk::GetObjectSizeMaxZ( _id ) - agk::GetObjectSizeMinZ( _id ) );
 
             // Set the sprite's color.
-            agk::SetObjectColor( _id, pVisual->GetColor().r, pVisual->GetColor().g, pVisual->GetColor().b, pVisual->GetColor().a );
-
-            agk::SetObjectCastShadow( _id, pVisual->WillCastShadow() );
-            agk::SetObjectReceiveShadow( _id, pVisual->WillReceiveShadow() );
+            SetColor( pVisual->GetColor() );
         }
     }
 }
@@ -135,25 +144,41 @@ void CSprite3D::Init( const CSpriteData3D * pData )
 
 /// *************************************************************************
 /// <summary>
-/// Get the name of the sprite.
+/// Set the data used to create the sprite.
 /// </summary>
 /// *************************************************************************
-const std::string & CSprite3D::GetName() const
+void CSprite3D::SetData( CSpriteData3D * pData )
 {
-    return _pData->GetName();
+    _pData = pData;
 }
 
 
 /// *************************************************************************
 /// <summary>
-/// Clears all of the sprites data that belong to it.
+/// Get the data used to create the sprite.
 /// </summary>
 /// *************************************************************************
-void CSprite3D::Clear()
+const CSpriteData3D * CSprite3D::GetData() const
+{
+    return _pData;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Delete the object that belongs to the AGK id.
+/// </summary>
+/// *************************************************************************
+void CSprite3D::DeleteObject()
 {
     if( _id > 0 )
     {
-        agk::DeleteObject( _id );
+        // If the object has children then delete all of them. Otherwise delete normally.
+        if( agk::GetObjectNumChildren( _id ) > 0 )
+            agk::DeleteObjectWithChildren( _id );
+        else
+            agk::DeleteObject( _id );
+
         _id = 0;
     }
 }
@@ -161,208 +186,44 @@ void CSprite3D::Clear()
 
 /// *************************************************************************
 /// <summary>
-/// Set the sprite's position.
+/// Update AGK with the sprite's current position.
 /// </summary>
 /// *************************************************************************
-void CSprite3D::SetPos( float x, float y, float z ) 
-{ 
-    agk::SetObjectPosition( _id, x, y, z );
-}
-
-/// <summary>
-/// Set the sprite's position.
-/// </summary>
-void CSprite3D::SetPos( const CVector3 & pos )
-{ 
-    agk::SetObjectPosition( _id, pos.x, pos.y, pos.z );
+void CSprite3D::UpdatePosAGK()
+{
+    agk::SetObjectPosition( _id, _position.x, _position.y, _position.z );
 }
 
 
 /// *************************************************************************
 /// <summary>
-/// Get the sprite's position.
+/// Update AGK with the sprite's current rotation.
 /// </summary>
 /// *************************************************************************
-CVector3 CSprite3D::GetPos() const 
-{ 
-    return CVector3( agk::GetObjectX( _id ), agk::GetObjectY( _id ), agk::GetObjectZ( _id ) );
-}
-
-/// <summary>
-/// Get the sprite's X position.
-/// </summary>
-float CSprite3D::GetPosX() const
+void CSprite3D::UpdateRotAGK()
 {
-    return agk::GetObjectX( _id );
-}
-
-/// <summary>
-/// Get the sprite's Y position.
-/// </summary>
-float CSprite3D::GetPosY() const
-{
-    return agk::GetObjectY( _id );
-}
-
-/// <summary>
-/// Get the sprite's Z position.
-/// </summary>
-float CSprite3D::GetPosZ() const
-{
-    return agk::GetObjectZ( _id );
+    agk::SetObjectRotation( _id, _rotation.x, _rotation.y, _rotation.z );
 }
 
 
 /// *************************************************************************
 /// <summary>
-/// Set the sprite's rotation.
+/// Update AGK with the sprite's current size.
 /// </summary>
 /// *************************************************************************
-void CSprite3D::SetRot( float x, float y, float z )
+void CSprite3D::UpdateSizeAGK()
 {
-    agk::SetObjectRotation( _id, x, y, z );
+    // TODO: Add logic here to get the size and adjust the scale.
 }
-
-/// <summary>
-/// Set the sprite's rotation.
-/// </summary>
-void CSprite3D::SetRot( const CVector3 & rot )
-{
-    agk::SetObjectRotation( _id, rot.x, rot.y, rot.z );
-}
-
 
 /// *************************************************************************
 /// <summary>
-/// Increment the sprite's rotation.
+/// Update AGK with the sprite's current color.
 /// </summary>
 /// *************************************************************************
-void CSprite3D::IncRot( float x, float y, float z )
+void CSprite3D::UpdateColorAGK()
 {
-    agk::RotateObjectLocalY( _id, y );
-    agk::RotateObjectLocalX( _id, x );
-    agk::RotateObjectLocalZ( _id, z );
-}
-
-/// <summary>
-/// Increment the sprite's rotation.
-/// </summary>
-void CSprite3D::IncRotX( float value )
-{
-    agk::RotateObjectLocalX( _id, value );
-}
-
-/// <summary>
-/// Increment the sprite's rotation.
-/// </summary>
-void CSprite3D::IncRotY( float value )
-{
-    agk::RotateObjectLocalY( _id, value );
-}
-
-/// <summary>
-/// Increment the sprite's rotation.
-/// </summary>
-void CSprite3D::IncRotZ( float value )
-{
-    agk::RotateObjectLocalZ( _id, value );
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Get the sprite's rotation.
-/// </summary>
-/// *************************************************************************
-CVector3 CSprite3D::GetRot() const
-{
-    return CVector3( agk::GetObjectAngleX( _id ), agk::GetObjectAngleY( _id ), agk::GetObjectAngleZ( _id ) );
-}
-
-/// <summary>
-/// Get the sprite's X rotation.
-/// </summary>
-float CSprite3D::GetRotX() const
-{
-    return agk::GetObjectAngleX( _id );
-}
-
-/// <summary>
-/// Get the sprite's Y rotation.
-/// </summary>
-float CSprite3D::GetRotY() const
-{
-    return agk::GetObjectAngleY( _id );
-}
-
-/// <summary>
-/// Get the sprite's Z rotation.
-/// </summary>
-float CSprite3D::GetRotZ() const
-{
-    return agk::GetObjectAngleZ( _id );
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Set the sprite's scale.
-/// </summary>
-/// *************************************************************************
-void CSprite3D::SetScale( float uniform )
-{
-    _scale = CVector3( uniform );
-    agk::SetObjectScale( _id, uniform, uniform, uniform );
-}
-
-void CSprite3D::SetScale( float x, float y, float z )
-{
-    _scale = CVector3( x, y, z );
-    agk::SetObjectScale( _id, x, y, z );
-}
-
-/// <summary>
-/// Set the sprite's scale.
-/// </summary>
-void CSprite3D::SetScale( const CVector3 & scale )
-{
-    _scale = scale;
-    agk::SetObjectScale( _id, scale.x, scale.y, scale.z );
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Get the sprite's scale.
-/// </summary>
-/// *************************************************************************
-const CVector3 & CSprite3D::GetScale() const
-{
-    return _scale;
-}
-
-/// <summary>
-/// Get the sprite's X scale.
-/// </summary>
-float CSprite3D::GetScaleX() const
-{
-    return _scale.x;
-}
-
-/// <summary>
-/// Get the sprite's Y scale.
-/// </summary>
-float CSprite3D::GetScaleY() const
-{
-    return _scale.y;
-}
-
-/// <summary>
-/// Get the sprite's Z scale.
-/// </summary>
-float CSprite3D::GetScaleZ() const
-{
-    return _scale.z;
+    agk::SetObjectColor( _id, _color.r, _color.g, _color.b, _color.a );
 }
 
 

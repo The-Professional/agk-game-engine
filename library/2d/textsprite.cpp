@@ -200,6 +200,8 @@ void CTextSprite::SetFont( uint fontId )
 {
     _fontId = fontId;
     agk::SetTextFont( _id, fontId );
+
+    UpdateSizeFromAGK();
 }
 
 
@@ -223,6 +225,8 @@ void CTextSprite::SetText( const std::string & text )
 {
     _text = text;
     agk::SetTextString( _id, text.c_str() );
+
+    UpdateSizeFromAGK();
 }
 
 
@@ -245,6 +249,8 @@ std::string CTextSprite::GetText() const
 void CTextSprite::SetTextSize( float size )
 {
     SetSizeD( size );
+
+    UpdateSizeFromAGK();
 }
 
 
@@ -267,6 +273,8 @@ float CTextSprite::GetTextSize() const
 void CTextSprite::SetTextSpacing( float textSpacing )
 {
     agk::SetTextSpacing( _id, textSpacing );
+
+    UpdateSizeFromAGK();
 }
 
 
@@ -289,6 +297,8 @@ float CTextSprite::GetTextSpacing() const
 void CTextSprite::SetLineSpacing( float lineSpacing )
 {
     agk::SetTextLineSpacing( _id, lineSpacing );
+
+    UpdateSizeFromAGK();
 }
 
 
@@ -312,7 +322,10 @@ void CTextSprite::SetMaxWidth( float maxWidth )
 {
     _maxWidth = maxWidth;
     agk::SetTextMaxWidth( _id, maxWidth );
+
+    UpdateSizeFromAGK();
 }
+
 
 /// *************************************************************************
 /// <summary>
@@ -322,6 +335,19 @@ void CTextSprite::SetMaxWidth( float maxWidth )
 float CTextSprite::GetMaxWidth() const
 {
     return _maxWidth;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Update the local size values with the total width and height the text is
+/// taking up.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::UpdateSizeFromAGK()
+{
+    _size.w = agk::GetTextTotalWidth( _id );
+    _size.h = agk::GetTextTotalHeight( _id );
 }
 
 

@@ -3,7 +3,7 @@
 
 // Game lib dependencies
 #include <common\defs.h>
-#include <common\vector2.h>
+#include <common\vector3.h>
 #include <common\bitmask.h>
 
 /// <summary>

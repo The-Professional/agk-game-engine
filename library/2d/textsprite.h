@@ -91,6 +91,11 @@ public:
 
 private:
 
+    // Update the local size values with the total width and height the text is taking up.
+    void UpdateSizeFromAGK();
+
+private:
+
     // Sprite data this sprite is based off of. The sprite does not own this.
     const CTextSpriteData * _pData = nullptr;
 

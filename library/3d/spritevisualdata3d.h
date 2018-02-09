@@ -28,7 +28,7 @@ public:
     void LoadFromIter( nlohmann::json::const_iterator iter );
 
     // Get the sprite's object type.
-    NDefs::EObjectType GetType() const;
+    NDefs::EMeshType GetType() const;
 
     // Get the sprite's mesh name.
     const std::string & GetMesh() const;
@@ -62,7 +62,7 @@ public:
 private:
 
     // Type of object.
-    NDefs::EObjectType _type;
+    NDefs::EMeshType _type;
 
     // Mesh name.
     std::string _mesh;

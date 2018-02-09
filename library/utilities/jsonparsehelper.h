@@ -14,6 +14,7 @@ class CColor;
 class CSpriteData3D;
 class CInputState;
 class CInputMapping;
+class iObject;
 
 template <typename type>
 class CBitmask;
@@ -43,7 +44,10 @@ namespace NParseHelper
     bool TagExists( nlohmann::json::const_iterator iter, const std::string & tag );
 
     // Parse generic x, y, z tags.
-    bool GetXYZ( nlohmann::json::const_iterator iter, const std::string & tag, CVector3 & vec, bool checkUniform = false );
+    bool GetXYZ( nlohmann::json::const_iterator iter, const std::string & tag, CVector3 & xyz );
+
+    // Parse generic w, h, d tags.
+    bool GetWHD( nlohmann::json::const_iterator iter, const std::string & tag, CVector3 & whd );
 
     // Parse generic w, h tags.
     bool GetWH( nlohmann::json::const_iterator iter, const std::string & tag, CSize<int> & wh );
@@ -69,6 +73,9 @@ namespace NParseHelper
 
     // Parse the input mapping tags.
     void GetInputMapping( nlohmann::json::const_iterator iter, CInputMapping & mapping );
+
+    // Parse object data tags.
+    void GetCollectionObject( nlohmann::json::const_iterator iter, iObject * pObject );
 }
 
 #endif  // __json_parse_helper_h__

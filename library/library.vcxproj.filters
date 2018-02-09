@@ -114,6 +114,9 @@
     <ClInclude Include="common\vector4.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="managers\collectionmanager.h">
+      <Filter>managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="utilities\settings.cpp">
@@ -181,6 +184,9 @@
     </ClCompile>
     <ClCompile Include="common\vector4.cpp">
       <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="managers\collectionmanager.cpp">
+      <Filter>managers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

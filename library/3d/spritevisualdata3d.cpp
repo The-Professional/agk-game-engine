@@ -48,19 +48,19 @@ void CSpriteVisualData3D::LoadFromIter( nlohmann::json::const_iterator iter )
 
     // Set the object type.
     if( _mesh == "box" )
-        _type = NDefs::EOT_BOX;
+        _type = NDefs::EMT_BOX;
     else if( _mesh == "cone" )
-        _type = NDefs::EOT_CONE;
+        _type = NDefs::EMT_CONE;
     else if( _mesh == "cylinder" )
-        _type = NDefs::EOT_CYLINDER;
+        _type = NDefs::EMT_CYLINDER;
     else if( _mesh == "capsule" )
-        _type = NDefs::EOT_CAPSULE;
+        _type = NDefs::EMT_CAPSULE;
     else if( _mesh == "plane" )
-        _type = NDefs::EOT_PLANE;
+        _type = NDefs::EMT_PLANE;
     else if( _mesh == "sphere" )
-        _type = NDefs::EOT_SPHERE;
+        _type = NDefs::EMT_SPHERE;
     else if( !_mesh.empty() )
-        _type = NDefs::EOT_MESH;
+        _type = NDefs::EMT_MESH;
 }
 
 
@@ -69,7 +69,7 @@ void CSpriteVisualData3D::LoadFromIter( nlohmann::json::const_iterator iter )
 /// Get the sprite's object type.
 /// </summary>
 /// *************************************************************************
-NDefs::EObjectType CSpriteVisualData3D::GetType() const
+NDefs::EMeshType CSpriteVisualData3D::GetType() const
 {
     return _type;
 }

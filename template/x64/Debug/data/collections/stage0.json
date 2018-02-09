@@ -1,0 +1,36 @@
+{
+  "collection": {
+
+
+    "sprite3d": [
+      {
+        "name": "ball",
+        "position":  {"x": 4, "y": 1, "z": 0}
+      },
+
+      {
+        "name": "floor",
+        "position": {"y": -3},
+        "rotation": {"x": 90}
+      }
+    ],
+
+
+    "sprite2d": [
+      {
+        "name": "test"
+      }
+    ],
+
+
+    "textSprite": [
+      {
+        "name": "titan",
+        "text": "Hi world!\nHi new line!",
+        "position": {"x": 500}
+      }
+    ]
+
+
+  }
+}

@@ -17,9 +17,6 @@
     <Filter Include="data\3d\sprites">
       <UniqueIdentifier>{cf8c2faa-b4f2-476f-9200-0ee0136ee364}</UniqueIdentifier>
     </Filter>
-    <Filter Include="data\3d\sprites\collections">
-      <UniqueIdentifier>{25f1cd68-d4f0-4fba-8f92-9e4baab20234}</UniqueIdentifier>
-    </Filter>
     <Filter Include="data\2d">
       <UniqueIdentifier>{251feab0-91ac-410e-b14b-3d3eea0767f2}</UniqueIdentifier>
     </Filter>
@@ -29,6 +26,9 @@
     <Filter Include="data\2d\text">
       <UniqueIdentifier>{d0b5ae50-3e63-4646-a189-8194626c887f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data\collections">
+      <UniqueIdentifier>{1f3f5a5a-f466-461e-b765-ece18341c560}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="x64\Debug\data\3d\sprites\ball.json">
@@ -36,9 +36,6 @@
     </None>
     <None Include="x64\Debug\data\settings.json">
       <Filter>data</Filter>
-    </None>
-    <None Include="x64\Debug\data\3d\sprites\collections\stage0.json">
-      <Filter>data\3d\sprites\collections</Filter>
     </None>
     <None Include="x64\Debug\data\3d\sprites\floor.json">
       <Filter>data\3d\sprites</Filter>
@@ -49,8 +46,11 @@
     <None Include="x64\Debug\data\2d\sprites\test.json">
       <Filter>data\2d\sprites</Filter>
     </None>
-    <None Include="x64\Debug\data\2d\text\text.json">
+    <None Include="x64\Debug\data\2d\text\titan.json">
       <Filter>data\2d\text</Filter>
+    </None>
+    <None Include="x64\Debug\data\collections\stage0.json">
+      <Filter>data\collections</Filter>
     </None>
   </ItemGroup>
 </Project>

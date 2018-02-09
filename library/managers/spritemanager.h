@@ -3,7 +3,6 @@
 
 // Game lib dependencies
 #include <common\defs.h>
-#include <managers\resourcefile.h>
 
 // Standard lib dependencies
 #include <string>
@@ -38,25 +37,19 @@ public:
     void LoadDataFileList2D( const std::string & path );
     void LoadTextDataFileList( const std::string & path );
 
-    // Read in the file and compile the list of sprite collection files.
-    void LoadCollectionFileList3D( const std::string & path );
-
     // Free the loaded sprite data.
     void Clear( const std::string & name = "" );
     void Clear( CSprite3D * pSprite );
 
     // Load the sprite data.
-    const CSpriteData3D * GetSpriteData3D( const std::string & name );
+    const CSpriteData3D * GetSpriteData3D( const std::string & name  );
     const CSpriteData2D * GetSpriteData2D( const std::string & name );
     const CTextSpriteData * GetTextSpriteData( const std::string & name );
 
     // Create the sprite.
-    CSprite3D * CreateSprite3D( const std::string & name );
-    CSprite2D * CreateSprite2D( const std::string & name );
-    CTextSprite * CreateTextSprite( const std::string & name );
-
-    // Create the collection of sprites.
-    void CreateSpriteCollection3D( const std::string & name );
+    CSprite3D * CreateSprite3D( const std::string & name, const std::string & collection = "" );
+    CSprite2D * CreateSprite2D( const std::string & name, const std::string & collection = "" );
+    CTextSprite * CreateTextSprite( const std::string & name, const std::string & text, const std::string & collection = "" );
 
     // Reposition all 2d sprites.
     void RepositionAllSprites2D();
@@ -75,9 +68,6 @@ private:
     std::map<std::string, std::string> _spriteDataFileList3d;
     std::map<std::string, std::string> _spriteDataFileList2d;
     std::map<std::string, std::string> _textSpriteDataFileList;
-
-    // Map containing the list of sprite collection files.
-    std::map<std::string, std::string> _spriteCollectionFileList3d;
 
     // Map containing the list of loaded sprite data.
     std::map<std::string, CSpriteData3D *> _spriteDataList3d;

@@ -15,6 +15,7 @@
 /// *************************************************************************
 CSprite2D::CSprite2D()
 {
+    _type = NDefs::EOT_SPRITE_2D;
 }
 
 
@@ -26,6 +27,7 @@ CSprite2D::CSprite2D()
 /// *************************************************************************
 CSprite2D::CSprite2D( const CSpriteData2D * pData )
 {
+    _type = NDefs::EOT_SPRITE_2D;
     _pData = pData;
     Init();
 }
@@ -196,6 +198,28 @@ void CSprite2D::SetVisible( bool visible )
 bool CSprite2D::IsVisible() const
 {
     return agk::GetSpriteVisible( _id );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Set the sprite's alignment.
+/// </summary>
+/// *************************************************************************
+void CSprite2D::SetAlignment( const CBitmask<uint> & alignment )
+{
+    _alignment = alignment;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the sprite's alignment.
+/// </summary>
+/// *************************************************************************
+CBitmask<uint> CSprite2D::GetAlignment() const
+{
+    return _alignment;
 }
 
 

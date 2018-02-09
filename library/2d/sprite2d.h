@@ -57,6 +57,10 @@ public:
     virtual void SetVisible( bool visible );
     virtual bool IsVisible() const;
 
+    // Access functions for the sprite's alignment.
+    virtual void SetAlignment( const CBitmask<uint> & alignment );
+    virtual CBitmask<uint> GetAlignment() const;
+
     // Reset the sprite's position using its previous position.
     virtual void Reposition();
 

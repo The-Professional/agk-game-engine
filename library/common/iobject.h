@@ -6,6 +6,7 @@
 #include <common\vector2.h>
 #include <common\vector3.h>
 #include <common\color.h>
+#include <common\bitmask.h>
 
 // Standard lib dependencies
 #include <string>
@@ -29,6 +30,9 @@ public:
 
     // Return the id set by AGK.
     uint GetID() const;
+
+    // Get the type of object this is.
+    NDefs::EObjectType GetType() const;
 
     // Update AGK with the current color and transformation data.
     virtual void UpdatePosAGK() = 0;
@@ -108,6 +112,10 @@ public:
     virtual float GetMaxWidth() const { return 0; }
     virtual NDefs::ETextAlignment GetTextAlignment() const { return NDefs::ETA_LEFT; }
 
+    // Access functions for the object's alignment.
+    virtual void SetAlignment( const CBitmask<uint> alignment ) {}
+    virtual CBitmask<uint> GetAlignment() const { return 0; }
+
     // Reset the object's position using its previous position.
     virtual void Reposition() {}
 
@@ -119,8 +127,13 @@ protected:
     // Destructor
     virtual ~iObject() {}
 
+protected:
+
     // The id AGK has given the object.
     uint _id = 0;
+
+    // The type of object.
+    NDefs::EObjectType _type;
 
     // Translation of the object.
     CVector3 _position = 0;

@@ -77,17 +77,6 @@ void CSpriteManager::LoadTextDataFileList( const std::string & path )
 
 /// *************************************************************************
 /// <summary> 
-/// Read the file and compile the list of sprite data files.
-/// </summary>
-/// *************************************************************************
-void CSpriteManager::LoadCollectionFileList3D( const std::string & path )
-{
-    NGeneralFuncs::AddFilesToMap( path, _spriteCollectionFileList3d );
-}
-
-
-/// *************************************************************************
-/// <summary> 
 /// Get the sprite data.
 /// </summary>
 /// <param name="name"> Name of the sprite. </param>
@@ -125,7 +114,7 @@ const CSpriteData3D * CSpriteManager::GetSpriteData3D( const std::string & name 
 
         throw NExcept::CCriticalException( "Error",
                                            "CSpriteManager::LoadSpriteData3D()",
-                                           "No sprite data exists with tha name '" + name + "'." );
+                                           "No sprite data exists with the name '" + name + "'." );
     }
     catch( NExcept::CCriticalException e )
     {
@@ -135,7 +124,7 @@ const CSpriteData3D * CSpriteManager::GetSpriteData3D( const std::string & name 
     {
         throw NExcept::CCriticalException( "Error",
                                            "CSpriteManager::LoadSpriteData3D()",
-                                           "Failed to get sprite '" + name + "'.", e );
+                                           "Failed to get sprite data '" + name + "'.", e );
     }
 
     return nullptr;
@@ -181,7 +170,7 @@ const CSpriteData2D * CSpriteManager::GetSpriteData2D( const std::string & name 
 
         throw NExcept::CCriticalException( "Error",
                                            "CSpriteManager::LoadSpriteData2D()",
-                                           "No sprite data exists with tha name '" + name + "'." );
+                                           "No sprite data exists with the name '" + name + "'." );
     }
     catch( NExcept::CCriticalException e )
     {
@@ -191,7 +180,7 @@ const CSpriteData2D * CSpriteManager::GetSpriteData2D( const std::string & name 
     {
         throw NExcept::CCriticalException( "Error",
                                            "CSpriteManager::LoadSpriteData2D()",
-                                           "Failed to get sprite '" + name + "'.", e );
+                                           "Failed to get sprite data '" + name + "'.", e );
     }
 
     return nullptr;
@@ -237,7 +226,7 @@ const CTextSpriteData * CSpriteManager::GetTextSpriteData( const std::string & n
 
         throw NExcept::CCriticalException( "Error",
                                            "CSpriteManager::GetTextSpriteData()",
-                                           "No sprite data exists with tha name '" + name + "'." );
+                                           "No sprite data exists with the name '" + name + "'." );
     }
     catch( NExcept::CCriticalException e )
     {
@@ -247,7 +236,7 @@ const CTextSpriteData * CSpriteManager::GetTextSpriteData( const std::string & n
     {
         throw NExcept::CCriticalException( "Error",
                                            "CSpriteManager::GetTextSpriteData()",
-                                           "Failed to get sprite '" + name + "'.", e );
+                                           "Failed to get sprite data '" + name + "'.", e );
     }
 
     return nullptr;
@@ -256,11 +245,12 @@ const CTextSpriteData * CSpriteManager::GetTextSpriteData( const std::string & n
 
 /// *************************************************************************
 /// <summary> 
-/// Create the sprite.
+/// Create the 3d sprite.
 /// </summary>
 /// <param name="name"> Name of the sprite. </param>
+/// <param name="collection"> The collection the sprite belongs to. </param>
 /// *************************************************************************
-CSprite3D * CSpriteManager::CreateSprite3D( const std::string & name )
+CSprite3D * CSpriteManager::CreateSprite3D( const string & name, const string & collection )
 {
     try
     {
@@ -269,7 +259,11 @@ CSprite3D * CSpriteManager::CreateSprite3D( const std::string & name )
 
         // Create the sprite object and add it to the sprite list.
         CSprite3D * pSprite = new CSprite3D( pData );
-        _spriteList3d[name].push_back( pSprite );
+
+        if( collection.empty() )
+            _spriteList3d[name].push_back( pSprite );
+        else
+            _spriteList3d[collection].push_back( pSprite );
 
         return pSprite;
     }
@@ -290,11 +284,12 @@ CSprite3D * CSpriteManager::CreateSprite3D( const std::string & name )
 
 /// *************************************************************************
 /// <summary> 
-/// Create the sprite.
+/// Create the 2d sprite.
 /// </summary>
 /// <param name="name"> Name of the sprite. </param>
+/// <param name="collection"> The collection the sprite belongs to. </param>
 /// *************************************************************************
-CSprite2D * CSpriteManager::CreateSprite2D( const std::string & name )
+CSprite2D * CSpriteManager::CreateSprite2D( const std::string & name, const string & collection )
 {
     try
     {
@@ -303,7 +298,11 @@ CSprite2D * CSpriteManager::CreateSprite2D( const std::string & name )
 
         // Create the sprite object and add it to the sprite list.
         CSprite2D * pSprite = new CSprite2D( pData );
-        _spriteList2d[name].push_back( pSprite );
+
+        if( collection.empty() )
+            _spriteList2d[name].push_back( pSprite );
+        else
+            _spriteList2d[collection].push_back( pSprite );
 
         return pSprite;
     }
@@ -326,9 +325,11 @@ CSprite2D * CSpriteManager::CreateSprite2D( const std::string & name )
 /// <summary> 
 /// Create the text sprite.
 /// </summary>
-/// <param name="name"> Name of the text sprite. </param>
+/// <param name="name"> Name of the sprite. </param>
+/// <param name="text"> The text to display. </param>
+/// <param name="collection"> The collection the sprite belongs to. </param>
 /// *************************************************************************
-CTextSprite * CSpriteManager::CreateTextSprite( const std::string & name )
+CTextSprite * CSpriteManager::CreateTextSprite( const string & name, const string & text, const string & collection )
 {
     try
     {
@@ -336,8 +337,12 @@ CTextSprite * CSpriteManager::CreateTextSprite( const std::string & name )
         auto pData = GetTextSpriteData( name );
 
         // Create the sprite object and add it to the sprite list.
-        CTextSprite * pSprite = new CTextSprite( pData );
-        _textSpriteList[name].push_back( pSprite );
+        CTextSprite * pSprite = new CTextSprite( pData, text );
+
+        if( collection.empty() )
+            _textSpriteList[name].push_back( pSprite );
+        else
+            _textSpriteList[collection].push_back( pSprite );
 
         return pSprite;
     }
@@ -348,73 +353,11 @@ CTextSprite * CSpriteManager::CreateTextSprite( const std::string & name )
     catch( exception e )
     {
         throw NExcept::CCriticalException( "Error",
-                                           "CSpriteManager::CreateSprite2D()",
+                                           "CSpriteManager::CreateTextSprite()",
                                            "Failed to create sprite '" + name + "'.", e );
     }
 
     return nullptr;
-}
-
-
-/// *************************************************************************
-/// <summary> 
-/// Create the collection of sprites.
-/// </summary>
-/// <param name="name"> Name of the sprite collection. </param>
-/// *************************************************************************
-void CSpriteManager::CreateSpriteCollection3D( const std::string & collectionName )
-{
-    try
-    {
-        auto mapIter = _spriteCollectionFileList3d.find( collectionName );
-        if( mapIter != _spriteCollectionFileList3d.end() )
-        {
-            // Load the sprite data file.
-            ifstream ifile( mapIter->second );
-
-            // Parse the content into a json object.
-            json j;
-            ifile >> j;
-
-            auto collectionIter = j.find( "spriteCollection3d" );
-            if( collectionIter != j.end() )
-            {
-                auto iter = collectionIter->begin();
-                while( iter != collectionIter->end() )
-                {
-                    string name;
-                    NParseHelper::GetString( iter, "name", name );
-
-                    // Get the data used to create the sprite.
-                    auto pData = GetSpriteData3D( name );
-
-                    // Create the sprite object and add it to the sprite list.
-                    CSprite3D * pSprite = new CSprite3D( pData );
-                    _spriteList3d[name].push_back( pSprite );
-
-                    CVector3 pos;
-                    if( NParseHelper::GetXYZ( iter, "position", pos ) )
-                        pSprite->SetPos( pos );
-
-                    CVector3 rot;
-                    if( NParseHelper::GetXYZ( iter, "rotation", rot ) )
-                        pSprite->SetRot( rot );
-
-                    ++iter;
-                }
-            }
-        }
-    }
-    catch( NExcept::CCriticalException e )
-    {
-        throw e;
-    }
-    catch( exception e )
-    {
-        throw NExcept::CCriticalException( "Error",
-                                           "CSpriteManager::CreateSpriteCollection3D()",
-                                           "Failed to create sprite collection '" + collectionName + "'.", e );
-    }
 }
 
 

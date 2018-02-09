@@ -36,6 +36,7 @@
     <ClInclude Include="common\vector3.h" />
     <ClInclude Include="common\vector4.h" />
     <ClInclude Include="controls\control.h" />
+    <ClInclude Include="managers\collectionmanager.h" />
     <ClInclude Include="managers\inputmanager.h" />
     <ClInclude Include="managers\inputmapping.h" />
     <ClInclude Include="managers\inputstate.h" />
@@ -64,6 +65,7 @@
     <ClCompile Include="common\vector3.cpp" />
     <ClCompile Include="common\vector4.cpp" />
     <ClCompile Include="controls\control.cpp" />
+    <ClCompile Include="managers\collectionmanager.cpp" />
     <ClCompile Include="managers\inputmanager.cpp" />
     <ClCompile Include="managers\inputmapping.cpp" />
     <ClCompile Include="managers\inputstate.cpp" />

@@ -14,6 +14,7 @@
 /// *************************************************************************
 CSprite3D::CSprite3D()
 {
+    _type = NDefs::EOT_SPRITE_3D;
 }
 
 
@@ -25,6 +26,7 @@ CSprite3D::CSprite3D()
 /// *************************************************************************
 CSprite3D::CSprite3D( const CSpriteData3D * pData )
 {
+    _type = NDefs::EOT_SPRITE_3D;
     _pData = pData;
     Init();
 }
@@ -61,43 +63,43 @@ void CSprite3D::Init()
         switch( pVisual->GetType() )
         {
             // Boxes must have a width, height, and length.
-        case NDefs::EOT_BOX:
+        case NDefs::EMT_BOX:
             if( pVisual->GetWidth() > 0 && pVisual->GetHeight() > 0 && pVisual->GetDepth() > 0 )
                 _id = agk::CreateObjectBox( pVisual->GetWidth(), pVisual->GetHeight(), pVisual->GetDepth() );
             break;
 
             // Cones must have a height, radius, and at least 3 columns.
-        case NDefs::EOT_CONE:
+        case NDefs::EMT_CONE:
             if( pVisual->GetHeight() > 0 && pVisual->GetRadius() > 0 && pVisual->GetColumns() > 2 )
                 _id = agk::CreateObjectCone( pVisual->GetHeight(), pVisual->GetDiameter(), pVisual->GetColumns() );
             break;
 
             // Cylinders must have a height, radius, and at least 3 columns.
-        case NDefs::EOT_CYLINDER:
+        case NDefs::EMT_CYLINDER:
             if( pVisual->GetHeight() > 0 && pVisual->GetRadius() > 0 && pVisual->GetColumns() > 2 )
                 _id = agk::CreateObjectCylinder( pVisual->GetHeight(), pVisual->GetDiameter(), pVisual->GetColumns() );
             break;
 
             // Capsules must have a radius and height.
-        case NDefs::EOT_CAPSULE:
+        case NDefs::EMT_CAPSULE:
             if( pVisual->GetRadius() > 0 && pVisual->GetHeight() > 0 )
                 _id = agk::CreateObjectCapsule( pVisual->GetDiameter(), pVisual->GetHeight(), Y_AXIS );
             break;
 
             // Planes must have a width and height.
-        case NDefs::EOT_PLANE:
+        case NDefs::EMT_PLANE:
             if( pVisual->GetWidth() > 0 && pVisual->GetHeight() > 0 )
                 _id = agk::CreateObjectPlane( pVisual->GetWidth(), pVisual->GetHeight() );
             break;
 
             // Spheres must have a radius, at least 2 rows, and at least 3 columns.
-        case NDefs::EOT_SPHERE:
+        case NDefs::EMT_SPHERE:
             if( pVisual->GetRadius() > 0 && pVisual->GetRows() > 1 && pVisual->GetColumns() > 2 )
                 _id = agk::CreateObjectSphere( pVisual->GetDiameter(), pVisual->GetRows(), pVisual->GetColumns() );
             break;
 
             // Meshes must have a name.
-        case NDefs::EOT_MESH:
+        case NDefs::EMT_MESH:
             if( !pVisual->GetMesh().empty() )
                 _id = agk::CloneObject( CResourceManager::Instance().LoadMesh( pVisual->GetMesh() ) );
             break;

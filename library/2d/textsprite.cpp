@@ -7,6 +7,8 @@
 #include <managers\resourcemanager.h>
 #include <utilities\mathfunc.h>
 
+using namespace std;
+
 /// *************************************************************************
 /// <summary>
 /// Constructor
@@ -14,6 +16,7 @@
 /// *************************************************************************
 CTextSprite::CTextSprite()
 {
+    _type = NDefs::EOT_TEXT_SPRITE;
 }
 
 
@@ -22,11 +25,13 @@ CTextSprite::CTextSprite()
 /// Constructor
 /// </summary>
 /// <param name="pData"> Sprite data used to create the sprite. </param> 
+/// <param name="text"> The text to display. </param>
 /// *************************************************************************
-CTextSprite::CTextSprite( const CTextSpriteData * pData )
+CTextSprite::CTextSprite( const CTextSpriteData * pData, const string & text )
 {
+    _type = NDefs::EOT_TEXT_SPRITE;
     _pData = pData;
-    Init();
+    Init( text );
 }
 
 
@@ -48,20 +53,33 @@ CTextSprite::~CTextSprite()
 /// *************************************************************************
 void CTextSprite::Init()
 {
+    Init( _text );
+}
+
+/// <summary>
+/// Initialize the sprite using its sprite data.
+/// </summary>
+/// <param name="text"> The text to display. </param>
+void CTextSprite::Init( const string & text )
+{
     // Leave if there's no data to initialize with.
     if( !_pData )
         return;
 
     Clear();
 
-    _id = agk::CreateText( _pData->GetText().c_str() );
+    if( !text.empty() )
+    {
+        _text = text;
+        _id = agk::CreateText( text.c_str() );
+    }
+    
     if( _id > 0 )
     {
-        _text = _pData->GetText();
         SetFont( CResourceManager::Instance().LoadFont( _pData->GetFont() ) );
         SetTextSpacing( _pData->GetTextSpacing() );
         SetLineSpacing( _pData->GetLineSpacing() );
-        SetTextSize( _pData->GetTextSize() );
+        SetTextSize( _pData->GetSize() );
         SetMaxWidth( _pData->GetMaxWidth() );
         SetColor( _pData->GetColor() );
         SetTextAlignment( _pData->GetTextAlignment() );
@@ -221,7 +239,7 @@ uint CTextSprite::GetFont() const
 /// Set the text sprite's text.
 /// </summary>
 /// *************************************************************************
-void CTextSprite::SetText( const std::string & text )
+void CTextSprite::SetText( const string & text )
 {
     _text = text;
     agk::SetTextString( _id, text.c_str() );
@@ -390,7 +408,7 @@ void CTextSprite::SetAlignment( const CBitmask<uint> & alignment )
 /// Get the text sprite's alignment.
 /// </summary>
 /// *************************************************************************
-const CBitmask<uint> & CTextSprite::GetAlignment() const
+CBitmask<uint> CTextSprite::GetAlignment() const
 {
     return _alignment;
 }

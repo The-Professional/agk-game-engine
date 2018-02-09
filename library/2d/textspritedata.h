@@ -30,8 +30,7 @@ public:
     // Access functions for the text sprite data.
     const std::string & GetName() const;
     const std::string & GetFont() const;
-    const std::string & GetText() const;
-    float GetTextSize() const;
+    float GetSize() const;
     float GetTextSpacing() const;
     float GetLineSpacing() const;
     float GetMaxWidth() const;
@@ -46,9 +45,6 @@ private:
 
     // The font to be used.
     std::string _font;
-
-    // The text to be displayed.
-    std::string _text;
 
     // The size of the text.
     float _size = 4;

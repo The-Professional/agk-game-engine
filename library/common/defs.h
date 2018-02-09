@@ -14,17 +14,24 @@ typedef unsigned int uint;
 /// </summary>
 namespace NDefs
 {
-    // The types of objects.
+    // The types of meshs.
+    enum EMeshType
+    {
+        EMT_NONE,
+        EMT_BOX,
+        EMT_CONE,
+        EMT_CYLINDER,
+        EMT_CAPSULE,
+        EMT_PLANE,
+        EMT_SPHERE,
+        EMT_MESH
+    };
+
     enum EObjectType
     {
-        EOT_NONE,
-        EOT_BOX,
-        EOT_CONE,
-        EOT_CYLINDER,
-        EOT_CAPSULE,
-        EOT_PLANE,
-        EOT_SPHERE,
-        EOT_MESH,
+        EOT_SPRITE_3D,
+        EOT_SPRITE_2D,
+        EOT_TEXT_SPRITE,
         EOT_LIGHT
     };
 

@@ -7,6 +7,7 @@
 #include <common\vector3.h>
 #include <common\color.h>
 #include <common\bitmask.h>
+#include <common\iobject.h>
 #include <managers\inputstate.h>
 #include <managers\inputmapping.h>
 #include <managers\inputmanager.h>
@@ -131,21 +132,43 @@ namespace NParseHelper
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
     /// *************************************************************************
-    bool GetXYZ( json::const_iterator iter, const string & tag, CVector3 & vec, bool checkUniform )
+    bool GetXYZ( json::const_iterator iter, const string & tag, CVector3 & xyz )
     {
         auto xyzIter = iter->find( tag );
         if( xyzIter != iter->end() )
         {
-            float xyz = 0;
-            if( checkUniform && GetFloat( xyzIter, "xyz", xyz ) )
+            float u = 0;
+            if( GetFloat( xyzIter, "xyz", u ) )
             {
-                vec = xyz;
+                xyz = u;
                 return true;
             }
 
-            GetFloat( xyzIter, "x", vec.x );
-            GetFloat( xyzIter, "y", vec.y );
-            GetFloat( xyzIter, "z", vec.z );
+            GetFloat( xyzIter, "x", xyz.x );
+            GetFloat( xyzIter, "y", xyz.y );
+            GetFloat( xyzIter, "z", xyz.z );
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Parse generic w, h, d tags.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// *************************************************************************
+    bool GetWHD( json::const_iterator iter, const string & tag, CVector3 & whd )
+    {
+        auto whdIter = iter->find( tag );
+        if( whdIter != iter->end() )
+        {
+            GetFloat( whdIter, "w", whd.w );
+            GetFloat( whdIter, "h", whd.h );
+            GetFloat( whdIter, "d", whd.d );
 
             return true;
         }
@@ -160,13 +183,13 @@ namespace NParseHelper
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
     /// *************************************************************************
-    bool GetWH( nlohmann::json::const_iterator iter, const string & tag, CSize<int> & size )
+    bool GetWH( nlohmann::json::const_iterator iter, const string & tag, CSize<int> & wh )
     {
         auto whIter = iter->find( tag );
         if( whIter != iter->end() )
         {
-            GetInt( whIter, "w", size.w );
-            GetInt( whIter, "h", size.h );
+            GetInt( whIter, "w", wh.w );
+            GetInt( whIter, "h", wh.h );
 
             return true;
         }
@@ -178,13 +201,13 @@ namespace NParseHelper
     /// Parse generic w, h tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    bool GetWH( nlohmann::json::const_iterator iter, const string & tag, CSize<float> & size )
+    bool GetWH( nlohmann::json::const_iterator iter, const string & tag, CSize<float> & wh )
     {
         auto whIter = iter->find( tag );
         if( whIter != iter->end() )
         {
-            GetFloat( whIter, "w", size.w );
-            GetFloat( whIter, "h", size.h );
+            GetFloat( whIter, "w", wh.w );
+            GetFloat( whIter, "h", wh.h );
 
             return true;
         }
@@ -403,5 +426,47 @@ namespace NParseHelper
                 ++mappingIter;
             }
         }
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Parse object data tags.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// *************************************************************************
+    void GetCollectionObject( json::const_iterator iter, iObject * pObject )
+    {
+        CVector3 pos;
+        if( GetXYZ( iter, "position", pos ) )
+            pObject->SetPos( pos );
+
+        CVector3 rot;
+        if( GetXYZ( iter, "rotation", rot ) )
+            pObject->SetRot( rot );
+
+        CVector3 size;
+        if( GetWHD( iter, "size", size ) )
+            pObject->SetSize( size );
+
+        bool visible = false;
+        if( GetBool( iter, "visible", visible ) )
+            pObject->SetVisible( visible );
+
+        float textSize = 0;
+        if( GetFloat( iter, "textSize", textSize ) )
+            pObject->SetTextSize( textSize );
+
+        CColor color;
+        if( GetColor( iter, color ) )
+            pObject->SetColor( color );
+
+        CBitmask<uint> alignment;
+        if( GetAlignment( iter, "alignment", alignment ) )
+            pObject->SetAlignment( alignment );
+
+        NDefs::ETextAlignment textAlignment;
+        if( GetTextAlignment( iter, textAlignment ) )
+            pObject->SetTextAlignment( textAlignment );
     }
 }

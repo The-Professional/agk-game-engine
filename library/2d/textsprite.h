@@ -27,12 +27,13 @@ class CTextSprite : public iObject
 public:
 
     CTextSprite();
-    CTextSprite( const CTextSpriteData * pData );
+    CTextSprite( const CTextSpriteData * pData, const std::string & text );
 
     ~CTextSprite();
 
     // Initialize the sprite using its sprite data.
     virtual void Init();
+    void Init( const std::string & text );
 
     // Clears all of the text sprite's data that belong to it.
     virtual void Clear();
@@ -83,8 +84,8 @@ public:
     virtual NDefs::ETextAlignment GetTextAlignment() const;
 
     // Access functions for the text sprite's alignment.
-    void SetAlignment( const CBitmask<uint> & alignment );
-    const CBitmask<uint> & GetAlignment() const;
+    virtual void SetAlignment( const CBitmask<uint> & alignment );
+    virtual CBitmask<uint> GetAlignment() const;
 
     // Reset the sprite's position using its previous position.
     virtual void Reposition();

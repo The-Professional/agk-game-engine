@@ -147,7 +147,7 @@ void CTextSprite::DeleteObject()
 /// Update AGK with the sprite's current position.
 /// </summary>
 /// *************************************************************************
-void CTextSprite::UpdatePosAGK()
+void CTextSprite::UpdateAGKWithPos()
 {
     agk::SetTextPosition( _id, _position.x, _position.y );
     agk::SetTextDepth( _id, (int)_position.z );
@@ -159,7 +159,7 @@ void CTextSprite::UpdatePosAGK()
 /// Update AGK with the sprite's current rotation.
 /// </summary>
 /// *************************************************************************
-void CTextSprite::UpdateRotAGK()
+void CTextSprite::UpdateAGKWithRot()
 {
     agk::SetTextAngle( _id, _rotation.z );
 }
@@ -170,7 +170,7 @@ void CTextSprite::UpdateRotAGK()
 /// Update AGK with the sprite's current size.
 /// </summary>
 /// *************************************************************************
-void CTextSprite::UpdateSizeAGK()
+void CTextSprite::UpdateAGKWithSize()
 {
     agk::SetTextSize( _id, _size.d );
 }
@@ -181,9 +181,57 @@ void CTextSprite::UpdateSizeAGK()
 /// Update AGK with the sprite's current color.
 /// </summary>
 /// *************************************************************************
-void CTextSprite::UpdateColorAGK()
+void CTextSprite::UpdateAGKWithColor()
 {
     agk::SetTextColor( _id, _color.r, _color.g, _color.b, _color.a );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Update the current position from AGK.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::UpdatePosFromAGK()
+{
+    _position.x = agk::GetTextX( _id );
+    _position.y = agk::GetTextY( _id );
+    _position.z = (float)agk::GetTextDepth( _id );
+}
+
+/// *************************************************************************
+/// <summary>
+/// Update the current rotation from AGK.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::UpdateRotFromAGK()
+{
+    // There doesn't seem to be a way to get a text's color from AGK, which is very strange.
+}
+
+/// *************************************************************************
+/// <summary>
+/// Update the current size from AGK.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::UpdateSizeFromAGK()
+{
+    _size.w = agk::GetTextTotalWidth( _id );
+    _size.h = agk::GetTextTotalHeight( _id );
+    _size.d = agk::GetTextSize( _id );
+}
+
+/// *************************************************************************
+/// <summary>
+/// Update the current color from AGK.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::UpdateColorFromAGK()
+{
+    _color.r = agk::GetTextColorRed( _id );
+    _color.g = agk::GetTextColorGreen( _id );
+    _color.b = agk::GetTextColorBlue( _id );
+    _color.a = agk::GetTextColorAlpha( _id );
 }
 
 
@@ -353,19 +401,6 @@ void CTextSprite::SetMaxWidth( float maxWidth )
 float CTextSprite::GetMaxWidth() const
 {
     return _maxWidth;
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Update the local size values with the total width and height the text is
-/// taking up.
-/// </summary>
-/// *************************************************************************
-void CTextSprite::UpdateSizeFromAGK()
-{
-    _size.w = agk::GetTextTotalWidth( _id );
-    _size.h = agk::GetTextTotalHeight( _id );
 }
 
 

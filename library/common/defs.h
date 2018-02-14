@@ -27,13 +27,51 @@ namespace NDefs
         EMT_MESH
     };
 
+    // The types of objects
     enum EObjectType
     {
+        EOT_NULL,
         EOT_SPRITE_3D,
         EOT_SPRITE_2D,
         EOT_TEXT_SPRITE,
         EOT_LIGHT
     };
+
+    // The types of transformation.
+    enum
+    {
+        ETT_NULL        = 0,
+        ETT_POSITION    = 1,
+        ETT_ROTATION    = 2,
+        ETT_SIZE        = 4,
+        ETT_COLOR       = 8
+    };
+
+    // The type of value to be animated.
+    enum EAnimationValueType
+    {
+        EAVT_X,
+        EAVT_Y,
+        EAVT_Z,
+        
+        EAVT_W,
+        EAVT_H,
+        EAVT_D,
+        
+        EAVT_R,
+        EAVT_G,
+        EAVT_B,
+        EAVT_A
+    };
+
+    // The type of animation end.
+    enum EEndType
+    {
+        EET_IGNORE,         // Ignore the ending animation. Effectively a pause.
+        EET_FINISH_LOOP,    // Continue to the end of the current loop before beginning the end animation.
+        EET_TRANSITION      // Immediately begin transitioning from current object values.
+    };
+
 
     // The types of textures.
     enum EImageType
@@ -64,11 +102,12 @@ namespace NDefs
 
     enum EControlState
     {
-        ECS_NULL,
         ECS_DISABLED,
         ECS_INACTIVE,
         ECS_ACTIVE,
-        ECS_PRESSED
+        ECS_PRESSED,
+        ECS_RELEASED,
+        ECS_TRANSITION
     };
     
     // The types of alignment.

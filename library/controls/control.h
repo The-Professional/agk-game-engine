@@ -5,11 +5,12 @@
 #include <common\defs.h>
 
 // Standard lib dependencies
-//#include <string>
 #include <vector>
+#include <map>
 
 // Forward declarations
-class CSprite2D;
+class iObject;
+class CTweenChain;
 
 /// *************************************************************************
 /// <summary> 
@@ -19,22 +20,26 @@ class CSprite2D;
 class CControl
 {
 public:
+
     CControl();
-    ~CControl();
+    virtual ~CControl();
+
+    // Update the control.
+    virtual void Update();
 
 private:
 
     // The type of control.
     NDefs::EControlType type;
 
-    // The state of the control.
-    NDefs::EControlState state;
-
-    // Sprite to control each other sprite.
-    CSprite2D * pHeadSprite;
-
     // List of sprites associated with the control.
-    std::vector<CSprite2D *> _pSpriteList;
+    std::vector<iObject *> _pSpriteList;
+
+    // The current state of the control.
+    NDefs::EControlState _state = NDefs::ECS_DISABLED;
+
+    // Map of the animations and their corresponding control state;
+    std::map<NDefs::EControlState, CTweenChain *> _animationList;
 };
 
 #endif  // __control_h__

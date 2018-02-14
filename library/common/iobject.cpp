@@ -50,7 +50,7 @@ void iObject::SetPos( float x, float y )
     _position.x = x;
     _position.y = y;
 
-    UpdatePosAGK();
+    UpdateAGKWithPos();
 }
 
 // Set the object's position. 
@@ -60,7 +60,7 @@ void iObject::SetPos( float x, float y, float z )
     _position.y = y;
     _position.z = z;
 
-    UpdatePosAGK();
+    UpdateAGKWithPos();
 }
 
 // Set the object's position. 
@@ -68,7 +68,7 @@ void iObject::SetPos( const CVector2 & pos )
 {
     _position = pos;
 
-    UpdatePosAGK();
+    UpdateAGKWithPos();
 }
 
 // Set the object's position. 
@@ -76,7 +76,7 @@ void iObject::SetPos( const CVector3 & pos )
 {
     _position = pos;
 
-    UpdatePosAGK();
+    UpdateAGKWithPos();
 }
 
 // Set the object's x position. 
@@ -84,7 +84,7 @@ void iObject::SetPosX( float x )
 {
     _position.x = x;
 
-    UpdatePosAGK();
+    UpdateAGKWithPos();
 }
 
 // Set the object's y position. 
@@ -92,7 +92,7 @@ void iObject::SetPosY( float y )
 {
     _position.y = y;
 
-    UpdatePosAGK();
+    UpdateAGKWithPos();
 }
 
 // Set the object's z position. 
@@ -100,7 +100,7 @@ void iObject::SetPosZ( float z )
 {
     _position.z = z;
 
-    UpdatePosAGK();
+    UpdateAGKWithPos();
 }
 
 
@@ -114,7 +114,7 @@ void iObject::IncPos( float x, float y )
     _position.x += x;
     _position.y += y;
 
-    UpdatePosAGK();
+    UpdateAGKWithPos();
 }
 
 // Increment the object's position. 
@@ -124,7 +124,7 @@ void iObject::IncPos( float x, float y, float z )
     _position.y += y;
     _position.z += z;
 
-    UpdatePosAGK();
+    UpdateAGKWithPos();
 }
 
 // Increment the object's position. 
@@ -132,7 +132,7 @@ void iObject::IncPos( const CVector2 & pos )
 {
     _position += pos;
 
-    UpdatePosAGK();
+    UpdateAGKWithPos();
 }
 
 // Increment the object's position. 
@@ -140,7 +140,7 @@ void iObject::IncPos( const CVector3 & pos )
 {
     _position += pos;
 
-    UpdatePosAGK();
+    UpdateAGKWithPos();
 }
 
 
@@ -149,8 +149,14 @@ void iObject::IncPos( const CVector3 & pos )
 /// Get the object's position. 
 /// </summary>
 /// *************************************************************************
-const CVector3 & iObject::GetPos() const
+const CVector3 & iObject::GetPos()
 {
+    if( !_updatedValues.Contains( NDefs::ETT_POSITION ) )
+    {
+        _updatedValues.Add( NDefs::ETT_POSITION );
+        UpdatePosFromAGK();
+    }
+
     return _position;
 }
 
@@ -166,7 +172,7 @@ void iObject::SetRot( float x, float y, float z )
     _rotation.y = y;
     _rotation.z = z;
 
-    UpdateRotAGK();
+    UpdateAGKWithRot();
 }
 
 // Set the object's rotation. 
@@ -174,7 +180,7 @@ void iObject::SetRot( const CVector3 & rot )
 {
     _rotation = rot;
 
-    UpdateRotAGK();
+    UpdateAGKWithRot();
 }
 
 // Set the object's x rotation. 
@@ -182,7 +188,7 @@ void iObject::SetRotX( float x )
 {
     _rotation.x = x;
 
-    UpdateRotAGK();
+    UpdateAGKWithRot();
 }
 
 // Set the object's x rotation. 
@@ -190,7 +196,7 @@ void iObject::SetRotY( float y )
 {
     _rotation.y = y;
 
-    UpdateRotAGK();
+    UpdateAGKWithRot();
 }
 
 // Set the object's z rotation. 
@@ -198,7 +204,7 @@ void iObject::SetRotZ( float z )
 {
     _rotation.z = z;
 
-    UpdateRotAGK();
+    UpdateAGKWithRot();
 }
 
 
@@ -213,7 +219,7 @@ void iObject::IncRot( float x, float y, float z )
     _rotation.y += y;
     _rotation.z += z;
 
-    UpdateRotAGK();
+    UpdateAGKWithRot();
 }
 
 // Increment the object's rotation. 
@@ -221,7 +227,7 @@ void iObject::IncRot( const CVector3 & rot )
 {
     _rotation += rot;
 
-    UpdateRotAGK();
+    UpdateAGKWithRot();
 }
 
 // Increment the object's z rotation. 
@@ -229,7 +235,7 @@ void iObject::IncRot( float z )
 {
     _rotation.z += z;
 
-    UpdateRotAGK();
+    UpdateAGKWithRot();
 }
 
 
@@ -238,8 +244,14 @@ void iObject::IncRot( float z )
 /// Get the object's rotation. 
 /// </summary>
 /// *************************************************************************
-const CVector3 & iObject::GetRot() const
+const CVector3 & iObject::GetRot()
 {
+    if( !_updatedValues.Contains( NDefs::ETT_ROTATION ) )
+    {
+        _updatedValues.Add( NDefs::ETT_ROTATION );
+        UpdateRotFromAGK();
+    }
+
     return _rotation;
 }
 
@@ -255,7 +267,7 @@ void iObject::SetSize( float w, float h, float d )
     _size.h = h;
     _size.d = d;
 
-    UpdateSizeAGK();
+    UpdateAGKWithSize();
 }
 
 // Set the object's size. 
@@ -264,7 +276,7 @@ void iObject::SetSize( float w, float h )
     _size.w = w;
     _size.h = h;
 
-    UpdateSizeAGK();
+    UpdateAGKWithSize();
 }
 
 // Set the object's size. 
@@ -272,7 +284,7 @@ void iObject::SetSize( const CVector3 & size )
 {
     _size = size;
 
-    UpdateSizeAGK();
+    UpdateAGKWithSize();
 }
 
 // Set the object's size. 
@@ -280,7 +292,7 @@ void iObject::SetSize( const CVector2 & size )
 {
     _size = size;
 
-    UpdateSizeAGK();
+    UpdateAGKWithSize();
 }
 
 // Set the object's width. 
@@ -288,7 +300,7 @@ void iObject::SetSizeW( float w )
 {
     _size.w = w;
 
-    UpdateSizeAGK();
+    UpdateAGKWithSize();
 }
 
 // Set the object's height. 
@@ -296,7 +308,7 @@ void iObject::SetSizeH( float h )
 {
     _size.h = h;
 
-    UpdateSizeAGK();
+    UpdateAGKWithSize();
 }
 
 // Set the object's depth. 
@@ -304,7 +316,7 @@ void iObject::SetSizeD( float d )
 {
     _size.d = d;
 
-    UpdateSizeAGK();
+    UpdateAGKWithSize();
 }
 
 
@@ -319,7 +331,7 @@ void iObject::IncSize( float w, float h, float d )
     _size.h += h;
     _size.d += d;
 
-    UpdateSizeAGK();
+    UpdateAGKWithSize();
 }
 
 // Increment the object's size.
@@ -328,7 +340,7 @@ void iObject::IncSize( float w, float h )
     _size.w += w;
     _size.h += h;
 
-    UpdateSizeAGK();
+    UpdateAGKWithSize();
 }
 
 // Increment the object's size.
@@ -336,7 +348,7 @@ void iObject::IncSize( const CVector3 & size )
 {
     _size += size;
 
-    UpdateSizeAGK();
+    UpdateAGKWithSize();
 }
 
 // Increment the object's size.
@@ -344,7 +356,7 @@ void iObject::IncSize( const CVector2 & size )
 {
     _size += size;
 
-    UpdateSizeAGK();
+    UpdateAGKWithSize();
 }
 
 
@@ -353,8 +365,14 @@ void iObject::IncSize( const CVector2 & size )
 /// Get the object's size. 
 /// </summary>
 /// *************************************************************************
-const CVector3 & iObject::GetSize() const
+const CVector3 & iObject::GetSize()
 {
+    if( !_updatedValues.Contains( NDefs::ETT_SIZE ) )
+    {
+        _updatedValues.Add( NDefs::ETT_SIZE );
+        UpdateSizeFromAGK();
+    }
+
     return _size;
 }
 
@@ -372,7 +390,7 @@ void iObject::SetColor( int r, int g, int b, int a )
     _color.b = b;
     _color.a = a;
 
-    UpdateColorAGK();
+    UpdateAGKWithColor();
 }
 
 // Set the object's color. 
@@ -382,7 +400,7 @@ void iObject::SetColor( int r, int g, int b )
     _color.g = g;
     _color.b = b;
 
-    UpdateColorAGK();
+    UpdateAGKWithColor();
 }
 
 // Set the object's color. 
@@ -390,7 +408,7 @@ void iObject::SetColor( const CColor & color )
 {
     _color = color;
 
-    UpdateColorAGK();
+    UpdateAGKWithColor();
 }
 
 // Set the object's red value. 
@@ -398,7 +416,7 @@ void iObject::SetR( int r )
 {
     _color.r = r;
 
-    UpdateColorAGK();
+    UpdateAGKWithColor();
 }
 
 // Set the object's green value. 
@@ -406,7 +424,7 @@ void iObject::SetG( int g )
 {
     _color.g = g;
 
-    UpdateColorAGK();
+    UpdateAGKWithColor();
 }
 
 // Set the object's blue value. 
@@ -414,7 +432,7 @@ void iObject::SetB( int b )
 {
     _color.b = b;
 
-    UpdateColorAGK();
+    UpdateAGKWithColor();
 }
 
 // Set the object's alpha value. 
@@ -422,7 +440,7 @@ void iObject::SetA( int a )
 {
     _color.a = a;
 
-    UpdateColorAGK();
+    UpdateAGKWithColor();
 }
 
 
@@ -438,7 +456,7 @@ void iObject::IncColor( int r, int g, int b, int a )
     _color.b += b;
     _color.a += a;
 
-    UpdateColorAGK();
+    UpdateAGKWithColor();
 }
 
 // Increment the object's color.
@@ -448,7 +466,7 @@ void iObject::IncColor( int r, int g, int b )
     _color.g += g;
     _color.b += b;
 
-    UpdateColorAGK();
+    UpdateAGKWithColor();
 }
 
 // Increment the object's color.
@@ -456,7 +474,7 @@ void iObject::IncColor( const CColor & color )
 {
     _color += color;
 
-    UpdateColorAGK();
+    UpdateAGKWithColor();
 }
 
 
@@ -465,7 +483,13 @@ void iObject::IncColor( const CColor & color )
 /// Get the object's color. 
 /// </summary>
 /// *************************************************************************
-const CColor & iObject::GetColor() const
+const CColor & iObject::GetColor()
 {
+    if( !_updatedValues.Contains( NDefs::ETT_COLOR ) )
+    {
+        _updatedValues.Add( NDefs::ETT_COLOR );
+        UpdatePosFromAGK();
+    }
+
     return _color;
 }

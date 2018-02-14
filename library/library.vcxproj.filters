@@ -19,6 +19,9 @@
     <Filter Include="controls">
       <UniqueIdentifier>{b28de89e-f1c5-4b56-9314-c575d7087bdf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="animation">
+      <UniqueIdentifier>{456ad379-7d74-4b3e-8373-940b67da8247}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utilities\mathfunc.h">
@@ -117,6 +120,15 @@
     <ClInclude Include="managers\collectionmanager.h">
       <Filter>managers</Filter>
     </ClInclude>
+    <ClInclude Include="managers\animationmanager.h">
+      <Filter>managers</Filter>
+    </ClInclude>
+    <ClInclude Include="animation\tweenanimation.h">
+      <Filter>animation</Filter>
+    </ClInclude>
+    <ClInclude Include="animation\tween.h">
+      <Filter>animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="utilities\settings.cpp">
@@ -187,6 +199,15 @@
     </ClCompile>
     <ClCompile Include="managers\collectionmanager.cpp">
       <Filter>managers</Filter>
+    </ClCompile>
+    <ClCompile Include="managers\animationmanager.cpp">
+      <Filter>managers</Filter>
+    </ClCompile>
+    <ClCompile Include="animation\tweenanimation.cpp">
+      <Filter>animation</Filter>
+    </ClCompile>
+    <ClCompile Include="animation\tween.cpp">
+      <Filter>animation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

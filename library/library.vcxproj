@@ -27,6 +27,8 @@
     <ClInclude Include="3d\sprite3d.h" />
     <ClInclude Include="3d\spritedata3d.h" />
     <ClInclude Include="3d\spritevisualdata3d.h" />
+    <ClInclude Include="animation\tween.h" />
+    <ClInclude Include="animation\tweenanimation.h" />
     <ClInclude Include="common\bitmask.h" />
     <ClInclude Include="common\color.h" />
     <ClInclude Include="common\defs.h" />
@@ -36,6 +38,7 @@
     <ClInclude Include="common\vector3.h" />
     <ClInclude Include="common\vector4.h" />
     <ClInclude Include="controls\control.h" />
+    <ClInclude Include="managers\animationmanager.h" />
     <ClInclude Include="managers\collectionmanager.h" />
     <ClInclude Include="managers\inputmanager.h" />
     <ClInclude Include="managers\inputmapping.h" />
@@ -61,10 +64,13 @@
     <ClCompile Include="3d\sprite3d.cpp" />
     <ClCompile Include="3d\spritedata3d.cpp" />
     <ClCompile Include="3d\spritevisualdata3d.cpp" />
+    <ClCompile Include="animation\tween.cpp" />
+    <ClCompile Include="animation\tweenanimation.cpp" />
     <ClCompile Include="common\iobject.cpp" />
     <ClCompile Include="common\vector3.cpp" />
     <ClCompile Include="common\vector4.cpp" />
     <ClCompile Include="controls\control.cpp" />
+    <ClCompile Include="managers\animationmanager.cpp" />
     <ClCompile Include="managers\collectionmanager.cpp" />
     <ClCompile Include="managers\inputmanager.cpp" />
     <ClCompile Include="managers\inputmapping.cpp" />

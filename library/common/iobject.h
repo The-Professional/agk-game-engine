@@ -35,10 +35,10 @@ public:
     NDefs::EObjectType GetType() const;
 
     // Update AGK with the current color and transformation data.
-    virtual void UpdatePosAGK() = 0;
-    virtual void UpdateRotAGK() = 0;
-    virtual void UpdateSizeAGK() = 0;
-    virtual void UpdateColorAGK() = 0;
+    virtual void UpdateAGKWithPos() = 0;
+    virtual void UpdateAGKWithRot() = 0;
+    virtual void UpdateAGKWithSize() = 0;
+    virtual void UpdateAGKWithColor() = 0;
 
     // Access functions for the sprite's visibility.
     virtual void SetVisible( bool visible ) = 0;
@@ -56,7 +56,7 @@ public:
     virtual void IncPos( float x, float y, float z );
     virtual void IncPos( const CVector2 & pos );
     virtual void IncPos( const CVector3 & pos );
-    virtual const CVector3 & GetPos() const;
+    virtual const CVector3 & GetPos();
 
     // Access functions for the sprite's rotation.
     virtual void SetRot( float x, float y, float z );
@@ -67,7 +67,7 @@ public:
     virtual void IncRot( float x, float y, float z );
     virtual void IncRot( const CVector3 & rot );
     virtual void IncRot( float z );
-    virtual const CVector3 & GetRot() const;
+    virtual const CVector3 & GetRot();
 
     // Access functions for the sprite's size.
     virtual void SetSize( float w, float h, float d );
@@ -81,7 +81,7 @@ public:
     virtual void IncSize( float w, float h );
     virtual void IncSize( const CVector3 & size );
     virtual void IncSize( const CVector2 & size );
-    virtual const CVector3 & GetSize() const;
+    virtual const CVector3 & GetSize();
 
     // Access functions for the sprite's color.
     virtual void SetColor( int r, int g, int b, int a );
@@ -94,7 +94,7 @@ public:
     virtual void IncColor( int r, int g, int b, int a );
     virtual void IncColor( int r, int g, int b );
     virtual void IncColor( const CColor & color );
-    virtual const CColor & GetColor() const;
+    virtual const CColor & GetColor();
 
     // Text sprite related access functions.
     virtual void SetFont( uint font ) {}
@@ -127,6 +127,12 @@ protected:
     // Destructor
     virtual ~iObject() {}
 
+    // Update the current color and transformation data from AGK.
+    virtual void UpdatePosFromAGK() = 0;
+    virtual void UpdateRotFromAGK() = 0;
+    virtual void UpdateSizeFromAGK() = 0;
+    virtual void UpdateColorFromAGK() = 0;
+
 protected:
 
     // The id AGK has given the object.
@@ -146,6 +152,9 @@ protected:
 
     // Color of the object.
     CColor _color = 255;
+
+    // Keep track of what values we've retrieved from AGK this frame.
+    CBitmask<uint> _updatedValues;
 };
 
 #endif  // __i_object_h__

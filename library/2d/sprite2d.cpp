@@ -126,7 +126,7 @@ void CSprite2D::DeleteObject()
 /// Update AGK with the sprite's current position.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::UpdatePosAGK()
+void CSprite2D::UpdateAGKWithPos()
 {
     agk::SetSpritePosition( _id, _position.x, _position.y );
     agk::SetSpriteDepth( _id, (int)_position.z );
@@ -138,7 +138,7 @@ void CSprite2D::UpdatePosAGK()
 /// Update AGK with the sprite's current rotation.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::UpdateRotAGK()
+void CSprite2D::UpdateAGKWithRot()
 {
     agk::SetSpriteAngle( _id, _rotation.z );
 }
@@ -149,7 +149,7 @@ void CSprite2D::UpdateRotAGK()
 /// Update AGK with the sprite's current size.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::UpdateSizeAGK()
+void CSprite2D::UpdateAGKWithSize()
 {
     agk::SetSpriteSize( _id, _size.w, _size.h );
 }
@@ -160,9 +160,56 @@ void CSprite2D::UpdateSizeAGK()
 /// Update AGK with the sprite's current color.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::UpdateColorAGK()
+void CSprite2D::UpdateAGKWithColor()
 {
     agk::SetSpriteColor( _id, _color.r, _color.g, _color.b, _color.a );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Update the current position from AGK.
+/// </summary>
+/// *************************************************************************
+void CSprite2D::UpdatePosFromAGK()
+{
+    _position.x = agk::GetSpriteX( _id );
+    _position.y = agk::GetSpriteY( _id );
+    _position.z = (float)agk::GetSpriteDepth( _id );
+}
+
+/// *************************************************************************
+/// <summary>
+/// Update the current rotation from AGK.
+/// </summary>
+/// *************************************************************************
+void CSprite2D::UpdateRotFromAGK()
+{
+    _rotation.z = agk::GetSpriteAngle( _id );
+}
+
+/// *************************************************************************
+/// <summary>
+/// Update the current size from AGK.
+/// </summary>
+/// *************************************************************************
+void CSprite2D::UpdateSizeFromAGK()
+{
+    _size.w = agk::GetSpriteWidth( _id );
+    _size.h = agk::GetSpriteHeight( _id );
+}
+
+/// *************************************************************************
+/// <summary>
+/// Update the current color from AGK.
+/// </summary>
+/// *************************************************************************
+void CSprite2D::UpdateColorFromAGK()
+{
+    _color.r = agk::GetSpriteColorRed( _id );
+    _color.g = agk::GetSpriteColorGreen( _id );
+    _color.b = agk::GetSpriteColorBlue( _id );
+    _color.a = agk::GetSpriteColorAlpha( _id );
 }
 
 

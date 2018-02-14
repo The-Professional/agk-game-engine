@@ -48,10 +48,10 @@ public:
     const CSpriteData2D * GetData() const;
 
     // Update AGK with the current color and transformation data.
-    virtual void UpdatePosAGK();
-    virtual void UpdateRotAGK();
-    virtual void UpdateSizeAGK();
-    virtual void UpdateColorAGK();
+    virtual void UpdateAGKWithPos();
+    virtual void UpdateAGKWithRot();
+    virtual void UpdateAGKWithSize();
+    virtual void UpdateAGKWithColor();
 
     // Access functions for the sprite's visibility.
     virtual void SetVisible( bool visible );
@@ -63,6 +63,14 @@ public:
 
     // Reset the sprite's position using its previous position.
     virtual void Reposition();
+
+private:
+
+    // Update the current color and transformation data from AGK.
+    virtual void UpdatePosFromAGK();
+    virtual void UpdateRotFromAGK();
+    virtual void UpdateSizeFromAGK();
+    virtual void UpdateColorFromAGK();
 
 private:
 

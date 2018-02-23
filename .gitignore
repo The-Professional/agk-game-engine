@@ -10,3 +10,7 @@
 *.ilk
 
 /library/x64
+
+/angelscript/projects/msvc2015/Debug
+/angelscript/projects/msvc2015/Release
+/angelscript/projects/msvc2015/x64

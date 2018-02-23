@@ -54,7 +54,7 @@ private:
 private:
 
     // Map containing the list of collection files.
-    std::map<std::string, std::string> _collectionFileList;
+    std::map<const std::string, const std::string> _collectionFileList;
 };
 
 #endif  // __collection_manager_h__

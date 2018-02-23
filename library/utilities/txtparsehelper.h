@@ -14,7 +14,7 @@ class CResourceFile;
 namespace NParseHelper
 {
     // Load the file and add its subimages to the image list.
-    void LoadSubImageFile( const std::string & folderPath, const std::string & file, std::map<std::string, CResourceFile> & imageList );
+    void LoadSubImageFile( const std::string & folderPath, const std::string & file, std::map<const std::string, CResourceFile> & imageList );
 }
 
 #endif  // __txt_parse_helper_h__

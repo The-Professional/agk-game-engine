@@ -7,6 +7,7 @@
 
 // Standard lib dependencies
 #include <string>
+#include <vector>
 
 // Forward declarations
 class CVector3;
@@ -24,12 +25,9 @@ class CSize;
 
 namespace NParseHelper
 {
-    ////////////////////////////////////////////////////////////////
-    // Primitive Functions                                        //
-    ////////////////////////////////////////////////////////////////
-
     // Parse a string value.
     bool GetString( nlohmann::json::const_iterator iter, const std::string & tag, std::string & value );
+    bool GetString( nlohmann::json::const_iterator iter, const std::string & tag, std::vector<std::string> & value );
 
     // Parse an int value.
     bool GetInt( nlohmann::json::const_iterator iter, const std::string & tag, int & value );
@@ -64,6 +62,9 @@ namespace NParseHelper
 
     // Parse text alignment tag.
     bool GetTextAlignment( nlohmann::json::const_iterator iter, NDefs::ETextAlignment & alignment );
+
+    // Parse script end type tags.
+    bool GetScriptEndType( nlohmann::json::const_iterator iter, NDefs::EScriptEndType & endType );
 
     // Parse the dimension tags.
     void GetDimensions( nlohmann::json::const_iterator iter, float & width, float & height, float & depth, float & radius, int & rows, int & columns );

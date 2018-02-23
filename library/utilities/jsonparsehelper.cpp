@@ -17,6 +17,7 @@
 
 using namespace nlohmann;
 using namespace std;
+using namespace NDefs;
 
 namespace NParseHelper
 {
@@ -35,6 +36,32 @@ namespace NParseHelper
         if( strIter != iter->end() )
         {
             value = strIter->get<string>();
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary> 
+    /// Parse a list of string values.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="tag"> Tag to find. </param>
+    /// <param name="value"> List to add to. </param>
+    /// <returns> If the tag exists. </returns>
+    bool GetString( json::const_iterator iter, const string & tag, vector<string> & value )
+    {
+        auto strListIter = iter->find( tag );
+        if( strListIter != iter->end() )
+        {
+            //auto strIter = strListIter->begin();
+            //while( strIter != strListIter->end() )
+            for( auto & strIter : *strListIter )
+            {
+                value.push_back( strIter.get<string>() );
+                //++strIter;
+            }
+
             return true;
         }
 
@@ -232,17 +259,17 @@ namespace NParseHelper
             if( GetString( alignIter, "horizontal", align ) )
             {
                 if ( align == "left" )
-                    alignment.Add( NDefs::EA_LEFT );
+                    alignment.Add( EA_LEFT );
                 else if ( align == "right" )
-                    alignment.Add( NDefs::EA_RIGHT );
+                    alignment.Add( EA_RIGHT );
             }
 
             if( GetString( alignIter, "vertical", align ) )
             {
                 if( align == "top" )
-                    alignment.Add( NDefs::EA_TOP );
+                    alignment.Add( EA_TOP );
                 else if( align == "bottom" )
-                    alignment.Add( NDefs::EA_BOTTOM );
+                    alignment.Add( EA_BOTTOM );
             }
 
             return true;
@@ -285,15 +312,15 @@ namespace NParseHelper
     /// <param name="orientation"> Loaded orientation. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetOrientation( json::const_iterator iter, NDefs::EOrentation & orientation )
+    bool GetOrientation( json::const_iterator iter, EOrentation & orientation )
     {
         string str;
         if( GetString( iter, "orientation", str ) )
         {
             if( str == "portrait" )
-                orientation = NDefs::EO_PORTRAIT;
+                orientation = EO_PORTRAIT;
             else
-                orientation = NDefs::EO_LANDSCAPE;
+                orientation = EO_LANDSCAPE;
         }
 
         return false;
@@ -305,20 +332,49 @@ namespace NParseHelper
     /// Parse text alignment tag.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="orientation"> Loaded text alignment. </param>
+    /// <param name="alignment"> Loaded text alignment. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetTextAlignment( json::const_iterator iter, NDefs::ETextAlignment & alignment )
+    bool GetTextAlignment( json::const_iterator iter, ETextAlignment & alignment )
     {
         string str;
         if( GetString( iter, "textAlignment", str ) )
         {
             if( str == "center" )
-                alignment = NDefs::ETA_CENTER;
+                alignment = ETA_CENTER;
             else if( str == "right" )
-                alignment = NDefs::ETA_RIGHT;
+                alignment = ETA_RIGHT;
             else
-                alignment = NDefs::ETA_LEFT;
+                alignment = ETA_LEFT;
+        }
+
+        return false;
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Parse script end type tags.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="endType"> Loaded script end type. </param>
+    /// <returns> If the tag exists. </returns>
+    /// *************************************************************************
+    bool GetScriptEndType( json::const_iterator iter, EScriptEndType & endType )
+    {
+        string str;
+        if( GetString( iter, "end", str ) )
+        {
+            if( str == "break" )
+                endType = ESE_BREAK;
+            else if( str == "finish" )
+                endType = ESE_FINISH;
+            else if( str == "reset" )
+                endType = ESE_RESET;
+            else
+                endType = ESE_STOP;
+
+            return true;
         }
 
         return false;
@@ -332,7 +388,7 @@ namespace NParseHelper
     /// <param name="iter"> JSON node to parse. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    void GetDimensions( nlohmann::json::const_iterator iter, float & width, float & height, float & depth, float & radius, int & rows, int & columns )
+    void GetDimensions( json::const_iterator iter, float & width, float & height, float & depth, float & radius, int & rows, int & columns )
     {
         GetFloat( iter, "width", width );
         GetFloat( iter, "height", height );
@@ -354,6 +410,7 @@ namespace NParseHelper
     /// Parse the input state tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="inputState"> Loaded input state. </param>
     /// *************************************************************************
     void GetInputState( json::const_iterator iter, CInputState & inputState )
     {
@@ -382,6 +439,7 @@ namespace NParseHelper
     /// Parse the input mapping tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="mapping"> Loaded input mapping. </param>
     /// *************************************************************************
     void GetInputMapping( json::const_iterator iter, CInputMapping & mapping )
     {
@@ -391,9 +449,9 @@ namespace NParseHelper
             auto mappingIter = deviceIter->begin();
             while( mappingIter != deviceIter->end() )
             {
-                mapping.AddInput( NDefs::EID_MOUSE, 
+                mapping.AddInput( EID_MOUSE, 
                                   CInputManager::Instance().GetInputID( 
-                                      NDefs::EID_MOUSE, 
+                                      EID_MOUSE, 
                                       mappingIter->get<string>() ) );
 
                 ++mappingIter;
@@ -406,9 +464,9 @@ namespace NParseHelper
             auto mappingIter = deviceIter->begin();
             while( mappingIter != deviceIter->end() )
             {
-                mapping.AddInput( NDefs::EID_KEYBOARD,
+                mapping.AddInput( EID_KEYBOARD,
                                   CInputManager::Instance().GetInputID(
-                                      NDefs::EID_KEYBOARD,
+                                      EID_KEYBOARD,
                                       mappingIter->get<string>() ) );
 
                 ++mappingIter;
@@ -421,7 +479,7 @@ namespace NParseHelper
             auto mappingIter = deviceIter->begin();
             while( mappingIter != deviceIter->end() )
             {
-                mapping.AddInput( NDefs::EID_GAMEPAD, mappingIter->get<int>() );
+                mapping.AddInput( EID_GAMEPAD, mappingIter->get<int>() );
 
                 ++mappingIter;
             }
@@ -434,6 +492,7 @@ namespace NParseHelper
     /// Parse object data tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="pObject"> Loaded collection object. </param>
     /// *************************************************************************
     void GetCollectionObject( json::const_iterator iter, iObject * pObject )
     {
@@ -465,7 +524,7 @@ namespace NParseHelper
         if( GetAlignment( iter, "alignment", alignment ) )
             pObject->SetAlignment( alignment );
 
-        NDefs::ETextAlignment textAlignment;
+        ETextAlignment textAlignment;
         if( GetTextAlignment( iter, textAlignment ) )
             pObject->SetTextAlignment( textAlignment );
     }

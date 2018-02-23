@@ -91,10 +91,6 @@ void CSettings::LoadSettings()
             }
         }
     }
-    catch( NExcept::CCriticalException e )
-    {
-        throw e;
-    }
     catch( exception e )
     {
         throw NExcept::CCriticalException( "Error",
@@ -138,10 +134,6 @@ void CSettings::ApplySettings()
             agk::SetShadowSmoothing( _shadowSmoothing );
             agk::SetShadowRange( _shadowRange );
         }
-    }
-    catch( NExcept::CCriticalException e )
-    {
-        throw e;
     }
     catch( exception e )
     {

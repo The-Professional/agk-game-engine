@@ -19,7 +19,7 @@ namespace NParseHelper
     /// <param name="path"> Path to the text file of subimages. </param>
     /// <param name="imageList"> List of images to add to. </param>
     /// *************************************************************************
-    void LoadSubImageFile( const string & folderPath, const string & file, map<string, CResourceFile> & imageList )
+    void LoadSubImageFile( const string & folderPath, const string & file, map<const string, CResourceFile> & imageList )
     {
         try
         {
@@ -43,13 +43,9 @@ namespace NParseHelper
                                                            "A file using the name '" + name + "' already exists." );
 
                     CResourceFile resource( UNLOADED_SUBIMAGE_ID, parentName );
-                    imageList.insert( pair<string, CResourceFile>( name, resource ) );
+                    imageList.emplace( name, resource );
                 }
             }
-        }
-        catch( NExcept::CCriticalException e )
-        {
-            throw e;
         }
         catch( exception e )
         {

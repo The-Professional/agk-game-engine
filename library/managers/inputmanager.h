@@ -62,11 +62,11 @@ private:
     std::string _path;
 
     // A map of keyboard keys and their corresponding ids.
-    std::map<std::string, int> _keyIdList;
-    std::map<std::string, int> _mouseIdList;
+    std::map<const std::string, int> _keyIdList;
+    std::map<const std::string, int> _mouseIdList;
 
     // A map of input states and their input mappings.
-    std::map<std::string, CInputState> _inputStateList;
+    std::map<const std::string, CInputState> _inputStateList;
 };
 
 #endif  // __input_manager_h__

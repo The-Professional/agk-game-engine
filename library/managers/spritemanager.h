@@ -65,19 +65,19 @@ private:
 private:
 
     // Map containing the list of sprite data files.
-    std::map<std::string, std::string> _spriteDataFileList3d;
-    std::map<std::string, std::string> _spriteDataFileList2d;
-    std::map<std::string, std::string> _textSpriteDataFileList;
+    std::map<const std::string, const std::string> _spriteDataFileList3d;
+    std::map<const std::string, const std::string> _spriteDataFileList2d;
+    std::map<const std::string, const std::string> _textSpriteDataFileList;
 
     // Map containing the list of loaded sprite data.
-    std::map<std::string, CSpriteData3D *> _spriteDataList3d;
-    std::map<std::string, CSpriteData2D *> _spriteDataList2d;
-    std::map<std::string, CTextSpriteData *> _textSpriteDataList;
+    std::map<const std::string, CSpriteData3D *> _spriteDataList3d;
+    std::map<const std::string, CSpriteData2D *> _spriteDataList2d;
+    std::map<const std::string, CTextSpriteData *> _textSpriteDataList;
 
     // Map containing the list of loaded sprites.
-    std::map<std::string, std::vector<CSprite3D *>> _spriteList3d;
-    std::map<std::string, std::vector<CSprite2D *>> _spriteList2d;
-    std::map<std::string, std::vector<CTextSprite *>> _textSpriteList;
+    std::map<const std::string, std::vector<CSprite3D *>> _spriteList3d;
+    std::map<const std::string, std::vector<CSprite2D *>> _spriteList2d;
+    std::map<const std::string, std::vector<CTextSprite *>> _textSpriteList;
 };
 
 #endif  // __sprite_data_manager_h__

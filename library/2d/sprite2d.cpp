@@ -28,8 +28,8 @@ CSprite2D::CSprite2D()
 CSprite2D::CSprite2D( const CSpriteData2D * pData )
 {
     _type = NDefs::EOT_SPRITE_2D;
-    _pData = pData;
-    Init();
+
+    Init( pData );
 }
 
 
@@ -48,15 +48,17 @@ CSprite2D::~CSprite2D()
 /// <summary>
 /// Initialize the sprite using its sprite data.
 /// </summary>
+/// <param name="pData"> Sprite data used to create the sprite. </param> 
 /// *************************************************************************
-void CSprite2D::Init()
+void CSprite2D::Init( const CSpriteData2D * pData )
 {
     // Leave if there's no data to initialize with.
-    if( !_pData )
+    if( !pData )
         return;
 
     Clear();
 
+    _pData = pData;
     const CSpriteVisualData2D * pVisual = _pData->GetVisualData();
 
     // Set the visual settings if a visual component exists.
@@ -223,6 +225,7 @@ void CSprite2D::Clear()
     iObject::Clear();
 
     _alignment = NDefs::EA_CENTER;
+    _pData = nullptr;
 }
 
 

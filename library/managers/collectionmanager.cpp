@@ -77,10 +77,6 @@ void CCollectionManager::LoadCollection( const string & name )
             }
         }
     }
-    catch( NExcept::CCriticalException e )
-    {
-        throw e;
-    }
     catch( exception e )
     {
         throw NExcept::CCriticalException( "Error",

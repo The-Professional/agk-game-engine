@@ -9,7 +9,7 @@
 
 // The id of an unloaded image and an unloaded sub image. Auto generated image
 // ids will never be either of these values.
-const uint UNLOADED_IMAGE_ID = 0;
+const uint UNLOADED_ID = 0;
 const uint UNLOADED_SUBIMAGE_ID = 1;
 
 /// *************************************************************************
@@ -21,7 +21,7 @@ class CResourceFile
 {
 public:
     // The id of the loaded data. If this id is zero, it means the data isn't loaded.
-    uint id = UNLOADED_IMAGE_ID;
+    uint id = UNLOADED_ID;
 
     // The file path to the data.
     std::string path;

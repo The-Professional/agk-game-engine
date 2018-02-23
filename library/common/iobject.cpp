@@ -412,7 +412,7 @@ void iObject::SetColor( const CColor & color )
 }
 
 // Set the object's red value. 
-void iObject::SetR( int r )
+void iObject::SetColorR( int r )
 {
     _color.r = r;
 
@@ -420,7 +420,7 @@ void iObject::SetR( int r )
 }
 
 // Set the object's green value. 
-void iObject::SetG( int g )
+void iObject::SetColorG( int g )
 {
     _color.g = g;
 
@@ -428,7 +428,7 @@ void iObject::SetG( int g )
 }
 
 // Set the object's blue value. 
-void iObject::SetB( int b )
+void iObject::SetColorB( int b )
 {
     _color.b = b;
 
@@ -436,7 +436,7 @@ void iObject::SetB( int b )
 }
 
 // Set the object's alpha value. 
-void iObject::SetA( int a )
+void iObject::SetColorA( int a )
 {
     _color.a = a;
 

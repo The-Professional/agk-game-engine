@@ -20,7 +20,7 @@ class iObject
 {
 public:
     // Initialize the object.
-    virtual void Init() = 0;
+    //virtual void Init() = 0;
 
     // Delete the object that belongs to the AGK id.
     virtual void DeleteObject() = 0;
@@ -87,10 +87,10 @@ public:
     virtual void SetColor( int r, int g, int b, int a );
     virtual void SetColor( int r, int g, int b );
     virtual void SetColor( const CColor & color );
-    virtual void SetR( int r );
-    virtual void SetG( int g );
-    virtual void SetB( int b );
-    virtual void SetA( int a );
+    virtual void SetColorR( int r );
+    virtual void SetColorG( int g );
+    virtual void SetColorB( int b );
+    virtual void SetColorA( int a );
     virtual void IncColor( int r, int g, int b, int a );
     virtual void IncColor( int r, int g, int b );
     virtual void IncColor( const CColor & color );

@@ -6,6 +6,7 @@
 #include <managers\spritemanager.h>
 #include <managers\resourcemanager.h>
 #include <managers\collectionmanager.h>
+#include <script\scriptmanager.h>
 #include <3d\sprite3d.h>
 #include <2d\sprite2d.h>
 #include <2d\textsprite.h>
@@ -35,6 +36,7 @@ void app::Init()
     CSpriteManager::Instance().LoadDataFileList2D( "data/2d/sprites/" );
     CSpriteManager::Instance().LoadTextDataFileList( "data/2d/text/" );
     CCollectionManager::Instance().LoadCollectionFileList( "data/collections/" );
+    CScriptManager::Instance().LoadScriptList( "data/scripts" );
 }
 
 void app::Begin()

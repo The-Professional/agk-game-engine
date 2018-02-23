@@ -51,20 +51,20 @@
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)</TargetName>
-    <IncludePath>C:\devlib\AGK\common\Include;C:\devlib\AGK\common;C:\devlib\AGK\bullet;C:\devlib\AGK\bullet\BulletCollision\CollisionShapes;..\;..\library;$(IncludePath)</IncludePath>
+    <IncludePath>C:\devlib\AGK\common\Include;C:\devlib\AGK\common;C:\devlib\AGK\bullet;C:\devlib\AGK\bullet\BulletCollision\CollisionShapes;..\;..\library;..\angelscript\include;..\angelscript\add_on;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)</TargetName>
-    <IncludePath>C:\devlib\AGK\common\Include;C:\devlib\AGK\common;C:\devlib\AGK\bullet;C:\devlib\AGK\bullet\BulletCollision\CollisionShapes;..\;..\library;$(IncludePath)</IncludePath>
+    <IncludePath>C:\devlib\AGK\common\Include;C:\devlib\AGK\common;C:\devlib\AGK\bullet;C:\devlib\AGK\bullet\BulletCollision\CollisionShapes;..\;..\library;..\angelscript\include;..\angelscript\add_on;$(IncludePath)</IncludePath>
     <LibraryPath>C:\devlib\AGK\platform\windows\Lib\VS2017\Debug64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;AGK_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;AGK_WINDOWS;_CRT_SECURE_NO_WARNINGS;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -98,7 +98,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;AGK_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;AGK_WINDOWS;_CRT_SECURE_NO_WARNINGS;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>
       </FunctionLevelLinking>
@@ -141,6 +141,9 @@
     <ClInclude Include="template.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\angelscript\projects\msvc2015\angelscript.vcxproj">
+      <Project>{39e6af97-6ba3-4a72-8c61-bcebf214ebfd}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\library\library.vcxproj">
       <Project>{5a5beeb6-15c5-4271-9ef9-86d8514039aa}</Project>
     </ProjectReference>
@@ -153,6 +156,8 @@
     <None Include="x64\Debug\data\animations\animation.json" />
     <None Include="x64\Debug\data\collections\stage0.json" />
     <None Include="x64\Debug\data\inputs.json" />
+    <None Include="x64\Debug\data\scripts\controls.ang" />
+    <None Include="x64\Debug\data\scripts\general.ang" />
     <None Include="x64\Debug\data\settings.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

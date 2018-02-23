@@ -19,87 +19,87 @@ using namespace nlohmann;
 /// *************************************************************************
 CInputManager::CInputManager()
 {
-    _mouseIdList.insert( pair<string, int>( "left",   CInputMapping::LEFT_MOUSE ) );
-    _mouseIdList.insert( pair<string, int>( "right",  CInputMapping::RIGHT_MOUSE ) );
-    _mouseIdList.insert( pair<string, int>( "middle", CInputMapping::MIDDLE_MOUSE ) );
+    _mouseIdList.emplace( "left",   CInputMapping::LEFT_MOUSE );
+    _mouseIdList.emplace( "right",  CInputMapping::RIGHT_MOUSE );
+    _mouseIdList.emplace( "middle", CInputMapping::MIDDLE_MOUSE );
 
-    _keyIdList.insert( pair<string, int>( "back",      8 ) );
-    _keyIdList.insert( pair<string, int>( "tab",       9 ) );
-    _keyIdList.insert( pair<string, int>( "enter",    13 ) );
-    _keyIdList.insert( pair<string, int>( "shift",    16 ) );
-    _keyIdList.insert( pair<string, int>( "control",  17 ) );
-    _keyIdList.insert( pair<string, int>( "escape",   27 ) );
-    _keyIdList.insert( pair<string, int>( "space",    32 ) );
-    _keyIdList.insert( pair<string, int>( "pageup",   33 ) );
-    _keyIdList.insert( pair<string, int>( "pagedown", 34 ) );
-    _keyIdList.insert( pair<string, int>( "end",      35 ) );
-    _keyIdList.insert( pair<string, int>( "home",     36 ) );
-    _keyIdList.insert( pair<string, int>( "left",     37 ) );
-    _keyIdList.insert( pair<string, int>( "up",       38 ) );
-    _keyIdList.insert( pair<string, int>( "right",    39 ) );
-    _keyIdList.insert( pair<string, int>( "down",     40 ) );
-    _keyIdList.insert( pair<string, int>( "insert",   45 ) );
-    _keyIdList.insert( pair<string, int>( "delete",   46 ) );
+    _keyIdList.emplace( "back",      8 );
+    _keyIdList.emplace( "tab",       9 );
+    _keyIdList.emplace( "enter",    13 );
+    _keyIdList.emplace( "shift",    16 );
+    _keyIdList.emplace( "control",  17 );
+    _keyIdList.emplace( "escape",   27 );
+    _keyIdList.emplace( "space",    32 );
+    _keyIdList.emplace( "pageup",   33 );
+    _keyIdList.emplace( "pagedown", 34 );
+    _keyIdList.emplace( "end",      35 );
+    _keyIdList.emplace( "home",     36 );
+    _keyIdList.emplace( "left",     37 );
+    _keyIdList.emplace( "up",       38 );
+    _keyIdList.emplace( "right",    39 );
+    _keyIdList.emplace( "down",     40 );
+    _keyIdList.emplace( "insert",   45 );
+    _keyIdList.emplace( "delete",   46 );
 
-    _keyIdList.insert( pair<string, int>( "0", 48 ) );
-    _keyIdList.insert( pair<string, int>( "1", 49 ) );
-    _keyIdList.insert( pair<string, int>( "2", 50 ) );
-    _keyIdList.insert( pair<string, int>( "3", 51 ) );
-    _keyIdList.insert( pair<string, int>( "4", 52 ) );
-    _keyIdList.insert( pair<string, int>( "5", 53 ) );
-    _keyIdList.insert( pair<string, int>( "6", 54 ) );
-    _keyIdList.insert( pair<string, int>( "7", 55 ) );
-    _keyIdList.insert( pair<string, int>( "8", 56 ) );
-    _keyIdList.insert( pair<string, int>( "9", 57 ) );
+    _keyIdList.emplace( "0", 48 );
+    _keyIdList.emplace( "1", 49 );
+    _keyIdList.emplace( "2", 50 );
+    _keyIdList.emplace( "3", 51 );
+    _keyIdList.emplace( "4", 52 );
+    _keyIdList.emplace( "5", 53 );
+    _keyIdList.emplace( "6", 54 );
+    _keyIdList.emplace( "7", 55 );
+    _keyIdList.emplace( "8", 56 );
+    _keyIdList.emplace( "9", 57 );
 
-    _keyIdList.insert( pair<string, int>( "a", 65 ) );
-    _keyIdList.insert( pair<string, int>( "b", 66 ) );
-    _keyIdList.insert( pair<string, int>( "c", 67 ) );
-    _keyIdList.insert( pair<string, int>( "d", 68 ) );
-    _keyIdList.insert( pair<string, int>( "e", 69 ) );
-    _keyIdList.insert( pair<string, int>( "f", 70 ) );
-    _keyIdList.insert( pair<string, int>( "g", 71 ) );
-    _keyIdList.insert( pair<string, int>( "h", 72 ) );
-    _keyIdList.insert( pair<string, int>( "i", 73 ) );
-    _keyIdList.insert( pair<string, int>( "j", 74 ) );
-    _keyIdList.insert( pair<string, int>( "k", 75 ) );
-    _keyIdList.insert( pair<string, int>( "l", 76 ) );
-    _keyIdList.insert( pair<string, int>( "m", 77 ) );
-    _keyIdList.insert( pair<string, int>( "n", 78 ) );
-    _keyIdList.insert( pair<string, int>( "o", 79 ) );
-    _keyIdList.insert( pair<string, int>( "p", 80 ) );
-    _keyIdList.insert( pair<string, int>( "q", 81 ) );
-    _keyIdList.insert( pair<string, int>( "r", 82 ) );
-    _keyIdList.insert( pair<string, int>( "s", 83 ) );
-    _keyIdList.insert( pair<string, int>( "t", 84 ) );
-    _keyIdList.insert( pair<string, int>( "u", 85 ) );
-    _keyIdList.insert( pair<string, int>( "v", 86 ) );
-    _keyIdList.insert( pair<string, int>( "w", 87 ) );
-    _keyIdList.insert( pair<string, int>( "x", 88 ) );
-    _keyIdList.insert( pair<string, int>( "y", 89 ) );
-    _keyIdList.insert( pair<string, int>( "z", 90 ) );
+    _keyIdList.emplace( "a", 65 );
+    _keyIdList.emplace( "b", 66 );
+    _keyIdList.emplace( "c", 67 );
+    _keyIdList.emplace( "d", 68 );
+    _keyIdList.emplace( "e", 69 );
+    _keyIdList.emplace( "f", 70 );
+    _keyIdList.emplace( "g", 71 );
+    _keyIdList.emplace( "h", 72 );
+    _keyIdList.emplace( "i", 73 );
+    _keyIdList.emplace( "j", 74 );
+    _keyIdList.emplace( "k", 75 );
+    _keyIdList.emplace( "l", 76 );
+    _keyIdList.emplace( "m", 77 );
+    _keyIdList.emplace( "n", 78 );
+    _keyIdList.emplace( "o", 79 );
+    _keyIdList.emplace( "p", 80 );
+    _keyIdList.emplace( "q", 81 );
+    _keyIdList.emplace( "r", 82 );
+    _keyIdList.emplace( "s", 83 );
+    _keyIdList.emplace( "t", 84 );
+    _keyIdList.emplace( "u", 85 );
+    _keyIdList.emplace( "v", 86 );
+    _keyIdList.emplace( "w", 87 );
+    _keyIdList.emplace( "x", 88 );
+    _keyIdList.emplace( "y", 89 );
+    _keyIdList.emplace( "z", 90 );
 
-    _keyIdList.insert( pair<string, int>( "f1", 112 ) );
-    _keyIdList.insert( pair<string, int>( "f2", 113 ) );
-    _keyIdList.insert( pair<string, int>( "f3", 114 ) );
-    _keyIdList.insert( pair<string, int>( "f4", 115 ) );
-    _keyIdList.insert( pair<string, int>( "f5", 116 ) );
-    _keyIdList.insert( pair<string, int>( "f6", 117 ) );
-    _keyIdList.insert( pair<string, int>( "f7", 118 ) );
-    _keyIdList.insert( pair<string, int>( "f8", 119 ) );
+    _keyIdList.emplace( "f1", 112 );
+    _keyIdList.emplace( "f2", 113 );
+    _keyIdList.emplace( "f3", 114 );
+    _keyIdList.emplace( "f4", 115 );
+    _keyIdList.emplace( "f5", 116 );
+    _keyIdList.emplace( "f6", 117 );
+    _keyIdList.emplace( "f7", 118 );
+    _keyIdList.emplace( "f8", 119 );
 
-    _keyIdList.insert( pair<string, int>( ";",  186 ) );
-    _keyIdList.insert( pair<string, int>( "=",  187 ) );
-    _keyIdList.insert( pair<string, int>( ",",  188 ) );
-    _keyIdList.insert( pair<string, int>( "-",  189 ) );
-    _keyIdList.insert( pair<string, int>( ".",  190 ) );
-    _keyIdList.insert( pair<string, int>( "/",  191 ) );
-    _keyIdList.insert( pair<string, int>( "'",  192 ) );
-    _keyIdList.insert( pair<string, int>( "[",  219 ) );
-    _keyIdList.insert( pair<string, int>( "\\", 220 ) );
-    _keyIdList.insert( pair<string, int>( "]",  221 ) );
-    _keyIdList.insert( pair<string, int>( "#",  222 ) );
-    _keyIdList.insert( pair<string, int>( "`",  223 ) );
+    _keyIdList.emplace( ";",  186 );
+    _keyIdList.emplace( "=",  187 );
+    _keyIdList.emplace( ",",  188 );
+    _keyIdList.emplace( "-",  189 );
+    _keyIdList.emplace( ".",  190 );
+    _keyIdList.emplace( "/",  191 );
+    _keyIdList.emplace( "'",  192 );
+    _keyIdList.emplace( "[",  219 );
+    _keyIdList.emplace( "\\", 220 );
+    _keyIdList.emplace( "]",  221 );
+    _keyIdList.emplace( "#",  222 );
+    _keyIdList.emplace( "`",  223 );
 }
 
 
@@ -154,14 +154,10 @@ void CInputManager::LoadInputMap()
                 CInputState state;
                 NParseHelper::GetInputState( stateIter, state );
 
-                _inputStateList.insert( pair<string, CInputState>( name, state ) );
+                _inputStateList.emplace( name, state );
                 ++stateIter;
             }
         }
-    }
-    catch( NExcept::CCriticalException e )
-    {
-        throw e;
     }
     catch( exception e )
     {

@@ -1,36 +1,7 @@
 {
-  "loop": {
-    "count": 1,
-    "start": 0.25,
-    "end": 0.75
-  },
-
-  "animation": [
-
-    {
-      "tween": [
-        {
-        "duration": 0.25,
-        "position": {"sx": 0,   "sy": 0,
-                     "ex": 100, "ey": 100}
-        },
-        {
-          "duration": 0.25,
-          "color": {"sr": 255, "sg": 255, "sb": 255, 
-                    "er": 200, "eg": 200, "eb": 200}
-        },
-        {
-          "duration": 0.25,
-          "color": {"sr": 200, "sg": 200, "sb": 200,
-                    "er": 255, "eg": 255, "eb": 255}
-        },
-        {
-        "duration": 0.25,
-        "position": {"sx": 100, "sy": 100,
-                     "ex": 0,   "ey": 0}
-        }
-      ]
-    }
-
-  ]
+  "animation": {
+    "functions": ["Ctrl_Test"],
+    "loop": 1,
+    "end": "stop"
+  }
 }

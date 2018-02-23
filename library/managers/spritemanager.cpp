@@ -104,7 +104,7 @@ const CSpriteData3D * CSpriteManager::GetSpriteData3D( const std::string & name 
             if( spriteIter != j.end() )
             {
                 CSpriteData3D * pData = new CSpriteData3D();
-                _spriteDataList3d.insert( pair<string, CSpriteData3D *>( unloadedIter->first, pData ) );
+                _spriteDataList3d.emplace( unloadedIter->first, pData );
                 
                 pData->LoadFromIter( unloadedIter->first, spriteIter );
 
@@ -115,10 +115,6 @@ const CSpriteData3D * CSpriteManager::GetSpriteData3D( const std::string & name 
         throw NExcept::CCriticalException( "Error",
                                            "CSpriteManager::LoadSpriteData3D()",
                                            "No sprite data exists with the name '" + name + "'." );
-    }
-    catch( NExcept::CCriticalException e )
-    {
-        throw e;
     }
     catch( exception e )
     {
@@ -160,7 +156,7 @@ const CSpriteData2D * CSpriteManager::GetSpriteData2D( const std::string & name 
             if( spriteIter != j.end() )
             {
                 CSpriteData2D * pData = new CSpriteData2D();
-                _spriteDataList2d.insert( pair<string, CSpriteData2D *>( unloadedIter->first, pData ) );
+                _spriteDataList2d.emplace( unloadedIter->first, pData );
 
                 pData->LoadFromIter( unloadedIter->first, spriteIter );
 
@@ -171,10 +167,6 @@ const CSpriteData2D * CSpriteManager::GetSpriteData2D( const std::string & name 
         throw NExcept::CCriticalException( "Error",
                                            "CSpriteManager::LoadSpriteData2D()",
                                            "No sprite data exists with the name '" + name + "'." );
-    }
-    catch( NExcept::CCriticalException e )
-    {
-        throw e;
     }
     catch( exception e )
     {
@@ -216,7 +208,7 @@ const CTextSpriteData * CSpriteManager::GetTextSpriteData( const std::string & n
             if( spriteIter != j.end() )
             {
                 CTextSpriteData * pData = new CTextSpriteData();
-                _textSpriteDataList.insert( pair<string, CTextSpriteData *>( unloadedIter->first, pData ) );
+                _textSpriteDataList.emplace( unloadedIter->first, pData );
 
                 pData->LoadFromIter( unloadedIter->first, spriteIter );
 
@@ -227,10 +219,6 @@ const CTextSpriteData * CSpriteManager::GetTextSpriteData( const std::string & n
         throw NExcept::CCriticalException( "Error",
                                            "CSpriteManager::GetTextSpriteData()",
                                            "No sprite data exists with the name '" + name + "'." );
-    }
-    catch( NExcept::CCriticalException e )
-    {
-        throw e;
     }
     catch( exception e )
     {
@@ -267,10 +255,6 @@ CSprite3D * CSpriteManager::CreateSprite3D( const string & name, const string & 
 
         return pSprite;
     }
-    catch( NExcept::CCriticalException e )
-    {
-        throw e;
-    }
     catch( exception e )
     {
         throw NExcept::CCriticalException( "Error",
@@ -305,10 +289,6 @@ CSprite2D * CSpriteManager::CreateSprite2D( const std::string & name, const stri
             _spriteList2d[collection].push_back( pSprite );
 
         return pSprite;
-    }
-    catch( NExcept::CCriticalException e )
-    {
-        throw e;
     }
     catch( exception e )
     {
@@ -345,10 +325,6 @@ CTextSprite * CSpriteManager::CreateTextSprite( const string & name, const strin
             _textSpriteList[collection].push_back( pSprite );
 
         return pSprite;
-    }
-    catch( NExcept::CCriticalException e )
-    {
-        throw e;
     }
     catch( exception e )
     {
@@ -390,10 +366,6 @@ void CSpriteManager::Clear( const string & name )
             NDelFunc::DeleteMapPointer( name, _spriteDataList2d );
             NDelFunc::DeleteMapPointer( name, _textSpriteDataList );
         }
-    }
-    catch( NExcept::CCriticalException e )
-    {
-        throw e;
     }
     catch( exception e )
     {

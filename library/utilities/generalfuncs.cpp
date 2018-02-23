@@ -19,7 +19,7 @@ namespace NGeneralFuncs
     /// <param name="path"> Path to the folder. </param>
     /// <param name="obj"> Map to populate. </param>
     /// *************************************************************************
-    void AddFilesToMap( const string & folderPath, map<string, string> & obj )
+    void AddFilesToMap( const string & folderPath, map<const string, const string> & obj )
     {
         try
         {
@@ -41,7 +41,7 @@ namespace NGeneralFuncs
                 if( pos < file.size() )
                 {
                     name = file.substr( 0, pos );
-                    obj.insert( pair<string, string>( name, folder + file ) );
+                    obj.emplace( name, folder + file );
                 }
 
                 // Move onto the next file. If there is no file, GetNextFile() will return an empty string.
@@ -50,10 +50,6 @@ namespace NGeneralFuncs
 
             // Set the folder back to its original location. Not sure if this is actually necessary.
             agk::SetFolder( "" );
-        }
-        catch( NExcept::CCriticalException e )
-        {
-            throw e;
         }
         catch( exception e )
         {
@@ -69,7 +65,7 @@ namespace NGeneralFuncs
     /// </summary>
     /// <param name="path"> Path to the folder. </param>
     /// <param name="obj"> Map to populate. </param>
-    void AddFilesToMap( const string & folderPath, map<string, CResourceFile> & obj )
+    void AddFilesToMap( const string & folderPath, map<const string, CResourceFile> & obj )
     {
         try
         {
@@ -91,7 +87,7 @@ namespace NGeneralFuncs
                 if( pos < file.size() )
                 {
                     name = file.substr( 0, pos );
-                    obj.insert( pair<string, CResourceFile>( name, CResourceFile( folder + file ) ) );
+                    obj.emplace( name, CResourceFile( folder + file ) );
                 }
 
                 // Move onto the next file. If there is no file, GetNextFile() will return an empty string.
@@ -100,10 +96,6 @@ namespace NGeneralFuncs
 
             // Set the folder back to its original location. Not sure if this is actually necessary.
             agk::SetFolder( "" );
-        }
-        catch( NExcept::CCriticalException e )
-        {
-            throw e;
         }
         catch( exception e )
         {
@@ -122,7 +114,7 @@ namespace NGeneralFuncs
     /// <param name="path"> Path to the folder. </param>
     /// <param name="obj"> Map to populate. </param>
     /// *************************************************************************
-    void AddFilesToImageList( const string & folderPath, map<string, CResourceFile> & obj )
+    void AddFilesToImageList( const string & folderPath, map<const string, CResourceFile> & obj )
     {
         try
         {
@@ -157,7 +149,7 @@ namespace NGeneralFuncs
                                                                "NGeneralFuncs::AddFilesToImageList()",
                                                                "A file using the name '" + name + "' already exists." );
 
-                        obj.insert( pair<string, CResourceFile>( name, CResourceFile( folder + file ) ) );
+                        obj.emplace( name, CResourceFile( folder + file ) );
                     }
                 }
 
@@ -168,15 +160,30 @@ namespace NGeneralFuncs
             // Set the folder back to its original location. Not sure if this is actually necessary.
             agk::SetFolder( "" );
         }
-        catch( NExcept::CCriticalException e )
-        {
-            throw e;
-        }
         catch( exception e )
         {
             throw NExcept::CCriticalException( "Error",
                                                "NGeneralFuncs::AddFilesToImageList()",
                                                "Failed to find files in '" + folderPath + "'.", e );
         }
+    }
+
+
+    /// *************************************************************************
+    /// <summary>
+    /// Output string info.
+    /// </summary>
+    /// *************************************************************************
+    void PostDebugMsg( const std::string & msg )
+    {
+    #if defined(_WINDOWS)
+        std::string tmp = msg + "\n";
+        OutputDebugString( LPCWSTR(tmp.c_str()) );
+    #elif defined(__ANDROID__)
+        __android_log_print( ANDROID_LOG_DEBUG, "LapCatGames", "%s", msg.c_str() );
+    #else
+        std::cout << msg << std::endl;
+    #endif
+
     }
 }

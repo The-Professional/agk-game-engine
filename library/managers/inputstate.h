@@ -53,7 +53,7 @@ public:
 
 private:
     // Map to hold each kind of action input for the state.
-    std::map<std::string, CInputMapping> _actionList;
+    std::map<const std::string, CInputMapping> _actionList;
 };
 
 #endif  // __input_state_h__

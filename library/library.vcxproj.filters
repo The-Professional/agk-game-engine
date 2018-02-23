@@ -19,8 +19,8 @@
     <Filter Include="controls">
       <UniqueIdentifier>{b28de89e-f1c5-4b56-9314-c575d7087bdf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="animation">
-      <UniqueIdentifier>{456ad379-7d74-4b3e-8373-940b67da8247}</UniqueIdentifier>
+    <Filter Include="script">
+      <UniqueIdentifier>{8d5443c7-6765-46a0-af02-dd41cab3af93}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,14 +120,20 @@
     <ClInclude Include="managers\collectionmanager.h">
       <Filter>managers</Filter>
     </ClInclude>
-    <ClInclude Include="managers\animationmanager.h">
-      <Filter>managers</Filter>
+    <ClInclude Include="script\scriptmanager.h">
+      <Filter>script</Filter>
     </ClInclude>
-    <ClInclude Include="animation\tweenanimation.h">
-      <Filter>animation</Filter>
+    <ClInclude Include="script\scriptparam.h">
+      <Filter>script</Filter>
     </ClInclude>
-    <ClInclude Include="animation\tween.h">
-      <Filter>animation</Filter>
+    <ClInclude Include="script\scriptglobals.h">
+      <Filter>script</Filter>
+    </ClInclude>
+    <ClInclude Include="script\scriptdata.h">
+      <Filter>script</Filter>
+    </ClInclude>
+    <ClInclude Include="script\script.h">
+      <Filter>script</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -200,14 +206,17 @@
     <ClCompile Include="managers\collectionmanager.cpp">
       <Filter>managers</Filter>
     </ClCompile>
-    <ClCompile Include="managers\animationmanager.cpp">
-      <Filter>managers</Filter>
+    <ClCompile Include="script\scriptmanager.cpp">
+      <Filter>script</Filter>
     </ClCompile>
-    <ClCompile Include="animation\tweenanimation.cpp">
-      <Filter>animation</Filter>
+    <ClCompile Include="script\scriptglobals.cpp">
+      <Filter>script</Filter>
     </ClCompile>
-    <ClCompile Include="animation\tween.cpp">
-      <Filter>animation</Filter>
+    <ClCompile Include="script\scriptdata.cpp">
+      <Filter>script</Filter>
+    </ClCompile>
+    <ClCompile Include="script\script.cpp">
+      <Filter>script</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

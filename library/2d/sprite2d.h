@@ -30,12 +30,12 @@ class CSprite2D : public iObject
 public:
 
     CSprite2D();
-    CSprite2D( const CSpriteData2D * objectData );
+    CSprite2D( const CSpriteData2D * pData );
 
     ~CSprite2D();
 
     // Initialize the sprite using its sprite data.
-    virtual void Init();
+    virtual void Init( const CSpriteData2D * pData );
 
     // Clears all of the sprite's data that belong to it.
     virtual void Clear();

@@ -66,7 +66,7 @@ void CResourceManager::LoadImageList( const std::string & path )
     // Add an extra resource for a solid image.
     CResourceFile solidImage;
     solidImage.id = agk::CreateImageColor( 255, 255, 255, 255 );
-    _imageList.insert( pair<string, CResourceFile>( "", solidImage ) );
+    _imageList.emplace( "", solidImage );
 }
 
 
@@ -143,7 +143,7 @@ uint CResourceManager::LoadImage( const std::string & name )
     if( iter != _imageList.end() )
     {
         // If the image hasn't been loaded yet, load it.
-        if( iter->second.id == UNLOADED_IMAGE_ID )
+        if( iter->second.id == UNLOADED_ID )
             iter->second.id = agk::LoadImage( iter->second.path.c_str() );
         else if( iter->second.id == UNLOADED_SUBIMAGE_ID )
         {
@@ -211,7 +211,7 @@ void CResourceManager::Clear( NDefs::EResourceType type )
     // Free up any loaded images.
     if( type == NDefs::ERT_IMAGE || type == NDefs::ERT_NULL )
         for( auto & kv : _imageList )
-            if( kv.second.id != UNLOADED_IMAGE_ID && kv.second.id != UNLOADED_SUBIMAGE_ID )
+            if( kv.second.id != UNLOADED_ID && kv.second.id != UNLOADED_SUBIMAGE_ID )
             {
                 agk::DeleteImage( kv.second.id );
                 kv.second.id = 0;

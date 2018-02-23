@@ -1,0 +1,29 @@
+/// *************************************************************************
+/// Color to the final color in time.
+/// *************************************************************************
+shared void ColorTo( CAnimation & anim, float time, CColor &in final )
+{
+    CColor current = anim.GetColor();
+    CColor inc = (final - current) / time;
+
+    do
+    {
+        if( anim.SkipToEnd() )
+            break;
+
+        time -= GetElapsedTime();
+
+        if( time < 0 )
+        {
+            anim.SetColor( final );
+        }
+        else
+        {
+            current += inc * GetElapsedTime();
+            anim.SetColor( current );
+        }
+
+        Suspend();
+    }
+    while( time > 0 );
+}

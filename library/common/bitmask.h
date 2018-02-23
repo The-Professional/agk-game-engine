@@ -134,6 +134,28 @@ public:
         return bitmask == value;
     }
 
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Overloaded inequality operator.
+    /// </summary>
+    /// *************************************************************************
+    bool operator != ( const type value ) const
+    {
+        return bitmask != value;
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Overloaded less than operator.
+    /// </summary>
+    /// *************************************************************************
+    bool operator < ( const type value ) const
+    {
+        return bitmask < value;
+    }
+
 private:
 
     // bit mask

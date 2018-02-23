@@ -27,8 +27,6 @@
     <ClInclude Include="3d\sprite3d.h" />
     <ClInclude Include="3d\spritedata3d.h" />
     <ClInclude Include="3d\spritevisualdata3d.h" />
-    <ClInclude Include="animation\tween.h" />
-    <ClInclude Include="animation\tweenanimation.h" />
     <ClInclude Include="common\bitmask.h" />
     <ClInclude Include="common\color.h" />
     <ClInclude Include="common\defs.h" />
@@ -38,7 +36,6 @@
     <ClInclude Include="common\vector3.h" />
     <ClInclude Include="common\vector4.h" />
     <ClInclude Include="controls\control.h" />
-    <ClInclude Include="managers\animationmanager.h" />
     <ClInclude Include="managers\collectionmanager.h" />
     <ClInclude Include="managers\inputmanager.h" />
     <ClInclude Include="managers\inputmapping.h" />
@@ -46,6 +43,11 @@
     <ClInclude Include="managers\resourcefile.h" />
     <ClInclude Include="managers\resourcemanager.h" />
     <ClInclude Include="managers\spritemanager.h" />
+    <ClInclude Include="script\script.h" />
+    <ClInclude Include="script\scriptdata.h" />
+    <ClInclude Include="script\scriptglobals.h" />
+    <ClInclude Include="script\scriptparam.h" />
+    <ClInclude Include="script\scriptmanager.h" />
     <ClInclude Include="utilities\deletefuncs.h" />
     <ClInclude Include="utilities\exceptionhandling.h" />
     <ClInclude Include="utilities\generalfuncs.h" />
@@ -64,19 +66,20 @@
     <ClCompile Include="3d\sprite3d.cpp" />
     <ClCompile Include="3d\spritedata3d.cpp" />
     <ClCompile Include="3d\spritevisualdata3d.cpp" />
-    <ClCompile Include="animation\tween.cpp" />
-    <ClCompile Include="animation\tweenanimation.cpp" />
     <ClCompile Include="common\iobject.cpp" />
     <ClCompile Include="common\vector3.cpp" />
     <ClCompile Include="common\vector4.cpp" />
     <ClCompile Include="controls\control.cpp" />
-    <ClCompile Include="managers\animationmanager.cpp" />
     <ClCompile Include="managers\collectionmanager.cpp" />
     <ClCompile Include="managers\inputmanager.cpp" />
     <ClCompile Include="managers\inputmapping.cpp" />
     <ClCompile Include="managers\inputstate.cpp" />
     <ClCompile Include="managers\resourcemanager.cpp" />
     <ClCompile Include="managers\spritemanager.cpp" />
+    <ClCompile Include="script\script.cpp" />
+    <ClCompile Include="script\scriptdata.cpp" />
+    <ClCompile Include="script\scriptglobals.cpp" />
+    <ClCompile Include="script\scriptmanager.cpp" />
     <ClCompile Include="utilities\generalfuncs.cpp" />
     <ClCompile Include="utilities\jsonparsehelper.cpp" />
     <ClCompile Include="utilities\mathfunc.cpp" />
@@ -137,9 +140,10 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\library;..\;C:\devlib\boost;C:\devlib\AGK\common\include;C:\devlib\AGK\common;C:\devlib\AGK\bullet;C:\devlib\AGK\bullet\BulletCollision\CollisionShapes;$(IncludePath)</IncludePath>
+    <IncludePath>..\library;..\;C:\devlib\boost;C:\devlib\AGK\common\include;C:\devlib\AGK\common;C:\devlib\AGK\bullet;C:\devlib\AGK\bullet\BulletCollision\CollisionShapes;..\angelscript\include;..\angelscript\add_on;$(IncludePath)</IncludePath>
     <LibraryPath>C:\devlib\AGK\platform\windows\Lib\VS2017\Debug64;$(LibraryPath)</LibraryPath>
-    <LibraryWPath>$(WindowsSDK_MetadataPath);</LibraryWPath>
+    <LibraryWPath>
+    </LibraryWPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -149,7 +153,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\devlib\AGK\common\Include;C:\devlib\AGK\common;C:\devlib\AGK\bullet;C:\devlib\AGK\bullet\BulletCollision\CollisionShapes;..\library;..\;C:\devlib\boost;$(IncludePath)</IncludePath>
+    <IncludePath>C:\devlib\AGK\common\Include;C:\devlib\AGK\common;C:\devlib\AGK\bullet;C:\devlib\AGK\bullet\BulletCollision\CollisionShapes;..\library;..\;C:\devlib\boost;..\angelscript\include;..\angelscript\add_on;$(IncludePath)</IncludePath>
     <LibraryWPath>$(WindowsSDK_MetadataPath);</LibraryWPath>
     <LibraryPath>C:\devlib\AGK\platform\windows\Lib\VS2017\Release64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -160,7 +164,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>
       </SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;AGK_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;AGK_WINDOWS;_CRT_SECURE_NO_WARNINGS;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <AdditionalIncludeDirectories>..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -220,7 +224,7 @@
       </FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;AGK_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;AGK_WINDOWS;_CRT_SECURE_NO_WARNINGS;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalIncludeDirectories>..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

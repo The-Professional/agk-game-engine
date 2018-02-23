@@ -48,20 +48,25 @@ namespace NDefs
     };
 
     // The type of value to be animated.
-    enum EAnimationValueType
+    enum : uint
     {
-        EAVT_X,
-        EAVT_Y,
-        EAVT_Z,
+		ETD_NULL        = 0,
+        ETD_POSITION_X  = 1,
+        ETD_POSITION_Y  = ETD_POSITION_X << 1,
+        ETD_POSITION_Z  = ETD_POSITION_Y << 1,
+
+		ETD_ROTATION_X  = ETD_POSITION_Z << 1,
+		ETD_ROTATION_Y  = ETD_ROTATION_X << 1,
+		ETD_ROTATION_Z  = ETD_ROTATION_Y << 1,
         
-        EAVT_W,
-        EAVT_H,
-        EAVT_D,
+        ETD_WIDTH       = ETD_ROTATION_Z << 1,
+        ETD_HEIGHT      = ETD_WIDTH << 1,
+        ETD_DEPTH       = ETD_HEIGHT << 1,
         
-        EAVT_R,
-        EAVT_G,
-        EAVT_B,
-        EAVT_A
+        ETD_RED         = ETD_DEPTH << 1,
+        ETD_GREEN       = ETD_RED << 1,
+        ETD_BLUE        = ETD_GREEN << 1,
+        ETD_ALPHA       = ETD_BLUE << 1
     };
 
     // The type of animation end.
@@ -150,6 +155,15 @@ namespace NDefs
         ESM_UNIFORM = 1,
         ESM_LIGHT_SPACE_PERSPECTIVE,
         ESM_CASCADE
+    };
+
+    // The types of script endings.
+    enum EScriptEndType
+    {
+        ESE_STOP,   // Stop the script completely in whatever state it currently is in.
+        ESE_BREAK,  // Break out of any loops but still play any script outside of the loop.
+        ESE_FINISH, // Finish out the current loop and play any script outside of the loop.
+        ESE_RESET   // Stop the script completely and reset the modified values to their initial values.
     };
 }
 

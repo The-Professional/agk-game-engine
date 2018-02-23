@@ -48,16 +48,16 @@ private:
     virtual ~CResourceManager();
 
     // Map containing the list of meshes.
-    std::map<std::string, CResourceFile> _meshList;
+    std::map<const std::string, CResourceFile> _meshList;
 
     // Map containing the list of animated meshes.
-    std::map<std::string, CResourceFile> _animatedMeshList;
+    std::map<const std::string, CResourceFile> _animatedMeshList;
 
     // Map containing the list of images.
-    std::map<std::string, CResourceFile> _imageList;
+    std::map<const std::string, CResourceFile> _imageList;
 
     // Map containing the list of fonts.
-    std::map<std::string, CResourceFile> _fontList;
+    std::map<const std::string, CResourceFile> _fontList;
 };
 
 #endif  // __resource_manager_h__

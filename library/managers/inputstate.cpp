@@ -18,7 +18,7 @@ void CInputState::AddInput( const string & action, NDefs::EInputDevice device, i
     if( iter != _actionList.end() )
         iter->second.AddInput( device, inputId );
     else
-        _actionList.insert( pair<string, CInputMapping>( action, CInputMapping( device, inputId ) ) );
+        _actionList.emplace( action, CInputMapping( device, inputId ) );
 }
 
 
@@ -44,7 +44,7 @@ void CInputState::AddAction( const std::string & action )
 {
     auto iter = _actionList.find( action );
     if( iter == _actionList.end() )
-        _actionList.insert( pair<string, CInputMapping>( action, CInputMapping() ) );
+        _actionList.emplace( action, CInputMapping() );
 }
 
 /// <summary> 
@@ -54,7 +54,7 @@ void CInputState::AddAction( const std::string & action, const CInputMapping & m
 {
     auto iter = _actionList.find( action );
     if( iter == _actionList.end() )
-        _actionList.insert( pair<string, CInputMapping>( action, mapping ) );
+        _actionList.emplace( action, mapping );
 }
 
 

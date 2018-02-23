@@ -32,6 +32,9 @@
     <Filter Include="data\animation">
       <UniqueIdentifier>{0c3728d7-05d4-4aab-9aeb-eaba43910fac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data\scripts">
+      <UniqueIdentifier>{2505e47f-efcd-4c96-b604-1347888692a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="x64\Debug\data\3d\sprites\ball.json">
@@ -57,6 +60,12 @@
     </None>
     <None Include="x64\Debug\data\animations\animation.json">
       <Filter>data\animation</Filter>
+    </None>
+    <None Include="x64\Debug\data\scripts\general.ang">
+      <Filter>data\scripts</Filter>
+    </None>
+    <None Include="x64\Debug\data\scripts\controls.ang">
+      <Filter>data\scripts</Filter>
     </None>
   </ItemGroup>
 </Project>

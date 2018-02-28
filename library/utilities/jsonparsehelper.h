@@ -51,20 +51,23 @@ namespace NParseHelper
     bool GetWH( nlohmann::json::const_iterator iter, const std::string & tag, CSize<int> & wh );
     bool GetWH( nlohmann::json::const_iterator iter, const std::string & tag, CSize<float> & wh );
 
+    // Parse mesh type tags.
+    bool GetMeshType( nlohmann::json::const_iterator iter, NDefs::EMeshType & meshType );
+
     // Parse alignment tags.
     bool GetAlignment( nlohmann::json::const_iterator iter, const std::string & tag, CBitmask<uint> & alignment );
 
-	// Parse color tag.
+	// Parse color tags.
 	bool GetColor( nlohmann::json::const_iterator iter, CColor & color );
 
-	// Parse orientation tag.
+	// Parse orientation tags.
 	bool GetOrientation( nlohmann::json::const_iterator iter, NDefs::EOrentation & orientation );
 
-    // Parse text alignment tag.
+    // Parse text alignment tags.
     bool GetTextAlignment( nlohmann::json::const_iterator iter, NDefs::ETextAlignment & alignment );
 
     // Parse script end type tags.
-    bool GetScriptEndType( nlohmann::json::const_iterator iter, NDefs::EScriptEndType & endType );
+    bool GetScriptEndType( nlohmann::json::const_iterator iter, NDefs::EAnimationEndType & endType );
 
     // Parse the dimension tags.
     void GetDimensions( nlohmann::json::const_iterator iter, float & width, float & height, float & depth, float & radius, int & rows, int & columns );

@@ -6,4 +6,6 @@ void Ctrl_Test( CAnimation & anim )
     CColor color( 200, 200, 200, 255 );
 
     ColorTo( anim, 500, color );
+
+	anim.Reset();
 }

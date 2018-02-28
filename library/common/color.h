@@ -41,7 +41,7 @@ public:
     /// Color addition.
     /// </summary>
     /// *************************************************************************
-    CColor operator + ( const CColor & color )
+    CColor operator + ( const CColor & color ) const
     {
         return CColor( r + color.r, g + color.g, b + color.b, a + color.a );
     }
@@ -66,7 +66,7 @@ public:
     /// Color subtraction.
     /// </summary>
     /// *************************************************************************
-    CColor operator - ( const CColor & color )
+    CColor operator - ( const CColor & color ) const
     {
         return CColor( r - color.r, g - color.g, b - color.b, a - color.a );
     }

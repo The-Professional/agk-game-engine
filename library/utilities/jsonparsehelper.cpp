@@ -54,13 +54,8 @@ namespace NParseHelper
         auto strListIter = iter->find( tag );
         if( strListIter != iter->end() )
         {
-            //auto strIter = strListIter->begin();
-            //while( strIter != strListIter->end() )
             for( auto & strIter : *strListIter )
-            {
                 value.push_back( strIter.get<string>() );
-                //++strIter;
-            }
 
             return true;
         }
@@ -243,34 +238,47 @@ namespace NParseHelper
     }
 
 
+    // .
+    /// *************************************************************************
+    /// <summary> 
+    /// Parse mesh type tags.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="meshType"> Loaded mesh type. </param>
+    /// *************************************************************************
+    bool GetMeshType( nlohmann::json::const_iterator iter, NDefs::EMeshType & meshType )
+    {
+        string str;
+        if( GetString( iter, "type", str ) )
+        {
+            meshType = CDefs::Instance().GetMeshType( str );
+            return true;
+        }
+
+        return false;
+    }
+
+
     /// *************************************************************************
     /// <summary> 
     /// Parse alignment tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="alignment"> Loaded alignment tags. </param>
+    /// <param name="alignment"> Loaded alignment. </param>
     /// *************************************************************************
     bool GetAlignment( json::const_iterator iter, const string & tag, CBitmask<uint> & alignment )
     {
-        auto alignIter = iter->find( tag );
-        if( alignIter != iter->end() )
+        vector<string> align;
+        if( GetString( iter, tag, align ) )
         {
-            string align;
-            if( GetString( alignIter, "horizontal", align ) )
-            {
-                if ( align == "left" )
-                    alignment.Add( EA_LEFT );
-                else if ( align == "right" )
-                    alignment.Add( EA_RIGHT );
-            }
+            for( auto & a : align )
+                alignment.Add( CDefs::Instance().GetAlignment( a ) );
 
-            if( GetString( alignIter, "vertical", align ) )
-            {
-                if( align == "top" )
-                    alignment.Add( EA_TOP );
-                else if( align == "bottom" )
-                    alignment.Add( EA_BOTTOM );
-            }
+            if( alignment.Contains( EA_LEFT | EA_RIGHT ) )
+                alignment.Remove( EA_LEFT | EA_RIGHT );
+
+            if( alignment.Contains( EA_TOP | EA_BOTTOM ) )
+                alignment.Remove( EA_TOP | EA_BOTTOM );
 
             return true;
         }
@@ -317,10 +325,8 @@ namespace NParseHelper
         string str;
         if( GetString( iter, "orientation", str ) )
         {
-            if( str == "portrait" )
-                orientation = EO_PORTRAIT;
-            else
-                orientation = EO_LANDSCAPE;
+            orientation = CDefs::Instance().GetOrientation( str );
+            return true;
         }
 
         return false;
@@ -340,12 +346,8 @@ namespace NParseHelper
         string str;
         if( GetString( iter, "textAlignment", str ) )
         {
-            if( str == "center" )
-                alignment = ETA_CENTER;
-            else if( str == "right" )
-                alignment = ETA_RIGHT;
-            else
-                alignment = ETA_LEFT;
+            alignment = CDefs::Instance().GetTextAlignment( str );
+            return true;
         }
 
         return false;
@@ -360,20 +362,12 @@ namespace NParseHelper
     /// <param name="endType"> Loaded script end type. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetScriptEndType( json::const_iterator iter, EScriptEndType & endType )
+    bool GetScriptEndType( json::const_iterator iter, EAnimationEndType & endType )
     {
         string str;
         if( GetString( iter, "end", str ) )
         {
-            if( str == "break" )
-                endType = ESE_BREAK;
-            else if( str == "finish" )
-                endType = ESE_FINISH;
-            else if( str == "reset" )
-                endType = ESE_RESET;
-            else
-                endType = ESE_STOP;
-
+            endType = CDefs::Instance().GetAnimationEndType( str );
             return true;
         }
 

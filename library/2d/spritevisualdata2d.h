@@ -23,20 +23,15 @@ class CSpriteVisualData2D
 {
 public:
 
-    // Constructor/Destructor
     CSpriteVisualData2D();
     ~CSpriteVisualData2D();
 
     // Load the visual sprite data from the passed in iterator.
     void LoadFromIter( nlohmann::json::const_iterator iter );
 
-    // Get the sprite's default color.
+    // Access functions for the visual sprite data.
     const CColor & GetColor() const;
-
-    // Get the sprite's image names.
     const std::string & GetTextureMap() const;
-
-    // Get the sprite's size.
     const CSize<float> & GetSize() const;
 
 private:

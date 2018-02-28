@@ -4,6 +4,9 @@
 // Game lib dependencies
 #include <utilities\deletefuncs.h>
 
+using namespace std;
+using namespace nlohmann;
+
 /// *************************************************************************
 /// <summary>
 /// Constructor
@@ -42,7 +45,7 @@ CSpriteData2D::~CSpriteData2D()
 /// </summary>
 /// <param name="iter"> JSON node to parse. </param>
 /// *************************************************************************
-void CSpriteData2D::LoadFromIter( const std::string & name, nlohmann::json::const_iterator iter )
+void CSpriteData2D::LoadFromIter( const string & name, json::const_iterator iter )
 {
     _name = name;
 
@@ -54,6 +57,7 @@ void CSpriteData2D::LoadFromIter( const std::string & name, nlohmann::json::cons
     }
 
     NParseHelper::GetAlignment( iter, "alignment", _alignment );
+    NParseHelper::GetString( iter, "animations", _animationList );
 }
 
 
@@ -68,24 +72,12 @@ const CSpriteVisualData2D * CSpriteData2D::GetVisualData() const
 }
 
 
-///// *************************************************************************
-///// <summary> 
-///// Get the physics data of the sprite.
-///// </summary>
-///// <returns> Object holding all of the sprite's physics data. </returns>
-///// *************************************************************************
-//const CSpritePhysicsData2D & CSpriteData2D::GetPhysicsData() const
-//{
-//    return _physicsData;
-//}
-
-
 /// *************************************************************************
 /// <summary> 
 /// Get the name of the sprite.
 /// </summary>
 /// *************************************************************************
-const std::string & CSpriteData2D::GetName() const
+const string & CSpriteData2D::GetName() const
 {
     return _name;
 }
@@ -99,4 +91,15 @@ const std::string & CSpriteData2D::GetName() const
 const CBitmask<uint> & CSpriteData2D::GetAlignment() const
 {
     return _alignment;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get the list of animations this sprite can perform.
+/// </summary>
+/// *************************************************************************
+const vector<string> & CSpriteData2D::GetAnimationList() const
+{
+    return _animationList;
 }

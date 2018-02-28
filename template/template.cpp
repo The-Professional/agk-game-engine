@@ -37,6 +37,7 @@ void app::Init()
     CSpriteManager::Instance().LoadTextDataFileList( "data/2d/text/" );
     CCollectionManager::Instance().LoadCollectionFileList( "data/collections/" );
     CScriptManager::Instance().LoadScriptList( "data/scripts" );
+    CScriptManager::Instance().LoadAnimationDataFileList( "data/animations" );
 }
 
 void app::Begin()

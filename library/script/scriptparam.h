@@ -20,7 +20,7 @@ public:
         EPT_INT,
         EPT_UINT,
         EPT_FLOAT,
-        EPT_REG_OBJ, // Registered Object
+        EPT_PTR, // Registered Object
     };
 
     // Constructors
@@ -29,7 +29,7 @@ public:
     CScriptParam( int val ) : _paramVal( val ), _type( EPT_INT ) {}
     CScriptParam( uint val ) : _paramVal( val ), _type( EPT_UINT ) {}
     CScriptParam( float val ) : _paramVal( val ), _type( EPT_FLOAT ) {}
-    CScriptParam( void * val ) : _paramVal( val ), _type( EPT_REG_OBJ ) {}
+    CScriptParam( void * val ) : _paramVal( val ), _type( EPT_PTR ) {}
 
 private:
 

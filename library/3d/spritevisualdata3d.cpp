@@ -6,6 +6,8 @@
 #include <common\color.h>
 #include <utilities\jsonparsehelper.h>
 
+using namespace std;
+using namespace NDefs;
 
 /// *************************************************************************
 /// <summary> 
@@ -37,7 +39,6 @@ CSpriteVisualData3D::~CSpriteVisualData3D()
 void CSpriteVisualData3D::LoadFromIter( nlohmann::json::const_iterator iter )
 {
     NParseHelper::GetString( iter, "mesh", _mesh );
-    //NParseHelper::GetShader( iter, _shader );
     NParseHelper::GetColor( iter, _color );
     NParseHelper::GetString( iter, "textureMap", _textureMap );
     NParseHelper::GetString( iter, "normalMap", _normalMap );
@@ -45,22 +46,7 @@ void CSpriteVisualData3D::LoadFromIter( nlohmann::json::const_iterator iter )
     NParseHelper::GetDimensions( iter, _width, _height, _depth, _radius, _rows, _columns );
     NParseHelper::GetBool( iter, "castShadow", _castShadow );
     NParseHelper::GetBool( iter, "receiveShadow", _receiveShadow );
-
-    // Set the object type.
-    if( _mesh == "box" )
-        _type = NDefs::EMT_BOX;
-    else if( _mesh == "cone" )
-        _type = NDefs::EMT_CONE;
-    else if( _mesh == "cylinder" )
-        _type = NDefs::EMT_CYLINDER;
-    else if( _mesh == "capsule" )
-        _type = NDefs::EMT_CAPSULE;
-    else if( _mesh == "plane" )
-        _type = NDefs::EMT_PLANE;
-    else if( _mesh == "sphere" )
-        _type = NDefs::EMT_SPHERE;
-    else if( !_mesh.empty() )
-        _type = NDefs::EMT_MESH;
+    NParseHelper::GetMeshType( iter, _type );
 }
 
 
@@ -69,7 +55,7 @@ void CSpriteVisualData3D::LoadFromIter( nlohmann::json::const_iterator iter )
 /// Get the sprite's object type.
 /// </summary>
 /// *************************************************************************
-NDefs::EMeshType CSpriteVisualData3D::GetType() const
+EMeshType CSpriteVisualData3D::GetType() const
 {
     return _type;
 }
@@ -80,7 +66,7 @@ NDefs::EMeshType CSpriteVisualData3D::GetType() const
 /// Get the sprite's mesh name.
 /// </summary>
 /// *************************************************************************
-const std::string & CSpriteVisualData3D::GetMesh() const
+const string & CSpriteVisualData3D::GetMesh() const
 {
     return _mesh;
 }
@@ -91,7 +77,7 @@ const std::string & CSpriteVisualData3D::GetMesh() const
 /// Get the name of the shader used to render this sprite.
 /// </summary>
 /// *************************************************************************
-const std::string & CSpriteVisualData3D::GetShader() const
+const string & CSpriteVisualData3D::GetShader() const
 {
     return _shader;
 }
@@ -113,7 +99,7 @@ const CColor & CSpriteVisualData3D::GetColor() const
 /// Get the name of the sprite's texture.
 /// </summary>
 /// *************************************************************************
-const std::string & CSpriteVisualData3D::GetTextureMap() const
+const string & CSpriteVisualData3D::GetTextureMap() const
 {
     return _textureMap;
 }
@@ -124,7 +110,7 @@ const std::string & CSpriteVisualData3D::GetTextureMap() const
 /// Get the id of the normal map used by the sprite.
 /// </summary>
 /// *************************************************************************
-const std::string & CSpriteVisualData3D::GetNormalMap() const
+const string & CSpriteVisualData3D::GetNormalMap() const
 {
     return _normalMap;
 }
@@ -135,7 +121,7 @@ const std::string & CSpriteVisualData3D::GetNormalMap() const
 /// Get the id of the specular map used by the sprite.
 /// </summary>
 /// *************************************************************************
-const std::string & CSpriteVisualData3D::GetSpecularMap() const
+const string & CSpriteVisualData3D::GetSpecularMap() const
 {
     return _specularMap;
 }

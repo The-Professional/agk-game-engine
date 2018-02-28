@@ -29,11 +29,11 @@
     <Filter Include="data\collections">
       <UniqueIdentifier>{1f3f5a5a-f466-461e-b765-ece18341c560}</UniqueIdentifier>
     </Filter>
-    <Filter Include="data\animation">
-      <UniqueIdentifier>{0c3728d7-05d4-4aab-9aeb-eaba43910fac}</UniqueIdentifier>
-    </Filter>
     <Filter Include="data\scripts">
       <UniqueIdentifier>{2505e47f-efcd-4c96-b604-1347888692a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\animations">
+      <UniqueIdentifier>{0c3728d7-05d4-4aab-9aeb-eaba43910fac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -58,14 +58,14 @@
     <None Include="x64\Debug\data\collections\stage0.json">
       <Filter>data\collections</Filter>
     </None>
-    <None Include="x64\Debug\data\animations\animation.json">
-      <Filter>data\animation</Filter>
-    </None>
     <None Include="x64\Debug\data\scripts\general.ang">
       <Filter>data\scripts</Filter>
     </None>
     <None Include="x64\Debug\data\scripts\controls.ang">
       <Filter>data\scripts</Filter>
+    </None>
+    <None Include="x64\Debug\data\animations\colorTest.json">
+      <Filter>data\animations</Filter>
     </None>
   </ItemGroup>
 </Project>

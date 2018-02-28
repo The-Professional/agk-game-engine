@@ -4,6 +4,9 @@
 // Game lib dependencies
 #include <utilities\deletefuncs.h>
 
+using namespace std;
+using namespace nlohmann;
+
 /// *************************************************************************
 /// <summary>
 /// Constructor
@@ -41,7 +44,7 @@ CTextSpriteData::~CTextSpriteData()
 /// </summary>
 /// <param name="iter"> JSON node to parse. </param>
 /// *************************************************************************
-void CTextSpriteData::LoadFromIter( const std::string & name, nlohmann::json::const_iterator iter )
+void CTextSpriteData::LoadFromIter( const string & name, json::const_iterator iter )
 {
     _name = name;
 
@@ -53,6 +56,7 @@ void CTextSpriteData::LoadFromIter( const std::string & name, nlohmann::json::co
     NParseHelper::GetColor( iter, _color );
     NParseHelper::GetTextAlignment( iter, _textAlignment );
     NParseHelper::GetAlignment( iter, "alignment", _alignment );
+    NParseHelper::GetString( iter, "animations", _animationList );
 }
 
 
@@ -61,7 +65,7 @@ void CTextSpriteData::LoadFromIter( const std::string & name, nlohmann::json::co
 /// Get the name of the text sprite.
 /// </summary>
 /// *************************************************************************
-const std::string & CTextSpriteData::GetName() const
+const string & CTextSpriteData::GetName() const
 {
     return _name;
 }
@@ -72,7 +76,7 @@ const std::string & CTextSpriteData::GetName() const
 /// Get the font to be used.
 /// </summary>
 /// *************************************************************************
-const std::string & CTextSpriteData::GetFont() const
+const string & CTextSpriteData::GetFont() const
 {
     return _font;
 }
@@ -152,4 +156,15 @@ NDefs::ETextAlignment CTextSpriteData::GetTextAlignment() const
 const CBitmask<uint> & CTextSpriteData::GetAlignment() const
 {
     return _alignment;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get the list of animations this sprite can perform.
+/// </summary>
+/// *************************************************************************
+const vector<string> & CTextSpriteData::GetAnimationList() const
+{
+    return _animationList;
 }

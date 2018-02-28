@@ -1,7 +1,7 @@
 {
   "spriteData3d": {
     "visual": {
-      "mesh": "plane",
+      "type": "plane",
       "textureMap": "greensmudge",
       "width": 50,
       "height": 50,

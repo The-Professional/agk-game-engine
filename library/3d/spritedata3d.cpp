@@ -4,6 +4,9 @@
 // Game lib dependencies
 #include <utilities\deletefuncs.h>
 
+using namespace std;
+using namespace nlohmann;
+
 
 /// *************************************************************************
 /// <summary>
@@ -53,6 +56,8 @@ void CSpriteData3D::LoadFromIter( const std::string & name, nlohmann::json::cons
         _pVisualData = new CSpriteVisualData3D();
         _pVisualData->LoadFromIter( visualIter );
     }
+
+    NParseHelper::GetString( iter, "animations", _animationList );
 }
 
 
@@ -68,18 +73,6 @@ const CSpriteVisualData3D * CSpriteData3D::GetVisualData() const
 }
 
 
-///// *************************************************************************
-///// <summary> 
-///// Get the physics data of the sprite.
-///// </summary>
-///// <returns> Object holding all of the sprite's physics data. </returns>
-///// *************************************************************************
-//const CSpritePhysicsData3D & CSpriteData3D::GetPhysicsData() const
-//{
-//    return _physicsData;
-//}
-
-
 /// *************************************************************************
 /// <summary> 
 /// Get the name of the sprite.
@@ -89,4 +82,15 @@ const CSpriteVisualData3D * CSpriteData3D::GetVisualData() const
 const std::string & CSpriteData3D::GetName() const
 {
     return _name;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get the list of animations this sprite can perform.
+/// </summary>
+/// *************************************************************************
+const vector<string> & CSpriteData3D::GetAnimationList() const
+{
+    return _animationList;
 }

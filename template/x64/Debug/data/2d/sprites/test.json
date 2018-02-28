@@ -3,6 +3,6 @@
     "visual": {
       "textureMap": "bottom"
     },
-    "alignment": {"horizontal": "left", "vertical": "top"}
+    "alignment": ["top", "left"]
   }
 }

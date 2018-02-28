@@ -7,7 +7,7 @@
 #include <utilities/exceptionhandling.h>
 
 // Boost lib dependencies
-#include <boost/format.hpp>
+#include <boost\format.hpp>
 
 // AngelScript lib dependencies
 #include <angelscript.h>

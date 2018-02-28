@@ -1,6 +1,10 @@
 #ifndef __defs_h__
 #define __defs_h__
 
+// Standard lib dependencies
+#include <string>
+#include <map>
+
 // define an unsigned int
 typedef unsigned int uint;
 
@@ -37,44 +41,16 @@ namespace NDefs
         EOT_LIGHT
     };
 
-    // The types of transformation.
-    enum
+    // The types of object fields.
+    enum : uint
     {
         ETT_NULL        = 0,
         ETT_POSITION    = 1,
         ETT_ROTATION    = 2,
         ETT_SIZE        = 4,
-        ETT_COLOR       = 8
-    };
-
-    // The type of value to be animated.
-    enum : uint
-    {
-		ETD_NULL        = 0,
-        ETD_POSITION_X  = 1,
-        ETD_POSITION_Y  = ETD_POSITION_X << 1,
-        ETD_POSITION_Z  = ETD_POSITION_Y << 1,
-
-		ETD_ROTATION_X  = ETD_POSITION_Z << 1,
-		ETD_ROTATION_Y  = ETD_ROTATION_X << 1,
-		ETD_ROTATION_Z  = ETD_ROTATION_Y << 1,
-        
-        ETD_WIDTH       = ETD_ROTATION_Z << 1,
-        ETD_HEIGHT      = ETD_WIDTH << 1,
-        ETD_DEPTH       = ETD_HEIGHT << 1,
-        
-        ETD_RED         = ETD_DEPTH << 1,
-        ETD_GREEN       = ETD_RED << 1,
-        ETD_BLUE        = ETD_GREEN << 1,
-        ETD_ALPHA       = ETD_BLUE << 1
-    };
-
-    // The type of animation end.
-    enum EEndType
-    {
-        EET_IGNORE,         // Ignore the ending animation. Effectively a pause.
-        EET_FINISH_LOOP,    // Continue to the end of the current loop before beginning the end animation.
-        EET_TRANSITION      // Immediately begin transitioning from current object values.
+        ETT_COLOR       = 8,
+        ETT_FRAME       = 16,
+        ETT_BONE        = 32
     };
 
 
@@ -116,7 +92,7 @@ namespace NDefs
     };
     
     // The types of alignment.
-    enum
+    enum : uint
     {
         EA_CENTER   = 0,
         EA_LEFT     = 1,
@@ -150,20 +126,96 @@ namespace NDefs
     };
 
     // The types of shadow rendering modes.
-    enum
+    enum EShadowMode
     {
         ESM_UNIFORM = 1,
         ESM_LIGHT_SPACE_PERSPECTIVE,
         ESM_CASCADE
     };
 
-    // The types of script endings.
-    enum EScriptEndType
+    // The types of animation endings.
+    enum EAnimationEndType
     {
-        ESE_STOP,   // Stop the script completely in whatever state it currently is in.
-        ESE_BREAK,  // Break out of any loops but still play any script outside of the loop.
-        ESE_FINISH, // Finish out the current loop and play any script outside of the loop.
-        ESE_RESET   // Stop the script completely and reset the modified values to their initial values.
+        ESE_NULL,
+        ESE_STOP,   // Stop the animation completely in whatever state it currently is in.
+        ESE_BREAK,  // Break out of any loops but still play any animation outside of the loop.
+        ESE_FINISH, // Finish out the current loop and play any animation outside of the loop.
+        ESE_RESET   // Stop the animation completely and reset the modified values to their initial values.
+    };
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Class to load and hold 3d mesh id's.
+    /// </summary>
+    /// *************************************************************************
+    class CDefs
+    {
+    public:
+        // Get the instance of the singleton class
+        static CDefs & Instance()
+        {
+            static CDefs defs;
+            return defs;
+        }
+
+        // Access functions for each list.
+        EMeshType GetMeshType( const std::string & value );
+        EObjectType GetObjectType( const std::string & value );
+        uint GetObjectField( const std::string & value );
+        EImageType GetImageType( const std::string & value );
+        EResourceType GetResourceType( std::string & value );
+        EControlType GetControlType( const std::string & value );
+        EControlState GetControlState( const std::string & value );
+        uint GetAlignment( const std::string & value );
+        ETextAlignment GetTextAlignment( const std::string & value );
+        EOrentation GetOrientation( const std::string & value );
+        EInputDevice GetInputDevice( const std::string & value );
+        EShadowMode GetShadowMode( const std::string & value );
+        EAnimationEndType GetAnimationEndType( const std::string & value );
+
+    private:
+
+        CDefs();
+        virtual ~CDefs();
+
+        // Map containing the list of meshes types.
+        std::map<const std::string, EMeshType> _meshTypeList;
+
+        // Map containing the list of object types.
+        std::map<const std::string, EObjectType> _objectTypeList;
+
+        // Map containing the list of object field types.
+        std::map<const std::string, uint> _objectFieldList;
+
+        // Map containing the list of image types.
+        std::map<const std::string, EImageType> _imageTypeList;
+
+        // Map containing the list of resource types.
+        std::map<const std::string, EResourceType> _resourceTypeList;
+
+        // Map containing the list of control types.
+        std::map<const std::string, EControlType> _controlTypeList;
+
+        // Map containing the list of control states.
+        std::map<const std::string, EControlState> _controlStateList;
+
+        // Map containing the list of alignments.
+        std::map<const std::string, uint> _alignmentList;
+
+        // Map containing the list of text alignments.
+        std::map<const std::string, ETextAlignment> _textAlignmentList;
+
+        // Map containing the list of orientations.
+        std::map<const std::string, EOrentation> _orientationList;
+
+        // Map containing the list of input devices.
+        std::map<const std::string, EInputDevice> _inputDeviceList;
+
+        // Map containing the list of shadow modes.
+        std::map<const std::string, EShadowMode> _shadowModeList;
+
+        // Map containing the list of animation end types.
+        std::map<const std::string, EAnimationEndType> _animationEndTypeList;
     };
 }
 

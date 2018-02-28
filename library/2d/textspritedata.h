@@ -9,6 +9,7 @@
 
 // Standard lib dependencies
 #include <string>
+#include <vector>
 
 /// *************************************************************************
 /// <summary>
@@ -19,7 +20,6 @@ class CTextSpriteData
 {
 public:
 
-    // Constructor/Destructor
     CTextSpriteData();
     CTextSpriteData( const CTextSpriteData & obj );
     ~CTextSpriteData();
@@ -37,6 +37,7 @@ public:
     const CColor & GetColor() const;
     NDefs::ETextAlignment GetTextAlignment() const;
     const CBitmask<uint> & GetAlignment() const;
+    const std::vector<std::string> & GetAnimationList() const;
 
 private:
 
@@ -66,6 +67,9 @@ private:
 
     // The window alignment of the sprite.
     CBitmask<uint> _alignment = NDefs::EA_CENTER;
+
+    // The list of animations this sprite can perform.
+    std::vector<std::string> _animationList;
 };
 
 #endif  // __text_sprite_data_h__

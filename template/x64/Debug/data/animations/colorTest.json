@@ -1,7 +1,9 @@
 {
   "animation": {
+    "name": "color",
     "functions": ["Ctrl_Test"],
     "loop": 1,
-    "end": "stop"
+    "end": "stop",
+    "modifies": ["color"]
   }
 }

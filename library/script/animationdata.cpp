@@ -1,5 +1,5 @@
 // Physical component dependency
-#include "scriptdata.h"
+#include "animationdata.h"
 
 
 /// *************************************************************************
@@ -7,7 +7,7 @@
 /// Constructor
 /// </summary>
 /// *************************************************************************
-CScriptData::CScriptData()
+CAnimationData::CAnimationData()
 {
 }
 
@@ -17,7 +17,7 @@ CScriptData::CScriptData()
 /// Copy constructor
 /// </summary>
 /// *************************************************************************
-CScriptData::CScriptData( const CScriptData & obj )
+CAnimationData::CAnimationData( const CAnimationData & obj )
 {
     *this = obj;
 }
@@ -28,33 +28,33 @@ CScriptData::CScriptData( const CScriptData & obj )
 /// Destructor
 /// </summary>
 /// *************************************************************************
-CScriptData::~CScriptData()
+CAnimationData::~CAnimationData()
 {
 }
 
 
 /// *************************************************************************
 /// <summary>
-/// Load the script data from the passed in iterator.
+/// Load the animation data from the passed in iterator.
 /// </summary>
-/// <param name="name"> Name of the script. </param>
 /// <param name="iter"> JSON node to parse. </param>
 /// *************************************************************************
-void CScriptData::LoadFromIter( const std::string & name, nlohmann::json::const_iterator iter )
+void CAnimationData::LoadFromIter( nlohmann::json::const_iterator iter )
 {
-    _name = name;
-
+    NParseHelper::GetString( iter, "name", _name );
+    NParseHelper::GetString( iter, "functions", _functionList );
     NParseHelper::GetInt( iter, "loop", _loopCount );
     NParseHelper::GetScriptEndType( iter, _endType );
+
 }
 
 
 /// *************************************************************************
 /// <summary> 
-/// Get the name of the script.
+/// Get the name of the animation.
 /// </summary>
 /// *************************************************************************
-const std::string & CScriptData::GetName() const
+const std::string & CAnimationData::GetName() const
 {
     return _name;
 }
@@ -62,10 +62,10 @@ const std::string & CScriptData::GetName() const
 
 /// *************************************************************************
 /// <summary> 
-/// Get the number of times to loop the script.
+/// Get the number of times to loop the animation.
 /// </summary>
 /// *************************************************************************
-int CScriptData::GetLoopCount() const
+int CAnimationData::GetLoopCount() const
 {
     return _loopCount;
 }
@@ -76,7 +76,30 @@ int CScriptData::GetLoopCount() const
 /// Get the end type of the script.
 /// </summary>
 /// *************************************************************************
-NDefs::EScriptEndType CScriptData::GetScriptEndType() const
+NDefs::EAnimationEndType CAnimationData::GetScriptEndType() const
 {
     return _endType;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get the list of script functions.
+/// </summary>
+/// *************************************************************************
+const std::vector<std::string> & CAnimationData::GetFunctionList() const
+{
+    return _functionList;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get the fields that are modified in the animation. This is used to determine
+/// which scripts conflict with each other.
+/// </summary>
+/// *************************************************************************
+CBitmask<uint> CAnimationData::Modifies() const
+{
+    return _modifies;
 }

@@ -82,10 +82,21 @@ public:
 
     /// *************************************************************************
     /// <summary> 
-    /// Check if one of the bit is set.
+    /// Check if all the passed in bits are set.
     /// </summary>
     /// *************************************************************************
     bool Contains( const type args ) const
+    {
+        return (bitmask & args) == args;
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Check if at least one of the bits are set.
+    /// </summary>
+    /// *************************************************************************
+    bool ContainsOne( const type args ) const
     {
         return (bitmask & args) != 0;
     }

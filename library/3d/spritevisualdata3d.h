@@ -62,7 +62,7 @@ public:
 private:
 
     // Type of object.
-    NDefs::EMeshType _type;
+    NDefs::EMeshType _type = NDefs::EMT_MESH;
 
     // Mesh name.
     std::string _mesh;

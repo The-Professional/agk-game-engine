@@ -5,19 +5,22 @@
 #include <agk.h>
 #include <utilities\exceptionhandling.h>
 #include <utilities\generalfuncs.h>
-//#include <utilities\statcounter.h>
+#include <utilities\jsonparsehelper.h>
 #include <script\scriptglobals.h>
+#include <script\animationdata.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
 
 // Standard lib dependencies
 #include <cstring>
+#include <fstream>
 
 // AngelScript lib dependencies
 #include <angelscript.h>
 
 using namespace std;
+using namespace nlohmann;
 
 /// *************************************************************************
 /// <summary> 
@@ -76,12 +79,104 @@ CScriptManager::~CScriptManager()
 
 /// *************************************************************************
 /// <summary> 
+/// Free all of the scripts.
+/// </summary>
+/// *************************************************************************
+void CScriptManager::Clear()
+{
+    // Reset the id for each file list to indicate it hasn't been loaded.
+    for( auto & iter : _scriptFileList )
+        iter.second.id = 0;
+
+    // Release the context pool
+    for( auto iter : _pInactiveContextList )
+        iter->Release();
+
+    for( auto iter : _pActiveContextList )
+        iter->Release();
+
+    // Discard the module and free its memory.
+    _pScriptModule->Discard();
+    _pScriptModule = nullptr;
+
+    // Clear the functions from the list.
+    _pScriptFunctionList.clear();
+    _pInactiveContextList.clear();
+    _pActiveContextList.clear();
+}
+
+
+/// *************************************************************************
+/// <summary> 
 /// Locate the folder and compile the list of script files.
 /// </summary>
 /// *************************************************************************
-void CScriptManager::LoadScriptList( const std::string & path )
+void CScriptManager::LoadScriptList( const string & path )
 {
     NGeneralFuncs::AddFilesToMap( path, _scriptFileList );
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Locate the folder and compile the list of animation data files.
+/// </summary>
+/// *************************************************************************
+void CScriptManager::LoadAnimationDataFileList( const string & path )
+{
+    NGeneralFuncs::AddFilesToMap( path, _animationDataFileList );
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get the sprite data.
+/// </summary>
+/// <param name="name"> Name of the sprite. </param>
+/// *************************************************************************
+const CAnimationData * CScriptManager::GetAnimationData( const string & name )
+{
+    try
+    {
+        // See if the sprite data is already loaded.
+        auto loadedIter = _animationDataList.find( name );
+        if( loadedIter != _animationDataList.end() )
+            return loadedIter->second;
+
+        auto unloadedIter = _animationDataFileList.find( name );
+        if( unloadedIter != _animationDataFileList.end() )
+        {
+            // Load the sprite data file.
+            ifstream ifile( unloadedIter->second );
+
+            // Parse the content into a json object.
+            json j;
+            ifile >> j;
+
+            auto animationIter = j.find( "animation" );
+            if( animationIter != j.end() )
+            {
+                CAnimationData * pData = new CAnimationData();
+                _animationDataList.emplace( unloadedIter->first, pData );
+
+                pData->LoadFromIter( animationIter );
+
+                return pData;
+            }
+        }
+
+        throw NExcept::CCriticalException( "Error",
+                                           "CScriptManager::GetAnimationData()",
+                                           "No animation data exists with the name '" + name + "'." );
+    }
+    catch( exception e )
+    {
+        throw NExcept::CCriticalException( "Error",
+                                           "CScriptManager::GetAnimationData()",
+                                           "Failed to get animation data '" + name + "'.", e );
+    }
+
+    return nullptr;
 }
 
 
@@ -213,7 +308,19 @@ asIScriptContext * CScriptManager::GetContext()
 /// *************************************************************************
 void CScriptManager::RecycleContext( asIScriptContext * pContext )
 {
-    _pInactiveContextList.push_back( pContext );
+    auto iter = find( _pActiveContextList.begin(), _pActiveContextList.end(), pContext );
+    RecycleContext( iter );
+}
+
+/// <summary> 
+/// Add the script context back to the managed pool.
+/// </summary>
+void CScriptManager::RecycleContext( std::vector<asIScriptContext *>::iterator & iter )
+{
+    _pInactiveContextList.push_back( (*iter) );
+
+    if( iter != _pActiveContextList.end() )
+        _pActiveContextList.erase( iter );
 }
 
 
@@ -279,98 +386,70 @@ asIScriptEngine * CScriptManager::GetEnginePtr()
 
 /// *************************************************************************
 /// <summary> 
-/// Free all of the scripts.
-/// </summary>
-/// *************************************************************************
-void CScriptManager::Clear()
-{
-    // Reset the id for each file list to indicate it hasn't been loaded.
-    for( auto & iter : _scriptFileList )
-        iter.second.id = 0;
-
-    // Release the context pool
-    for( auto iter : _pInactiveContextList )
-        iter->Release();
-
-    for( auto iter : _pActiveContextList )
-        iter->Release();
-
-    // Discard the module and free its memory.
-    _pScriptModule->Discard();
-    _pScriptModule = nullptr;
-
-    // Clear the functions from the list.
-    _pScriptFunctionList.clear();
-    _pInactiveContextList.clear();
-    _pActiveContextList.clear();
-}
-
-
-/// *************************************************************************
-/// <summary> 
 /// Prepare the script function to run.
 /// </summary>
+/// <param name="function"> Name of the function to add to a context. </param>
+/// <param name="pContextVec"> Vector of context pointers to add to. </param>
 /// *************************************************************************
-void CScriptManager::Prepare(
-    const string & funcName,
-    vector<asIScriptContext *> & pContextVec,
-    const vector<CScriptParam> & paramVec )
+asIScriptContext * CScriptManager::Prepare( const string & function, const vector<CScriptParam> & paramList )
 {
     // Get a context from the script manager pool
-    pContextVec.push_back( GetContext() );
+    asIScriptContext * pContext = GetContext();
 
     // Get the function pointer
-    asIScriptFunction * pScriptFunc = GetPtrToFunc( funcName );
+    asIScriptFunction * pScriptFunc = GetPtrToFunc( function );
 
     // Prepare the function to run
-    if( pContextVec.back()->Prepare( pScriptFunc ) < 0 )
+    if( pContext->Prepare( pScriptFunc ) < 0 )
     {
         throw NExcept::CCriticalException( "Error Preparing Script!",
                                            boost::str( boost::format( "There was an error preparing the script (%s).\n\n%s\nLine: %s" )
-                                                       % funcName % __FUNCTION__ % __LINE__ ) );
+                                                       % function % __FUNCTION__ % __LINE__ ) );
     }
 
     // Pass the parameters to the script function
-    for( size_t i = 0; i < paramVec.size(); ++i )
+    for( size_t i = 0; i < paramList.size(); ++i )
     {
         int returnVal( 0 );
 
-        if( paramVec[i].GetType() == CScriptParam::EPT_BOOL )
+        if( paramList[i].GetType() == CScriptParam::EPT_BOOL )
         {
-            returnVal = pContextVec.back()->SetArgByte( (asUINT)i, paramVec[i].Get<bool>() );
+            returnVal = pContext->SetArgByte( (asUINT)i, paramList[i].Get<bool>() );
         }
-        else if( paramVec[i].GetType() == CScriptParam::EPT_INT )
+        else if( paramList[i].GetType() == CScriptParam::EPT_INT )
         {
-            returnVal = pContextVec.back()->SetArgDWord( (asUINT)i, paramVec[i].Get<int>() );
+            returnVal = pContext->SetArgDWord( (asUINT)i, paramList[i].Get<int>() );
         }
-        else if( paramVec[i].GetType() == CScriptParam::EPT_UINT )
+        else if( paramList[i].GetType() == CScriptParam::EPT_UINT )
         {
-            returnVal = pContextVec.back()->SetArgDWord( (asUINT)i, paramVec[i].Get<uint>() );
+            returnVal = pContext->SetArgDWord( (asUINT)i, paramList[i].Get<uint>() );
         }
-        else if( paramVec[i].GetType() == CScriptParam::EPT_FLOAT )
+        else if( paramList[i].GetType() == CScriptParam::EPT_FLOAT )
         {
-            returnVal = pContextVec.back()->SetArgFloat( (asUINT)i, paramVec[i].Get<float>() );
+            returnVal = pContext->SetArgFloat( (asUINT)i, paramList[i].Get<float>() );
         }
-        else if( paramVec[i].GetType() == CScriptParam::EPT_REG_OBJ )
+        else if( paramList[i].GetType() == CScriptParam::EPT_PTR )
         {
-            returnVal = pContextVec.back()->SetArgObject( (asUINT)i, paramVec[i].Get<void *>() );
+            returnVal = pContext->SetArgObject( (asUINT)i, paramList[i].Get<void *>() );
         }
 
         if( returnVal < 0 )
         {
             throw NExcept::CCriticalException( "Error Setting Script Param!",
                                                boost::str( boost::format( "There was an error setting the script parameter (%s).\n\n%s\nLine: %s" )
-                                                           % funcName % __FUNCTION__ % __LINE__ ) );
+                                                           % function % __FUNCTION__ % __LINE__ ) );
         }
     }
+
+    return pContext;
 }
 
-void CScriptManager::Prepare(
-    const string & funcName,
-    const vector<CScriptParam> & paramVec )
-{
-    Prepare( funcName, _pActiveContextList, paramVec );
-}
+//void CScriptManager::Prepare(
+//    const string & function,
+//    const vector<CScriptParam> & paramList )
+//{
+//    Prepare( function, _pActiveContextList, paramList );
+//}
 
 
 /// *************************************************************************
@@ -384,7 +463,7 @@ void CScriptManager::PrepareSpawn( const string & funcName )
     if( pContex )
     {
         // Prepare the script function to run
-        Prepare( funcName, _pActiveContextList );
+        _pActiveContextList.push_back( Prepare( funcName ) );
     }
 }
 
@@ -394,7 +473,7 @@ void CScriptManager::PrepareSpawnObj( const string & funcName, void * pVoid )
     if( pContex )
     {
         // Prepare the script function to run
-        Prepare( funcName, _pActiveContextList, { pVoid } );
+        _pActiveContextList.push_back( Prepare( funcName, { pVoid } ) );
     }
 }
 
@@ -432,7 +511,6 @@ void CScriptManager::Update( vector<asIScriptContext *> & pContextVec )
             if( (*iter)->GetState() != asEXECUTION_SUSPENDED )
             {
                 RecycleContext( (*iter) );
-                iter = pContextVec.erase( iter );
             }
             else
             {

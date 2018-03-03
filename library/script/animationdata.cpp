@@ -45,7 +45,7 @@ void CAnimationData::LoadFromIter( nlohmann::json::const_iterator iter )
     NParseHelper::GetString( iter, "functions", _functionList );
     NParseHelper::GetInt( iter, "loop", _loopCount );
     NParseHelper::GetScriptEndType( iter, _endType );
-
+    NParseHelper::GetObjectFields( iter, "fields", _objectFields );
 }
 
 
@@ -76,7 +76,7 @@ int CAnimationData::GetLoopCount() const
 /// Get the end type of the script.
 /// </summary>
 /// *************************************************************************
-NDefs::EAnimationEndType CAnimationData::GetScriptEndType() const
+int CAnimationData::GetEndType() const
 {
     return _endType;
 }
@@ -95,11 +95,11 @@ const std::vector<std::string> & CAnimationData::GetFunctionList() const
 
 /// *************************************************************************
 /// <summary> 
-/// Get the fields that are modified in the animation. This is used to determine
-/// which scripts conflict with each other.
+/// Get the object fields that are modified in the animation. This is used to 
+/// determine which scripts conflict with each other.
 /// </summary>
 /// *************************************************************************
-CBitmask<uint> CAnimationData::Modifies() const
+CBitmask<uint> CAnimationData::GetObjectFields() const
 {
-    return _modifies;
+    return _objectFields;
 }

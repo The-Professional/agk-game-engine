@@ -1,5 +1,5 @@
 // Physical component dependency
-#include <script/scriptmanager.h>
+#include "scriptmanager.h"
 
 // Game lib dependencies
 #include <agk.h>

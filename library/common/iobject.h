@@ -11,6 +11,9 @@
 // Standard lib dependencies
 #include <string>
 
+// Forward declarations
+class CAnimationComponent;
+
 /// *************************************************************************
 /// <summary>
 /// Interface class for the various sprite classes.
@@ -119,6 +122,12 @@ public:
     // Reset the object's position using its previous position.
     virtual void Reposition() {}
 
+    // Play an animation.
+    virtual void Play( const std::string & name );
+
+    // Update the object.
+    virtual void Update();
+
 protected:
 
     // Constructor
@@ -155,6 +164,9 @@ protected:
 
     // Keep track of what values we've retrieved from AGK this frame.
     CBitmask<uint> _updatedValues;
+
+    // Component to handle playing any animations.
+    CAnimationComponent * _pAnimationComponent = nullptr;
 };
 
 #endif  // __i_object_h__

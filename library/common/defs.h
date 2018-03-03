@@ -134,13 +134,14 @@ namespace NDefs
     };
 
     // The types of animation endings.
-    enum EAnimationEndType
+    enum : int
     {
         ESE_NULL,
-        ESE_STOP,   // Stop the animation completely in whatever state it currently is in.
-        ESE_BREAK,  // Break out of any loops but still play any animation outside of the loop.
-        ESE_FINISH, // Finish out the current loop and play any animation outside of the loop.
-        ESE_RESET   // Stop the animation completely and reset the modified values to their initial values.
+        ESE_DEFAULT, // Use whatever is the default end type.
+        ESE_STOP,    // Stop the animation completely in whatever state it currently is in.
+        ESE_BREAK,   // Break out of any loops but still play any animation outside of the loop.
+        ESE_FINISH,  // Finish out the current loop and play any animation outside of the loop.
+        ESE_RESET    // Stop the animation completely and reset the modified values to their initial values.
     };
 
     /// *************************************************************************
@@ -171,7 +172,7 @@ namespace NDefs
         EOrentation GetOrientation( const std::string & value );
         EInputDevice GetInputDevice( const std::string & value );
         EShadowMode GetShadowMode( const std::string & value );
-        EAnimationEndType GetAnimationEndType( const std::string & value );
+        int GetAnimationEndType( const std::string & value );
 
     private:
 
@@ -215,7 +216,7 @@ namespace NDefs
         std::map<const std::string, EShadowMode> _shadowModeList;
 
         // Map containing the list of animation end types.
-        std::map<const std::string, EAnimationEndType> _animationEndTypeList;
+        std::map<const std::string, int> _animationEndTypeList;
     };
 }
 

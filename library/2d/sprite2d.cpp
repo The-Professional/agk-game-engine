@@ -7,6 +7,7 @@
 #include <2d\spritedata2d.h>
 #include <managers\resourcemanager.h>
 #include <utilities\mathfunc.h>
+#include <script\animationcomponent.h>
 
 /// *************************************************************************
 /// <summary>
@@ -80,6 +81,9 @@ void CSprite2D::Init( const CSpriteData2D * pData )
         // Set the sprite color.
         SetColor( pVisual->GetColor() );
     }
+
+    if( _pData->GetAnimationList().size() > 0 )
+        _pAnimationComponent = new CAnimationComponent(this, _pData->GetAnimationList() );
 
     _alignment = _pData->GetAlignment();
 }

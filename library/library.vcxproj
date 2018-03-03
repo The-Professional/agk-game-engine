@@ -44,6 +44,7 @@
     <ClInclude Include="managers\resourcemanager.h" />
     <ClInclude Include="managers\spritemanager.h" />
     <ClInclude Include="script\animation.h" />
+    <ClInclude Include="script\animationcomponent.h" />
     <ClInclude Include="script\animationdata.h" />
     <ClInclude Include="script\scriptcolor.h" />
     <ClInclude Include="script\scriptglobals.h" />
@@ -80,6 +81,7 @@
     <ClCompile Include="managers\resourcemanager.cpp" />
     <ClCompile Include="managers\spritemanager.cpp" />
     <ClCompile Include="script\animation.cpp" />
+    <ClCompile Include="script\animationcomponent.cpp" />
     <ClCompile Include="script\animationdata.cpp" />
     <ClCompile Include="script\scriptcolor.cpp" />
     <ClCompile Include="script\scriptglobals.cpp" />

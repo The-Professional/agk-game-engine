@@ -3,9 +3,21 @@
 /// *************************************************************************
 void Ctrl_Test( CAnimation & anim )
 {
+	CColor startColor = anim.GetColor();
     CColor color( 200, 200, 200, 255 );
 
-    ColorTo( anim, 500, color );
+	// Main animation loop.
+	int i = 0;
+	do
+	{
+		ColorTo( anim, 500, color );
 
-	anim.Reset();
+		++i;
+	}
+	while( anim->GetLoopCount() == 0 || i < anim->GetLoopCount() || anim.GetEndType() > ESE_DEFAULT )
+
+	if( anim->GetEndType() == ESE_RESET )
+		anim.SetColor( startColor );
+
+	anim.Finish("Ctrl_Test");
 }

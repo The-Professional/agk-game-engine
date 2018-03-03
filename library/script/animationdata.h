@@ -33,14 +33,14 @@ public:
     int GetLoopCount() const;
 
     // Get the end type of the animation.
-    NDefs::EAnimationEndType GetScriptEndType() const;
+    int GetEndType() const;
 
     // Get the list of script functions.
     const std::vector<std::string> & GetFunctionList() const;
 
     // Get the fields that are modified in the animation. This is used to determine
     // which scripts conflict with each other.
-    CBitmask<uint> Modifies() const;
+    CBitmask<uint> GetObjectFields() const;
 
 private:
 
@@ -54,10 +54,10 @@ private:
     std::vector<std::string> _functionList;
 
     // How the animation should end when it is stopped before it finishes.
-    NDefs::EAnimationEndType _endType = NDefs::ESE_STOP;
+    int _endType = NDefs::ESE_STOP;
 
-    // The fields that are modified in the animation. 
-    CBitmask<uint> _modifies = NDefs::ETT_NULL;
+    // The object fields that are modified in the animation. 
+    CBitmask<uint> _objectFields = NDefs::ETT_NULL;
 };
 
 #endif  // __animation_data_h__

@@ -85,8 +85,8 @@ namespace NScriptColor
 
         //Throw( pEngine->RegisterObjectMethod( "CColor", "CColor opAdd ( float )", asMETHODPR( CColor, operator +, (int) const, CColor ), asCALL_THISCALL ) );
         //Throw( pEngine->RegisterObjectMethod( "CColor", "CColor opSub ( float )", asMETHODPR( CColor, operator -, (int) const, CColor ), asCALL_THISCALL ) );
-        //Throw( pEngine->RegisterObjectMethod( "CColor", "CColor opMul ( float )", asMETHODPR( CColor, operator *, (int) const, CColor ), asCALL_THISCALL ) );
-        //Throw( pEngine->RegisterObjectMethod( "CColor", "CColor opDiv ( float )", asMETHODPR( CColor, operator /, (int) const, CColor ), asCALL_THISCALL ) );
+        Throw( pEngine->RegisterObjectMethod( "CColor", "CColor opMul ( float )", asMETHODPR( CColor, operator *, (float) const, CColor ), asCALL_THISCALL ) );
+        Throw( pEngine->RegisterObjectMethod( "CColor", "CColor opDiv ( float )", asMETHODPR( CColor, operator /, (float) const, CColor ), asCALL_THISCALL ) );
 
         // compound assignment operators
         Throw( pEngine->RegisterObjectMethod( "CColor", "CColor opAddAssign ( const CColor & in )", asMETHODPR( CColor, operator +=, (const CColor &), void ), asCALL_THISCALL ) );
@@ -96,8 +96,8 @@ namespace NScriptColor
 
         //Throw( pEngine->RegisterObjectMethod( "CColor", "CColor opAddAssign ( float )", asMETHODPR( CColor, operator +=, (float), CColor ), asCALL_THISCALL ) );
         //Throw( pEngine->RegisterObjectMethod( "CColor", "CColor opSubAssign ( float )", asMETHODPR( CColor, operator -=, (float), CColor ), asCALL_THISCALL ) );
-        //Throw( pEngine->RegisterObjectMethod( "CColor", "CColor opMulAssign ( float )", asMETHODPR( CColor, operator *=, (float), CColor ), asCALL_THISCALL ) );
-        //Throw( pEngine->RegisterObjectMethod( "CColor", "CColor opDivAssign ( float )", asMETHODPR( CColor, operator /=, (float), CColor ), asCALL_THISCALL ) );
+        Throw( pEngine->RegisterObjectMethod( "CColor", "CColor opMulAssign ( float )", asMETHODPR( CColor, operator *=, (float), void ), asCALL_THISCALL ) );
+        Throw( pEngine->RegisterObjectMethod( "CColor", "CColor opDivAssign ( float )", asMETHODPR( CColor, operator /=, (float), void ), asCALL_THISCALL ) );
 
         // Register property
         Throw( pEngine->RegisterObjectProperty( "CColor", "int r", asOFFSET( CColor, r ) ) );

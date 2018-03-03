@@ -153,6 +153,9 @@ namespace NParseHelper
     /// Parse generic x, y, z tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="tag"> Tag to find. </param>
+    /// <param name="xyz"> Value to set. </param>
+    /// <returns> If the tag exists. </returns>
     /// *************************************************************************
     bool GetXYZ( json::const_iterator iter, const string & tag, CVector3 & xyz )
     {
@@ -182,6 +185,9 @@ namespace NParseHelper
     /// Parse generic w, h, d tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="tag"> Tag to find. </param>
+    /// <param name="whd"> Value to set. </param>
+    /// <returns> If the tag exists. </returns>
     /// *************************************************************************
     bool GetWHD( json::const_iterator iter, const string & tag, CVector3 & whd )
     {
@@ -204,6 +210,9 @@ namespace NParseHelper
     /// Parse generic w, h tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="tag"> Tag to find. </param>
+    /// <param name="wh"> Value to set. </param>
+    /// <returns> If the tag exists. </returns>
     /// *************************************************************************
     bool GetWH( nlohmann::json::const_iterator iter, const string & tag, CSize<int> & wh )
     {
@@ -223,6 +232,9 @@ namespace NParseHelper
     /// Parse generic w, h tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="tag"> Tag to find. </param>
+    /// <param name="wh"> Value to set. </param>
+    /// <returns> If the tag exists. </returns>
     bool GetWH( nlohmann::json::const_iterator iter, const string & tag, CSize<float> & wh )
     {
         auto whIter = iter->find( tag );
@@ -244,7 +256,8 @@ namespace NParseHelper
     /// Parse mesh type tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="meshType"> Loaded mesh type. </param>
+    /// <param name="meshType"> Value to set. </param>
+    /// <returns> If the tag exists. </returns>
     /// *************************************************************************
     bool GetMeshType( nlohmann::json::const_iterator iter, NDefs::EMeshType & meshType )
     {
@@ -264,7 +277,8 @@ namespace NParseHelper
     /// Parse alignment tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="alignment"> Loaded alignment. </param>
+    /// <param name="alignment"> Value to set. </param>
+    /// <returns> If the tag exists. </returns>
     /// *************************************************************************
     bool GetAlignment( json::const_iterator iter, const string & tag, CBitmask<uint> & alignment )
     {
@@ -292,7 +306,7 @@ namespace NParseHelper
     /// Parse color tag.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="color"> Loaded color. </param>
+    /// <param name="color"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
     bool GetColor( json::const_iterator iter, CColor & color)
@@ -317,7 +331,7 @@ namespace NParseHelper
     /// Parse orientation tag.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="orientation"> Loaded orientation. </param>
+    /// <param name="orientation"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
     bool GetOrientation( json::const_iterator iter, EOrentation & orientation )
@@ -338,7 +352,7 @@ namespace NParseHelper
     /// Parse text alignment tag.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="alignment"> Loaded text alignment. </param>
+    /// <param name="alignment"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
     bool GetTextAlignment( json::const_iterator iter, ETextAlignment & alignment )
@@ -359,10 +373,10 @@ namespace NParseHelper
     /// Parse script end type tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="endType"> Loaded script end type. </param>
+    /// <param name="endType"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetScriptEndType( json::const_iterator iter, EAnimationEndType & endType )
+    bool GetScriptEndType( json::const_iterator iter, int & endType )
     {
         string str;
         if( GetString( iter, "end", str ) )
@@ -374,7 +388,31 @@ namespace NParseHelper
         return false;
     }
 
-    
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Parse object field tags.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="tag"> Tag to find. </param>
+    /// <param name="fieldType"> Value to set. </param>
+    /// <returns> If the tag exists. </returns>
+    /// *************************************************************************
+    bool GetObjectFields( json::const_iterator iter, const string & tag, CBitmask<uint> & fieldType )
+    {
+        vector<string> field;
+        if( GetString( iter, tag, field ) )
+        {
+            for( auto & f : field )
+                fieldType.Add( CDefs::Instance().GetObjectField( f ) );
+
+            return true;
+        }
+
+        return false;
+    }
+
+
     /// *************************************************************************
     /// <summary> 
     /// Parse the dimension tags.
@@ -404,7 +442,7 @@ namespace NParseHelper
     /// Parse the input state tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="inputState"> Loaded input state. </param>
+    /// <param name="inputState"> Value to set. </param>
     /// *************************************************************************
     void GetInputState( json::const_iterator iter, CInputState & inputState )
     {
@@ -433,7 +471,7 @@ namespace NParseHelper
     /// Parse the input mapping tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="mapping"> Loaded input mapping. </param>
+    /// <param name="mapping"> Value to set. </param>
     /// *************************************************************************
     void GetInputMapping( json::const_iterator iter, CInputMapping & mapping )
     {
@@ -486,7 +524,7 @@ namespace NParseHelper
     /// Parse object data tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="pObject"> Loaded collection object. </param>
+    /// <param name="pObject"> Value to set. </param>
     /// *************************************************************************
     void GetCollectionObject( json::const_iterator iter, iObject * pObject )
     {

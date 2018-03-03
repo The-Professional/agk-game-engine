@@ -29,7 +29,7 @@ CAnimation::CAnimation()
 /// <param name="pData"> Data to initialize the animation. </param> 
 /// <param name="pObject"> Object to apply the animation to. </param> 
 /// *************************************************************************
-CAnimation::CAnimation( CAnimationData * pData, iObject * pObject )
+CAnimation::CAnimation( const CAnimationData * pData, iObject * pObject )
 {
     Init( pData, pObject );
 }
@@ -53,7 +53,7 @@ CAnimation::~CAnimation()
 /// <param name="pData"> Data to initialize the animation. </param> 
 /// <param name="pObject"> Object to apply the animation to. </param> 
 /// *************************************************************************
-void CAnimation::Init( CAnimationData * pData, iObject * pObject )
+void CAnimation::Init( const CAnimationData * pData, iObject * pObject )
 {
     if( !pData || !pObject )
         return;
@@ -98,7 +98,7 @@ void CAnimation::Play( bool restartIfPlaying )
     Recycle();
 
     for( auto & iter : _pData->GetFunctionList() )
-        _pContextList.push_back( CScriptManager::Instance().Prepare( iter, { this } ) );
+        _pContextList.emplace( iter, CScriptManager::Instance().Prepare( iter, { this } ) );
 
     _playing = true;
 }
@@ -112,13 +112,13 @@ void CAnimation::Play( bool restartIfPlaying )
 /// How to end the animation. If not specified, it'll end however it's defined
 /// in the animation data. </param> 
 /// *************************************************************************
-void CAnimation::Stop( EAnimationEndType endType )
+void CAnimation::Stop( int endType )
 {
     if( !_playing || !IsInitalized() )
         return;
 
-    if( endType == ESE_NULL )
-        _endType = _pData->GetScriptEndType();
+    if( endType == ESE_DEFAULT || endType == ESE_NULL )
+        _endType = _pData->GetEndType();
     else
         _endType = endType;
 
@@ -138,10 +138,10 @@ void CAnimation::Recycle()
     {
         for( auto iter : _pContextList )
         {
-            if( iter->GetState() == asEXECUTION_SUSPENDED )
-                iter->Abort();
+            if( iter.second->GetState() == asEXECUTION_SUSPENDED )
+                iter.second->Abort();
 
-            CScriptManager::Instance().RecycleContext( iter );
+            CScriptManager::Instance().RecycleContext( iter.second );
         }
 
 
@@ -158,7 +158,7 @@ void CAnimation::Recycle()
 /// Get the end type. This also tells us if we need to begin ending the animation.
 /// </summary>
 /// *************************************************************************
-NDefs::EAnimationEndType CAnimation::GetEndType() const
+int CAnimation::GetEndType() const
 {
     return _endType;
 }
@@ -177,16 +177,20 @@ bool CAnimation::IsInitalized() const
 
 /// *************************************************************************
 /// <summary>
-/// Reset the animation, making it ready to play again. This should be called
+/// Finish the animation, making it ready to play again. This should be called
 /// at the end of each script, letting everything else know the animation is
 /// finished.
 /// </summary>
 /// *************************************************************************
-void CAnimation::Reset()
+void CAnimation::Finish( const string & function )
 {
-    _endType = ESE_NULL;
-    _playing = false;
-    _pContextList.clear();
+    _pContextList.erase( function );
+
+    if( _pContextList.size() == 0 )
+    {
+        _endType = ESE_DEFAULT;
+        _playing = false;
+    }
 }
 
 
@@ -379,6 +383,39 @@ bool CAnimation::IsVisible() const
 
 /// *************************************************************************
 /// <summary>
+/// Whether or not the animation is playing.
+/// </summary>
+/// *************************************************************************
+bool CAnimation::IsPlaying() const
+{
+    return _playing;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the number of times to loop the animation.
+/// </summary>
+/// *************************************************************************
+int CAnimation::GetLoopCount() const
+{
+    return _pData->GetLoopCount();
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the animation data.
+/// </summary>
+/// *************************************************************************
+const CAnimationData * CAnimation::GetData() const
+{
+    return _pData;
+}
+
+
+/// *************************************************************************
+/// <summary>
 /// Register the class with AngelScript.
 /// </summary>
 /// *************************************************************************
@@ -388,6 +425,10 @@ void CAnimation::Register( asIScriptEngine * pEngine )
 
     // Register CScriptComponent2d reference and methods
     Throw( pEngine->RegisterObjectType( "CAnimation", 0, asOBJ_REF | asOBJ_NOCOUNT ) );
+
+    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void Finish(string &in)", asMETHOD( CAnimation, Finish ), asCALL_THISCALL ) );
+    Throw( pEngine->RegisterObjectMethod( "CAnimation", "int GetEndType()", asMETHOD( CAnimation, GetEndType ), asCALL_THISCALL ) );
+    Throw( pEngine->RegisterObjectMethod( "CAnimation", "int GetLoopCount()", asMETHOD( CAnimation, GetLoopCount ), asCALL_THISCALL ) );
 
     Throw( pEngine->RegisterObjectMethod( "CAnimation", "void SetPos(CVector3 &in)",       asMETHOD( CAnimation, SetPos ), asCALL_THISCALL ) );
     Throw( pEngine->RegisterObjectMethod( "CAnimation", "void SetRot(CVector3 &in)",       asMETHOD( CAnimation, SetRot ), asCALL_THISCALL ) );

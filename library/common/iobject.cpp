@@ -1,6 +1,9 @@
 // Physical dependency
 #include "iobject.h"
 
+// Game lib dependencies
+#include <script\animationcomponent.h>
+#include <utilities\deletefuncs.h>
 
 /// *************************************************************************
 /// <summary>
@@ -32,6 +35,8 @@ NDefs::EObjectType iObject::GetType() const
 void iObject::Clear()
 {
     DeleteObject();
+
+    NDelFunc::Delete( _pAnimationComponent );
 
     _position = 0;
     _rotation = 0;
@@ -492,4 +497,28 @@ const CColor & iObject::GetColor()
     }
 
     return _color;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Play an animation. 
+/// </summary>
+/// *************************************************************************
+void iObject::Play( const std::string & name )
+{
+    if( _pAnimationComponent )
+        _pAnimationComponent->Play( name );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Update the object. 
+/// </summary>
+/// *************************************************************************
+void iObject::Update()
+{
+    if( _pAnimationComponent )
+        _pAnimationComponent->Update();
 }

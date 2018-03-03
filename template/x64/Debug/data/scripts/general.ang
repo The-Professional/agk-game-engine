@@ -8,7 +8,7 @@ shared void ColorTo( CAnimation & anim, float time, CColor &in final )
 
     do
     {
-        if( anim.SkipToEnd() )
+        if( anim.GetEndType() == ESE_STOP || anim.GetEndType() == ESE_BREAK || anim.GetEndType() == ESE_RESET )
             break;
 
         time -= GetElapsedTime();

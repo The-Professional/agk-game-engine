@@ -167,6 +167,17 @@ public:
         return bitmask < value;
     }
 
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Overloaded type cast operator.
+    /// </summary>
+    /// *************************************************************************
+    operator type () const
+    {
+        return bitmask;
+    }
+
 private:
 
     // bit mask

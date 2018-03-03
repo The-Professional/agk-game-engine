@@ -67,5 +67,8 @@
     <None Include="x64\Debug\data\animations\colorTest.json">
       <Filter>data\animations</Filter>
     </None>
+    <None Include="x64\Debug\data\scripts\defs.ang">
+      <Filter>data\scripts</Filter>
+    </None>
   </ItemGroup>
 </Project>

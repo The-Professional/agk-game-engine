@@ -1,10 +1,3 @@
-
-/************************************************************************
-*    FILE NAME:       scriptpoint.cpp
-*
-*    DESCRIPTION:     CVector3 script object registration
-************************************************************************/
-
 // Physical component dependency
 #include "scriptvector3.h"
 
@@ -18,46 +11,62 @@
 // Boost lib dependencies
 #include <boost/format.hpp>
 
-namespace NScriptPoint
+namespace NScriptVector3
 {
-
-    /************************************************************************
-    *    desc:  Constructor
-    ************************************************************************/
+    /// *************************************************************************
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// *************************************************************************
     void Constructor( void * thisPointer )
     {
         new(thisPointer) CVector3();
     }
 
-    /************************************************************************
-    *    desc:  Copy Constructor
-    ************************************************************************/
+
+    /// *************************************************************************
+    /// <summary>
+    /// Copy Constructor.
+    /// </summary>
+    /// *************************************************************************
     void CopyConstructor( const CVector3 & other, void * pThisPointer )
     {
         new(pThisPointer) CVector3( other );
     }
 
+    /// <summary>
+    /// Copy Constructor.
+    /// </summary>
     void ConstructorFromThreeFloats( float x, float y, float z, void * pThisPointer )
     {
         new(pThisPointer) CVector3( x, y, z );
     }
 
+    /// <summary>
+    /// Copy Constructor.
+    /// </summary>
     void ConstructorFromTwoFloats( float x, float y, void * pThisPointer )
     {
         new(pThisPointer) CVector3( x, y );
     }
 
-    /************************************************************************
-    *    desc:  Destructor
-    ************************************************************************/
+
+    /// *************************************************************************
+    /// <summary>
+    /// Destructor
+    /// </summary>
+    /// *************************************************************************
     void Destructor( void * pThisPointer )
     {
         ((CVector3*)pThisPointer)->~CVector3();
     }
 
-    /************************************************************************
-    *    desc:  Throw an exception for values less then 0
-    ************************************************************************/
+
+    /// *************************************************************************
+    /// <summary>
+    /// Throw an exception for values less then 0.
+    /// </summary>
+    /// *************************************************************************
     void Throw( int value )
     {
         if( value < 0 )
@@ -66,9 +75,12 @@ namespace NScriptPoint
                                                            % __FUNCTION__ % __LINE__ ) );
     }
 
-    /************************************************************************
-    *    desc:  Register the type
-    ************************************************************************/
+
+    /// *************************************************************************
+    /// <summary>
+    /// Register the type.
+    /// </summary>
+    /// *************************************************************************
     void Register( asIScriptEngine * pEngine )
     {
         // Register type

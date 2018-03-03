@@ -1,15 +1,24 @@
-// Includes
+// Physical component dependency
 #include "template.h"
 
+// Game lib dependencies
 #include <utilities\settings.h>
 #include <managers\inputmanager.h>
 #include <managers\spritemanager.h>
 #include <managers\resourcemanager.h>
 #include <managers\collectionmanager.h>
 #include <script\scriptmanager.h>
+#include <script\scriptglobals.h>
+#include <script\scriptcolor.h>
+#include <script\scriptvector3.h>
+#include <script\animation.h>
 #include <3d\sprite3d.h>
 #include <2d\sprite2d.h>
 #include <2d\textsprite.h>
+
+// AngelScript lib dependencies
+#include <scriptstdstring/scriptstdstring.h>
+#include <scriptarray/scriptarray.h>
 
 // Namespace
 using namespace AGK;
@@ -38,6 +47,14 @@ void app::Init()
     CCollectionManager::Instance().LoadCollectionFileList( "data/collections/" );
     CScriptManager::Instance().LoadScriptList( "data/scripts" );
     CScriptManager::Instance().LoadAnimationDataFileList( "data/animations" );
+
+    RegisterStdString( CScriptManager::Instance().GetEnginePtr() );
+    RegisterScriptArray( CScriptManager::Instance().GetEnginePtr(), false );
+    NScriptGlobals::Register( CScriptManager::Instance().GetEnginePtr() );
+    NScriptColor::Register( CScriptManager::Instance().GetEnginePtr() );
+    NScriptVector3::Register( CScriptManager::Instance().GetEnginePtr() );
+
+    CAnimation::Register( CScriptManager::Instance().GetEnginePtr() );
 }
 
 void app::Begin()

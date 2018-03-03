@@ -9,6 +9,7 @@
 // Standard lib dependencies
 #include <string>
 #include <vector>
+#include <map>
 
 // Forward declarations
 class iObject;
@@ -26,11 +27,11 @@ class CAnimation
 public:
 
     CAnimation();
-    CAnimation( CAnimationData * pData, iObject * pObject );
+    CAnimation( const CAnimationData * pData, iObject * pObject );
     ~CAnimation();
 
     // Initialize the animation.
-    void Init( CAnimationData * pData, iObject * pObject );
+    void Init( const CAnimationData * pData, iObject * pObject );
 
     // Clear the animation.
     void Clear();
@@ -39,19 +40,19 @@ public:
     void Play( bool restartIfPlaying = true );
 
     // Stop the animation.
-    void Stop( NDefs::EAnimationEndType endType = NDefs::ESE_NULL );
+    void Stop( int endType = NDefs::ESE_DEFAULT );
 
     // Stop any animations and recycle all contexts.
     void Recycle();
 
     // Get the end type. This also tells us if we need to begin ending the animation.
-    NDefs::EAnimationEndType GetEndType() const;
+    int GetEndType() const;
 
     // Whether or not the animation has been initialized.
     bool IsInitalized() const;
 
-    // Reset the animation, making it ready to play again.
-    void Reset();
+    // Finish the animation, making it ready to play again.
+    void Finish( const std::string & function );
 
     // Access functions for the object's position.
     void SetPos( const CVector3 & pos );
@@ -82,13 +83,22 @@ public:
     void SetVisible( bool visible );
     bool IsVisible() const;
 
+    // Whether or not the animation is playing.
+    bool IsPlaying() const;
+
+    // Get the number of times to loop the animation.
+    int GetLoopCount() const;
+
+    // Get the animation data.
+    const CAnimationData * GetData() const;
+
     // Register the class with AngelScript.
     static void Register( asIScriptEngine * pEngine );
 
 private:
 
     // Default data of the animation.
-    CAnimationData * _pData = nullptr;
+    const CAnimationData * _pData = nullptr;
 
     // The object to animate. This is not owned by the animation.
     iObject * _pObject = nullptr;
@@ -97,11 +107,11 @@ private:
     std::vector<std::string> _functionList;
 
     // The context used to animate the object. These are not owned by the animation.
-    std::vector<asIScriptContext *> _pContextList;
+    std::map<const std::string, asIScriptContext *> _pContextList;
 
     // This variable is set when the animation needs to end. Whichever end type it's set to
     // will determine how this animation will end.
-    NDefs::EAnimationEndType _endType = NDefs::ESE_NULL;
+    int _endType = NDefs::ESE_DEFAULT;
 
     // If the animation is currently playing.
     bool _playing = false;

@@ -17,8 +17,6 @@
 class CSpriteData2D;
 class CColor;
 
-template <typename type>
-class CSize;
 
 /// *************************************************************************
 /// <summary>

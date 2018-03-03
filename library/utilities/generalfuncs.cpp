@@ -1,3 +1,13 @@
+#if defined(_WINDOWS)
+#define STRICT
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
+
+#if defined(__ANDROID__)
+#include <android/log.h>
+#endif
+
 // Physical component dependency
 #include "generalfuncs.h"
 

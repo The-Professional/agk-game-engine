@@ -1,10 +1,3 @@
-
-/************************************************************************
-*    FILE NAME:       scriptvector3.h
-*
-*    DESCRIPTION:     CPoint script object registration
-************************************************************************/
-
 #ifndef __script_vector_3_h__
 #define __script_vector_3_h__
 
@@ -16,7 +9,7 @@ class asIScriptEngine;
 /// CVector3 script object registration functions.
 /// </summary>
 /// *************************************************************************
-namespace NScriptPoint
+namespace NScriptVector3
 {
     // Register CVector3 as a script object.
     void Register( asIScriptEngine * pEngine );

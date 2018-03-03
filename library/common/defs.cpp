@@ -232,7 +232,7 @@ namespace NDefs
     /// Get the animation end type.
     /// </summary>
     /// *************************************************************************
-    EAnimationEndType CDefs::GetAnimationEndType( const std::string & value )
+    int CDefs::GetAnimationEndType( const std::string & value )
     {
         return NGeneralFuncs::GetMapValue( value, _animationEndTypeList );
     }

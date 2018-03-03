@@ -1,6 +1,10 @@
 #ifndef __color_h__
 #define __color_h__
 
+#if defined(_WINDOWS)
+#pragma warning(disable : 4244)
+#endif
+
 /// *************************************************************************
 /// <summary> 
 /// Class to hold color values.
@@ -71,6 +75,7 @@ public:
         return CColor( r - color.r, g - color.g, b - color.b, a - color.a );
     }
 
+
     /// *************************************************************************
     /// <summary> 
     /// Color subtraction.
@@ -82,6 +87,56 @@ public:
         g -= color.g;
         b -= color.b;
         a -= color.a;
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Color multiplication.
+    /// </summary>
+    /// *************************************************************************
+    CColor operator * ( float value ) const
+    {
+        return CColor( r * value, g * value, b * value, a * value );
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Color multiplication.
+    /// </summary>
+    /// *************************************************************************
+    void operator *= ( float value )
+    {
+        r *= value;
+        g *= value;
+        b *= value;
+        a *= value;
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Color division.
+    /// </summary>
+    /// *************************************************************************
+    CColor operator / ( float value ) const
+    {
+        return CColor( r / value, g / value, b / value, a / value );
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Color division.
+    /// </summary>
+    /// *************************************************************************
+    void operator /= ( float value )
+    {
+        r /= value;
+        g /= value;
+        b /= value;
+        a /= value;
     }
 };
 

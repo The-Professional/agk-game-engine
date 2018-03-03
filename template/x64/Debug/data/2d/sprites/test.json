@@ -3,6 +3,7 @@
     "visual": {
       "textureMap": "bottom"
     },
-    "alignment": ["top", "left"]
+    "alignment": ["top", "left"],
+    "animations": ["colorTest"]
   }
 }

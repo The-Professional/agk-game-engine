@@ -403,14 +403,10 @@ const CAnimationData * CAnimation::GetData() const
 /// Spawn another context to run concurrently.
 /// </summary>
 /// <param name="function"> Script function to start. </param>
-/// <param name="startThisFrame"> Whether or not to start the function on this frame or the next. </param>
 /// *************************************************************************
-void CAnimation::Spawn( const std::string & function, bool startThisFrame )
+void CAnimation::Spawn( const std::string & function )
 {
-    if ( startThisFrame )
-        _pContextList.push_back( CScriptManager::Instance().Prepare( function, { this } ) );
-    else
-        _pContextList.insert( _pContextList.begin(), CScriptManager::Instance().Prepare( function, { this } ) );
+    _pContextList.push_back( CScriptManager::Instance().Prepare( function, { this } ) );
 }
 
 
@@ -421,16 +417,21 @@ void CAnimation::Spawn( const std::string & function, bool startThisFrame )
 /// *************************************************************************
 void CAnimation::Update()
 {
-    auto iter = _pContextList.begin();
-    while( iter != _pContextList.end() )
+    vector<asIScriptContext *> pEraseList;
+
+    //auto iter = _pContextList.begin();
+    //while( iter != _pContextList.end() )
+    for( uint i = 0; i < _pContextList.size(); i++ )
     {
+        auto pContext = _pContextList[i];
+
         // See if this context is still being used.
-        if( ((*iter)->GetState() == asEXECUTION_SUSPENDED) ||
-            ((*iter)->GetState() == asEXECUTION_PREPARED) )
+        if( (pContext->GetState() == asEXECUTION_SUSPENDED) ||
+            (pContext->GetState() == asEXECUTION_PREPARED) )
         {
             // Execute the script and check for errors.
             // Since the script can be suspended, this also is used to continue execution.
-            if( (*iter)->Execute() < 0 )
+            if( pContext->Execute() < 0 )
             {
                 throw NExcept::CCriticalException( "Error Calling Spawn Script!",
                         boost::str( boost::format( "There was an error executing the script.\n\n%s\nLine: %s" )
@@ -438,15 +439,16 @@ void CAnimation::Update()
             }
     
             // Return the context to the pool if it has not been suspended.
-            if( (*iter)->GetState() != asEXECUTION_SUSPENDED )
-            {
-                CScriptManager::Instance().RecycleContext( (*iter) );
-                iter = _pContextList.erase( iter );
-            }
-            else
-                ++iter;
+            if( pContext->GetState() != asEXECUTION_SUSPENDED )
+                pEraseList.push_back( pContext );
         }
     }
+
+    for( auto pContext : pEraseList )
+        _pContextList.erase( std::find(_pContextList.begin(), _pContextList.end(), pContext) );
+
+    //auto iter = _pContextList.begin();
+    //while( iter != _pContextList.end() )
 }
 
 
@@ -486,5 +488,5 @@ void CAnimation::Register( asIScriptEngine * pEngine )
     Throw( pEngine->RegisterObjectMethod( "CAnimation", "int GetColorA()",            asMETHOD( CAnimation, GetColorA ), asCALL_THISCALL ) );
     Throw( pEngine->RegisterObjectMethod( "CAnimation", "bool IsVisible()",           asMETHOD( CAnimation, IsVisible ), asCALL_THISCALL ) );
 
-    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void Spawn(string &in)",     asMETHOD( CAnimation, Spawn ), asCALL_THISCALL ) );
+    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void Spawn(string &in)", asMETHOD( CAnimation, Spawn ), asCALL_THISCALL ) );
 }

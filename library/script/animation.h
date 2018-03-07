@@ -92,7 +92,7 @@ public:
     const CAnimationData * GetData() const;
 
     // Spawn another context to run concurrently.
-    void Spawn( const std::string & function, bool startThisFrame );
+    void Spawn( const std::string & function );
 
     // Update the animation.
     void Update();

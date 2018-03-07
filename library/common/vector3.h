@@ -24,18 +24,42 @@ public:
     // 3D vector addition.
     CVector3 operator + ( const CVector3 & vec ) const;
     CVector3 operator + ( const CVector2 & vec ) const;
+    CVector3 operator + ( float value ) const;
 
     // 3D vector addition.
     void operator += ( const CVector3 & vec );
     void operator += ( const CVector2 & vec );
+    void operator += ( float value );
 
     // 3D vector subtraction.
     CVector3 operator - ( const CVector3 & vec ) const;
     CVector3 operator - ( const CVector2 & vec ) const;
+    CVector3 operator - ( float value ) const;
 
     // 3D vector subtraction.
     void operator -= ( const CVector3 & vec );
     void operator -= ( const CVector2 & vec );
+    void operator -= ( float value );
+
+    // 3D vector multiplation.
+    CVector3 operator * ( const CVector3 & vec ) const;
+    CVector3 operator * ( const CVector2 & vec ) const;
+    CVector3 operator * ( float value ) const;
+
+    // 3D vector multiplation.
+    void operator *= ( const CVector3 & vec );
+    void operator *= ( const CVector2 & vec );
+    void operator *= ( float value );
+
+    // 3D vector division.
+    CVector3 operator / ( const CVector3 & vec ) const;
+    CVector3 operator / ( const CVector2 & vec ) const;
+    CVector3 operator / ( float value ) const;
+
+    // 3D vector division.
+    void operator /= ( const CVector3 & vec );
+    void operator /= ( const CVector2 & vec );
+    void operator /= ( float value );
 
 public:
 

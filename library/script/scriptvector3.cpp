@@ -99,24 +99,24 @@ namespace NScriptVector3
         // binary operators
         Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opAdd ( const CVector3 & in )", asMETHODPR( CVector3, operator +, (const CVector3 &) const, CVector3 ), asCALL_THISCALL ) );
         Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opSub ( const CVector3 & in )", asMETHODPR( CVector3, operator -, (const CVector3 &) const, CVector3 ), asCALL_THISCALL ) );
-        //Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opMul ( const CVector3 & in )", asMETHODPR( CVector3, operator *, (const CVector3 &) const, CVector3 ), asCALL_THISCALL ) );
-        //Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opDiv ( const CVector3 & in )", asMETHODPR( CVector3, operator /, (const CVector3 &) const, CVector3 ), asCALL_THISCALL ) );
+        Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opMul ( const CVector3 & in )", asMETHODPR( CVector3, operator *, (const CVector3 &) const, CVector3 ), asCALL_THISCALL ) );
+        Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opDiv ( const CVector3 & in )", asMETHODPR( CVector3, operator /, (const CVector3 &) const, CVector3 ), asCALL_THISCALL ) );
 
-        //Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opAdd ( float )", asMETHODPR( CVector3, operator +, (float) const, CVector3 ), asCALL_THISCALL ) );
-        //Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opSub ( float )", asMETHODPR( CVector3, operator -, (float) const, CVector3 ), asCALL_THISCALL ) );
-        //Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opMul ( float )", asMETHODPR( CVector3, operator *, (float) const, CVector3 ), asCALL_THISCALL ) );
-        //Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opDiv ( float )", asMETHODPR( CVector3, operator /, (float) const, CVector3 ), asCALL_THISCALL ) );
+        Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opAdd ( float )", asMETHODPR( CVector3, operator +, (float) const, CVector3 ), asCALL_THISCALL ) );
+        Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opSub ( float )", asMETHODPR( CVector3, operator -, (float) const, CVector3 ), asCALL_THISCALL ) );
+        Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opMul ( float )", asMETHODPR( CVector3, operator *, (float) const, CVector3 ), asCALL_THISCALL ) );
+        Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opDiv ( float )", asMETHODPR( CVector3, operator /, (float) const, CVector3 ), asCALL_THISCALL ) );
 
         // compound assignment operators
         Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opAddAssign ( const CVector3 & in )", asMETHODPR( CVector3, operator +=, (const CVector3 &), void ), asCALL_THISCALL ) );
         Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opSubAssign ( const CVector3 & in )", asMETHODPR( CVector3, operator -=, (const CVector3 &), void ), asCALL_THISCALL ) );
-        //Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opMulAssign ( const CVector3 & in )", asMETHODPR( CVector3, operator *=, (const CVector3 &), CVector3 ), asCALL_THISCALL ) );
-        //Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opDivAssign ( const CVector3 & in )", asMETHODPR( CVector3, operator /=, (const CVector3 &), CVector3 ), asCALL_THISCALL ) );
+        Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opMulAssign ( const CVector3 & in )", asMETHODPR( CVector3, operator *=, (const CVector3 &), void ), asCALL_THISCALL ) );
+        Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opDivAssign ( const CVector3 & in )", asMETHODPR( CVector3, operator /=, (const CVector3 &), void ), asCALL_THISCALL ) );
 
-        //Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opAddAssign ( float )", asMETHODPR( CVector3, operator +=, (float), void ), asCALL_THISCALL ) );
-        //Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opSubAssign ( float )", asMETHODPR( CVector3, operator -=, (float), CVector3 ), asCALL_THISCALL ) );
-        //Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opMulAssign ( float )", asMETHODPR( CVector3, operator *=, (float), CVector3 ), asCALL_THISCALL ) );
-        //Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opDivAssign ( float )", asMETHODPR( CVector3, operator /=, (float), CVector3 ), asCALL_THISCALL ) );
+        Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opAddAssign ( float )", asMETHODPR( CVector3, operator +=, (float), void ), asCALL_THISCALL ) );
+        Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opSubAssign ( float )", asMETHODPR( CVector3, operator -=, (float), void ), asCALL_THISCALL ) );
+        Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opMulAssign ( float )", asMETHODPR( CVector3, operator *=, (float), void ), asCALL_THISCALL ) );
+        Throw( pEngine->RegisterObjectMethod( "CVector3", "CVector3 opDivAssign ( float )", asMETHODPR( CVector3, operator /=, (float), void ), asCALL_THISCALL ) );
 
         // Register property
         Throw( pEngine->RegisterObjectProperty( "CVector3", "float x", asOFFSET( CVector3, x ) ) );

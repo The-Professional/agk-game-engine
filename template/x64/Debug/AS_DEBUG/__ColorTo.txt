@@ -4,7 +4,7 @@ Temps: 12, 14, 15, 19
 
 Variables: 
  000: CAnimation& anim
- -002: CColor& final
+ -002: CColor& value
  -004: float endTime
  -005: float startTime
  004: CColor current
@@ -21,7 +21,7 @@ Variables:
                VarDecl  3
                VarDecl  4
     0  19 *    PshVPtr  v0
-    1  21 *    CALLSYS  151           (const CColor& CAnimation::GetColor())
+    1  21 *    CALLSYS  163           (const CColor& CAnimation::GetColor())
     3  19 *    PshRPtr
     4  21 *    PSF      v4
     5  23 *    CALLSYS  112           (CColor::CColor(const CColor&in))
@@ -44,15 +44,15 @@ Variables:
                ObjInfo  v8, 1
                VarDecl  6
    20  19 *    CpyVtoV4 v13, v-5
-- 11,9 -
+- 12,9 -
             1:
             {
    22  19 *    PshVPtr  v0
-   23  21 *    CALLSYS  135           (int CAnimation::GetStopType())
+   23  21 *    CALLSYS  147           (int CAnimation::GetStopType())
    25  19 *    CpyRtoV4 v14
    26  19 *    CMPIi    v14, 2
    28  19 *    JNZ      +11              (d:41)
-- 12,13 -
+- 13,13 -
    30  19 *    SetV4    v15, 0x0          (i:0, f:0)
             {
    32  19 *    PSF      v8
@@ -64,21 +64,21 @@ Variables:
             }
    38  19 *    CpyVtoR4 v15
    39  19 *    JMP      +65              (d:106)
-- 14,9 -
+- 15,9 -
             4:
    41  19 *    CALLSYS  108           (float GetElapsedTime())
    43  19 *    CpyRtoV4 v14
    44  19 *    ADDf     v13, v13, v14
-- 16,9 -
+- 17,9 -
    46  19 *    CMPf     v13, v-4
    48  19 *    JS       +7              (d:57)
-- 17,13 -
+- 18,13 -
    50  19 *    VAR      v-2
    51  21 *    PshVPtr  v0
    52  23 *    GETOBJREF 2
-   53  23 *    CALLSYS  140           (void CAnimation::SetColor(const CColor&in))
+   53  23 *    CALLSYS  152           (void CAnimation::SetColor(const CColor&in))
    55  19 *    JMP      +30              (d:87)
-- 19,13 -
+- 20,13 -
             5:
    57  19 *    PshV4    v13
    58  20 *    PSF      v12
@@ -105,24 +105,24 @@ Variables:
    79  19 *    VAR      v12
    80  21 *    PshVPtr  v0
    81  23 *    GETREF   2
-   82  23 *    CALLSYS  140           (void CAnimation::SetColor(const CColor&in))
+   82  23 *    CALLSYS  152           (void CAnimation::SetColor(const CColor&in))
    84  19 *    PSF      v12
    85  21 *    CALLSYS  114           (CColor::~CColor())
-- 21,9 -
+- 22,9 -
                ObjInfo  v12, 0
             6:
    87  19 *    CALLSYS  110           (void Suspend())
             }
             2:
    89  19 *    SUSPEND
-- 23,12 -
+- 24,12 -
    90  19 *    CMPf     v13, v-4
    92  19 *    JS       -72              (d:22)
-- 25,2 -
+- 26,2 -
             3:
    94  19 *    PshV4    v-4
    95  20 *    PshV4    v13
-   96  21 *    CALL     156           (float GetRemainingTime(float, float))
+   96  21 *    CALL     169           (float GetRemainingTime(float, float))
    98  19 *    CpyRtoV4 v15
             {
    99  19 *    PSF      v8

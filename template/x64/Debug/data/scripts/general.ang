@@ -1,11 +1,12 @@
 /// *************************************************************************
-/// Color to the final color in time.
+/// Gradually change the color to the passed in color.
 /// *************************************************************************
-shared float ColorTo( CAnimation & anim, CColor &in final, float endTime, float startTime = 0 )
+shared float ColorTo( CAnimation & anim, CColor &in value, float endTime, float startTime = 0 )
 {
     CColor current = anim.GetColor();
-    CColor diff = final - current;
+    CColor diff = value - current;
 	float currentTime = startTime;
+
     do
     {
         if( anim.GetStopType() == EST_BREAK )
@@ -14,9 +15,38 @@ shared float ColorTo( CAnimation & anim, CColor &in final, float endTime, float 
         currentTime += GetElapsedTime();
 	
         if( currentTime >= endTime )
-            anim.SetColor( final );
+            anim.SetColor( value );
         else
             anim.SetColor( current + diff * currentTime / endTime );
+	
+        Suspend();
+    }
+    while( currentTime < endTime );
+
+	return GetRemainingTime( currentTime, endTime );
+}
+
+
+/// *************************************************************************
+/// Gradually change the position to the passed in position.
+/// *************************************************************************
+shared float MoveTo( CAnimation & anim, CVector3 &in value, float endTime, float startTime = 0 )
+{
+    CVector3 current = anim.GetPos();
+    CVector3 diff = value - current;
+	float currentTime = startTime;
+
+    do
+    {
+        if( anim.GetStopType() == EST_BREAK )
+            return 0;
+	
+        currentTime += GetElapsedTime();
+	
+        if( currentTime >= endTime )
+            anim.SetPos( value );
+        else
+            anim.SetPos( current + diff * currentTime / endTime );
 	
         Suspend();
     }

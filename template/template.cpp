@@ -20,12 +20,17 @@
 #include <scriptstdstring/scriptstdstring.h>
 #include <scriptarray/scriptarray.h>
 
+// Standard lib dependencies
+#include <vector>
+
 // Namespace
 using namespace AGK;
+using namespace std;
 
 app App;
 
 CSprite3D * pSprite;
+vector<iObject *> pObjectList;
 
 void app::Init()
 {
@@ -55,27 +60,38 @@ void app::Init()
     NScriptVector3::Register( CScriptManager::Instance().GetEnginePtr() );
 
     CAnimation::Register( CScriptManager::Instance().GetEnginePtr() );
+
+    CScriptManager::Instance().LoadScript( "defs" );
+    CScriptManager::Instance().LoadScript( "general" );
+    CScriptManager::Instance().LoadScript( "controls" );
+    CScriptManager::Instance().BuildScript();
 }
 
 void app::Begin()
 {
     agk::SetErrorMode( 2 );
 	agk::SetClearColor( 0, 0, 0 );
-	agk::SetSyncRate( 0, 0 );
+	agk::SetSyncRate( 60, 0 );
 	agk::SetScissor( 0, 0, 0, 0 );
 
-    CCollectionManager::Instance().LoadCollection( "stage0" );
+    pObjectList = CCollectionManager::Instance().LoadCollection( "stage0" );
     pSprite = CSpriteManager::Instance().CreateSprite3D( "ball" );
     //pSprite->SetScale( 2 );
 }
 
 int app::Loop()
 {
+    // Close the game.
+    if( CInputManager::Instance().IsReleased( "menu", "menu back" ) )
+        return 1;
+
     CSettings::Instance().CheckForWindowSizeChange();
 
-    if( CInputManager::Instance().IsReleased("menu", "menu select") )
-        pSprite->IncRot( 90.f, 90.f, 0 );
+    if( CInputManager::Instance().IsReleased( "menu", "menu select" ) )
+        //pSprite->IncRot( 90.f, 90.f, 0 );
+        pObjectList[2]->Play( "color", NDefs::EST_FINISH );
 
+    CSpriteManager::Instance().Update();
 	agk::Print( agk::ScreenFPS() );
 	agk::Sync();
 

@@ -23,18 +23,16 @@ class CSprite3D : public iObject
 public:
 
     CSprite3D();
-    CSprite3D( const CSpriteData3D * objectData );
-
+    CSprite3D( const CSpriteData3D * pData );
     ~CSprite3D();
 
     // Initialize the sprite using its sprite data.
-    void Init();
+    void Init( const CSpriteData3D * pData );
 
     // Delete the object that belongs to the AGK id.
     virtual void DeleteObject();
 
-    // Access functions for the data used to create the sprite.
-    void SetData( CSpriteData3D * pData );
+    // Get the data used to create the sprite.
     const CSpriteData3D * GetData() const;
 
     // Update AGK with the current color and transformation data.

@@ -86,13 +86,10 @@ void CScriptManager::Clear()
 {
     // Reset the id for each file list to indicate it hasn't been loaded.
     for( auto & iter : _scriptFileList )
-        iter.second.id = 0;
+        iter.second.id = UNLOADED_ID;
 
     // Release the context pool
     for( auto iter : _pInactiveContextList )
-        iter->Release();
-
-    for( auto iter : _pActiveContextList )
         iter->Release();
 
     // Discard the module and free its memory.
@@ -102,7 +99,6 @@ void CScriptManager::Clear()
     // Clear the functions from the list.
     _pScriptFunctionList.clear();
     _pInactiveContextList.clear();
-    _pActiveContextList.clear();
 }
 
 
@@ -213,7 +209,7 @@ void CScriptManager::LoadScript( const string & name )
             iter->second.id = 1;
 
             // Build all the scripts added to the module.
-            BuildScript();
+            //BuildScript();
         }
     }
     catch( exception e )
@@ -308,19 +304,7 @@ asIScriptContext * CScriptManager::GetContext()
 /// *************************************************************************
 void CScriptManager::RecycleContext( asIScriptContext * pContext )
 {
-    auto iter = find( _pActiveContextList.begin(), _pActiveContextList.end(), pContext );
-    RecycleContext( iter );
-}
-
-/// <summary> 
-/// Add the script context back to the managed pool.
-/// </summary>
-void CScriptManager::RecycleContext( std::vector<asIScriptContext *>::iterator & iter )
-{
-    _pInactiveContextList.push_back( (*iter) );
-
-    if( iter != _pActiveContextList.end() )
-        _pActiveContextList.erase( iter );
+    _pInactiveContextList.push_back( pContext );
 }
 
 
@@ -442,93 +426,4 @@ asIScriptContext * CScriptManager::Prepare( const string & function, const vecto
     }
 
     return pContext;
-}
-
-//void CScriptManager::Prepare(
-//    const string & function,
-//    const vector<CScriptParam> & paramList )
-//{
-//    Prepare( function, _pActiveContextList, paramList );
-//}
-
-
-/// *************************************************************************
-/// <summary> 
-/// Prepare the spawn script function to run.
-/// </summary>
-/// *************************************************************************
-void CScriptManager::PrepareSpawn( const string & funcName )
-{
-    auto pContex = asGetActiveContext();
-    if( pContex )
-    {
-        // Prepare the script function to run
-        _pActiveContextList.push_back( Prepare( funcName ) );
-    }
-}
-
-void CScriptManager::PrepareSpawnObj( const string & funcName, void * pVoid )
-{
-    auto pContex = asGetActiveContext();
-    if( pContex )
-    {
-        // Prepare the script function to run
-        _pActiveContextList.push_back( Prepare( funcName, { pVoid } ) );
-    }
-}
-
-
-/// *************************************************************************
-/// <summary> 
-/// Update the script.
-/// </summary>
-/// *************************************************************************
-void CScriptManager::Update()
-{
-    if( !_pActiveContextList.empty() )
-        Update( _pActiveContextList );
-}
-
-void CScriptManager::Update( vector<asIScriptContext *> & pContextVec )
-{
-    auto iter = pContextVec.begin();
-    while( iter != pContextVec.end() )
-    {
-        // See if this context is still being used
-        if( ((*iter)->GetState() == asEXECUTION_SUSPENDED) ||
-            ((*iter)->GetState() == asEXECUTION_PREPARED) )
-        {
-            // Execute the script and check for errors
-            // Since the script can be suspended, this also is used to continue execution
-            if( (*iter)->Execute() < 0 )
-            {
-                throw NExcept::CCriticalException( "Error Calling Spawn Script!",
-                                                   boost::str( boost::format( "There was an error executing the script.\n\n%s\nLine: %s" )
-                                                               % __FUNCTION__ % __LINE__ ) );
-            }
-
-            // Return the context to the pool if it has not been suspended
-            if( (*iter)->GetState() != asEXECUTION_SUSPENDED )
-            {
-                RecycleContext( (*iter) );
-            }
-            else
-            {
-                ++iter;
-            }
-        }
-    }
-}
-
-
-/// *************************************************************************
-/// <summary> 
-/// Register the class with AngelScript.
-/// </summary>
-/// *************************************************************************
-void CScriptManager::Register()
-{
-    using namespace NScriptGlobals;
-
-    Throw( _pScriptEngine->RegisterGlobalFunction( "void Spawn(string &in)", asMETHOD( CScriptManager, PrepareSpawn ), asCALL_THISCALL_ASGLOBAL, &CScriptManager::Instance() ) );
 }

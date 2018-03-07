@@ -9,7 +9,6 @@
 // Standard lib dependencies
 #include <string>
 #include <vector>
-#include <map>
 
 // Forward declarations
 class iObject;
@@ -37,22 +36,22 @@ public:
     void Clear();
 
     // Play the animation.
-    void Play( bool restartIfPlaying = true );
+    void Play();
 
     // Stop the animation.
-    void Stop( int endType = NDefs::ESE_DEFAULT );
+    void Stop( NDefs::EStopType stopType = NDefs::EST_STOP );
 
     // Stop any animations and recycle all contexts.
     void Recycle();
 
-    // Get the end type. This also tells us if we need to begin ending the animation.
-    int GetEndType() const;
+    // Get the end type.
+    NDefs::EEndType GetEndType() const;
+
+    // Get the end type.
+    NDefs::EStopType GetStopType() const;
 
     // Whether or not the animation has been initialized.
     bool IsInitalized() const;
-
-    // Finish the animation, making it ready to play again.
-    void Finish( const std::string & function );
 
     // Access functions for the object's position.
     void SetPos( const CVector3 & pos );
@@ -92,6 +91,12 @@ public:
     // Get the animation data.
     const CAnimationData * GetData() const;
 
+    // Spawn another context to run concurrently.
+    void Spawn( const std::string & function, bool startThisFrame );
+
+    // Update the animation.
+    void Update();
+
     // Register the class with AngelScript.
     static void Register( asIScriptEngine * pEngine );
 
@@ -107,14 +112,10 @@ private:
     std::vector<std::string> _functionList;
 
     // The context used to animate the object. These are not owned by the animation.
-    std::map<const std::string, asIScriptContext *> _pContextList;
+    std::vector<asIScriptContext *> _pContextList;
 
-    // This variable is set when the animation needs to end. Whichever end type it's set to
-    // will determine how this animation will end.
-    int _endType = NDefs::ESE_DEFAULT;
-
-    // If the animation is currently playing.
-    bool _playing = false;
+    // This variable is set when the animation needs to stop prematurely.
+    NDefs::EStopType _stopType = NDefs::EST_NULL;
 };
 
 

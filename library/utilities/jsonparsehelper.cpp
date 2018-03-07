@@ -376,12 +376,12 @@ namespace NParseHelper
     /// <param name="endType"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetScriptEndType( json::const_iterator iter, int & endType )
+    bool GetEndType( json::const_iterator iter, NDefs::EEndType & endType )
     {
         string str;
         if( GetString( iter, "end", str ) )
         {
-            endType = CDefs::Instance().GetAnimationEndType( str );
+            endType = CDefs::Instance().GetEndType( str );
             return true;
         }
 

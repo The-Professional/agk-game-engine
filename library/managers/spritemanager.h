@@ -54,6 +54,9 @@ public:
     // Reposition all 2d sprites.
     void RepositionAllSprites2D();
 
+    // Update all sprites in the manager.
+    void Update();
+
 private:
 
     // Constructor

@@ -67,7 +67,7 @@ namespace NParseHelper
     bool GetTextAlignment( nlohmann::json::const_iterator iter, NDefs::ETextAlignment & alignment );
 
     // Parse script end type tags.
-    bool GetScriptEndType( nlohmann::json::const_iterator iter, int & endType );
+    bool GetEndType( nlohmann::json::const_iterator iter, NDefs::EEndType & endType );
 
     // Parse object field tags.
     bool GetObjectFields( nlohmann::json::const_iterator iter, const std::string & tag, CBitmask<uint> & fieldType );

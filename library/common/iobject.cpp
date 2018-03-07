@@ -5,6 +5,8 @@
 #include <script\animationcomponent.h>
 #include <utilities\deletefuncs.h>
 
+using namespace NDefs;
+
 /// *************************************************************************
 /// <summary>
 /// Return the id set by AGK. 
@@ -504,11 +506,13 @@ const CColor & iObject::GetColor()
 /// <summary>
 /// Play an animation. 
 /// </summary>
+/// <param name="name"> Name of the animation to play. </param>
+/// <param name="stopType"> How to end any conflicting animations. </param>
 /// *************************************************************************
-void iObject::Play( const std::string & name )
+void iObject::Play( const std::string & name, EStopType stopType )
 {
     if( _pAnimationComponent )
-        _pAnimationComponent->Play( name );
+        _pAnimationComponent->Play( name, stopType );
 }
 
 

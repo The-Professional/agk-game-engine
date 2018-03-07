@@ -51,7 +51,7 @@ namespace NScriptGlobals
     /// *************************************************************************
     void Register( asIScriptEngine * pEngine )
     {
-        Throw( pEngine->RegisterGlobalFunction( "float GetElapsedTime()", asFUNCTION( agk::GetFrameTime() ), asCALL_CDECL ) );
+        Throw( pEngine->RegisterGlobalFunction( "float GetElapsedTime()", asFUNCTION( agk::GetFrameTime ), asCALL_CDECL ) );
         Throw( pEngine->RegisterGlobalFunction( "void Print(string &in)", asFUNCTION( NGeneralFuncs::PostDebugMsg ), asCALL_CDECL ) );
         Throw( pEngine->RegisterGlobalFunction( "void Suspend()", asFUNCTION( Suspend ), asCALL_CDECL ) );
     }

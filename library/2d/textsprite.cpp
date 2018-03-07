@@ -30,8 +30,8 @@ CTextSprite::CTextSprite()
 CTextSprite::CTextSprite( const CTextSpriteData * pData, const string & text )
 {
     _type = NDefs::EOT_TEXT_SPRITE;
-    _pData = pData;
-    Init( text );
+
+    Init( pData, text );
 }
 
 
@@ -50,29 +50,20 @@ CTextSprite::~CTextSprite()
 /// <summary>
 /// Initialize the sprite using its sprite data.
 /// </summary>
-/// *************************************************************************
-void CTextSprite::Init()
-{
-    Init( _text );
-}
-
-/// <summary>
-/// Initialize the sprite using its sprite data.
-/// </summary>
+/// <param name="pData"> Sprite data used to create the sprite. </param> 
 /// <param name="text"> The text to display. </param>
-void CTextSprite::Init( const string & text )
+/// *************************************************************************
+void CTextSprite::Init( const CTextSpriteData * pData, const string & text )
 {
     // Leave if there's no data to initialize with.
-    if( !_pData )
+    if( !pData )
         return;
 
     Clear();
 
-    if( !text.empty() )
-    {
-        _text = text;
-        _id = agk::CreateText( text.c_str() );
-    }
+    _pData = pData;
+    _text = text;
+    _id = agk::CreateText( text.c_str() );
     
     if( _id > 0 )
     {
@@ -85,17 +76,6 @@ void CTextSprite::Init( const string & text )
         SetTextAlignment( _pData->GetTextAlignment() );
         SetAlignment( _pData->GetAlignment() );
     }
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Set the data used to create the sprite.
-/// </summary>
-/// *************************************************************************
-void CTextSprite::SetData( CTextSpriteData * pData )
-{
-    _pData = pData;
 }
 
 

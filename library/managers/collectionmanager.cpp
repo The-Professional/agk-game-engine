@@ -10,6 +10,7 @@
 #include <3d\sprite3d.h>
 #include <2d\sprite2d.h>
 #include <2d\textsprite.h>
+#include <common\iobject.h>
 
 // Standard lib dependencies
 #include <fstream>
@@ -53,9 +54,11 @@ void CCollectionManager::LoadCollectionFileList( const string & path )
 /// Load the collection.
 /// </summary>
 /// <param name="name"> Name of the collection. </param>
+/// <returns> List of loaded objects. </param>
 /// *************************************************************************
-void CCollectionManager::LoadCollection( const string & name )
+vector<iObject *> CCollectionManager::LoadCollection( const string & name )
 {
+    vector<iObject *> pObjectList;
     try
     {
         auto mapIter = _collectionFileList.find( name );
@@ -71,9 +74,9 @@ void CCollectionManager::LoadCollection( const string & name )
             auto collectionIter = j.find( "collection" );
             if( collectionIter != j.end() )
             {
-                LoadSpriteCollection3D( collectionIter, name );
-                LoadSpriteCollection2D( collectionIter, name );
-                LoadTextSpriteCollection( collectionIter, name );
+                LoadSpriteCollection3D( collectionIter, name, pObjectList );
+                LoadSpriteCollection2D( collectionIter, name, pObjectList );
+                LoadTextSpriteCollection( collectionIter, name, pObjectList );
             }
         }
     }
@@ -83,6 +86,8 @@ void CCollectionManager::LoadCollection( const string & name )
                                            "CCollectionManager::LoadCollection()",
                                            "Failed to create collection list '" + name + "'.", e );
     }
+
+    return pObjectList;
 }
 
 
@@ -91,7 +96,7 @@ void CCollectionManager::LoadCollection( const string & name )
 /// Load all 3d sprites in the collection.
 /// </summary>
 /// *************************************************************************
-void CCollectionManager::LoadSpriteCollection3D( json::const_iterator iter, const string & collectionName )
+void CCollectionManager::LoadSpriteCollection3D( json::const_iterator iter, const string & collectionName, std::vector<iObject *> & pObjectList )
 {
     auto collectionIter = iter->find( "sprite3d" );
     if( collectionIter != iter->end() )
@@ -105,6 +110,7 @@ void CCollectionManager::LoadSpriteCollection3D( json::const_iterator iter, cons
             // Get the data used to create the sprite.
             iObject * pSprite = CSpriteManager::Instance().CreateSprite3D( objectName, collectionName );
             NParseHelper::GetCollectionObject( objectIter, pSprite );
+            pObjectList.push_back( pSprite );
 
             ++objectIter;
         }
@@ -117,7 +123,7 @@ void CCollectionManager::LoadSpriteCollection3D( json::const_iterator iter, cons
 /// Load all 2d sprites in the collection.
 /// </summary>
 /// *************************************************************************
-void CCollectionManager::LoadSpriteCollection2D( json::const_iterator iter, const string & collectionName )
+void CCollectionManager::LoadSpriteCollection2D( json::const_iterator iter, const string & collectionName, std::vector<iObject *> & pObjectList )
 {
     auto collectionIter = iter->find( "sprite2d" );
     if( collectionIter != iter->end() )
@@ -131,6 +137,7 @@ void CCollectionManager::LoadSpriteCollection2D( json::const_iterator iter, cons
             // Get the data used to create the sprite.
             iObject * pSprite = CSpriteManager::Instance().CreateSprite2D( objectName, collectionName );
             NParseHelper::GetCollectionObject( objectIter, pSprite );
+            pObjectList.push_back( pSprite );
 
             ++objectIter;
         }
@@ -143,7 +150,7 @@ void CCollectionManager::LoadSpriteCollection2D( json::const_iterator iter, cons
 /// Load all text sprites in the collection.
 /// </summary>
 /// *************************************************************************
-void CCollectionManager::LoadTextSpriteCollection( json::const_iterator iter, const string & collectionName )
+void CCollectionManager::LoadTextSpriteCollection( json::const_iterator iter, const string & collectionName, std::vector<iObject *> & pObjectList )
 {
     auto collectionIter = iter->find( "textSprite" );
     if( collectionIter != iter->end() )
@@ -160,6 +167,7 @@ void CCollectionManager::LoadTextSpriteCollection( json::const_iterator iter, co
             // Get the data used to create the sprite.
             iObject * pSprite = CSpriteManager::Instance().CreateTextSprite( objectName, text, collectionName );
             NParseHelper::GetCollectionObject( objectIter, pSprite );
+            pObjectList.push_back( pSprite );
 
             ++objectIter;
         }

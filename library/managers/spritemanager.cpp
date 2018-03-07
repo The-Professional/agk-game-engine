@@ -90,31 +90,26 @@ const CSpriteData3D * CSpriteManager::GetSpriteData3D( const std::string & name 
         if( loadedIter != _spriteDataList3d.end() )
             return loadedIter->second;
 
-        auto unloadedIter = _spriteDataFileList3d.find( name );
-        if( unloadedIter != _spriteDataFileList3d.end() )
+        // If not, load the sprite data.
+        const string & filepath = NGeneralFuncs::GetMapValue( name, _spriteDataFileList3d );
+
+        // Load the sprite data file.
+        ifstream ifile( filepath );
+
+        // Parse the content into a json object.
+        json j;
+        ifile >> j;
+
+        auto spriteIter = j.find( "spriteData3d" );
+        if( spriteIter != j.end() )
         {
-            // Load the sprite data file.
-            ifstream ifile( unloadedIter->second );
-
-            // Parse the content into a json object.
-            json j;
-            ifile >> j;
-
-            auto spriteIter = j.find( "spriteData3d" );
-            if( spriteIter != j.end() )
-            {
-                CSpriteData3D * pData = new CSpriteData3D();
-                _spriteDataList3d.emplace( unloadedIter->first, pData );
+            CSpriteData3D * pData = new CSpriteData3D();
+            _spriteDataList3d.emplace( name, pData );
                 
-                pData->LoadFromIter( unloadedIter->first, spriteIter );
+            pData->LoadFromIter( name, spriteIter );
 
-                return pData;
-            }
+            return pData;
         }
-
-        throw NExcept::CCriticalException( "Error",
-                                           "CSpriteManager::LoadSpriteData3D()",
-                                           "No sprite data exists with the name '" + name + "'." );
     }
     catch( exception e )
     {
@@ -142,31 +137,26 @@ const CSpriteData2D * CSpriteManager::GetSpriteData2D( const std::string & name 
         if( loadedIter != _spriteDataList2d.end() )
             return loadedIter->second;
 
-        auto unloadedIter = _spriteDataFileList2d.find( name );
-        if( unloadedIter != _spriteDataFileList2d.end() )
+        // If not, load the sprite data.
+        const string & filepath = NGeneralFuncs::GetMapValue( name, _spriteDataFileList2d );
+
+        // Load the sprite data file.
+        ifstream ifile( filepath );
+
+        // Parse the content into a json object.
+        json j;
+        ifile >> j;
+
+        auto spriteIter = j.find( "spriteData2d" );
+        if( spriteIter != j.end() )
         {
-            // Load the sprite data file.
-            ifstream ifile( unloadedIter->second );
+            CSpriteData2D * pData = new CSpriteData2D();
+            _spriteDataList2d.emplace( name, pData );
 
-            // Parse the content into a json object.
-            json j;
-            ifile >> j;
+            pData->LoadFromIter( name, spriteIter );
 
-            auto spriteIter = j.find( "spriteData2d" );
-            if( spriteIter != j.end() )
-            {
-                CSpriteData2D * pData = new CSpriteData2D();
-                _spriteDataList2d.emplace( unloadedIter->first, pData );
-
-                pData->LoadFromIter( unloadedIter->first, spriteIter );
-
-                return pData;
-            }
+            return pData;
         }
-
-        throw NExcept::CCriticalException( "Error",
-                                           "CSpriteManager::LoadSpriteData2D()",
-                                           "No sprite data exists with the name '" + name + "'." );
     }
     catch( exception e )
     {
@@ -194,31 +184,26 @@ const CTextSpriteData * CSpriteManager::GetTextSpriteData( const std::string & n
         if( loadedIter != _textSpriteDataList.end() )
             return loadedIter->second;
 
-        auto unloadedIter = _textSpriteDataFileList.find( name );
-        if( unloadedIter != _textSpriteDataFileList.end() )
+        // If not, load the sprite data.
+        const string & filepath = NGeneralFuncs::GetMapValue( name, _textSpriteDataFileList );
+
+        // Load the sprite data file.
+        ifstream ifile( filepath );
+
+        // Parse the content into a json object.
+        json j;
+        ifile >> j;
+
+        auto spriteIter = j.find( "textSpriteData" );
+        if( spriteIter != j.end() )
         {
-            // Load the sprite data file.
-            ifstream ifile( unloadedIter->second );
+            CTextSpriteData * pData = new CTextSpriteData();
+            _textSpriteDataList.emplace( name, pData );
 
-            // Parse the content into a json object.
-            json j;
-            ifile >> j;
+            pData->LoadFromIter( name, spriteIter );
 
-            auto spriteIter = j.find( "textSpriteData" );
-            if( spriteIter != j.end() )
-            {
-                CTextSpriteData * pData = new CTextSpriteData();
-                _textSpriteDataList.emplace( unloadedIter->first, pData );
-
-                pData->LoadFromIter( unloadedIter->first, spriteIter );
-
-                return pData;
-            }
+            return pData;
         }
-
-        throw NExcept::CCriticalException( "Error",
-                                           "CSpriteManager::GetTextSpriteData()",
-                                           "No sprite data exists with the name '" + name + "'." );
     }
     catch( exception e )
     {
@@ -409,29 +394,32 @@ void CSpriteManager::Clear( CSprite3D * pSprite )
 /// *************************************************************************
 void CSpriteManager::RepositionAllSprites2D()
 {
-    auto mapSpriteIter = _spriteList2d.begin();
-    while( mapSpriteIter != _spriteList2d.end() )
-    {
-        auto vecIter = mapSpriteIter->second.begin();
-        while( vecIter != mapSpriteIter->second.end() )
-        {
-            (*vecIter)->Reposition();
-            ++vecIter;
-        }
+    for( auto mapIter : _spriteList2d )
+        for( auto pSprite : mapIter.second )
+            pSprite->Reposition();
 
-        ++mapSpriteIter;
-    }
+    for( auto mapIter : _textSpriteList )
+        for( auto pSprite : mapIter.second )
+            pSprite->Reposition();
+}
 
-    auto mapTextIter = _textSpriteList.begin();
-    while( mapTextIter != _textSpriteList.end() )
-    {
-        auto vecIter = mapTextIter->second.begin();
-        while( vecIter != mapTextIter->second.end() )
-        {
-            (*vecIter)->Reposition();
-            ++vecIter;
-        }
 
-        ++mapTextIter;
-    }
+/// *************************************************************************
+/// <summary> 
+/// Update all sprites in the manager.
+/// </summary>
+/// *************************************************************************
+void CSpriteManager::Update()
+{
+    for( auto mapIter : _spriteList3d )
+        for( auto pSprite : mapIter.second )
+            pSprite->Update();
+
+    for( auto mapIter : _spriteList2d )
+        for( auto pSprite : mapIter.second )
+            pSprite->Update();
+
+    for( auto mapIter : _textSpriteList )
+        for( auto pSprite : mapIter.second )
+            pSprite->Update();
 }

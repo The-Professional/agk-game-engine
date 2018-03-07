@@ -90,18 +90,13 @@ void CResourceManager::LoadFontList( const std::string & path )
 /// *************************************************************************
 uint CResourceManager::LoadMesh( const std::string & name )
 {
-    // Make sure the mesh we are looking for exists.
-    auto iter = _meshList.find( name );
-    if( iter != _meshList.end() )
-    {
-        // If the mesh hasn't been loaded yet, load it.
-        if( iter->second.id == 0 )
-            iter->second.id = agk::LoadObject( iter->second.path.c_str() );
+    auto & resource = NGeneralFuncs::GetMapValue( name, _meshList );
 
-        return iter->second.id;
-    }
+    // If the mesh hasn't been loaded yet, load it.
+    if( resource.id == 0 )
+        resource.id = agk::LoadObject( resource.path.c_str() );
 
-    return 0;
+    return resource.id;
 }
 
 
@@ -114,18 +109,13 @@ uint CResourceManager::LoadMesh( const std::string & name )
 /// *************************************************************************
 uint CResourceManager::LoadAnimatedMesh( const std::string & name )
 {
-    // Make sure the animated mesh we are looking for exists.
-    auto iter = _animatedMeshList.find( name );
-    if( iter != _animatedMeshList.end() )
-    {
-        // If the animated mesh hasn't been loaded yet, load it.
-        if( iter->second.id == 0 )
-            iter->second.id = agk::LoadObjectWithChildren( iter->second.path.c_str() );
+    auto & resource = NGeneralFuncs::GetMapValue( name, _animatedMeshList );
 
-        return iter->second.id;
-    }
+    // If the animated mesh hasn't been loaded yet, load it.
+    if( resource.id == 0 )
+        resource.id = agk::LoadObjectWithChildren( resource.path.c_str() );
 
-    return 0;
+    return resource.id;
 }
 
 
@@ -138,23 +128,18 @@ uint CResourceManager::LoadAnimatedMesh( const std::string & name )
 /// *************************************************************************
 uint CResourceManager::LoadImage( const std::string & name )
 {
-    // Make sure the image we are looking for exists.
-    auto iter = _imageList.find( name );
-    if( iter != _imageList.end() )
-    {
-        // If the image hasn't been loaded yet, load it.
-        if( iter->second.id == UNLOADED_ID )
-            iter->second.id = agk::LoadImage( iter->second.path.c_str() );
-        else if( iter->second.id == UNLOADED_SUBIMAGE_ID )
-        {
-            uint parentId = LoadImage( iter->second.path );
-            iter->second.id = agk::LoadSubImage( parentId, iter->first.c_str() );
-        }
+    auto & resource = NGeneralFuncs::GetMapValue( name, _imageList );
 
-        return iter->second.id;
+    // If the image hasn't been loaded yet, load it.
+    if( resource.id == UNLOADED_ID )
+        resource.id = agk::LoadImage( resource.path.c_str() );
+    else if( resource.id == UNLOADED_SUBIMAGE_ID )
+    {
+        uint parentId = LoadImage( resource.path );
+        resource.id = agk::LoadSubImage( parentId, name.c_str() );
     }
 
-    return 0;
+    return resource.id;
 }
 
 
@@ -167,18 +152,13 @@ uint CResourceManager::LoadImage( const std::string & name )
 /// *************************************************************************
 uint CResourceManager::LoadFont( const std::string & name )
 {
-    // Make sure the font we are looking for exists.
-    auto iter = _fontList.find( name );
-    if( iter != _fontList.end() )
-    {
-        // If the animated mesh hasn't been loaded yet, load it.
-        if( iter->second.id == 0 )
-            iter->second.id = agk::LoadFont( iter->second.path.c_str() );
+    auto & resource = NGeneralFuncs::GetMapValue( name, _fontList );
 
-        return iter->second.id;
-    }
+    // If the animated mesh hasn't been loaded yet, load it.
+    if( resource.id == 0 )
+        resource.id = agk::LoadFont( resource.path.c_str() );
 
-    return 0;
+    return resource.id;
 }
 
 

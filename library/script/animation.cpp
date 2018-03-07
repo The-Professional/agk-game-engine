@@ -7,6 +7,10 @@
 #include <script\animationdata.h>
 #include <script\scriptmanager.h>
 #include <script\scriptglobals.h>
+#include <utilities\exceptionhandling.h>
+
+// Boost lib dependencies
+#include <boost\format.hpp>
 
 using namespace NDefs;
 using namespace std;
@@ -72,10 +76,11 @@ void CAnimation::Init( const CAnimationData * pData, iObject * pObject )
 /// *************************************************************************
 void CAnimation::Clear()
 {
+    Recycle();
+
     _pData = nullptr;
     _pObject = nullptr;
-    _playing = false;
-    _endType = ESE_NULL;
+    _stopType = EST_NULL;
     _pContextList.clear();
 }
 
@@ -85,22 +90,16 @@ void CAnimation::Clear()
 /// Play the animation.
 /// </summary>
 /// *************************************************************************
-void CAnimation::Play( bool restartIfPlaying )
+void CAnimation::Play()
 {
     if( !IsInitalized() )
-        return;
-
-    // If the animation is currently playing and we don't want to restart it, then we leave.
-    if( !restartIfPlaying && _playing )
         return;
 
     // Make sure everything is cleared and recycled before we start a script.
     Recycle();
 
-    for( auto & iter : _pData->GetFunctionList() )
-        _pContextList.emplace( iter, CScriptManager::Instance().Prepare( iter, { this } ) );
-
-    _playing = true;
+    for( auto & function : _pData->GetFunctionList() )
+        _pContextList.push_back( CScriptManager::Instance().Prepare( function, { this } ) );
 }
 
 
@@ -108,21 +107,16 @@ void CAnimation::Play( bool restartIfPlaying )
 /// <summary>
 /// Stop the animation.
 /// </summary>
-/// <param name="endType"> 
-/// How to end the animation. If not specified, it'll end however it's defined
-/// in the animation data. </param> 
+/// <param name="stopType"> How to stop the animation. </param> 
 /// *************************************************************************
-void CAnimation::Stop( int endType )
+void CAnimation::Stop( EStopType stopType )
 {
-    if( !_playing || !IsInitalized() )
+    if( !IsPlaying() || !IsInitalized() )
         return;
 
-    if( endType == ESE_DEFAULT || endType == ESE_NULL )
-        _endType = _pData->GetEndType();
-    else
-        _endType = endType;
+    _stopType = stopType;
 
-    if( _endType == ESE_STOP )
+    if( _stopType == EST_STOP )
         Recycle();
 }
 
@@ -136,31 +130,40 @@ void CAnimation::Recycle()
 {
     if( !_pContextList.empty() )
     {
-        for( auto iter : _pContextList )
+        for( auto pContext : _pContextList )
         {
-            if( iter.second->GetState() == asEXECUTION_SUSPENDED )
-                iter.second->Abort();
+            if( pContext->GetState() == asEXECUTION_SUSPENDED )
+                pContext->Abort();
 
-            CScriptManager::Instance().RecycleContext( iter.second );
+            CScriptManager::Instance().RecycleContext( pContext );
         }
-
 
         _pContextList.clear();
     }
 
-    _endType = ESE_NULL;
-    _playing = false;
+    _stopType = EST_NULL;
 }
 
 
 /// *************************************************************************
 /// <summary>
-/// Get the end type. This also tells us if we need to begin ending the animation.
+/// Get the end type.
 /// </summary>
 /// *************************************************************************
-int CAnimation::GetEndType() const
+EEndType CAnimation::GetEndType() const
 {
-    return _endType;
+    return _pData->GetEndType();
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the stop type.
+/// </summary>
+/// *************************************************************************
+EStopType CAnimation::GetStopType() const
+{
+    return _stopType;
 }
 
 
@@ -172,25 +175,6 @@ int CAnimation::GetEndType() const
 bool CAnimation::IsInitalized() const
 {
     return _pData && _pObject;
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Finish the animation, making it ready to play again. This should be called
-/// at the end of each script, letting everything else know the animation is
-/// finished.
-/// </summary>
-/// *************************************************************************
-void CAnimation::Finish( const string & function )
-{
-    _pContextList.erase( function );
-
-    if( _pContextList.size() == 0 )
-    {
-        _endType = ESE_DEFAULT;
-        _playing = false;
-    }
 }
 
 
@@ -388,7 +372,7 @@ bool CAnimation::IsVisible() const
 /// *************************************************************************
 bool CAnimation::IsPlaying() const
 {
-    return _playing;
+    return _pContextList.size() > 0;
 }
 
 
@@ -416,6 +400,58 @@ const CAnimationData * CAnimation::GetData() const
 
 /// *************************************************************************
 /// <summary>
+/// Spawn another context to run concurrently.
+/// </summary>
+/// <param name="function"> Script function to start. </param>
+/// <param name="startThisFrame"> Whether or not to start the function on this frame or the next. </param>
+/// *************************************************************************
+void CAnimation::Spawn( const std::string & function, bool startThisFrame )
+{
+    if ( startThisFrame )
+        _pContextList.push_back( CScriptManager::Instance().Prepare( function, { this } ) );
+    else
+        _pContextList.insert( _pContextList.begin(), CScriptManager::Instance().Prepare( function, { this } ) );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Update the animation.
+/// </summary>
+/// *************************************************************************
+void CAnimation::Update()
+{
+    auto iter = _pContextList.begin();
+    while( iter != _pContextList.end() )
+    {
+        // See if this context is still being used.
+        if( ((*iter)->GetState() == asEXECUTION_SUSPENDED) ||
+            ((*iter)->GetState() == asEXECUTION_PREPARED) )
+        {
+            // Execute the script and check for errors.
+            // Since the script can be suspended, this also is used to continue execution.
+            if( (*iter)->Execute() < 0 )
+            {
+                throw NExcept::CCriticalException( "Error Calling Spawn Script!",
+                        boost::str( boost::format( "There was an error executing the script.\n\n%s\nLine: %s" )
+                                                   % __FUNCTION__ % __LINE__ ) );
+            }
+    
+            // Return the context to the pool if it has not been suspended.
+            if( (*iter)->GetState() != asEXECUTION_SUSPENDED )
+            {
+                CScriptManager::Instance().RecycleContext( (*iter) );
+                iter = _pContextList.erase( iter );
+            }
+            else
+                ++iter;
+        }
+    }
+}
+
+
+/// *************************************************************************
+/// <summary>
 /// Register the class with AngelScript.
 /// </summary>
 /// *************************************************************************
@@ -426,22 +462,22 @@ void CAnimation::Register( asIScriptEngine * pEngine )
     // Register CScriptComponent2d reference and methods
     Throw( pEngine->RegisterObjectType( "CAnimation", 0, asOBJ_REF | asOBJ_NOCOUNT ) );
 
-    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void Finish(string &in)", asMETHOD( CAnimation, Finish ), asCALL_THISCALL ) );
     Throw( pEngine->RegisterObjectMethod( "CAnimation", "int GetEndType()", asMETHOD( CAnimation, GetEndType ), asCALL_THISCALL ) );
+    Throw( pEngine->RegisterObjectMethod( "CAnimation", "int GetStopType()", asMETHOD( CAnimation, GetStopType ), asCALL_THISCALL ) );
     Throw( pEngine->RegisterObjectMethod( "CAnimation", "int GetLoopCount()", asMETHOD( CAnimation, GetLoopCount ), asCALL_THISCALL ) );
 
-    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void SetPos(CVector3 &in)",       asMETHOD( CAnimation, SetPos ), asCALL_THISCALL ) );
-    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void SetRot(CVector3 &in)",       asMETHOD( CAnimation, SetRot ), asCALL_THISCALL ) );
-    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void SetSize(CVector3 &in)",      asMETHOD( CAnimation, SetSize ), asCALL_THISCALL ) );
-    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void SetColor(const CColor &in)", asMETHOD( CAnimation, SetColor ), asCALL_THISCALL ) );
-    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void SetColorA(int a)",           asMETHOD( CAnimation, SetColorA ), asCALL_THISCALL ) );
-    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void SetVisible(bool visible)",   asMETHOD( CAnimation, SetVisible ), asCALL_THISCALL ) );
+    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void SetPos(const CVector3 &in)",  asMETHOD( CAnimation, SetPos ), asCALL_THISCALL ) );
+    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void SetRot(const CVector3 &in)",  asMETHOD( CAnimation, SetRot ), asCALL_THISCALL ) );
+    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void SetSize(const CVector3 &in)", asMETHOD( CAnimation, SetSize ), asCALL_THISCALL ) );
+    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void SetColor(const CColor &in)",  asMETHOD( CAnimation, SetColor ), asCALL_THISCALL ) );
+    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void SetColorA(int a)",            asMETHOD( CAnimation, SetColorA ), asCALL_THISCALL ) );
+    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void SetVisible(bool visible)",    asMETHOD( CAnimation, SetVisible ), asCALL_THISCALL ) );
 
-    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void IncPos(CVector3 &in)",       asMETHOD( CAnimation, IncPos ), asCALL_THISCALL ) );
-    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void IncRot(CVector3 &in)",       asMETHOD( CAnimation, IncRot ), asCALL_THISCALL ) );
-    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void IncSize(CVector3 &in)",      asMETHOD( CAnimation, IncSize ), asCALL_THISCALL ) );
-    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void IncColor(const CColor &in)", asMETHOD( CAnimation, IncColor ), asCALL_THISCALL ) );
-    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void IncColorA(int a)",           asMETHOD( CAnimation, IncColorA ), asCALL_THISCALL ) );
+    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void IncPos(const CVector3 &in)",  asMETHOD( CAnimation, IncPos ), asCALL_THISCALL ) );
+    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void IncRot(const CVector3 &in)",  asMETHOD( CAnimation, IncRot ), asCALL_THISCALL ) );
+    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void IncSize(const CVector3 &in)", asMETHOD( CAnimation, IncSize ), asCALL_THISCALL ) );
+    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void IncColor(const CColor &in)",  asMETHOD( CAnimation, IncColor ), asCALL_THISCALL ) );
+    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void IncColorA(int a)",            asMETHOD( CAnimation, IncColorA ), asCALL_THISCALL ) );
 
     Throw( pEngine->RegisterObjectMethod( "CAnimation", "const CVector3 & GetPos()",  asMETHOD( CAnimation, GetPos ), asCALL_THISCALL ) );
     Throw( pEngine->RegisterObjectMethod( "CAnimation", "const CVector3 & GetRot()",  asMETHOD( CAnimation, GetRot ), asCALL_THISCALL ) );
@@ -450,5 +486,5 @@ void CAnimation::Register( asIScriptEngine * pEngine )
     Throw( pEngine->RegisterObjectMethod( "CAnimation", "int GetColorA()",            asMETHOD( CAnimation, GetColorA ), asCALL_THISCALL ) );
     Throw( pEngine->RegisterObjectMethod( "CAnimation", "bool IsVisible()",           asMETHOD( CAnimation, IsVisible ), asCALL_THISCALL ) );
 
-    Throw( pEngine->RegisterGlobalFunction( "void Spawn(string &in, CAnimation @)", asMETHOD( CScriptManager, PrepareSpawnObj ), asCALL_THISCALL_ASGLOBAL, &CScriptManager::Instance() ) );
+    Throw( pEngine->RegisterObjectMethod( "CAnimation", "void Spawn(string &in)",     asMETHOD( CAnimation, Spawn ), asCALL_THISCALL ) );
 }

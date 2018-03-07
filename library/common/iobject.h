@@ -22,8 +22,6 @@ class CAnimationComponent;
 class iObject
 {
 public:
-    // Initialize the object.
-    //virtual void Init() = 0;
 
     // Delete the object that belongs to the AGK id.
     virtual void DeleteObject() = 0;
@@ -123,7 +121,7 @@ public:
     virtual void Reposition() {}
 
     // Play an animation.
-    virtual void Play( const std::string & name );
+    virtual void Play( const std::string & name, NDefs::EStopType stopType = NDefs::EST_NULL );
 
     // Update the object.
     virtual void Update();

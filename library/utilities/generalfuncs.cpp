@@ -188,7 +188,7 @@ namespace NGeneralFuncs
     {
     #if defined(_WINDOWS)
         std::string tmp = msg + "\n";
-        OutputDebugString( LPCWSTR(tmp.c_str()) );
+        OutputDebugStringA( tmp.c_str() );
     #elif defined(__ANDROID__)
         __android_log_print( ANDROID_LOG_DEBUG, "LapCatGames", "%s", msg.c_str() );
     #else

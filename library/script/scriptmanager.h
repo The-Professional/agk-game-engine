@@ -57,10 +57,6 @@ public:
     // Get the script engine contex from a managed pool.
     asIScriptContext * GetContext();
 
-    // Update the active scripts.
-    void Update();
-    void Update( std::vector<asIScriptContext *> & pContextVec );
-
     // Add the script context back to the managed pool.
     void RecycleContext( asIScriptContext * pContext );
 
@@ -72,16 +68,8 @@ public:
         const std::string & function,
         const std::vector<CScriptParam> & paramList = std::vector<CScriptParam>() );
 
-    /*asIScriptContext * Prepare(
-        const std::string & function,
-        const std::vector<CScriptParam> & paramList );*/
-
-    // Register object with AngelScript.
-    void Register();
-
-    // Prepare the spawn script function to run.
-    void PrepareSpawn( const std::string & funcName );
-    void PrepareSpawnObj( const std::string & funcName, void * pVoid );
+    // Build all the scripts added to the module.
+    void BuildScript();
 
 private:
 
@@ -94,14 +82,8 @@ private:
     // Add the script to the module.
     void AddScript( const std::string & filePath );
 
-    // Build all the scripts added to the module.
-    void BuildScript();
-
     // Call back to display AngelScript messages.
     void MessageCallback( const asSMessageInfo & msg );
-
-    // Add the script context back to the managed pool.
-    void RecycleContext( std::vector<asIScriptContext *>::iterator & iter );
 
 private:
 
@@ -122,9 +104,6 @@ private:
 
     // Holds the pool of script contexts.
     std::vector<asIScriptContext *> _pInactiveContextList;
-
-    // Holds active contexts that are executing scripts.
-    std::vector<asIScriptContext *> _pActiveContextList;
 
     // AngelScript module.
     asIScriptModule * _pScriptModule = nullptr;

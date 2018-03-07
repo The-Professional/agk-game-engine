@@ -28,12 +28,10 @@ public:
 
     CTextSprite();
     CTextSprite( const CTextSpriteData * pData, const std::string & text );
-
     ~CTextSprite();
 
     // Initialize the sprite using its sprite data.
-    virtual void Init();
-    void Init( const std::string & text );
+    void Init( const CTextSpriteData * pData, const std::string & text );
 
     // Clears all of the text sprite's data that belong to it.
     virtual void Clear();
@@ -41,8 +39,7 @@ public:
     // Delete the object that belongs to the AGK id.
     virtual void DeleteObject();
 
-    // Access functions for the data used to create the sprite.
-    void SetData( CTextSpriteData * pData );
+    // Get the data used to create the sprite.
     const CTextSpriteData * GetData() const;
 
     // Update AGK with the current color and transformation data.

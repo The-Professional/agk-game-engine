@@ -34,7 +34,7 @@ public:
     void Clear();
 
     // Play an animation.
-    void Play( const std::string & name, int endType = NDefs::ESE_NULL );
+    void Play( const std::string & name, NDefs::EStopType stopType = NDefs::EST_NULL );
 
     // Update the animation component.
     void Update();
@@ -54,6 +54,9 @@ private:
 
     // The animations waiting to be played.
     std::vector<CAnimation *> _pAnimationQueue;
+
+    // List of animations currently playing.
+    std::vector<CAnimation *> _pPlayingList;
 
 };
 

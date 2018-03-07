@@ -134,14 +134,20 @@ namespace NDefs
     };
 
     // The types of animation endings.
-    enum : int
+    enum EEndType : int
     {
-        ESE_NULL,
-        ESE_DEFAULT, // Use whatever is the default end type.
-        ESE_STOP,    // Stop the animation completely in whatever state it currently is in.
-        ESE_BREAK,   // Break out of any loops but still play any animation outside of the loop.
-        ESE_FINISH,  // Finish out the current loop and play any animation outside of the loop.
-        ESE_RESET    // Stop the animation completely and reset the modified values to their initial values.
+        EET_NULL,             // Play the ending normally.
+        EET_INSTANT_RESET,    // Instantly restore fields to what they started as.
+        EET_GRADUAL_RESET     // Gradually restore fields to what they started as.
+    };
+
+    // The different ways to stop a script.
+    enum EStopType : int
+    {
+        EST_NULL,    // Continue playing the animation normally.
+        EST_STOP,    // Stop the animation completely in whatever state it currently is in.
+        EST_BREAK,   // Break out of any loops but still play any animation outside of the loop.
+        EST_FINISH   // Finish out the current loop and play any animation outside of the loop.
     };
 
     /// *************************************************************************
@@ -172,7 +178,8 @@ namespace NDefs
         EOrentation GetOrientation( const std::string & value );
         EInputDevice GetInputDevice( const std::string & value );
         EShadowMode GetShadowMode( const std::string & value );
-        int GetAnimationEndType( const std::string & value );
+        EEndType GetEndType( const std::string & value );
+        EStopType GetStopType( const std::string & value );
 
     private:
 
@@ -216,7 +223,10 @@ namespace NDefs
         std::map<const std::string, EShadowMode> _shadowModeList;
 
         // Map containing the list of animation end types.
-        std::map<const std::string, int> _animationEndTypeList;
+        std::map<const std::string, EEndType> _endTypeList;
+
+        // Map containing the list of animation end types.
+        std::map<const std::string, EStopType> _stopTypeList;
     };
 }
 

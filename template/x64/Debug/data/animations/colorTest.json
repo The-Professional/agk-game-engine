@@ -3,7 +3,7 @@
     "name": "color",
     "functions": ["Ctrl_Test"],
     "loop": 1,
-    "end": "reset",
+    "end": "gradual reset",
     "fields": ["color"]
   }
 }

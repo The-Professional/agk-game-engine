@@ -4,20 +4,21 @@
 void Ctrl_Test( CAnimation & anim )
 {
 	CColor startColor = anim.GetColor();
-    CColor color( 200, 200, 200, 255 );
+    CColor color( 255, 255, 255, 0 );
+	float time = 0;
 
 	// Main animation loop.
 	int i = 0;
 	do
 	{
-		ColorTo( anim, 500, color );
+		time = ColorTo( anim, color, 1, time );
 
-		++i;
+		i++;
 	}
-	while( anim->GetLoopCount() == 0 || i < anim->GetLoopCount() || anim.GetEndType() > ESE_DEFAULT )
+	while( (anim.GetLoopCount() == 0 || i < anim.GetLoopCount()) && anim.GetStopType() == EST_NULL );
 
-	if( anim->GetEndType() == ESE_RESET )
+	if( anim.GetEndType() == EET_INSTANT_RESET )
 		anim.SetColor( startColor );
-
-	anim.Finish("Ctrl_Test");
+	else if( anim.GetEndType() == EET_GRADUAL_RESET )
+		ColorTo( anim, startColor, 0.25f, time );
 }

@@ -41,8 +41,7 @@ public:
     // Delete the object that belongs to the AGK id.
     virtual void DeleteObject();
 
-    // Access functions for the data used to create the sprite.
-    void SetData( CSpriteData2D * pData );
+    // Get the data used to create the sprite.
     const CSpriteData2D * GetData() const;
 
     // Update AGK with the current color and transformation data.

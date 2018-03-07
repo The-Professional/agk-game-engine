@@ -7,11 +7,12 @@
 
 // Standard lib dependencies
 #include <string>
+#include <vector>
 #include <map>
 
 // Forward declarations
 class CSprite3D;
-
+class iObject;
 
 /// *************************************************************************
 /// <summary> 
@@ -32,7 +33,7 @@ public:
     void LoadCollectionFileList( const std::string & path );
 
     // Load the collection.
-    void LoadCollection( const std::string & name );
+    std::vector<iObject *> LoadCollection( const std::string & name );
 
 private:
 
@@ -43,13 +44,13 @@ private:
     virtual ~CCollectionManager();
 
     // Load all 3d sprites in the collection.
-    void LoadSpriteCollection3D( nlohmann::json::const_iterator iter, const std::string & collectionName );
+    void LoadSpriteCollection3D( nlohmann::json::const_iterator iter, const std::string & collectionName, std::vector<iObject *> & pObjectList );
 
     // Load all 2d sprites in the collection.
-    void LoadSpriteCollection2D( nlohmann::json::const_iterator iter, const std::string & collectionName );
+    void LoadSpriteCollection2D( nlohmann::json::const_iterator iter, const std::string & collectionName, std::vector<iObject *> & pObjectList );
 
     // Load all text sprites in the collection.
-    void LoadTextSpriteCollection( nlohmann::json::const_iterator iter, const std::string & collectionName );
+    void LoadTextSpriteCollection( nlohmann::json::const_iterator iter, const std::string & collectionName, std::vector<iObject *> & pObjectList );
 
 private:
 

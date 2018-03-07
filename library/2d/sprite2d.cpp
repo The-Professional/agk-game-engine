@@ -91,17 +91,6 @@ void CSprite2D::Init( const CSpriteData2D * pData )
 
 /// *************************************************************************
 /// <summary>
-/// Set the data used to create the sprite.
-/// </summary>
-/// *************************************************************************
-void CSprite2D::SetData( CSpriteData2D * pData )
-{
-    _pData = pData;
-}
-
-
-/// *************************************************************************
-/// <summary>
 /// Get the data used to create the sprite.
 /// </summary>
 /// *************************************************************************

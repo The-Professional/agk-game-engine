@@ -34,7 +34,7 @@ namespace NGeneralFuncs
     /// <param name="obj"> The map object to search. </param>
     /// *************************************************************************
     template <class key, class value>
-    inline const value & GetMapValue( const key & k, std::map<const key, value> & obj )
+    inline value & GetMapValue( const key & k, std::map<const key, value> & obj )
     {
         auto iter = obj.find( k );
         if ( iter == obj.end() )

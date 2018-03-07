@@ -1,6 +1,7 @@
 // Physical component dependency
 #include "animationdata.h"
 
+using namespace NDefs;
 
 /// *************************************************************************
 /// <summary>
@@ -44,7 +45,7 @@ void CAnimationData::LoadFromIter( nlohmann::json::const_iterator iter )
     NParseHelper::GetString( iter, "name", _name );
     NParseHelper::GetString( iter, "functions", _functionList );
     NParseHelper::GetInt( iter, "loop", _loopCount );
-    NParseHelper::GetScriptEndType( iter, _endType );
+    NParseHelper::GetEndType( iter, _endType );
     NParseHelper::GetObjectFields( iter, "fields", _objectFields );
 }
 
@@ -76,7 +77,7 @@ int CAnimationData::GetLoopCount() const
 /// Get the end type of the script.
 /// </summary>
 /// *************************************************************************
-int CAnimationData::GetEndType() const
+EEndType CAnimationData::GetEndType() const
 {
     return _endType;
 }

@@ -27,8 +27,8 @@ CSprite3D::CSprite3D()
 CSprite3D::CSprite3D( const CSpriteData3D * pData )
 {
     _type = NDefs::EOT_SPRITE_3D;
-    _pData = pData;
-    Init();
+
+    Init( pData );
 }
 
 
@@ -47,15 +47,17 @@ CSprite3D::~CSprite3D()
 /// <summary>
 /// Initialize the sprite using its sprite data.
 /// </summary>
+/// <param name="pData"> Sprite data used to create the sprite. </param> 
 /// *************************************************************************
-void CSprite3D::Init()
+void CSprite3D::Init( const CSpriteData3D * pData )
 {
     // Leave if there's no data to initialize with.
-    if( !_pData )
+    if( !pData )
         return;
 
     Clear();
 
+    _pData = pData;
     const CSpriteVisualData3D * pVisual = _pData->GetVisualData();
 
     if( pVisual )
@@ -144,17 +146,6 @@ void CSprite3D::Init()
 
 /// *************************************************************************
 /// <summary>
-/// Set the data used to create the sprite.
-/// </summary>
-/// *************************************************************************
-void CSprite3D::SetData( CSpriteData3D * pData )
-{
-    _pData = pData;
-}
-
-
-/// *************************************************************************
-/// <summary>
 /// Get the data used to create the sprite.
 /// </summary>
 /// *************************************************************************
@@ -181,6 +172,8 @@ void CSprite3D::DeleteObject()
 
         _id = 0;
     }
+
+    _pData = nullptr;
 }
 
 

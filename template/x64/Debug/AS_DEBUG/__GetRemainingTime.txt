@@ -1,0 +1,27 @@
+float GetRemainingTime(float, float)
+
+Temps: 2
+
+Variables: 
+ 000: float currentTime
+ -001: float endTime
+ 001: int d
+
+
+- 36,2 -
+               VarDecl  0
+               VarDecl  1
+               VarDecl  2
+    0   2 *    DIVf     v2, v0, v-1
+    2   2 *    fTOi     v2
+    3   2 *    CpyVtoV4 v1, v2
+- 38,2 -
+    5   2 *    CpyVtoV4 v2, v1
+    7   2 *    iTOf     v2
+    8   2 *    MULf     v2, v-1, v2
+   10   2 *    SUBf     v2, v0, v2
+            {
+            }
+   12   2 *    CpyVtoR4 v2
+            0:
+   13   2 *    RET      2

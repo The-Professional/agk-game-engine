@@ -18,7 +18,6 @@ using namespace NDefs;
 /// *************************************************************************
 CAnimationComponent::CAnimationComponent()
 {
-
 }
 
 
@@ -40,7 +39,7 @@ CAnimationComponent::CAnimationComponent( iObject * pObject, const vector<string
 /// *************************************************************************
 CAnimationComponent::~CAnimationComponent()
 {
-
+    Clear();
 }
 
 
@@ -72,6 +71,7 @@ void CAnimationComponent::Clear()
 {
     NDelFunc::DeleteMapPointers( _pAnimationList );
     _pAnimationQueue.clear();
+    _pPlayingList.clear();
 }
 
 
@@ -79,9 +79,10 @@ void CAnimationComponent::Clear()
 /// <summary>
 /// Play an animation.
 /// </summary>
-/// <param name="endType"> How to end any conflicting animations. </param>
+/// <param name="name"> Name of the animation to play. </param>
+/// <param name="stopType"> How to end any conflicting animations. </param>
 /// *************************************************************************
-void CAnimationComponent::Play( const string & name, int endType )
+void CAnimationComponent::Play( const string & name, EStopType stopType )
 {
     CAnimation * pAnimation = NGeneralFuncs::GetMapValue( name, _pAnimationList );
     
@@ -90,12 +91,16 @@ void CAnimationComponent::Play( const string & name, int endType )
     GetConflictingAnimations( pAnimation, pConflictList );
 
     // If the end animation is null, it means we ignore this play call altogether. 
-    if( endType == ESE_NULL && pConflictList.size() > 0 )
+    if( stopType == EET_NULL && pConflictList.size() > 0 )
+        return;
+
+    // If this animation is already queued up, don't queue it again.
+    if( std::find( _pAnimationQueue.begin(), _pAnimationQueue.end(), pAnimation ) != _pAnimationQueue.end() )
         return;
 
     // Begin the stop animation.
     for( auto animation : pConflictList )
-         animation->Stop( endType );
+         animation->Stop( stopType );
 
     // Add this animation to the queue.
     _pAnimationQueue.push_back( pAnimation );
@@ -111,20 +116,35 @@ void CAnimationComponent::Update()
 {
     // Loop through each animation in the queue. If there are no more conflicting animations playing,
     // play that animation.
-    auto iter = _pAnimationQueue.begin();
-    while( iter != _pAnimationQueue.end() )
+    auto queueIter = _pAnimationQueue.begin();
+    while( queueIter != _pAnimationQueue.end() )
     {
         // Get a list of all conflicting animations that are playing.
         vector<CAnimation *> pConflictList;
-        GetConflictingAnimations( (*iter), pConflictList );
+        GetConflictingAnimations( (*queueIter), pConflictList );
 
         if( pConflictList.size() == 0 )
         {
-            (*iter)->Play();
-            _pAnimationQueue.erase( iter );
+            (*queueIter)->Play();
+            _pPlayingList.push_back( (*queueIter) );
+            queueIter = _pAnimationQueue.erase( queueIter );
         }
         else
-            ++iter;
+            ++queueIter;
+    }
+
+    // Update the playing animations.
+    for( auto pAnimation : _pPlayingList )
+        pAnimation->Update();
+
+    // Remove animations from the playing list if they've finished playing.
+    auto playingIter = _pPlayingList.begin();
+    while( playingIter != _pPlayingList.end() )
+    {
+        if( (*playingIter)->IsPlaying() )
+            ++playingIter;
+        else
+            playingIter = _pPlayingList.erase( playingIter );
     }
 }
 
@@ -153,10 +173,10 @@ void CAnimationComponent::GetConflictingAnimations( const string & name, vector<
 void CAnimationComponent::GetConflictingAnimations( const CAnimation * pAnimation, vector<CAnimation *> & pConflictList )
 {
     // Get a list of all conflicting animations that are playing.
-    for( auto & animation : _pAnimationList )
+    for( auto & pPlaying : _pPlayingList )
     {
-        if( animation.second->IsPlaying() &&
-            pAnimation->GetData()->GetObjectFields().ContainsOne( animation.second->GetData()->GetObjectFields() ) )
-            pConflictList.push_back( animation.second );
+        if( pPlaying->IsPlaying() &&
+            pAnimation->GetData()->GetObjectFields().ContainsOne( pPlaying->GetData()->GetObjectFields() ) )
+            pConflictList.push_back( pPlaying );
     }
 }

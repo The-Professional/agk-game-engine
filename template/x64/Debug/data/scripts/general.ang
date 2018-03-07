@@ -1,29 +1,39 @@
 /// *************************************************************************
 /// Color to the final color in time.
 /// *************************************************************************
-shared void ColorTo( CAnimation & anim, float time, CColor &in final )
+shared float ColorTo( CAnimation & anim, CColor &in final, float endTime, float startTime = 0 )
 {
     CColor current = anim.GetColor();
-    CColor inc = (final - current) / time;
-
+    CColor diff = final - current;
+	float currentTime = startTime;
     do
     {
-        if( anim.GetEndType() == ESE_STOP || anim.GetEndType() == ESE_BREAK || anim.GetEndType() == ESE_RESET )
-            break;
-
-        time -= GetElapsedTime();
-
-        if( time < 0 )
-        {
+        if( anim.GetStopType() == EST_BREAK )
+            return 0;
+	
+        currentTime += GetElapsedTime();
+	
+        if( currentTime >= endTime )
             anim.SetColor( final );
-        }
         else
-        {
-            current += inc * GetElapsedTime();
-            anim.SetColor( current );
-        }
-
+            anim.SetColor( current + diff * currentTime / endTime );
+	
         Suspend();
     }
-    while( time > 0 );
+    while( currentTime < endTime );
+
+	return GetRemainingTime( currentTime, endTime );
+}
+
+
+/// *************************************************************************
+/// Get the remaining time.
+/// *************************************************************************
+shared float GetRemainingTime( float currentTime, float endTime )
+{
+	// Get the number of times the current time fits into end time.
+	// This is so we don't hit any kind of spiral of death if the game lagged.
+	int d = currentTime / endTime;
+
+	return currentTime - endTime * d;
 }

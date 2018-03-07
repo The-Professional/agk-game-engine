@@ -78,10 +78,12 @@ namespace NDefs
         _shadowModeList.emplace( "light space perspective", ESM_LIGHT_SPACE_PERSPECTIVE );
         _shadowModeList.emplace( "cascade", ESM_CASCADE );
 
-        _animationEndTypeList.emplace( "stop", ESE_STOP );
-        _animationEndTypeList.emplace( "break", ESE_BREAK );
-        _animationEndTypeList.emplace( "finish", ESE_FINISH );
-        _animationEndTypeList.emplace( "reset", ESE_RESET );
+        _endTypeList.emplace( "instant reset", EET_INSTANT_RESET );
+        _endTypeList.emplace( "gradual reset", EET_GRADUAL_RESET );
+
+        _stopTypeList.emplace( "stop", EST_STOP );
+        _stopTypeList.emplace( "break", EST_BREAK );
+        _stopTypeList.emplace( "finish", EST_FINISH );
     }
 
 
@@ -232,8 +234,19 @@ namespace NDefs
     /// Get the animation end type.
     /// </summary>
     /// *************************************************************************
-    int CDefs::GetAnimationEndType( const std::string & value )
+    EEndType CDefs::GetEndType( const std::string & value )
     {
-        return NGeneralFuncs::GetMapValue( value, _animationEndTypeList );
+        return NGeneralFuncs::GetMapValue( value, _endTypeList );
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Get the animation stop type.
+    /// </summary>
+    /// *************************************************************************
+    EStopType CDefs::GetStopType( const std::string & value )
+    {
+        return NGeneralFuncs::GetMapValue( value, _stopTypeList );
     }
 }

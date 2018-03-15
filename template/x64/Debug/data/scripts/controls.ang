@@ -23,14 +23,6 @@ void Ctrl_Test( CAnimation & anim )
 	}
 	else if( anim.GetEndType() == EET_GRADUAL_RESET )
 	{
-		anim.Spawn( "Ctrl_Test2" );
 		ColorTo( anim, startColor, 0.25f, time );
 	}
-}
-
-
-void Ctrl_Test2( CAnimation & anim )
-{
-	MoveTo( anim, CVector3(500, 0, 0), 0.25f );
-	anim.SetPos( CVector3(0,0,0) );
 }

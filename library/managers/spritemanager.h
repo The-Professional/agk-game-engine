@@ -41,11 +41,6 @@ public:
     void Clear( const std::string & name = "" );
     void Clear( CSprite3D * pSprite );
 
-    // Load the sprite data.
-    const CSpriteData3D * GetSpriteData3D( const std::string & name  );
-    const CSpriteData2D * GetSpriteData2D( const std::string & name );
-    const CTextSpriteData * GetTextSpriteData( const std::string & name );
-
     // Create the sprite.
     CSprite3D * CreateSprite3D( const std::string & name, const std::string & collection = "" );
     CSprite2D * CreateSprite2D( const std::string & name, const std::string & collection = "" );
@@ -57,13 +52,18 @@ public:
     // Update all sprites in the manager.
     void Update();
 
+    // Transform all the sprites in the manager.
+    void Transform();
+
 private:
 
-    // Constructor
     CSpriteManager();
-
-    // Destructor
     virtual ~CSpriteManager();
+
+    // Load the sprite data.
+    CSpriteData3D * GetSpriteData3D( const std::string & name );
+    CSpriteData2D * GetSpriteData2D( const std::string & name );
+    CTextSpriteData * GetTextSpriteData( const std::string & name );
 
 private:
 

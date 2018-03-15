@@ -1,51 +1,28 @@
 
 Total count
-PshC4      : 84
-PshV4      : 1092
-PSF        : 4920
-CALL       : 36
-RET        : 48
-JMP        : 24
-JNZ        : 558
-JS         : 1080
-TS         : 6
-IncVi      : 6
-PshVPtr    : 1176
-CMPf       : 1080
-CMPi       : 6
-CMPIi      : 558
-PshRPtr    : 24
-CALLSYS    : 5544
-SUSPEND    : 546
-GETOBJREF  : 18
-GETREF     : 1092
-SetV4      : 18
-CpyVtoV4   : 66
-CpyVtoR4   : 48
-CpyRtoV4   : 1134
-PGA        : 6
-VAR        : 1110
-iTOf       : 18
-fTOi       : 18
-ADDf       : 540
-SUBf       : 18
-MULf       : 18
-DIVf       : 18
-JLowNZ     : 12
 
 Never executed
 PopPtr    
 PshGPtr   
+PshC4     
+PshV4     
+PSF       
 SwapPtr   
 NOT       
 PshG4     
 LdGRdR4   
+CALL      
+RET       
+JMP       
 JZ        
+JNZ       
+JS        
 JNS       
 JP        
 JNP       
 TZ        
 TNZ       
+TS        
 TNS       
 TP        
 TNP       
@@ -62,6 +39,7 @@ INCf
 DECf      
 INCd      
 DECd      
+IncVi     
 DecVi     
 BNOT      
 BAND      
@@ -72,15 +50,22 @@ BSRL
 BSRA      
 COPY      
 PshC8     
+PshVPtr   
 RDSPtr    
 CMPd      
 CMPu      
+CMPf      
+CMPi      
+CMPIi     
 CMPIf     
 CMPIu     
 JMPP      
 PopRPtr   
+PshRPtr   
 STR       
+CALLSYS   
 CALLBND   
+SUSPEND   
 ALLOC     
 FREE      
 LOADOBJ   
@@ -88,15 +73,21 @@ STOREOBJ
 GETOBJ    
 REFCPY    
 CHKREF    
+GETOBJREF 
+GETREF    
 PshNull   
 ClrVPtr   
 OBJTYPE   
 TYPEID    
+SetV4     
 SetV8     
 ADDSi     
+CpyVtoV4  
 CpyVtoV8  
+CpyVtoR4  
 CpyVtoR8  
 CpyVtoG4  
+CpyRtoV4  
 CpyRtoV8  
 CpyGtoV4  
 WRTV1     
@@ -109,7 +100,11 @@ RDR4
 RDR8      
 LDG       
 LDV       
+PGA       
 CmpPtr    
+VAR       
+iTOf      
+fTOi      
 uTOf      
 fTOu      
 sbTOi     
@@ -127,6 +122,10 @@ SUBi
 MULi      
 DIVi      
 MODi      
+ADDf      
+SUBf      
+MULf      
+DIVf      
 MODf      
 ADDd      
 SUBd      
@@ -191,6 +190,7 @@ LoadRObjR
 LoadVObjR 
 RefCpyV   
 JLowZ     
+JLowNZ    
 AllocMem  
 SetListSiz
 PshListElm
@@ -205,81 +205,3 @@ POWu64
 Thiscall1 
 
 Sequences
-PshC4     , PshC4      : 54
-PshC4     , PSF        : 30
-PshV4     , PshC4      : 12
-PshV4     , PshV4      : 18
-PshV4     , PSF        : 1044
-PshV4     , CALL       : 18
-PSF       , PSF        : 1596
-PSF       , PshVPtr    : 18
-PSF       , CALLSYS    : 2784
-PSF       , GETREF     : 522
-CALL      , PshVPtr    : 18
-CALL      , DIVf       : 18
-RET       , PSF        : 12
-RET       , PshVPtr    : 5
-RET       , SUSPEND    : 6
-RET       , CpyRtoV4   : 24
-JMP       , CALLSYS    : 18
-JMP       , CpyVtoR4   : 6
-JNZ       , PshVPtr    : 12
-JNZ       , CALLSYS    : 540
-JNZ       , PGA        : 6
-JS        , PshV4      : 540
-JS        , PshVPtr    : 522
-JS        , VAR        : 18
-TS        , CpyRtoV4   : 6
-IncVi     , SUSPEND    : 6
-PshVPtr   , CALLSYS    : 588
-PshVPtr   , GETOBJREF  : 18
-PshVPtr   , GETREF     : 570
-CMPf      , JS         : 1080
-CMPi      , TS         : 6
-CMPIi     , JNZ        : 558
-PshRPtr   , PSF        : 24
-CALLSYS   , PshC4      : 18
-CALLSYS   , PshV4      : 528
-CALLSYS   , PSF        : 1644
-CALLSYS   , RET        : 12
-CALLSYS   , JMP        : 18
-CALLSYS   , PshRPtr    : 24
-CALLSYS   , CALLSYS    : 522
-CALLSYS   , SUSPEND    : 534
-CALLSYS   , SetV4      : 6
-CALLSYS   , CpyVtoV4   : 24
-CALLSYS   , CpyVtoR4   : 18
-CALLSYS   , CpyRtoV4   : 1104
-CALLSYS   , VAR        : 1092
-SUSPEND   , PshVPtr    : 6
-SUSPEND   , CMPf       : 540
-GETOBJREF , CALLSYS    : 18
-GETREF    , CALL       : 18
-GETREF    , CALLSYS    : 1074
-SetV4     , PshV4      : 6
-SetV4     , JMP        : 6
-SetV4     , SetV4      : 6
-CpyVtoV4  , IncVi      : 6
-CpyVtoV4  , PshVPtr    : 18
-CpyVtoV4  , CpyVtoV4   : 18
-CpyVtoV4  , CpyVtoR4   : 6
-CpyVtoV4  , iTOf       : 18
-CpyVtoR4  , RET        : 36
-CpyVtoR4  , JLowNZ     : 12
-CpyRtoV4  , PSF        : 24
-CpyRtoV4  , CMPi       : 6
-CpyRtoV4  , CMPIi      : 558
-CpyRtoV4  , CpyVtoV4   : 6
-CpyRtoV4  , ADDf       : 540
-PGA       , PSF        : 6
-VAR       , PSF        : 540
-VAR       , PshVPtr    : 570
-iTOf      , MULf       : 18
-fTOi      , CpyVtoV4   : 18
-ADDf      , CMPf       : 540
-SUBf      , CpyVtoR4   : 18
-MULf      , SUBf       : 18
-DIVf      , fTOi       : 18
-JLowNZ    , PshVPtr    : 6
-JLowNZ    , SetV4      : 6
-LABEL     , PshVPtr    : 1

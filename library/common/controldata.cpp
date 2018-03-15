@@ -1,12 +1,12 @@
 // Physical component dependency
-#include "spritedata3d.h"
+#include "controldata.h"
 
 // Game lib dependencies
-#include <utilities\deletefuncs.h>
-#include <utilities\exceptionhandling.h>
+#include <common\collectionobject.h>
 
 using namespace std;
 using namespace nlohmann;
+using namespace NDefs;
 
 
 /// *************************************************************************
@@ -14,7 +14,7 @@ using namespace nlohmann;
 /// Constructor
 /// </summary>
 /// *************************************************************************
-CSpriteData3D::CSpriteData3D()
+CControlData::CControlData()
 {
 }
 
@@ -24,9 +24,8 @@ CSpriteData3D::CSpriteData3D()
 /// Destructor
 /// </summary>
 /// *************************************************************************
-CSpriteData3D::~CSpriteData3D()
+CControlData::~CControlData()
 {
-    NDelFunc::Delete( _pVisualData );
 }
 
 
@@ -34,81 +33,80 @@ CSpriteData3D::~CSpriteData3D()
 /// <summary>
 /// Load the sprite data from the passed in iterator.
 /// </summary>
+/// <param name="name"> Name of the control. </param>
 /// <param name="iter"> JSON node to parse. </param>
 /// *************************************************************************
-void CSpriteData3D::LoadFromIter( const std::string & name, nlohmann::json::const_iterator iter )
+void CControlData::LoadFromIter( const string & name, json::const_iterator iter )
 {
     _name = name;
 
-    auto visualIter = iter->find( "visual" );
-    if( visualIter != iter->end() )
-    {
-        _pVisualData = new CSpriteVisualData3D();
-        _pVisualData->LoadFromIter( visualIter );
-    }
+    NParseHelper::GetControlType( iter, "type", _type );
+    NParseHelper::GetControlState( iter, "state", _state );
+    NParseHelper::GetAlignment( iter, "alignment", _alignment );
 
-    NParseHelper::GetString( iter, "animations", _animationList );
+    auto collectionIter = iter->find( "sprites" );
+    if( collectionIter != iter->end() )
+    {
+        auto spriteIter = collectionIter->begin();
+        while( spriteIter != collectionIter->end() )
+        {
+            _spriteList.push_back( CCollectionObject() );
+            NParseHelper::GetCollectionObject( spriteIter, _spriteList.back() );
+        }
+    }
 }
 
 
 /// *************************************************************************
 /// <summary>
-/// Get the visual data of the sprite.
+/// Get the control's name.
 /// </summary>
-/// <returns> Object holding all of the sprite's visual data. </returns>
 /// *************************************************************************
-const CSpriteVisualData3D * CSpriteData3D::GetVisualData() const
-{
-    return _pVisualData;
-}
-
-
-/// *************************************************************************
-/// <summary> 
-/// Get the name of the sprite.
-/// </summary>
-/// <returns> Sprite's name. </returns>
-/// *************************************************************************
-const std::string & CSpriteData3D::GetName() const
+const string & CControlData::GetName() const
 {
     return _name;
 }
 
 
 /// *************************************************************************
-/// <summary> 
-/// Get the list of animations this sprite can perform.
+/// <summary>
+/// Get the control's type.
 /// </summary>
 /// *************************************************************************
-const vector<string> & CSpriteData3D::GetAnimationList() const
+EControlType CControlData::GetControlType() const
 {
-    return _animationList;
+    return _type;
 }
 
 
 /// *************************************************************************
-/// <summary> 
-/// Set the default size of the sprite.
+/// <summary>
+/// Get the control's initial state.
 /// </summary>
 /// *************************************************************************
-void CSpriteData3D::SetSize( const CVector3 & size )
+EControlState CControlData::GetState() const
 {
-    if( _pVisualData )
-        _pVisualData->SetSize( size );
+    return _state;
 }
 
 
 /// *************************************************************************
-/// <summary> 
-/// Set the default size of the sprite.
+/// <summary>
+/// Get the control's alignment.
 /// </summary>
 /// *************************************************************************
-const CVector3 & CSpriteData3D::GetSize() const
+const CBitmask<uint> & CControlData::GetAlignment() const
 {
-    if( !_pVisualData )
-        throw NExcept::CCriticalException( "Error",
-                                           "CSpriteData3D::GetSize()",
-                                           "Failed to get size of sprite '" + _name + "'." );
+    return _alignment;
+}
 
-    return _pVisualData->GetSize();
+
+/// *************************************************************************
+/// <summary>
+/// Get the list of sprites owned by the control.
+/// </summary>
+/// *************************************************************************
+const vector<CCollectionObject> & CControlData::GetSpriteList() const
+{
+    return _spriteList;
 }

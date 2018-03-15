@@ -5,6 +5,7 @@
 #include <utilities\jsonparsehelper.h>
 #include <common\defs.h>
 #include <common\color.h>
+#include <common\vector3.h>
 
 // Standard lib dependencies
 #include <string>
@@ -59,6 +60,13 @@ public:
     // Whether or not the sprite will receive shadows cast upon it.
     bool WillReceiveShadow() const;
 
+    // Access functions for the sprite's size.
+    void SetSize( const CVector3 & size );
+    const CVector3 & GetSize() const;
+
+    // Whether or not the size was set in the data file.
+    bool IsSizeSet() const;
+
 private:
 
     // Type of object.
@@ -85,6 +93,12 @@ private:
     
     // If the sprite receives shadows cast upon it.
     bool _receiveShadow = false;
+
+    // Whether or not the size was set in the data file.
+    bool _sizeSet = false;
+
+    // Size of the sprite.
+    CVector3 _size;
 };
 
 #endif  // __sprite_visual_data_3d_h__

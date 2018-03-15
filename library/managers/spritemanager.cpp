@@ -81,7 +81,7 @@ void CSpriteManager::LoadTextDataFileList( const std::string & path )
 /// </summary>
 /// <param name="name"> Name of the sprite. </param>
 /// *************************************************************************
-const CSpriteData3D * CSpriteManager::GetSpriteData3D( const std::string & name )
+CSpriteData3D * CSpriteManager::GetSpriteData3D( const std::string & name )
 {
     try
     {
@@ -128,7 +128,7 @@ const CSpriteData3D * CSpriteManager::GetSpriteData3D( const std::string & name 
 /// </summary>
 /// <param name="name"> Name of the sprite. </param>
 /// *************************************************************************
-const CSpriteData2D * CSpriteManager::GetSpriteData2D( const std::string & name )
+CSpriteData2D * CSpriteManager::GetSpriteData2D( const std::string & name )
 {
     try
     {
@@ -175,7 +175,7 @@ const CSpriteData2D * CSpriteManager::GetSpriteData2D( const std::string & name 
 /// </summary>
 /// <param name="name"> Name of the text sprite. </param>
 /// *************************************************************************
-const CTextSpriteData * CSpriteManager::GetTextSpriteData( const std::string & name )
+CTextSpriteData * CSpriteManager::GetTextSpriteData( const std::string & name )
 {
     try
     {
@@ -233,6 +233,10 @@ CSprite3D * CSpriteManager::CreateSprite3D( const string & name, const string & 
         // Create the sprite object and add it to the sprite list.
         CSprite3D * pSprite = new CSprite3D( pData );
 
+        // If the data does not have a default size, set it to whatever the created sprite's size is.
+        if( !pData->GetVisualData()->IsSizeSet() )
+            pData->SetSize( pSprite->GetSize() );
+
         if( collection.empty() )
             _spriteList3d[name].push_back( pSprite );
         else
@@ -267,6 +271,10 @@ CSprite2D * CSpriteManager::CreateSprite2D( const std::string & name, const stri
 
         // Create the sprite object and add it to the sprite list.
         CSprite2D * pSprite = new CSprite2D( pData );
+
+        // If the data does not have a default size, set it to whatever the created sprite's size is.
+        if( !pData->GetVisualData()->IsSizeSet() )
+            pData->SetSize( pSprite->GetSize() );
 
         if( collection.empty() )
             _spriteList2d[name].push_back( pSprite );
@@ -422,4 +430,45 @@ void CSpriteManager::Update()
     for( auto mapIter : _textSpriteList )
         for( auto pSprite : mapIter.second )
             pSprite->Update();
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Transform all the sprites in the manager.
+/// </summary>
+/// *************************************************************************
+void CSpriteManager::Transform()
+{
+    // Transform each of the sprites.
+    //for( auto mapIter : _spriteList3d )
+    for( auto mapIter = _spriteList3d.begin(); mapIter != _spriteList3d.end(); ++mapIter )
+        for( auto pSprite : mapIter->second )
+            pSprite->Transform();
+
+    //for( auto mapIter : _spriteList2d )
+    for( auto mapIter = _spriteList2d.begin(); mapIter != _spriteList2d.end(); ++mapIter )
+        for( auto pSprite : mapIter->second )
+            pSprite->Transform();
+
+    //for( auto mapIter : _textSpriteList )
+    for( auto mapIter = _textSpriteList.begin(); mapIter != _textSpriteList.end(); ++mapIter )
+        for( auto pSprite : mapIter->second )
+            pSprite->Transform();
+
+    // Clear the modified bitmask for each of the sprites.
+    //for( auto mapIter : _spriteList3d )
+    for( auto mapIter = _spriteList3d.begin(); mapIter != _spriteList3d.end(); ++mapIter )
+        for( auto pSprite : mapIter->second )
+            pSprite->ClearModified();
+
+    //for( auto mapIter : _spriteList2d )
+    for( auto mapIter = _spriteList2d.begin(); mapIter != _spriteList2d.end(); ++mapIter )
+        for( auto pSprite : mapIter->second )
+            pSprite->ClearModified();
+
+    //for( auto mapIter : _textSpriteList )
+    for( auto mapIter = _textSpriteList.begin(); mapIter != _textSpriteList.end(); ++mapIter )
+        for( auto pSprite : mapIter->second )
+            pSprite->ClearModified();
 }

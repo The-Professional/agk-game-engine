@@ -3,9 +3,12 @@
 
 // Game lib dependencies
 #include <agk.h>
+#include <common\matrix4.h>
 #include <3d\spritedata3d.h>
 #include <managers\resourcemanager.h>
 #include <utilities\settings.h>
+
+using namespace std;
 
 /// *************************************************************************
 /// <summary>
@@ -135,7 +138,7 @@ void CSprite3D::Init( const CSpriteData3D * pData )
             }
 
             // Get the size of the sprite.
-            UpdateSizeFromAGK();
+            SetSize( GetWorldSize() );
 
             // Set the sprite's color.
             SetColor( pVisual->GetColor() );
@@ -182,9 +185,15 @@ void CSprite3D::DeleteObject()
 /// Update AGK with the sprite's current position.
 /// </summary>
 /// *************************************************************************
-void CSprite3D::UpdateAGKWithPos()
+void CSprite3D::ApplyPosition()
 {
-    agk::SetObjectPosition( _id, _position.x, _position.y, _position.z );
+    if( _pParent && _pParent->GetMatrix() )
+    {
+        CVector3 newPos = *_pParent->GetMatrix() * _position;
+        agk::SetObjectPosition( _id, newPos.x, newPos.y, newPos.z );
+    }
+    else
+        agk::SetObjectPosition( _id, _position.x, _position.y, _position.z );
 }
 
 
@@ -193,9 +202,15 @@ void CSprite3D::UpdateAGKWithPos()
 /// Update AGK with the sprite's current rotation.
 /// </summary>
 /// *************************************************************************
-void CSprite3D::UpdateAGKWithRot()
+void CSprite3D::ApplyRotation()
 {
-    agk::SetObjectRotation( _id, _rotation.x, _rotation.y, _rotation.z );
+    if( _pParent )
+    {
+        CVector3 newRot = _pParent->GetWorldRot() + _rotation;
+        agk::SetObjectRotation( _id, newRot.x, newRot.y, newRot.z );
+    }
+    else
+        agk::SetObjectRotation( _id, _rotation.x, _rotation.y, _rotation.z );
 }
 
 
@@ -204,17 +219,45 @@ void CSprite3D::UpdateAGKWithRot()
 /// Update AGK with the sprite's current size.
 /// </summary>
 /// *************************************************************************
-void CSprite3D::UpdateAGKWithSize()
+void CSprite3D::ApplySize()
 {
-    // TODO: Add logic here to get the size and adjust the scale.
+    _scale = _size / _pData->GetSize();
+
+    if( _pParent )
+    {
+        CVector3 newScale = _pParent->GetWorldScale() * _scale;
+        agk::SetObjectScale( _id, newScale.w, newScale.h, newScale.d );
+    }
+    else
+        agk::SetObjectScale( _id, _scale.w, _scale.h, _scale.d );
 }
+
+
+/// *************************************************************************
+/// <summary>
+/// Update AGK with the sprite's current scale.
+/// </summary>
+/// *************************************************************************
+void CSprite3D::ApplyScale()
+{
+    _size = _pData->GetSize() * _scale;
+
+    if( _pParent )
+    {
+        CVector3 newScale = _pParent->GetWorldScale() * _scale;
+        agk::SetObjectScale( _id, newScale.w, newScale.h, newScale.d );
+    }
+    else
+        agk::SetObjectScale( _id, _scale.w, _scale.h, _scale.d );
+}
+
 
 /// *************************************************************************
 /// <summary>
 /// Update AGK with the sprite's current color.
 /// </summary>
 /// *************************************************************************
-void CSprite3D::UpdateAGKWithColor()
+void CSprite3D::ApplyColor()
 {
     agk::SetObjectColor( _id, _color.r, _color.g, _color.b, _color.a );
 }
@@ -222,48 +265,40 @@ void CSprite3D::UpdateAGKWithColor()
 
 /// *************************************************************************
 /// <summary>
-/// Update the current position from AGK.
+/// Get the current position set in AGK.
 /// </summary>
 /// *************************************************************************
-void CSprite3D::UpdatePosFromAGK()
+CVector3 CSprite3D::GetWorldPos() const
 {
-    _position.x = agk::GetObjectX( _id );
-    _position.y = agk::GetObjectY( _id );
-    _position.z = agk::GetObjectZ( _id );
+    return CVector3( agk::GetObjectX( _id ),
+                     agk::GetObjectY( _id ),
+                     agk::GetObjectZ( _id ) );
 }
+
 
 /// *************************************************************************
 /// <summary>
-/// Update the current rotation from AGK.
+/// Get the current rotation set in AGK.
 /// </summary>
 /// *************************************************************************
-void CSprite3D::UpdateRotFromAGK()
+CVector3 CSprite3D::GetWorldRot() const
 {
-    _rotation.x = agk::GetObjectAngleX( _id );
-    _rotation.y = agk::GetObjectAngleY( _id );
-    _rotation.z = agk::GetObjectAngleZ( _id );
+    return CVector3( agk::GetObjectAngleX( _id ),
+                     agk::GetObjectAngleY( _id ), 
+                     agk::GetObjectAngleZ( _id ) );
 }
+
 
 /// *************************************************************************
 /// <summary>
-/// Update the current size from AGK.
+/// Get the current size set in AGK.
 /// </summary>
 /// *************************************************************************
-void CSprite3D::UpdateSizeFromAGK()
+CVector3 CSprite3D::GetWorldSize() const
 {
-    _size.w = std::abs( agk::GetObjectSizeMaxX( _id ) - agk::GetObjectSizeMinX( _id ) );
-    _size.h = std::abs( agk::GetObjectSizeMaxY( _id ) - agk::GetObjectSizeMinY( _id ) );
-    _size.d = std::abs( agk::GetObjectSizeMaxZ( _id ) - agk::GetObjectSizeMinZ( _id ) );
-}
-
-/// *************************************************************************
-/// <summary>
-/// Update the current color from AGK.
-/// </summary>
-/// *************************************************************************
-void CSprite3D::UpdateColorFromAGK()
-{
-    // There doesn't seem to be a way to get a 3d object's color from AGK, which is very strange.
+    return CVector3( abs( agk::GetObjectSizeMaxX( _id ) - agk::GetObjectSizeMinX( _id ) ),
+                     abs( agk::GetObjectSizeMaxY( _id ) - agk::GetObjectSizeMinY( _id ) ),
+                     abs( agk::GetObjectSizeMaxZ( _id ) - agk::GetObjectSizeMinZ( _id ) ) );
 }
 
 

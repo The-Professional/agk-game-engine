@@ -38,19 +38,39 @@ namespace NDefs
         EOT_SPRITE_3D,
         EOT_SPRITE_2D,
         EOT_TEXT_SPRITE,
-        EOT_LIGHT
+        EOT_LIGHT,
+        EOT_CONTROL
     };
 
     // The types of object fields.
     enum : uint
     {
         ETT_NULL        = 0,
-        ETT_POSITION    = 1,
-        ETT_ROTATION    = 2,
-        ETT_SIZE        = 4,
-        ETT_COLOR       = 8,
-        ETT_FRAME       = 16,
-        ETT_BONE        = 32
+        ETT_APPLIED     = 1,
+        ETT_POSITION    = ETT_APPLIED << 1,
+        ETT_ROTATION    = ETT_POSITION << 1,
+        ETT_SIZE        = ETT_ROTATION << 1,
+        ETT_SCALE       = ETT_SIZE << 1,
+        ETT_MATRIX      = ETT_SCALE << 1,
+        ETT_COLOR       = ETT_MATRIX << 1,
+        ETT_FRAME       = ETT_COLOR << 1,
+        ETT_BONE        = ETT_FRAME << 1,
+    };
+
+    // The type of object field dimensions.
+    enum : uint
+    {
+        EFD_NULL    = 0,
+        EFD_X       = 1,
+        EFD_Y       = EFD_X << 1,
+        EFD_Z       = EFD_Y << 1,
+        EFD_WIDTH   = EFD_Z << 1,
+        EFD_HEIGHT  = EFD_WIDTH << 1,
+        EFD_DEPTH   = EFD_HEIGHT << 1,
+        EFD_RED     = EFD_DEPTH << 1,
+        EFD_GREEN   = EFD_RED << 1,
+        EFD_BLUE    = EFD_GREEN << 1,
+        EFD_ALPHA   = EFD_BLUE << 1
     };
 
 
@@ -88,7 +108,8 @@ namespace NDefs
         ECS_ACTIVE,
         ECS_PRESSED,
         ECS_RELEASED,
-        ECS_TRANSITION
+        ECS_TRANSITION_IN,
+        ECS_TRANSITION_OUT
     };
     
     // The types of alignment.

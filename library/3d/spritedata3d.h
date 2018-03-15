@@ -19,7 +19,6 @@ class CSpriteData3D
 public:
 
     CSpriteData3D();
-    CSpriteData3D( const CSpriteData3D & obj );
     ~CSpriteData3D();
 
     // Load the sprite data from the passed in iterator.
@@ -29,6 +28,10 @@ public:
     const CSpriteVisualData3D * GetVisualData() const;
     const std::string & GetName() const;
     const std::vector<std::string> & GetAnimationList() const;
+
+    // Access functions for the default size of the sprite.
+    void SetSize( const CVector3 & size );
+    const CVector3 & GetSize() const;
 
 private:
 

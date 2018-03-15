@@ -76,7 +76,10 @@ void app::Begin()
 
     pObjectList = CCollectionManager::Instance().LoadCollection( "stage0" );
     pSprite = CSpriteManager::Instance().CreateSprite3D( "ball" );
-    //pSprite->SetScale( 2 );
+
+    CSpriteManager::Instance().Transform();
+
+    pObjectList[0]->SetParent( pSprite );
 }
 
 int app::Loop()
@@ -88,10 +91,12 @@ int app::Loop()
     CSettings::Instance().CheckForWindowSizeChange();
 
     if( CInputManager::Instance().IsReleased( "menu", "menu select" ) )
-        //pSprite->IncRot( 90.f, 90.f, 0 );
-        pObjectList[2]->Play( "color", NDefs::EST_FINISH );
+        pSprite->IncRot( 0, 0, 10 );
+        //pObjectList[2]->Play( "color", NDefs::EST_FINISH );
 
     CSpriteManager::Instance().Update();
+    CSpriteManager::Instance().Transform();
+
 	agk::Print( agk::ScreenFPS() );
 	agk::Sync();
 

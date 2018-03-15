@@ -27,11 +27,14 @@ namespace NDefs
         _objectTypeList.emplace( "sprite3d", EOT_SPRITE_3D );
         _objectTypeList.emplace( "sprite2d", EOT_SPRITE_2D );
         _objectTypeList.emplace( "text sprite", EOT_TEXT_SPRITE );
-        _objectTypeList.emplace( "sprite3d", EOT_LIGHT );
+        _objectTypeList.emplace( "light", EOT_LIGHT );
+        _objectTypeList.emplace( "control", EOT_CONTROL );
         
+        _objectFieldList.emplace( "transformed", ETT_APPLIED );
         _objectFieldList.emplace( "position", ETT_POSITION );
         _objectFieldList.emplace( "rotation", ETT_ROTATION );
         _objectFieldList.emplace( "size", ETT_SIZE );
+        _objectFieldList.emplace( "scale", ETT_SCALE );
         _objectFieldList.emplace( "color", ETT_COLOR );
         _objectFieldList.emplace( "frame", ETT_FRAME );
         _objectFieldList.emplace( "bone", ETT_BONE );
@@ -55,7 +58,8 @@ namespace NDefs
         _controlStateList.emplace( "active", ECS_ACTIVE );
         _controlStateList.emplace( "pressed", ECS_PRESSED );
         _controlStateList.emplace( "released", ECS_RELEASED );
-        _controlStateList.emplace( "transition", ECS_TRANSITION );
+        _controlStateList.emplace( "transition in", ECS_TRANSITION_IN );
+        _controlStateList.emplace( "transition out", ECS_TRANSITION_OUT );
 
         _alignmentList.emplace( "center", EA_CENTER );
         _alignmentList.emplace( "left", EA_LEFT );

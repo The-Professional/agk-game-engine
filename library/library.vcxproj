@@ -29,9 +29,12 @@
     <ClInclude Include="3d\spritevisualdata3d.h" />
     <ClInclude Include="common\bitmask.h" />
     <ClInclude Include="common\color.h" />
+    <ClInclude Include="common\controldata.h" />
     <ClInclude Include="common\defs.h" />
     <ClInclude Include="common\iobject.h" />
+    <ClInclude Include="common\matrix4.h" />
     <ClInclude Include="common\size.h" />
+    <ClInclude Include="common\collectionobject.h" />
     <ClInclude Include="common\vector2.h" />
     <ClInclude Include="common\vector3.h" />
     <ClInclude Include="common\vector4.h" />
@@ -69,8 +72,11 @@
     <ClCompile Include="3d\sprite3d.cpp" />
     <ClCompile Include="3d\spritedata3d.cpp" />
     <ClCompile Include="3d\spritevisualdata3d.cpp" />
+    <ClCompile Include="common\controldata.cpp" />
     <ClCompile Include="common\defs.cpp" />
     <ClCompile Include="common\iobject.cpp" />
+    <ClCompile Include="common\matrix4.cpp" />
+    <ClCompile Include="common\vector2.cpp" />
     <ClCompile Include="common\vector3.cpp" />
     <ClCompile Include="common\vector4.cpp" />
     <ClCompile Include="controls\control.cpp" />

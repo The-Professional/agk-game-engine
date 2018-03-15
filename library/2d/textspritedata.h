@@ -21,7 +21,6 @@ class CTextSpriteData
 public:
 
     CTextSpriteData();
-    CTextSpriteData( const CTextSpriteData & obj );
     ~CTextSpriteData();
 
     // Load the sprite data from the passed in iterator.
@@ -48,7 +47,7 @@ private:
     std::string _font;
 
     // The size of the text.
-    float _size = 4;
+    float _size = 50;
 
     // The space between characters.
     float _textSpacing = 0;

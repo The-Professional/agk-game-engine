@@ -3,6 +3,7 @@
 
 // Game lib dependencies
 #include <utilities\deletefuncs.h>
+#include <utilities\exceptionhandling.h>
 
 using namespace std;
 using namespace nlohmann;
@@ -14,17 +15,6 @@ using namespace nlohmann;
 /// *************************************************************************
 CSpriteData2D::CSpriteData2D()
 {
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Copy constructor
-/// </summary>
-/// *************************************************************************
-CSpriteData2D::CSpriteData2D( const CSpriteData2D & obj )
-{
-    *this = obj;
 }
 
 
@@ -102,4 +92,32 @@ const CBitmask<uint> & CSpriteData2D::GetAlignment() const
 const vector<string> & CSpriteData2D::GetAnimationList() const
 {
     return _animationList;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Set the default size of the sprite.
+/// </summary>
+/// *************************************************************************
+void CSpriteData2D::SetSize( const CVector2 & size )
+{
+    if( _pVisualData )
+        _pVisualData->SetSize( size );
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Set the default size of the sprite.
+/// </summary>
+/// *************************************************************************
+const CVector2 & CSpriteData2D::GetSize() const
+{
+    if( !_pVisualData )
+        throw NExcept::CCriticalException( "Error",
+                                           "CSpriteData2D::GetSize()",
+                                           "Failed to get size of sprite '" + _name + "'." );
+        
+    return _pVisualData->GetSize();
 }

@@ -22,9 +22,7 @@ class CSpriteData2D
 {
 public:
 
-    // Constructor/Destructor
     CSpriteData2D();
-    CSpriteData2D( const CSpriteData2D & obj );
     ~CSpriteData2D();
 
     // Load the sprite data from the passed in iterator.
@@ -35,6 +33,10 @@ public:
     const std::string & GetName() const;
     const CBitmask<uint> & GetAlignment() const;
     const std::vector<std::string> & GetAnimationList() const;
+
+    // Access functions for the default size of the sprite.
+    void SetSize( const CVector2 & size );
+    const CVector2 & GetSize() const;
 
 private:
 

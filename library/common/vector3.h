@@ -16,6 +16,7 @@ public:
     // Constructor
     CVector3( float value = 0 );
     CVector3( float _x, float _y, float _z = 0 );
+    CVector3( const CVector2 & value );
 
     // 3D vector assignment.
     void operator = ( float value );
@@ -60,6 +61,15 @@ public:
     void operator /= ( const CVector3 & vec );
     void operator /= ( const CVector2 & vec );
     void operator /= ( float value );
+
+    // Functions to determine whether or not the vector is empty.
+    bool IsEmpty() const;
+    bool IsEmptyX() const;
+    bool IsEmptyY() const;
+    bool IsEmptyZ() const;
+
+    // Whether or not each dimension has a value.
+    bool IsFilled() const;
 
 public:
 

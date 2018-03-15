@@ -4,10 +4,12 @@
 // Game lib dependencies
 #include <agk.h>
 #include <common\size.h>
+#include <common\vector2.h>
 #include <common\vector3.h>
 #include <common\color.h>
 #include <common\bitmask.h>
 #include <common\iobject.h>
+#include <common\collectionobject.h>
 #include <managers\inputstate.h>
 #include <managers\inputmapping.h>
 #include <managers\inputmanager.h>
@@ -249,6 +251,27 @@ namespace NParseHelper
         return false;
     }
 
+    /// <summary> 
+    /// Parse generic w, h tags.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="tag"> Tag to find. </param>
+    /// <param name="wh"> Value to set. </param>
+    /// <returns> If the tag exists. </returns>
+    bool GetWH( nlohmann::json::const_iterator iter, const string & tag, CVector2 & wh )
+    {
+        auto whIter = iter->find( tag );
+        if( whIter != iter->end() )
+        {
+            GetFloat( whIter, "w", wh.w );
+            GetFloat( whIter, "h", wh.h );
+
+            return true;
+        }
+
+        return false;
+    }
+
 
     // .
     /// *************************************************************************
@@ -415,6 +438,50 @@ namespace NParseHelper
 
     /// *************************************************************************
     /// <summary> 
+    /// Parse control type tags.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="tag"> Tag to find. </param>
+    /// <param name="fieldType"> Value to set. </param>
+    /// <returns> If the tag exists. </returns>
+    /// *************************************************************************
+    bool GetControlType( json::const_iterator iter, const string & tag, EControlType & controlType )
+    {
+        string str;
+        if( GetString( iter, tag, str ) )
+        {
+            controlType = CDefs::Instance().GetControlType( str );
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
+    /// Parse control state tags.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="tag"> Tag to find. </param>
+    /// <param name="fieldType"> Value to set. </param>
+    /// <returns> If the tag exists. </returns>
+    /// *************************************************************************
+    bool GetControlState( json::const_iterator iter, const string & tag, EControlState & controlState )
+    {
+        string str;
+        if( GetString( iter, tag, str ) )
+        {
+            controlState = CDefs::Instance().GetControlState( str );
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
     /// Parse the dimension tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
@@ -524,40 +591,76 @@ namespace NParseHelper
     /// Parse object data tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="pObject"> Value to set. </param>
+    /// <param name="collectionObject"> Value to set. </param>
     /// *************************************************************************
-    void GetCollectionObject( json::const_iterator iter, iObject * pObject )
+    void GetCollectionObject( json::const_iterator iter, CCollectionObject & collectionObject )
     {
-        CVector3 pos;
-        if( GetXYZ( iter, "position", pos ) )
-            pObject->SetPos( pos );
+        string name;
+        if( GetString( iter, "name", name ) )
+        {
+            collectionObject.name = name;
+            collectionObject.fields.Add( CCollectionObject::NAME );
+        }
 
-        CVector3 rot;
-        if( GetXYZ( iter, "rotation", rot ) )
-            pObject->SetRot( rot );
+        CVector3 position;
+        if( GetXYZ( iter, "position", position ) )
+        {
+            collectionObject.position = position;
+            collectionObject.fields.Add( CCollectionObject::POSITION );
+        }
+
+        CVector3 rotation;
+        if( GetXYZ( iter, "rotation", rotation ) )
+        {
+            collectionObject.rotation = rotation;
+            collectionObject.fields.Add( CCollectionObject::ROTATION );
+        }
 
         CVector3 size;
         if( GetWHD( iter, "size", size ) )
-            pObject->SetSize( size );
-
-        bool visible = false;
-        if( GetBool( iter, "visible", visible ) )
-            pObject->SetVisible( visible );
-
-        float textSize = 0;
-        if( GetFloat( iter, "textSize", textSize ) )
-            pObject->SetTextSize( textSize );
+        {
+            collectionObject.size = size;
+            collectionObject.fields.Add( CCollectionObject::SIZE );
+        }
+        else if( GetFloat( iter, "size", size.d ) )
+        {
+            collectionObject.size.d = size.d;
+            collectionObject.fields.Add( CCollectionObject::TEXT_SIZE );
+        }
 
         CColor color;
         if( GetColor( iter, color ) )
-            pObject->SetColor( color );
+        {
+            collectionObject.color = color;
+            collectionObject.fields.Add( CCollectionObject::COLOR );
+        }
+
+        bool visible = false;
+        if( GetBool( iter, "visible", visible ) )
+        {
+            collectionObject.visible = visible;
+            collectionObject.fields.Add( CCollectionObject::VISIBLE );
+        }
 
         CBitmask<uint> alignment;
         if( GetAlignment( iter, "alignment", alignment ) )
-            pObject->SetAlignment( alignment );
+        {
+            collectionObject.alignment = alignment;
+            collectionObject.fields.Add( CCollectionObject::ALIGNMENT );
+        }
+
+        string text;
+        if( GetString( iter, "text", text ) )
+        {
+            collectionObject.text = text;
+            collectionObject.fields.Add( CCollectionObject::TEXT );
+        }
 
         ETextAlignment textAlignment;
         if( GetTextAlignment( iter, textAlignment ) )
-            pObject->SetTextAlignment( textAlignment );
+        {
+            collectionObject.textAlignment = textAlignment;
+            collectionObject.fields.Add( CCollectionObject::TEXT_ALIGNMENT );
+        }
     }
 }

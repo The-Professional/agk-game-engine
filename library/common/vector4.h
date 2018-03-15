@@ -45,5 +45,5 @@ public:
 };
 
 
-#endif  // 
+#endif  // __vector4_h__
 

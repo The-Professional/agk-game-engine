@@ -144,6 +144,15 @@
     <ClInclude Include="script\animationcomponent.h">
       <Filter>script</Filter>
     </ClInclude>
+    <ClInclude Include="common\matrix4.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\controldata.h">
+      <Filter>controls</Filter>
+    </ClInclude>
+    <ClInclude Include="common\collectionobject.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="utilities\settings.cpp">
@@ -238,6 +247,15 @@
     </ClCompile>
     <ClCompile Include="script\animationcomponent.cpp">
       <Filter>script</Filter>
+    </ClCompile>
+    <ClCompile Include="common\matrix4.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\vector2.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\controldata.cpp">
+      <Filter>controls</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

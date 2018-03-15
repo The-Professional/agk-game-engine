@@ -11,6 +11,7 @@
 #include <2d\sprite2d.h>
 #include <2d\textsprite.h>
 #include <common\iobject.h>
+#include <common\collectionobject.h>
 
 // Standard lib dependencies
 #include <fstream>
@@ -104,13 +105,13 @@ void CCollectionManager::LoadSpriteCollection3D( json::const_iterator iter, cons
         auto objectIter = collectionIter->begin();
         while( objectIter != collectionIter->end() )
         {
-            string objectName;
-            NParseHelper::GetString( objectIter, "name", objectName );
+            CCollectionObject collectionObject;
+            NParseHelper::GetCollectionObject( objectIter, collectionObject );
 
             // Get the data used to create the sprite.
-            iObject * pSprite = CSpriteManager::Instance().CreateSprite3D( objectName, collectionName );
-            NParseHelper::GetCollectionObject( objectIter, pSprite );
+            iObject * pSprite = CSpriteManager::Instance().CreateSprite3D( collectionObject.name, collectionName );
             pObjectList.push_back( pSprite );
+            pSprite->Set( collectionObject );
 
             ++objectIter;
         }
@@ -131,13 +132,13 @@ void CCollectionManager::LoadSpriteCollection2D( json::const_iterator iter, cons
         auto objectIter = collectionIter->begin();
         while( objectIter != collectionIter->end() )
         {
-            string objectName;
-            NParseHelper::GetString( objectIter, "name", objectName );
+            CCollectionObject collectionObject;
+            NParseHelper::GetCollectionObject( objectIter, collectionObject );
 
             // Get the data used to create the sprite.
-            iObject * pSprite = CSpriteManager::Instance().CreateSprite2D( objectName, collectionName );
-            NParseHelper::GetCollectionObject( objectIter, pSprite );
+            iObject * pSprite = CSpriteManager::Instance().CreateSprite2D( collectionObject.name, collectionName );
             pObjectList.push_back( pSprite );
+            pSprite->Set( collectionObject );
 
             ++objectIter;
         }
@@ -158,16 +159,13 @@ void CCollectionManager::LoadTextSpriteCollection( json::const_iterator iter, co
         auto objectIter = collectionIter->begin();
         while( objectIter != collectionIter->end() )
         {
-            string objectName;
-            NParseHelper::GetString( objectIter, "name", objectName );
-
-            string text;
-            NParseHelper::GetString( objectIter, "text", text );
+            CCollectionObject collectionObject;
+            NParseHelper::GetCollectionObject( objectIter, collectionObject );
 
             // Get the data used to create the sprite.
-            iObject * pSprite = CSpriteManager::Instance().CreateTextSprite( objectName, text, collectionName );
-            NParseHelper::GetCollectionObject( objectIter, pSprite );
+            iObject * pSprite = CSpriteManager::Instance().CreateTextSprite( collectionObject.name, collectionObject.text, collectionName );
             pObjectList.push_back( pSprite );
+            pSprite->Set( collectionObject );
 
             ++objectIter;
         }

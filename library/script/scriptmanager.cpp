@@ -9,11 +9,7 @@
 #include <script\scriptglobals.h>
 #include <script\animationdata.h>
 
-// Boost lib dependencies
-#include <boost/format.hpp>
-
 // Standard lib dependencies
-#include <cstring>
 #include <fstream>
 
 // AngelScript lib dependencies
@@ -207,9 +203,6 @@ void CScriptManager::LoadScript( const string & name )
         {
             AddScript( iter->second.path );
             iter->second.id = 1;
-
-            // Build all the scripts added to the module.
-            //BuildScript();
         }
     }
     catch( exception e )
@@ -234,8 +227,6 @@ void CScriptManager::AddScript( const string & filepath )
     try
     {
         // Load the script file into a charater array
-        //shared_ptr<char> spChar = NGeneralFuncs::FileToBuf( filepath );
-
         fileId = agk::OpenToRead( filepath.c_str() );
         pScript = agk::ReadString( fileId );
 
@@ -386,9 +377,9 @@ asIScriptContext * CScriptManager::Prepare( const string & function, const vecto
     // Prepare the function to run
     if( pContext->Prepare( pScriptFunc ) < 0 )
     {
-        throw NExcept::CCriticalException( "Error Preparing Script!",
-                                           boost::str( boost::format( "There was an error preparing the script (%s).\n\n%s\nLine: %s" )
-                                                       % function % __FUNCTION__ % __LINE__ ) );
+        throw NExcept::CCriticalException( "Error",
+                                           "CScriptManager::Prepare()",
+                                           "Error preparing the script function '" + function + "'." );
     }
 
     // Pass the parameters to the script function
@@ -419,9 +410,9 @@ asIScriptContext * CScriptManager::Prepare( const string & function, const vecto
 
         if( returnVal < 0 )
         {
-            throw NExcept::CCriticalException( "Error Setting Script Param!",
-                                               boost::str( boost::format( "There was an error setting the script parameter (%s).\n\n%s\nLine: %s" )
-                                                           % function % __FUNCTION__ % __LINE__ ) );
+            throw NExcept::CCriticalException( "Error",
+                                               "CScriptManager::Prepare()",
+                                               "Error setting the parameter for script function '" + function + "'." );
         }
     }
 

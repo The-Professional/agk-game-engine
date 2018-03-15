@@ -40,6 +40,7 @@ void CSpriteVisualData3D::LoadFromIter( nlohmann::json::const_iterator iter )
 {
     NParseHelper::GetString( iter, "mesh", _mesh );
     NParseHelper::GetColor( iter, _color );
+    _sizeSet = NParseHelper::GetWHD( iter, "size", _size );
     NParseHelper::GetString( iter, "textureMap", _textureMap );
     NParseHelper::GetString( iter, "normalMap", _normalMap );
     NParseHelper::GetString( iter, "specularMap", _specularMap );
@@ -47,6 +48,9 @@ void CSpriteVisualData3D::LoadFromIter( nlohmann::json::const_iterator iter )
     NParseHelper::GetBool( iter, "castShadow", _castShadow );
     NParseHelper::GetBool( iter, "receiveShadow", _receiveShadow );
     NParseHelper::GetMeshType( iter, _type );
+
+    if( !_sizeSet )
+        SetSize( { _width, _height, _depth } );
 }
 
 
@@ -223,4 +227,43 @@ bool CSpriteVisualData3D::WillCastShadow() const
 bool CSpriteVisualData3D::WillReceiveShadow() const
 {
     return _receiveShadow;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Set the sprite's size. This is considered the default size, so we'll want
+/// to know this. If it's not set in the sprite's data, we'll need to set this
+/// after we create the first sprite and know its size.
+/// </summary>
+/// *************************************************************************
+void CSpriteVisualData3D::SetSize( const CVector3 & size )
+{
+    if( !size.IsEmptyX() + !size.IsEmptyY() + !size.IsEmptyZ() > 1 )
+    {
+        _size = size;
+        _sizeSet = true;
+    }
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Get the sprite's size.
+/// </summary>
+/// *************************************************************************
+const CVector3 & CSpriteVisualData3D::GetSize() const
+{
+    return _size;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Whether or not the size was set in the data file.
+/// </summary>
+/// *************************************************************************
+bool CSpriteVisualData3D::IsSizeSet() const
+{
+    return _sizeSet;
 }

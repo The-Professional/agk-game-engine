@@ -3,6 +3,7 @@
 
 // Game lib dependencies
 #include <agk.h>
+#include <common\matrix4.h>
 #include <2d\textspritedata.h>
 #include <managers\resourcemanager.h>
 #include <utilities\mathfunc.h>
@@ -127,10 +128,17 @@ void CTextSprite::DeleteObject()
 /// Update AGK with the sprite's current position.
 /// </summary>
 /// *************************************************************************
-void CTextSprite::UpdateAGKWithPos()
+void CTextSprite::ApplyPosition()
 {
-    agk::SetTextPosition( _id, _position.x, _position.y );
-    agk::SetTextDepth( _id, (int)_position.z );
+    if( _pParent && _pParent->GetMatrix() )
+    {
+        CVector3 newPos = *_pParent->GetMatrix() * _position;
+        agk::SetTextPosition( _id, newPos.x, newPos.y );
+    }
+    else
+        agk::SetTextPosition( _id, _position.x, _position.y );
+
+    agk::SetTextDepth( _id, (int)(_position.z + 0.5f) );
 }
 
 
@@ -139,9 +147,12 @@ void CTextSprite::UpdateAGKWithPos()
 /// Update AGK with the sprite's current rotation.
 /// </summary>
 /// *************************************************************************
-void CTextSprite::UpdateAGKWithRot()
+void CTextSprite::ApplyRotation()
 {
-    agk::SetTextAngle( _id, _rotation.z );
+    if( _pParent )
+        agk::SetTextAngle( _id, _pParent->GetWorldRot().z + _rotation.z );
+    else
+        agk::SetTextAngle( _id, _rotation.z );
 }
 
 
@@ -150,9 +161,30 @@ void CTextSprite::UpdateAGKWithRot()
 /// Update AGK with the sprite's current size.
 /// </summary>
 /// *************************************************************************
-void CTextSprite::UpdateAGKWithSize()
+void CTextSprite::ApplySize()
 {
-    agk::SetTextSize( _id, _size.d );
+    _scale.x = _size.x / _pData->GetSize();
+
+    if( _pParent )
+        agk::SetTextSize( _id, _size.x * _pParent->GetWorldScale().x );
+    else
+        agk::SetTextSize( _id, _size.x );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Update AGK with the sprite's current scale.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::ApplyScale()
+{
+    _size.x = _pData->GetSize() * _scale.x;
+
+    if( _pParent )
+        agk::SetTextSize( _id, _size.x * _pParent->GetWorldScale().x );
+    else
+        agk::SetTextSize( _id, _size.x );
 }
 
 
@@ -161,7 +193,7 @@ void CTextSprite::UpdateAGKWithSize()
 /// Update AGK with the sprite's current color.
 /// </summary>
 /// *************************************************************************
-void CTextSprite::UpdateAGKWithColor()
+void CTextSprite::ApplyColor()
 {
     agk::SetTextColor( _id, _color.r, _color.g, _color.b, _color.a );
 }
@@ -169,49 +201,38 @@ void CTextSprite::UpdateAGKWithColor()
 
 /// *************************************************************************
 /// <summary>
-/// Update the current position from AGK.
+/// Get the current position set in AGK.
 /// </summary>
 /// *************************************************************************
-void CTextSprite::UpdatePosFromAGK()
+CVector3 CTextSprite::GetWorldPos() const
 {
-    _position.x = agk::GetTextX( _id );
-    _position.y = agk::GetTextY( _id );
-    _position.z = (float)agk::GetTextDepth( _id );
+    return CVector3( agk::GetTextX( _id ),
+                     agk::GetTextY( _id ),
+                     (float)agk::GetTextDepth( _id ) );
 }
+
 
 /// *************************************************************************
 /// <summary>
-/// Update the current rotation from AGK.
+/// Get the current rotation set in AGK.
 /// </summary>
 /// *************************************************************************
-void CTextSprite::UpdateRotFromAGK()
+CVector3 CTextSprite::GetWorldRot() const
 {
-    // There doesn't seem to be a way to get a text's color from AGK, which is very strange.
+    return _rotation.z;
 }
+
 
 /// *************************************************************************
 /// <summary>
-/// Update the current size from AGK.
+/// Get the current size set in AGK.
 /// </summary>
 /// *************************************************************************
-void CTextSprite::UpdateSizeFromAGK()
+CVector3 CTextSprite::GetWorldSize() const
 {
-    _size.w = agk::GetTextTotalWidth( _id );
-    _size.h = agk::GetTextTotalHeight( _id );
-    _size.d = agk::GetTextSize( _id );
-}
-
-/// *************************************************************************
-/// <summary>
-/// Update the current color from AGK.
-/// </summary>
-/// *************************************************************************
-void CTextSprite::UpdateColorFromAGK()
-{
-    _color.r = agk::GetTextColorRed( _id );
-    _color.g = agk::GetTextColorGreen( _id );
-    _color.b = agk::GetTextColorBlue( _id );
-    _color.a = agk::GetTextColorAlpha( _id );
+    return CVector3( agk::GetTextTotalWidth( _id ),
+                     agk::GetTextTotalHeight( _id ),
+                     agk::GetTextSize( _id ) );
 }
 
 
@@ -246,8 +267,6 @@ void CTextSprite::SetFont( uint fontId )
 {
     _fontId = fontId;
     agk::SetTextFont( _id, fontId );
-
-    UpdateSizeFromAGK();
 }
 
 
@@ -271,8 +290,6 @@ void CTextSprite::SetText( const string & text )
 {
     _text = text;
     agk::SetTextString( _id, text.c_str() );
-
-    UpdateSizeFromAGK();
 }
 
 
@@ -294,9 +311,7 @@ std::string CTextSprite::GetText() const
 /// *************************************************************************
 void CTextSprite::SetTextSize( float size )
 {
-    SetSizeD( size );
-
-    UpdateSizeFromAGK();
+    SetSizeW( size );
 }
 
 
@@ -307,7 +322,7 @@ void CTextSprite::SetTextSize( float size )
 /// *************************************************************************
 float CTextSprite::GetTextSize() const
 {
-    return _size.d;
+    return _size.x;
 }
 
 
@@ -319,8 +334,6 @@ float CTextSprite::GetTextSize() const
 void CTextSprite::SetTextSpacing( float textSpacing )
 {
     agk::SetTextSpacing( _id, textSpacing );
-
-    UpdateSizeFromAGK();
 }
 
 
@@ -343,8 +356,6 @@ float CTextSprite::GetTextSpacing() const
 void CTextSprite::SetLineSpacing( float lineSpacing )
 {
     agk::SetTextLineSpacing( _id, lineSpacing );
-
-    UpdateSizeFromAGK();
 }
 
 
@@ -368,8 +379,6 @@ void CTextSprite::SetMaxWidth( float maxWidth )
 {
     _maxWidth = maxWidth;
     agk::SetTextMaxWidth( _id, maxWidth );
-
-    UpdateSizeFromAGK();
 }
 
 

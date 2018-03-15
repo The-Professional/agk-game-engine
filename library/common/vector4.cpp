@@ -31,6 +31,12 @@ void CVector4::operator = ( float value )
     x = y = z = w = value;
 }
 
+void CVector4::operator = ( const CVector2 & value )
+{
+    x = value.x;
+    y = value.y;
+}
+
 
 /// *************************************************************************
 /// <summary> 

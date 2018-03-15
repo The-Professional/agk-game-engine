@@ -13,6 +13,8 @@
 
 // Forward declarations
 class CAnimationComponent;
+class CCollectionObject;
+class CMatrix4;
 
 /// *************************************************************************
 /// <summary>
@@ -35,17 +37,20 @@ public:
     // Get the type of object this is.
     NDefs::EObjectType GetType() const;
 
-    // Update AGK with the current color and transformation data.
-    virtual void UpdateAGKWithPos() = 0;
-    virtual void UpdateAGKWithRot() = 0;
-    virtual void UpdateAGKWithSize() = 0;
-    virtual void UpdateAGKWithColor() = 0;
+    // Get the current transformation data set in AGK.
+    virtual CVector3 GetWorldPos() const = 0;
+    virtual CVector3 GetWorldRot() const = 0;
+    virtual CVector3 GetWorldSize() const = 0;
+    virtual CVector3 GetWorldScale() const;
 
-    // Access functions for the sprite's visibility.
+    // Set the object's fields using a collection object.
+    virtual void Set( const CCollectionObject & collectionObject );
+
+    // Access functions for the object's visibility.
     virtual void SetVisible( bool visible ) = 0;
     virtual bool IsVisible() const = 0;
 
-    // Access functions for the sprite's position.
+    // Access functions for the object's position.
     virtual void SetPos( float x, float y );
     virtual void SetPos( float x, float y, float z );
     virtual void SetPos( const CVector2 & pos );
@@ -59,7 +64,7 @@ public:
     virtual void IncPos( const CVector3 & pos );
     virtual const CVector3 & GetPos();
 
-    // Access functions for the sprite's rotation.
+    // Access functions for the object's rotation.
     virtual void SetRot( float x, float y, float z );
     virtual void SetRot( const CVector3 & rot );
     virtual void SetRotX( float x );
@@ -70,21 +75,35 @@ public:
     virtual void IncRot( float z );
     virtual const CVector3 & GetRot();
 
-    // Access functions for the sprite's size.
+    // Access functions for the object's size.
     virtual void SetSize( float w, float h, float d );
     virtual void SetSize( float w, float h );
     virtual void SetSize( const CVector3 & size );
     virtual void SetSize( const CVector2 & size );
-    virtual void SetSizeW( float w );
-    virtual void SetSizeH( float h );
-    virtual void SetSizeD( float d );
+    virtual void SetSizeW( float w, bool uniform = false );
+    virtual void SetSizeH( float h, bool uniform = false );
+    virtual void SetSizeD( float d, bool uniform = false );
     virtual void IncSize( float w, float h, float d );
     virtual void IncSize( float w, float h );
     virtual void IncSize( const CVector3 & size );
     virtual void IncSize( const CVector2 & size );
     virtual const CVector3 & GetSize();
 
-    // Access functions for the sprite's color.
+    // Access functions for the object's scale
+    virtual void SetScale( float x, float y );
+    virtual void SetScale( float x, float y, float z );
+    virtual void SetScale( const CVector2 & pos );
+    virtual void SetScale( const CVector3 & pos );
+    virtual void SetScaleX( float x );
+    virtual void SetScaleY( float y );
+    virtual void SetScaleZ( float z );
+    virtual void IncScale( float x, float y );
+    virtual void IncScale( float x, float y, float z );
+    virtual void IncScale( const CVector2 & pos );
+    virtual void IncScale( const CVector3 & pos );
+    virtual const CVector3 & GetScale();
+
+    // Access functions for the object's color.
     virtual void SetColor( int r, int g, int b, int a );
     virtual void SetColor( int r, int g, int b );
     virtual void SetColor( const CColor & color );
@@ -117,14 +136,30 @@ public:
     virtual void SetAlignment( const CBitmask<uint> alignment ) {}
     virtual CBitmask<uint> GetAlignment() const { return 0; }
 
+    // Access functions for the object's parent.
+    virtual void SetParent( iObject * pParent );
+    virtual const iObject * GetParent() const;
+
     // Reset the object's position using its previous position.
     virtual void Reposition() {}
 
     // Play an animation.
     virtual void Play( const std::string & name, NDefs::EStopType stopType = NDefs::EST_NULL );
 
+    // Get the transformed bitmask.
+    virtual CBitmask<uint> GetModified() const;
+
+    // Get the object's matrix
+    const CMatrix4 * GetMatrix();
+
     // Update the object.
     virtual void Update();
+
+    // Function to call the functions that update AGK.
+    virtual void Transform( bool updateMatrix = false );
+
+    // Clear the bitmask of modified fields.
+    virtual void ClearModified();
 
 protected:
 
@@ -134,11 +169,12 @@ protected:
     // Destructor
     virtual ~iObject() {}
 
-    // Update the current color and transformation data from AGK.
-    virtual void UpdatePosFromAGK() = 0;
-    virtual void UpdateRotFromAGK() = 0;
-    virtual void UpdateSizeFromAGK() = 0;
-    virtual void UpdateColorFromAGK() = 0;
+    // Apply the current transformations and color to AGK.
+    virtual void ApplyPosition() = 0;
+    virtual void ApplyRotation() = 0;
+    virtual void ApplySize() = 0;
+    virtual void ApplyScale() = 0;
+    virtual void ApplyColor() = 0;
 
 protected:
 
@@ -157,14 +193,23 @@ protected:
     // Size of the object.
     CVector3 _size = 0;
 
+    // Scale of the object. 
+    CVector3 _scale = 1;
+
     // Color of the object.
     CColor _color = 255;
 
-    // Keep track of what values we've retrieved from AGK this frame.
-    CBitmask<uint> _updatedValues;
+    // A bit mask of all the fields that have been changed.
+    CBitmask<uint> _modified = NDefs::ETT_NULL;
 
     // Component to handle playing any animations.
     CAnimationComponent * _pAnimationComponent = nullptr;
+
+    // The object's transformation matrix.
+    CMatrix4 * _pMatrix = nullptr;
+
+    // The parent object. This pointer does not belong to this object.
+    iObject * _pParent = nullptr;
 };
 
 #endif  // __i_object_h__

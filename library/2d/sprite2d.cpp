@@ -3,7 +3,7 @@
 
 // Game lib dependencies
 #include <agk.h>
-#include <common\size.h>
+#include <common\matrix4.h>
 #include <2d\spritedata2d.h>
 #include <managers\resourcemanager.h>
 #include <utilities\mathfunc.h>
@@ -71,7 +71,10 @@ void CSprite2D::Init( const CSpriteData2D * pData )
 
         // The height and width must be greater than zero to set the size.
         if( pVisual->GetSize().w > 0 && pVisual->GetSize().h > 0 )
-            SetSize( pVisual->GetSize().w, pVisual->GetSize().h );
+        {
+            _size = pVisual->GetSize();
+            agk::SetSpriteSize( _size.w, _size.h );
+        }
         else
         {
             _size.w = agk::GetSpriteWidth( _id );
@@ -121,10 +124,17 @@ void CSprite2D::DeleteObject()
 /// Update AGK with the sprite's current position.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::UpdateAGKWithPos()
+void CSprite2D::ApplyPosition()
 {
-    agk::SetSpritePosition( _id, _position.x, _position.y );
-    agk::SetSpriteDepth( _id, (int)_position.z );
+    if( _pParent && _pParent->GetMatrix() )
+    {
+        CVector3 newPos = *_pParent->GetMatrix() * _position;
+        agk::SetSpritePosition( _id, newPos.x, newPos.y );
+    }
+    else
+        agk::SetSpritePosition( _id, _position.x, _position.y );
+
+    agk::SetSpriteDepth( _id, (int)(_position.z + 0.5f) );
 }
 
 
@@ -133,9 +143,12 @@ void CSprite2D::UpdateAGKWithPos()
 /// Update AGK with the sprite's current rotation.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::UpdateAGKWithRot()
+void CSprite2D::ApplyRotation()
 {
-    agk::SetSpriteAngle( _id, _rotation.z );
+    if( _pParent )
+        agk::SetSpriteAngle( _id, _pParent->GetWorldRot().z + _rotation.z );
+    else
+        agk::SetSpriteAngle( _id, _rotation.z );
 }
 
 
@@ -144,9 +157,36 @@ void CSprite2D::UpdateAGKWithRot()
 /// Update AGK with the sprite's current size.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::UpdateAGKWithSize()
+void CSprite2D::ApplySize()
 {
-    agk::SetSpriteSize( _id, _size.w, _size.h );
+    _scale = _size / _pData->GetSize();
+
+    if( _pParent )
+    {
+        CVector2 newScale = _pParent->GetWorldScale() * _scale;
+        agk::SetSpriteScale( _id, newScale.w, newScale.h );
+    }
+    else
+        agk::SetSpriteScale( _id, _scale.w, _scale.h );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Update AGK with the sprite's current scale.
+/// </summary>
+/// *************************************************************************
+void CSprite2D::ApplyScale()
+{
+    _size = _pData->GetSize() * _scale;
+
+    if( _pParent )
+    {
+        CVector2 newScale = _pParent->GetWorldScale() * _scale;
+        agk::SetSpriteScale( _id, newScale.w, newScale.h );
+    }
+    else
+        agk::SetSpriteScale( _id, _scale.w, _scale.h );
 }
 
 
@@ -155,7 +195,7 @@ void CSprite2D::UpdateAGKWithSize()
 /// Update AGK with the sprite's current color.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::UpdateAGKWithColor()
+void CSprite2D::ApplyColor()
 {
     agk::SetSpriteColor( _id, _color.r, _color.g, _color.b, _color.a );
 }
@@ -163,48 +203,37 @@ void CSprite2D::UpdateAGKWithColor()
 
 /// *************************************************************************
 /// <summary>
-/// Update the current position from AGK.
+/// Get the current position set in AGK.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::UpdatePosFromAGK()
+CVector3 CSprite2D::GetWorldPos() const
 {
-    _position.x = agk::GetSpriteX( _id );
-    _position.y = agk::GetSpriteY( _id );
-    _position.z = (float)agk::GetSpriteDepth( _id );
+    return CVector3( agk::GetSpriteX( _id ), 
+                     agk::GetSpriteY( _id ), 
+                     (float)agk::GetSpriteDepth( _id ) );
 }
+
 
 /// *************************************************************************
 /// <summary>
-/// Update the current rotation from AGK.
+/// Get the current rotation set in AGK.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::UpdateRotFromAGK()
+CVector3 CSprite2D::GetWorldRot() const
 {
-    _rotation.z = agk::GetSpriteAngle( _id );
+    return CVector3( 0, 0, agk::GetSpriteAngle( _id ) );
 }
+
 
 /// *************************************************************************
 /// <summary>
-/// Update the current size from AGK.
+/// Get the current size set in AGK.
 /// </summary>
 /// *************************************************************************
-void CSprite2D::UpdateSizeFromAGK()
+CVector3 CSprite2D::GetWorldSize() const
 {
-    _size.w = agk::GetSpriteWidth( _id );
-    _size.h = agk::GetSpriteHeight( _id );
-}
-
-/// *************************************************************************
-/// <summary>
-/// Update the current color from AGK.
-/// </summary>
-/// *************************************************************************
-void CSprite2D::UpdateColorFromAGK()
-{
-    _color.r = agk::GetSpriteColorRed( _id );
-    _color.g = agk::GetSpriteColorGreen( _id );
-    _color.b = agk::GetSpriteColorBlue( _id );
-    _color.a = agk::GetSpriteColorAlpha( _id );
+    return CVector3( agk::GetSpriteWidth( _id ), 
+                     agk::GetSpriteHeight( _id ) );
 }
 
 

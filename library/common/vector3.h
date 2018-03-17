@@ -62,6 +62,9 @@ public:
     void operator /= ( const CVector2 & vec );
     void operator /= ( float value );
 
+    // 3D vector modulus.
+    void operator %= ( float value );
+
     // Functions to determine whether or not the vector is empty.
     bool IsEmpty() const;
     bool IsEmptyX() const;
@@ -80,6 +83,5 @@ public:
     };
 
 };
-
 
 #endif  // __vector3_h__

@@ -9,6 +9,7 @@
 #include <utilities\settings.h>
 
 using namespace std;
+using namespace NDefs;
 
 /// *************************************************************************
 /// <summary>
@@ -17,7 +18,7 @@ using namespace std;
 /// *************************************************************************
 CSprite3D::CSprite3D()
 {
-    _type = NDefs::EOT_SPRITE_3D;
+    _type = EOT_SPRITE_3D;
 }
 
 
@@ -29,7 +30,7 @@ CSprite3D::CSprite3D()
 /// *************************************************************************
 CSprite3D::CSprite3D( const CSpriteData3D * pData )
 {
-    _type = NDefs::EOT_SPRITE_3D;
+    _type = EOT_SPRITE_3D;
 
     Init( pData );
 }
@@ -68,43 +69,43 @@ void CSprite3D::Init( const CSpriteData3D * pData )
         switch( pVisual->GetType() )
         {
             // Boxes must have a width, height, and length.
-        case NDefs::EMT_BOX:
+        case EMT_BOX:
             if( pVisual->GetWidth() > 0 && pVisual->GetHeight() > 0 && pVisual->GetDepth() > 0 )
                 _id = agk::CreateObjectBox( pVisual->GetWidth(), pVisual->GetHeight(), pVisual->GetDepth() );
             break;
 
             // Cones must have a height, radius, and at least 3 columns.
-        case NDefs::EMT_CONE:
+        case EMT_CONE:
             if( pVisual->GetHeight() > 0 && pVisual->GetRadius() > 0 && pVisual->GetColumns() > 2 )
                 _id = agk::CreateObjectCone( pVisual->GetHeight(), pVisual->GetDiameter(), pVisual->GetColumns() );
             break;
 
             // Cylinders must have a height, radius, and at least 3 columns.
-        case NDefs::EMT_CYLINDER:
+        case EMT_CYLINDER:
             if( pVisual->GetHeight() > 0 && pVisual->GetRadius() > 0 && pVisual->GetColumns() > 2 )
                 _id = agk::CreateObjectCylinder( pVisual->GetHeight(), pVisual->GetDiameter(), pVisual->GetColumns() );
             break;
 
             // Capsules must have a radius and height.
-        case NDefs::EMT_CAPSULE:
+        case EMT_CAPSULE:
             if( pVisual->GetRadius() > 0 && pVisual->GetHeight() > 0 )
                 _id = agk::CreateObjectCapsule( pVisual->GetDiameter(), pVisual->GetHeight(), Y_AXIS );
             break;
 
             // Planes must have a width and height.
-        case NDefs::EMT_PLANE:
+        case EMT_PLANE:
             if( pVisual->GetWidth() > 0 && pVisual->GetHeight() > 0 )
                 _id = agk::CreateObjectPlane( pVisual->GetWidth(), pVisual->GetHeight() );
             break;
 
             // Spheres must have a radius, at least 2 rows, and at least 3 columns.
-        case NDefs::EMT_SPHERE:
+        case EMT_SPHERE:
             if( pVisual->GetRadius() > 0 && pVisual->GetRows() > 1 && pVisual->GetColumns() > 2 )
                 _id = agk::CreateObjectSphere( pVisual->GetDiameter(), pVisual->GetRows(), pVisual->GetColumns() );
             break;
 
             // Meshes must have a name.
-        case NDefs::EMT_MESH:
+        case EMT_MESH:
             if( !pVisual->GetMesh().empty() )
                 _id = agk::CloneObject( CResourceManager::Instance().LoadMesh( pVisual->GetMesh() ) );
             break;
@@ -117,7 +118,7 @@ void CSprite3D::Init( const CSpriteData3D * pData )
             if( !pVisual->GetTextureMap().empty() )
             {
                 int imageId = CResourceManager::Instance().LoadImage( pVisual->GetTextureMap() );
-                agk::SetObjectImage( _id, imageId, NDefs::ETS_TEXTURE );
+                agk::SetObjectImage( _id, imageId, ETS_TEXTURE );
             }
             if( !pVisual->GetNormalMap().empty() )
             {
@@ -127,7 +128,7 @@ void CSprite3D::Init( const CSpriteData3D * pData )
             if( !pVisual->GetSpecularMap().empty() )
             {
                 int imageId = CResourceManager::Instance().LoadImage( pVisual->GetSpecularMap() );
-                agk::SetObjectImage( _id, imageId, NDefs::ETS_SPECULAR );
+                agk::SetObjectImage( _id, imageId, ETS_SPECULAR );
             }
 
             // Only apply these if shadows are enabled.
@@ -187,7 +188,7 @@ void CSprite3D::DeleteObject()
 /// *************************************************************************
 void CSprite3D::ApplyPosition()
 {
-    if( _pParent && _pParent->GetMatrix() )
+    if( _pParent )
     {
         CVector3 newPos = *_pParent->GetMatrix() * _position;
         agk::SetObjectPosition( _id, newPos.x, newPos.y, newPos.z );
@@ -204,6 +205,8 @@ void CSprite3D::ApplyPosition()
 /// *************************************************************************
 void CSprite3D::ApplyRotation()
 {
+    _rotation %= 360;
+
     if( _pParent )
     {
         CVector3 newRot = _pParent->GetWorldRot() + _rotation;

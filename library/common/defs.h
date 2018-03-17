@@ -54,7 +54,7 @@ namespace NDefs
         ETT_MATRIX      = ETT_SCALE << 1,
         ETT_COLOR       = ETT_MATRIX << 1,
         ETT_FRAME       = ETT_COLOR << 1,
-        ETT_BONE        = ETT_FRAME << 1,
+        ETT_BONE        = ETT_FRAME << 1
     };
 
     // The type of object field dimensions.

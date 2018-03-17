@@ -35,6 +35,7 @@ namespace NDefs
         _objectFieldList.emplace( "rotation", ETT_ROTATION );
         _objectFieldList.emplace( "size", ETT_SIZE );
         _objectFieldList.emplace( "scale", ETT_SCALE );
+        _objectFieldList.emplace( "matrix", ETT_MATRIX );
         _objectFieldList.emplace( "color", ETT_COLOR );
         _objectFieldList.emplace( "frame", ETT_FRAME );
         _objectFieldList.emplace( "bone", ETT_BONE );

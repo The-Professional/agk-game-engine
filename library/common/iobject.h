@@ -78,6 +78,7 @@ public:
     // Access functions for the object's size.
     virtual void SetSize( float w, float h, float d );
     virtual void SetSize( float w, float h );
+    virtual void SetSize( float whd );
     virtual void SetSize( const CVector3 & size );
     virtual void SetSize( const CVector2 & size );
     virtual void SetSizeW( float w, bool uniform = false );
@@ -85,20 +86,23 @@ public:
     virtual void SetSizeD( float d, bool uniform = false );
     virtual void IncSize( float w, float h, float d );
     virtual void IncSize( float w, float h );
+    virtual void IncSize( float wfd );
     virtual void IncSize( const CVector3 & size );
     virtual void IncSize( const CVector2 & size );
     virtual const CVector3 & GetSize();
 
     // Access functions for the object's scale
-    virtual void SetScale( float x, float y );
     virtual void SetScale( float x, float y, float z );
+    virtual void SetScale( float x, float y );
+    virtual void SetScale( float xyz );
     virtual void SetScale( const CVector2 & pos );
     virtual void SetScale( const CVector3 & pos );
     virtual void SetScaleX( float x );
     virtual void SetScaleY( float y );
     virtual void SetScaleZ( float z );
-    virtual void IncScale( float x, float y );
     virtual void IncScale( float x, float y, float z );
+    virtual void IncScale( float x, float y );
+    virtual void IncScale( float xyz );
     virtual void IncScale( const CVector2 & pos );
     virtual void IncScale( const CVector3 & pos );
     virtual const CVector3 & GetScale();
@@ -148,6 +152,9 @@ public:
 
     // Get the transformed bitmask.
     virtual CBitmask<uint> GetModified() const;
+
+    // Create a matrix for the object's transformations, if it doesn't already have one.
+    virtual void CreateMatrix();
 
     // Get the object's matrix
     const CMatrix4 * GetMatrix();

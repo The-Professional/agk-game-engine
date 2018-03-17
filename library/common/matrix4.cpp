@@ -16,6 +16,10 @@
 
 using namespace NDefs;
 
+#if defined(_WINDOWS)
+#pragma warning(disable : 4305)
+#endif
+
 /// *************************************************************************
 /// <summary> 
 /// Constructor
@@ -461,9 +465,10 @@ void CMatrix4::Rotate( float value )
 /// *************************************************************************
 void CMatrix4::Scale( const CVector3 & value )
 {
-    m14 *= value.x;
-    m24 *= value.y;
-    m34 *= value.z;
+    CMatrix4 n;
+    n.SetScale( value );
+    
+    *this *= n;
 }
 
 /// <summary> 
@@ -471,8 +476,10 @@ void CMatrix4::Scale( const CVector3 & value )
 /// </summary>
 void CMatrix4::Scale( const CVector2 & value )
 {
-    m14 *= value.x;
-    m24 *= value.y;
+    CMatrix4 n;
+    n.SetScale( value );
+
+    *this *= n;
 }
 
 /// <summary> 
@@ -480,7 +487,8 @@ void CMatrix4::Scale( const CVector2 & value )
 /// </summary>
 void CMatrix4::Scale( float value )
 {
-    m14 *= value;
-    m24 *= value;
-    m34 *= value;
+    CMatrix4 n;
+    n.SetScale( value );
+
+    *this *= n;
 }

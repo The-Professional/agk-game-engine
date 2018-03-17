@@ -18,6 +18,9 @@ namespace NMathFunc
     void AlignPosition( const CBitmask<uint> & alignment, CVector3 & vPos );
     void AlignPositionX( const CBitmask<uint> & alignment, float & x );
     void AlignPositionY( const CBitmask<uint> & alignment, float & y );
+
+    // Perform a modulus operation on floats.
+    float Modulus( float v1, float v2 );
 }
 
 #endif  // __math_func_h__

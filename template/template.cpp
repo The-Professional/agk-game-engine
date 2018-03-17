@@ -91,7 +91,11 @@ int app::Loop()
     CSettings::Instance().CheckForWindowSizeChange();
 
     if( CInputManager::Instance().IsReleased( "menu", "menu select" ) )
+    {
+        pSprite->IncPos( 0, 1, 0 );
         pSprite->IncRot( 0, 0, 10 );
+        pSprite->IncSize( 1 );
+    }
         //pObjectList[2]->Play( "color", NDefs::EST_FINISH );
 
     CSpriteManager::Instance().Update();

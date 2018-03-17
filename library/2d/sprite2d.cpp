@@ -126,9 +126,9 @@ void CSprite2D::DeleteObject()
 /// *************************************************************************
 void CSprite2D::ApplyPosition()
 {
-    if( _pParent && _pParent->GetMatrix() )
+    if( _pParent )
     {
-        CVector3 newPos = *_pParent->GetMatrix() * _position;
+        CVector2 newPos = *_pParent->GetMatrix() * _position;
         agk::SetSpritePosition( _id, newPos.x, newPos.y );
     }
     else
@@ -145,6 +145,8 @@ void CSprite2D::ApplyPosition()
 /// *************************************************************************
 void CSprite2D::ApplyRotation()
 {
+    _rotation %= 360;
+
     if( _pParent )
         agk::SetSpriteAngle( _id, _pParent->GetWorldRot().z + _rotation.z );
     else

@@ -3,6 +3,7 @@
 
 // Game lib dependencies
 #include <common\vector2.h>
+#include <utilities\mathfunc.h>
 
 /// *************************************************************************
 /// <summary> 
@@ -263,6 +264,19 @@ void CVector3::operator /= ( float value )
         y /= value;
         z /= value;
     }
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// 3D vector modulus.
+/// </summary>
+/// *************************************************************************
+void CVector3::operator %= ( float value )
+{
+    x = NMathFunc::Modulus( x, value );
+    y = NMathFunc::Modulus( y, value );
+    z = NMathFunc::Modulus( z, value );
 }
 
 

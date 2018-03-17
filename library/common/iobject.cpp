@@ -313,6 +313,15 @@ void iObject::SetSize( float w, float h )
 }
 
 // Set the object's size. 
+void iObject::SetSize( float whd )
+{
+    _size = whd;
+
+    _modified.Remove( ETT_SCALE );
+    _modified.Add( ETT_SIZE );
+}
+
+// Set the object's size. 
 void iObject::SetSize( const CVector3 & size )
 {
     _size = size;
@@ -405,6 +414,15 @@ void iObject::IncSize( float w, float h )
 }
 
 // Increment the object's size.
+void iObject::IncSize( float whd )
+{
+    _size += whd;
+
+    _modified.Remove( ETT_SCALE );
+    _modified.Add( ETT_SIZE );
+}
+
+// Increment the object's size.
 void iObject::IncSize( const CVector3 & size )
 {
     _size += size;
@@ -439,6 +457,17 @@ const CVector3 & iObject::GetSize()
 /// Set the object's scale. 
 /// </summary>
 /// *************************************************************************
+void iObject::SetScale( float x, float y, float z )
+{
+    _scale.x = x;
+    _scale.y = y;
+    _scale.z = z;
+
+    _modified.Remove( ETT_SIZE );
+    _modified.Add( ETT_SCALE );
+}
+
+// Set the object's scale. 
 void iObject::SetScale( float x, float y )
 {
     _scale.x = x;
@@ -448,12 +477,10 @@ void iObject::SetScale( float x, float y )
     _modified.Add( ETT_SCALE );
 }
 
-// Set the object's scale. 
-void iObject::SetScale( float x, float y, float z )
+// Set the object's scale.
+void iObject::SetScale( float xyz )
 {
-    _scale.x = x;
-    _scale.y = y;
-    _scale.z = z;
+    _scale = xyz;
 
     _modified.Remove( ETT_SIZE );
     _modified.Add( ETT_SCALE );
@@ -510,6 +537,17 @@ void iObject::SetScaleZ( float z )
 /// Increment the object's scale. 
 /// </summary>
 /// *************************************************************************
+void iObject::IncScale( float x, float y, float z )
+{
+    _scale.x += x;
+    _scale.y += y;
+    _scale.z += z;
+
+    _modified.Remove( ETT_SIZE );
+    _modified.Add( ETT_SCALE );
+}
+
+// Increment the object's scale. 
 void iObject::IncScale( float x, float y )
 {
     _scale.x += x;
@@ -520,11 +558,9 @@ void iObject::IncScale( float x, float y )
 }
 
 // Increment the object's scale. 
-void iObject::IncScale( float x, float y, float z )
+void iObject::IncScale( float xyz )
 {
-    _scale.x += x;
-    _scale.y += y;
-    _scale.z += z;
+    _scale += xyz;
 
     _modified.Remove( ETT_SIZE );
     _modified.Add( ETT_SCALE );
@@ -689,10 +725,13 @@ const CColor & iObject::GetColor()
 /// <summary>
 /// Set the object's parent. 
 /// </summary>
+/// <param name="pParent"> The parent to set to. </param>
 /// *************************************************************************
 void iObject::SetParent( iObject * pParent )
 {
     _pParent = pParent;
+    _pParent->CreateMatrix();
+    _modified = ETT_POSITION | ETT_ROTATION | ETT_SCALE;
 }
 
 
@@ -729,6 +768,23 @@ void iObject::Play( const std::string & name, EStopType stopType )
 CBitmask<uint> iObject::GetModified() const
 {
     return _modified;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Create a matrix for the object's transformations, if it doesn't already have one. 
+/// </summary>
+/// *************************************************************************
+void iObject::CreateMatrix()
+{
+    if( !_pMatrix )
+    {
+        _pMatrix = new CMatrix4();
+        _pMatrix->SetRotation( _rotation );
+        _pMatrix->Scale( _scale );
+        _pMatrix->SetTranslation( _position );
+    }
 }
 
 
@@ -796,25 +852,22 @@ void iObject::Transform( bool updateMatrix )
         if( _modified.Contains( ETT_SIZE ) )
             ApplySize();
 
+        if( _modified.Contains( ETT_SCALE ) )
+            ApplyScale();
+
         if( _modified.Contains( ETT_COLOR ) )
             ApplyColor();
     }
 
     // Update the object's matrix or create one if it doesn't have one.
-    if( updateMatrix )
+    if( _pMatrix && !_modified.Contains( ETT_MATRIX ) && _modified.ContainsOne( ETT_POSITION | ETT_ROTATION | ETT_SIZE | ETT_SCALE ) )
     {
-        if( !_pMatrix )
-            _pMatrix = new CMatrix4();
-        else if( _modified.Contains( ETT_MATRIX ) )
-            return;
-        else
-            _pMatrix->Clear();
-
+        _pMatrix->Clear();
         _pMatrix->SetRotation( _rotation );
         _pMatrix->Scale( _scale );
         _pMatrix->SetTranslation( _position );
 
-        if( _pParent && _pParent->GetMatrix() )
+        if( _pParent )
             *_pMatrix *= *_pParent->GetMatrix();
 
         _modified.Add( ETT_MATRIX );

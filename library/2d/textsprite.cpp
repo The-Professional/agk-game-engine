@@ -130,9 +130,9 @@ void CTextSprite::DeleteObject()
 /// *************************************************************************
 void CTextSprite::ApplyPosition()
 {
-    if( _pParent && _pParent->GetMatrix() )
+    if( _pParent )
     {
-        CVector3 newPos = *_pParent->GetMatrix() * _position;
+        CVector2 newPos = *_pParent->GetMatrix() * _position;
         agk::SetTextPosition( _id, newPos.x, newPos.y );
     }
     else
@@ -149,6 +149,8 @@ void CTextSprite::ApplyPosition()
 /// *************************************************************************
 void CTextSprite::ApplyRotation()
 {
+    _rotation %= 360;
+
     if( _pParent )
         agk::SetTextAngle( _id, _pParent->GetWorldRot().z + _rotation.z );
     else

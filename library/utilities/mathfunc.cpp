@@ -73,4 +73,21 @@ namespace NMathFunc
         else if( alignment.Contains( NDefs::EA_BOTTOM ) )
             y = y - CSettings::Instance().GetScreenBounds().bottom + agk::GetScreenBoundsBottom();
     }
+
+
+    /// *************************************************************************
+    /// <summary>
+    /// Perform a modulus operation on floats. 
+    /// </summary>
+    /// <param name="v1"> Value to be restricted. </param>
+    /// <param name="v2"> Value to be restricted to. </param>
+    /// *************************************************************************
+    float Modulus( float v1, float v2 )
+    {
+        if( abs(v1) < v2 )
+            return v1;
+
+        int i = (int)(v1 / v2);
+        return v1 - v2 * i;
+    }
 }

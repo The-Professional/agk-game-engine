@@ -39,6 +39,7 @@ namespace NDefs
         _objectFieldList.emplace( "color", ETT_COLOR );
         _objectFieldList.emplace( "frame", ETT_FRAME );
         _objectFieldList.emplace( "bone", ETT_BONE );
+        _objectFieldList.emplace( "ignore", ETT_IGNORE );
 
         _imageTypeList.emplace( "texture", ETS_TEXTURE );
         _imageTypeList.emplace( "normal", ETS_NORMAL );
@@ -87,6 +88,7 @@ namespace NDefs
         _endTypeList.emplace( "gradual reset", EET_GRADUAL_RESET );
 
         _stopTypeList.emplace( "stop", EST_STOP );
+        _stopTypeList.emplace( "pause", EST_PAUSE );
         _stopTypeList.emplace( "break", EST_BREAK );
         _stopTypeList.emplace( "finish", EST_FINISH );
     }

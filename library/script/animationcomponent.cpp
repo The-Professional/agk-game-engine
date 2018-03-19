@@ -26,7 +26,7 @@ CAnimationComponent::CAnimationComponent()
 /// </summary>
 /// <param name="pObject"> Object that this component belongs to. </param>
 /// <param name="animationList"> List of animation names to create. </param>
-CAnimationComponent::CAnimationComponent( iObject * pObject, const vector<string> & animationList )
+CAnimationComponent::CAnimationComponent( iObject * pObject, const vector<vector<string>> & animationList )
 {
     Init( pObject, animationList );
 }
@@ -50,14 +50,18 @@ CAnimationComponent::~CAnimationComponent()
 /// <param name="pObject"> Object that this component belongs to. </param>
 /// <param name="animationList"> List of animation names to create. </param>
 /// *************************************************************************
-void CAnimationComponent::Init( iObject * pObject, const vector<string> & animationList )
+void CAnimationComponent::Init( iObject * pObject, const vector<vector<string>> & animationList )
 {
     Clear();
 
-    for( auto & animation : animationList )
+    //for( auto & animation : animationList )
+    for( auto & conflictList : animationList )
     {
-        const CAnimationData * pData = CScriptManager::Instance().GetAnimationData( animation );
-        _pAnimationList.emplace( pData->GetName(), new CAnimation( pData, pObject ) );
+        for( uint i = 0; i < conflictList.size(); i++ )
+        {
+            const CAnimationData * pData = CScriptManager::Instance().GetAnimationData( conflictList[i] );
+            _pAnimationList.emplace( pData->GetName(), new CAnimation( pData, pObject, i ) );
+        }
     }
 }
 
@@ -80,30 +84,98 @@ void CAnimationComponent::Clear()
 /// Play an animation.
 /// </summary>
 /// <param name="name"> Name of the animation to play. </param>
-/// <param name="stopType"> How to end any conflicting animations. </param>
+/// <param name="stopType"> How to end any conflicting animation. </param>
 /// *************************************************************************
 void CAnimationComponent::Play( const string & name, EStopType stopType )
 {
     CAnimation * pAnimation = NGeneralFuncs::GetMapValue( name, _pAnimationList );
-    
-    // Get a list of all conflicting animations that are playing.
-    vector<CAnimation *> pConflictList;
-    GetConflictingAnimations( pAnimation, pConflictList );
 
-    // If the end animation is null, it means we ignore this play call altogether. 
-    if( stopType == EET_NULL && pConflictList.size() > 0 )
+    // If no animation was found, leave.
+    if( !pAnimation )
         return;
 
     // If this animation is already queued up, don't queue it again.
-    if( std::find( _pAnimationQueue.begin(), _pAnimationQueue.end(), pAnimation ) != _pAnimationQueue.end() )
+    auto iter = _pAnimationQueue.find( name );
+    if( iter != _pAnimationQueue.end() )
         return;
 
-    // Begin the stop animation.
-    for( auto animation : pConflictList )
-         animation->Stop( stopType );
+    // Get any conflicting animation playing.
+    CAnimation * pConflict = GetConflictingAnimation( pAnimation );
 
-    // Add this animation to the queue.
-    _pAnimationQueue.push_back( pAnimation );
+    // If the end animation is null, it means we ignore this play call altogether if
+    // a conflicting animation is playing. 
+    if( stopType == EST_NULL && pConflict )
+        return;
+
+    // The pause stop type is only acknowledged if the current conflicting animation is
+    // the one we're trying to play.
+    if( stopType == EST_PAUSE && pAnimation == pConflict )
+        // If the animation is playing but currently paused, unpause it.
+        if( pConflict->GetStopType() == EST_PAUSE )
+            pConflict->Stop( EST_NULL );
+        else
+            pConflict->Stop( EST_PAUSE );
+    else
+    {
+        // Stop the conflicting animation according to the stop type.
+        if( pConflict )
+            pConflict->Stop( stopType );
+
+        // Add this animation to the queue.
+        _pAnimationQueue.emplace( name, pAnimation );
+    }
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Stop an animation.
+/// </summary>
+/// <param name="name"> Name of the animation to stop. </param>
+/// <param name="stopType"> How to end the animation. </param>
+/// *************************************************************************
+void CAnimationComponent::Stop( const std::string & name, NDefs::EStopType stopType )
+{
+    CAnimation * pAnimation = NGeneralFuncs::GetMapValue( name, _pPlayingList );
+
+    // If the animation isn't playing, ignore the stop.
+    if( !pAnimation )
+        return;
+
+    pAnimation->Stop( stopType );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Whether or not an animation is playing.
+/// </summary>
+/// <param name="name"> Name of the animation to stop. </param>
+/// <param name="includePaused"> If paused animations should be consider "playing". </param>
+/// *************************************************************************
+bool CAnimationComponent::IsPlaying( const std::string & name, bool includePaused )
+{
+    // If no name was passed, check if any animations are playing.
+    if( name == "" )
+    {
+        if( includePaused )
+            return _pPlayingList.size() > 0;
+
+        for( auto animIter : _pPlayingList )
+            if( animIter.second->GetEndType() != EST_PAUSE )
+                return true;
+    }
+    
+    CAnimation * pAnimation = NGeneralFuncs::GetMapValue( name, _pPlayingList );
+    if( pAnimation )
+    {
+        if( includePaused && pAnimation->GetEndType() != EST_PAUSE )
+            return false;
+
+        return true;
+    }
+
+    return false;
 }
 
 
@@ -119,14 +191,11 @@ void CAnimationComponent::Update()
     auto queueIter = _pAnimationQueue.begin();
     while( queueIter != _pAnimationQueue.end() )
     {
-        // Get a list of all conflicting animations that are playing.
-        vector<CAnimation *> pConflictList;
-        GetConflictingAnimations( (*queueIter), pConflictList );
-
-        if( pConflictList.size() == 0 )
+        // If there's no conflicting animation playing, play this animation.
+        if( !GetConflictingAnimation( queueIter->second ) )
         {
-            (*queueIter)->Play();
-            _pPlayingList.push_back( (*queueIter) );
+            queueIter->second->Play();
+            _pPlayingList.emplace( queueIter->first, queueIter->second );
             queueIter = _pAnimationQueue.erase( queueIter );
         }
         else
@@ -134,14 +203,14 @@ void CAnimationComponent::Update()
     }
 
     // Update the playing animations.
-    for( auto pAnimation : _pPlayingList )
-        pAnimation->Update();
+    for( auto animIter : _pPlayingList )
+        animIter.second->Update();
 
     // Remove animations from the playing list if they've finished playing.
     auto playingIter = _pPlayingList.begin();
     while( playingIter != _pPlayingList.end() )
     {
-        if( (*playingIter)->IsPlaying() )
+        if( playingIter->second->IsPlaying() )
             ++playingIter;
         else
             playingIter = _pPlayingList.erase( playingIter );
@@ -151,32 +220,34 @@ void CAnimationComponent::Update()
 
 /// *************************************************************************
 /// <summary>
-/// Get any animations currently playing that conflict with the passed in animation.
+/// Get any animation currently playing that conflicts with the passed in animation.
 /// </summary>
 /// <param name="pAnimation"> Animation to compare against. </param>
 /// <param name="pConflictList"> List to fill with conflicting animations. </param>
 /// *************************************************************************
-void CAnimationComponent::GetConflictingAnimations( const string & name, vector<CAnimation *> & pConflictList )
+CAnimation * CAnimationComponent::GetConflictingAnimation( const string & name )
 {
     CAnimation * pAnimation = NGeneralFuncs::GetMapValue( name, _pAnimationList );
-    GetConflictingAnimations( pAnimation, pConflictList );
+
+    if( !pAnimation )
+        return nullptr;
+
+    return GetConflictingAnimation( pAnimation );
 }
 
 
 /// *************************************************************************
 /// <summary>
-/// Get any animations currently playing that conflict with the passed in animation.
+/// Get any animation currently playing that conflicts with the passed in animation.
 /// </summary>
 /// <param name="name"> Name of the animation to compare against. </param>
 /// <param name="pConflictList"> List to fill with conflicting animations. </param>
 /// *************************************************************************
-void CAnimationComponent::GetConflictingAnimations( const CAnimation * pAnimation, vector<CAnimation *> & pConflictList )
+CAnimation * CAnimationComponent::GetConflictingAnimation( const CAnimation * pAnimation )
 {
-    // Get a list of all conflicting animations that are playing.
-    for( auto & pPlaying : _pPlayingList )
-    {
-        if( pPlaying->IsPlaying() &&
-            pAnimation->GetData()->GetObjectFields().ContainsOne( pPlaying->GetData()->GetObjectFields() ) )
-            pConflictList.push_back( pPlaying );
-    }
+    for( auto playingIter : _pPlayingList )
+        if( pAnimation->GetConflictIndex() == playingIter.second->GetConflictIndex() )
+            return playingIter.second;
+
+    return nullptr;
 }

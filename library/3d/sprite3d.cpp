@@ -28,7 +28,7 @@ CSprite3D::CSprite3D()
 /// </summary>
 /// <param name="pData"> Sprite data used to create the sprite. </param> 
 /// *************************************************************************
-CSprite3D::CSprite3D( const CSpriteData3D * pData )
+CSprite3D::CSprite3D( CSpriteData3D * pData )
 {
     _type = EOT_SPRITE_3D;
 
@@ -53,7 +53,7 @@ CSprite3D::~CSprite3D()
 /// </summary>
 /// <param name="pData"> Sprite data used to create the sprite. </param> 
 /// *************************************************************************
-void CSprite3D::Init( const CSpriteData3D * pData )
+void CSprite3D::Init( CSpriteData3D * pData )
 {
     // Leave if there's no data to initialize with.
     if( !pData )
@@ -138,8 +138,12 @@ void CSprite3D::Init( const CSpriteData3D * pData )
                 agk::SetObjectReceiveShadow( _id, pVisual->WillReceiveShadow() );
             }
 
+            // If the data does not have a default size, set it to whatever the created sprite's size is.
+            if( !pData->GetVisualData()->IsSizeSet() )
+                pData->SetSize( GetWorldSize() );
+
             // Get the size of the sprite.
-            SetSize( GetWorldSize() );
+            SetSize( pData->GetSize() );
 
             // Set the sprite's color.
             SetColor( pVisual->GetColor() );
@@ -190,8 +194,15 @@ void CSprite3D::ApplyPosition()
 {
     if( _pParent )
     {
-        CVector3 newPos = *_pParent->GetMatrix() * _position;
-        agk::SetObjectPosition( _id, newPos.x, newPos.y, newPos.z );
+        if( _modified.Contains( ETT_IGNORE ) )
+        {
+            _position = !*_pParent->GetMatrix() * _position;
+        }
+        else
+        {
+            CVector3 newPos = *_pParent->GetMatrix() * _position;
+            agk::SetObjectPosition( _id, newPos.x, newPos.y, newPos.z );
+        }
     }
     else
         agk::SetObjectPosition( _id, _position.x, _position.y, _position.z );
@@ -209,30 +220,18 @@ void CSprite3D::ApplyRotation()
 
     if( _pParent )
     {
-        CVector3 newRot = _pParent->GetWorldRot() + _rotation;
-        agk::SetObjectRotation( _id, newRot.x, newRot.y, newRot.z );
+        if( _modified.Contains( ETT_IGNORE ) )
+        {
+            _rotation -= _pParent->GetWorldRot();
+        }
+        else
+        {
+            CVector3 newRot = _pParent->GetWorldRot() + _rotation;
+            agk::SetObjectRotation( _id, newRot.x, newRot.y, newRot.z );
+        }
     }
     else
         agk::SetObjectRotation( _id, _rotation.x, _rotation.y, _rotation.z );
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Update AGK with the sprite's current size.
-/// </summary>
-/// *************************************************************************
-void CSprite3D::ApplySize()
-{
-    _scale = _size / _pData->GetSize();
-
-    if( _pParent )
-    {
-        CVector3 newScale = _pParent->GetWorldScale() * _scale;
-        agk::SetObjectScale( _id, newScale.w, newScale.h, newScale.d );
-    }
-    else
-        agk::SetObjectScale( _id, _scale.w, _scale.h, _scale.d );
 }
 
 
@@ -243,12 +242,17 @@ void CSprite3D::ApplySize()
 /// *************************************************************************
 void CSprite3D::ApplyScale()
 {
-    _size = _pData->GetSize() * _scale;
-
     if( _pParent )
     {
-        CVector3 newScale = _pParent->GetWorldScale() * _scale;
-        agk::SetObjectScale( _id, newScale.w, newScale.h, newScale.d );
+        if( _modified.Contains( ETT_IGNORE ) )
+        {
+            _scale *= CVector3( 1 ) / _pParent->GetWorldScale();
+        }
+        else
+        {
+            CVector3 newScale = _pParent->GetWorldScale() * _scale;
+            agk::SetObjectScale( _id, newScale.w, newScale.h, newScale.d );
+        }
     }
     else
         agk::SetObjectScale( _id, _scale.w, _scale.h, _scale.d );
@@ -302,6 +306,28 @@ CVector3 CSprite3D::GetWorldSize() const
     return CVector3( abs( agk::GetObjectSizeMaxX( _id ) - agk::GetObjectSizeMinX( _id ) ),
                      abs( agk::GetObjectSizeMaxY( _id ) - agk::GetObjectSizeMinY( _id ) ),
                      abs( agk::GetObjectSizeMaxZ( _id ) - agk::GetObjectSizeMinZ( _id ) ) );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Update the sprite's size using the scale.
+/// </summary>
+/// *************************************************************************
+void CSprite3D::UpdateSize()
+{
+    _size = _pData->GetSize() * _scale;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Update the sprite's scale using the size.
+/// </summary>
+/// *************************************************************************
+void CSprite3D::UpdateScale()
+{
+    _scale = _size / _pData->GetSize();
 }
 
 

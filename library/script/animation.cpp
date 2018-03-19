@@ -33,9 +33,9 @@ CAnimation::CAnimation()
 /// <param name="pData"> Data to initialize the animation. </param> 
 /// <param name="pObject"> Object to apply the animation to. </param> 
 /// *************************************************************************
-CAnimation::CAnimation( const CAnimationData * pData, iObject * pObject )
+CAnimation::CAnimation( const CAnimationData * pData, iObject * pObject, uint conflictIndex )
 {
-    Init( pData, pObject );
+    Init( pData, pObject, conflictIndex );
 }
 
 
@@ -57,7 +57,7 @@ CAnimation::~CAnimation()
 /// <param name="pData"> Data to initialize the animation. </param> 
 /// <param name="pObject"> Object to apply the animation to. </param> 
 /// *************************************************************************
-void CAnimation::Init( const CAnimationData * pData, iObject * pObject )
+void CAnimation::Init( const CAnimationData * pData, iObject * pObject, uint conflictIndex )
 {
     if( !pData || !pObject )
         return;
@@ -66,6 +66,7 @@ void CAnimation::Init( const CAnimationData * pData, iObject * pObject )
 
     _pData = pData;
     _pObject = pObject;
+    _conflictIndex = conflictIndex;
 }
 
 
@@ -81,6 +82,7 @@ void CAnimation::Clear()
     _pData = nullptr;
     _pObject = nullptr;
     _stopType = EST_NULL;
+    _conflictIndex = 0;
     _pContextList.clear();
 }
 
@@ -400,6 +402,17 @@ const CAnimationData * CAnimation::GetData() const
 
 /// *************************************************************************
 /// <summary>
+/// Get the index of whichever conflict list this animation belongs to.
+/// </summary>
+/// *************************************************************************
+uint CAnimation::GetConflictIndex() const
+{
+    return _conflictIndex;
+}
+
+
+/// *************************************************************************
+/// <summary>
 /// Spawn another context to run concurrently.
 /// </summary>
 /// <param name="function"> Script function to start. </param>
@@ -417,10 +430,13 @@ void CAnimation::Spawn( const std::string & function )
 /// *************************************************************************
 void CAnimation::Update()
 {
+    // If the animation is paused, don't do anything.
+    if( _stopType == EST_PAUSE )
+        return;
+
     vector<asIScriptContext *> pEraseList;
 
-    //auto iter = _pContextList.begin();
-    //while( iter != _pContextList.end() )
+    // Use an indexed loop here just in case a script spawns another context.
     for( uint i = 0; i < _pContextList.size(); i++ )
     {
         auto pContext = _pContextList[i];
@@ -444,11 +460,9 @@ void CAnimation::Update()
         }
     }
 
+    // 
     for( auto pContext : pEraseList )
         _pContextList.erase( std::find(_pContextList.begin(), _pContextList.end(), pContext) );
-
-    //auto iter = _pContextList.begin();
-    //while( iter != _pContextList.end() )
 }
 
 

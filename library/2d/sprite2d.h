@@ -28,12 +28,12 @@ class CSprite2D : public iObject
 public:
 
     CSprite2D();
-    CSprite2D( const CSpriteData2D * pData );
+    CSprite2D( CSpriteData2D * pData );
 
     ~CSprite2D();
 
     // Initialize the sprite using its sprite data.
-    virtual void Init( const CSpriteData2D * pData );
+    virtual void Init( CSpriteData2D * pData );
 
     // Clears all of the sprite's data that belong to it.
     virtual void Clear();
@@ -48,6 +48,10 @@ public:
     virtual CVector3 GetWorldPos() const;
     virtual CVector3 GetWorldRot() const;
     virtual CVector3 GetWorldSize() const;
+
+    // Update the size or scale, depending on which has been changed.
+    virtual void UpdateSize();
+    virtual void UpdateScale();
 
     // Access functions for the sprite's visibility.
     virtual void SetVisible( bool visible );
@@ -65,7 +69,6 @@ protected:
     // Apply the current transformations and color to AGK.
     virtual void ApplyPosition();
     virtual void ApplyRotation();
-    virtual void ApplySize();
     virtual void ApplyScale();
     virtual void ApplyColor();
 

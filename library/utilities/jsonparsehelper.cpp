@@ -438,6 +438,34 @@ namespace NParseHelper
 
     /// *************************************************************************
     /// <summary> 
+    /// Parse animation list tags.
+    /// </summary>
+    /// <param name="iter"> JSON node to parse. </param>
+    /// <param name="tag"> Tag to find. </param>
+    /// <param name="fieldType"> Value to set. </param>
+    /// <returns> If the tag exists. </returns>
+    /// *************************************************************************
+    bool GetAnimationList( json::const_iterator iter, const string & tag, vector<vector<string>> & animationList )
+    {
+        auto listIter = iter->find( tag );
+        if( listIter != iter->end() )
+        {
+            for( auto conflictIter = listIter->begin(); conflictIter != listIter->end(); ++conflictIter )
+            {
+                animationList.push_back( vector<string>() );
+                for( auto animIter = conflictIter->begin(); animIter != conflictIter->end(); ++animIter )
+                    animationList.back().push_back( animIter->get<string>() );
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /// *************************************************************************
+    /// <summary> 
     /// Parse control type tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>

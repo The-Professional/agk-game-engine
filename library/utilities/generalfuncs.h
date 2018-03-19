@@ -44,6 +44,21 @@ namespace NGeneralFuncs
 
         return iter->second;
     }
+
+    /// <summary>
+    /// Helper function to get the value of a map and error when it doesn't exist.
+    /// </summary>
+    /// <param name="k"> The key to the value. </param>
+    /// <param name="obj"> The map object to search. </param>
+    template <class key, class value *>
+    inline value * GetMapValue( const key & k, std::map<const key, value *> & obj )
+    {
+        auto iter = obj.find( k );
+        if( iter == obj.end() )
+            return nullptr;
+
+        return iter->second;
+    }
 }
 
 #endif  // __general_funcs_h__

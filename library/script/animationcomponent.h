@@ -24,11 +24,11 @@ class CAnimationComponent
 public:
 
     CAnimationComponent();
-    CAnimationComponent( iObject * pObject, const std::vector<std::string> & animationList );
+    CAnimationComponent( iObject * pObject, const std::vector<std::vector<std::string>> & animationList );
     ~CAnimationComponent();
 
     // Initialize the animation component.
-    void Init( iObject * pObject, const std::vector<std::string> & animationList );
+    void Init( iObject * pObject, const std::vector<std::vector<std::string>> & animationList );
 
     // Clear the animation component.
     void Clear();
@@ -36,16 +36,22 @@ public:
     // Play an animation.
     void Play( const std::string & name, NDefs::EStopType stopType = NDefs::EST_NULL );
 
+    // Stop an animation.
+    void Stop( const std::string & name, NDefs::EStopType stopType = NDefs::EST_STOP );
+
+    // Whether or not an animation is playing.
+    bool IsPlaying( const std::string & name = "", bool includePaused = false );
+
     // Update the animation component.
     void Update();
 
     // Get any animations currently playing that conflict with the passed in animation.
-    void GetConflictingAnimations( const std::string & name, std::vector<CAnimation *> & pConflictList );
+    CAnimation * GetConflictingAnimation( const std::string & name );
 
 private:
 
     // Get any animations currently playing that conflict with the passed in animation.
-    void GetConflictingAnimations( const CAnimation * pAnimation, std::vector<CAnimation *> & pConflictList );
+    CAnimation * GetConflictingAnimation( const CAnimation * pAnimation );
 
 private:
 
@@ -53,11 +59,10 @@ private:
     std::map<const std::string, CAnimation *> _pAnimationList;
 
     // The animations waiting to be played.
-    std::vector<CAnimation *> _pAnimationQueue;
+    std::map<const std::string, CAnimation *> _pAnimationQueue;
 
     // List of animations currently playing.
-    std::vector<CAnimation *> _pPlayingList;
-
+    std::map<const std::string, CAnimation *> _pPlayingList;
 };
 
 #endif  // __animation_component_h__

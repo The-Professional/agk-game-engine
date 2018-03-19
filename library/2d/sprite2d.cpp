@@ -26,7 +26,7 @@ CSprite2D::CSprite2D()
 /// </summary>
 /// <param name="pData"> Sprite data used to create the sprite. </param> 
 /// *************************************************************************
-CSprite2D::CSprite2D( const CSpriteData2D * pData )
+CSprite2D::CSprite2D( CSpriteData2D * pData )
 {
     _type = NDefs::EOT_SPRITE_2D;
 
@@ -51,7 +51,7 @@ CSprite2D::~CSprite2D()
 /// </summary>
 /// <param name="pData"> Sprite data used to create the sprite. </param> 
 /// *************************************************************************
-void CSprite2D::Init( const CSpriteData2D * pData )
+void CSprite2D::Init( CSpriteData2D * pData )
 {
     // Leave if there's no data to initialize with.
     if( !pData )
@@ -77,8 +77,11 @@ void CSprite2D::Init( const CSpriteData2D * pData )
         }
         else
         {
-            _size.w = agk::GetSpriteWidth( _id );
-            _size.h = agk::GetSpriteHeight( _id );
+            // If the data does not have a default size, set it to whatever the created sprite's size is.
+            if( !pData->GetVisualData()->IsSizeSet() )
+                pData->SetSize( GetWorldSize() );
+
+            SetSize( pData->GetSize() );
         }
 
         // Set the sprite color.
@@ -156,32 +159,11 @@ void CSprite2D::ApplyRotation()
 
 /// *************************************************************************
 /// <summary>
-/// Update AGK with the sprite's current size.
-/// </summary>
-/// *************************************************************************
-void CSprite2D::ApplySize()
-{
-    _scale = _size / _pData->GetSize();
-
-    if( _pParent )
-    {
-        CVector2 newScale = _pParent->GetWorldScale() * _scale;
-        agk::SetSpriteScale( _id, newScale.w, newScale.h );
-    }
-    else
-        agk::SetSpriteScale( _id, _scale.w, _scale.h );
-}
-
-
-/// *************************************************************************
-/// <summary>
 /// Update AGK with the sprite's current scale.
 /// </summary>
 /// *************************************************************************
 void CSprite2D::ApplyScale()
 {
-    _size = _pData->GetSize() * _scale;
-
     if( _pParent )
     {
         CVector2 newScale = _pParent->GetWorldScale() * _scale;
@@ -236,6 +218,28 @@ CVector3 CSprite2D::GetWorldSize() const
 {
     return CVector3( agk::GetSpriteWidth( _id ), 
                      agk::GetSpriteHeight( _id ) );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Update the sprite's size using the scale.
+/// </summary>
+/// *************************************************************************
+void CSprite2D::UpdateSize()
+{
+    _size = _pData->GetSize() * _scale;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Update the sprite's scale using the size.
+/// </summary>
+/// *************************************************************************
+void CSprite2D::UpdateScale()
+{
+    _scale = _size / _pData->GetSize();
 }
 
 

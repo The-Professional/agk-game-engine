@@ -67,7 +67,7 @@ CMatrix4::CMatrix4( float _m11, float _m12, float _m13, float _m14,
                     float _m31, float _m32, float _m33, float _m34,
                     float _m41, float _m42, float _m43, float _m44 )
 {
-    m11 = _m11; m12 = _m12; m13 = _m13; m13 = _m14;
+    m11 = _m11; m12 = _m12; m13 = _m13; m14 = _m14;
     m21 = _m21; m22 = _m22; m23 = _m23; m24 = _m24;
     m31 = _m31; m32 = _m32; m33 = _m33; m34 = _m34;
     m41 = _m41; m42 = _m42; m43 = _m43; m44 = _m44;
@@ -465,10 +465,15 @@ void CMatrix4::Rotate( float value )
 /// *************************************************************************
 void CMatrix4::Scale( const CVector3 & value )
 {
-    CMatrix4 n;
-    n.SetScale( value );
-    
-    *this *= n;
+    m11 *= value.x;
+    m12 *= value.y;
+    m13 *= value.z;
+    m21 *= value.x;
+    m22 *= value.y;
+    m23 *= value.z;
+    m31 *= value.x;
+    m32 *= value.y;
+    m33 *= value.z;
 }
 
 /// <summary> 
@@ -476,10 +481,12 @@ void CMatrix4::Scale( const CVector3 & value )
 /// </summary>
 void CMatrix4::Scale( const CVector2 & value )
 {
-    CMatrix4 n;
-    n.SetScale( value );
-
-    *this *= n;
+    m11 *= value.x;
+    m12 *= value.y;
+    m21 *= value.x;
+    m22 *= value.y;
+    m31 *= value.x;
+    m32 *= value.y;
 }
 
 /// <summary> 
@@ -487,8 +494,13 @@ void CMatrix4::Scale( const CVector2 & value )
 /// </summary>
 void CMatrix4::Scale( float value )
 {
-    CMatrix4 n;
-    n.SetScale( value );
-
-    *this *= n;
+    m11 *= value;
+    m12 *= value;
+    m13 *= value;
+    m21 *= value;
+    m22 *= value;
+    m23 *= value;
+    m31 *= value;
+    m32 *= value;
+    m33 *= value;
 }

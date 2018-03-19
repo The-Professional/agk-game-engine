@@ -47,6 +47,10 @@ public:
     virtual CVector3 GetWorldRot() const;
     virtual CVector3 GetWorldSize() const;
 
+    // Update the size or scale, depending on which has been changed.
+    virtual void UpdateSize();
+    virtual void UpdateScale();
+
     // Access functions for the sprite's visibility.
     virtual void SetVisible( bool visible );
     virtual bool IsVisible() const;
@@ -91,7 +95,6 @@ protected:
     // Apply the current transformations and color to AGK.
     virtual void ApplyPosition();
     virtual void ApplyRotation();
-    virtual void ApplySize();
     virtual void ApplyScale();
     virtual void ApplyColor();
 

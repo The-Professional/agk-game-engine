@@ -6,6 +6,7 @@
 #include <common\vector2.h>
 #include <utilities\mathfunc.h>
 
+using namespace std;
 using namespace NDefs;
 
 /// *************************************************************************
@@ -190,6 +191,20 @@ void CControl::SetState( EControlState state )
 EControlState CControl::GetState() const
 {
     return _state;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Play an animation.
+/// </summary>
+/// *************************************************************************
+void CControl::Play( const string & name, EStopType stopType )
+{
+    iObject::Play( name, stopType );
+
+    for( auto pSprite : _pSpriteList )
+        pSprite->Play( name, stopType );
 }
 
 

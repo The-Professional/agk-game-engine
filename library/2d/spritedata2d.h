@@ -32,7 +32,7 @@ public:
     const CSpriteVisualData2D * GetVisualData() const;
     const std::string & GetName() const;
     const CBitmask<uint> & GetAlignment() const;
-    const std::vector<std::string> & GetAnimationList() const;
+    const std::vector<std::vector<std::string>> & GetAnimationList() const;
 
     // Access functions for the default size of the sprite.
     void SetSize( const CVector2 & size );
@@ -50,7 +50,7 @@ private:
     CBitmask<uint> _alignment = NDefs::EA_CENTER;
 
     // The list of animations this sprite can perform.
-    std::vector<std::string> _animationList;
+    std::vector<std::vector<std::string>> _animationList;
 };
 
 #endif  // __sprite_data_2d_h__

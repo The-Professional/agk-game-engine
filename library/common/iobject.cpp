@@ -192,7 +192,7 @@ void iObject::IncPos( const CVector3 & pos )
 /// Get the object's position. 
 /// </summary>
 /// *************************************************************************
-const CVector3 & iObject::GetPos()
+const CVector3 & iObject::GetPos() const
 {
     return _position;
 }
@@ -281,7 +281,7 @@ void iObject::IncRot( float z )
 /// Get the object's rotation. 
 /// </summary>
 /// *************************************************************************
-const CVector3 & iObject::GetRot()
+const CVector3 & iObject::GetRot() const
 {
     return _rotation;
 }
@@ -298,8 +298,8 @@ void iObject::SetSize( float w, float h, float d )
     _size.h = h;
     _size.d = d;
 
-    _modified.Remove( ETT_SCALE );
-    _modified.Add( ETT_SIZE );
+    UpdateScale();
+    _modified.Add( ETT_SCALE );
 }
 
 // Set the object's size. 
@@ -308,8 +308,8 @@ void iObject::SetSize( float w, float h )
     _size.w = w;
     _size.h = h;
 
-    _modified.Remove( ETT_SCALE );
-    _modified.Add( ETT_SIZE );
+    UpdateScale();
+    _modified.Add( ETT_SCALE );
 }
 
 // Set the object's size. 
@@ -317,8 +317,8 @@ void iObject::SetSize( float whd )
 {
     _size = whd;
 
-    _modified.Remove( ETT_SCALE );
-    _modified.Add( ETT_SIZE );
+    UpdateScale();
+    _modified.Add( ETT_SCALE );
 }
 
 // Set the object's size. 
@@ -326,8 +326,8 @@ void iObject::SetSize( const CVector3 & size )
 {
     _size = size;
 
-    _modified.Remove( ETT_SCALE );
-    _modified.Add( ETT_SIZE );
+    UpdateScale();
+    _modified.Add( ETT_SCALE );
 }
 
 // Set the object's size. 
@@ -335,8 +335,8 @@ void iObject::SetSize( const CVector2 & size )
 {
     _size = size;
 
-    _modified.Remove( ETT_SCALE );
-    _modified.Add( ETT_SIZE );
+    UpdateScale();
+    _modified.Add( ETT_SCALE );
 }
 
 // Set the object's width. 
@@ -351,8 +351,8 @@ void iObject::SetSizeW( float w, bool uniform )
 
     _size.w = w;
 
-    _modified.Remove( ETT_SCALE );
-    _modified.Add( ETT_SIZE );
+    UpdateScale();
+    _modified.Add( ETT_SCALE );
 }
 
 // Set the object's height. 
@@ -367,8 +367,8 @@ void iObject::SetSizeH( float h, bool uniform )
 
     _size.h = h;
 
-    _modified.Remove( ETT_SCALE );
-    _modified.Add( ETT_SIZE );
+    UpdateScale();
+    _modified.Add( ETT_SCALE );
 }
 
 // Set the object's depth. 
@@ -383,8 +383,8 @@ void iObject::SetSizeD( float d, bool uniform )
 
     _size.d = d;
 
-    _modified.Remove( ETT_SCALE );
-    _modified.Add( ETT_SIZE );
+    UpdateScale();
+    _modified.Add( ETT_SCALE );
 }
 
 
@@ -399,8 +399,8 @@ void iObject::IncSize( float w, float h, float d )
     _size.h += h;
     _size.d += d;
 
-    _modified.Remove( ETT_SCALE );
-    _modified.Add( ETT_SIZE );
+    UpdateScale();
+    _modified.Add( ETT_SCALE );
 }
 
 // Increment the object's size.
@@ -409,8 +409,8 @@ void iObject::IncSize( float w, float h )
     _size.w += w;
     _size.h += h;
 
-    _modified.Remove( ETT_SCALE );
-    _modified.Add( ETT_SIZE );
+    UpdateScale();
+    _modified.Add( ETT_SCALE );
 }
 
 // Increment the object's size.
@@ -418,8 +418,8 @@ void iObject::IncSize( float whd )
 {
     _size += whd;
 
-    _modified.Remove( ETT_SCALE );
-    _modified.Add( ETT_SIZE );
+    UpdateScale();
+    _modified.Add( ETT_SCALE );
 }
 
 // Increment the object's size.
@@ -427,8 +427,8 @@ void iObject::IncSize( const CVector3 & size )
 {
     _size += size;
 
-    _modified.Remove( ETT_SCALE );
-    _modified.Add( ETT_SIZE );
+    UpdateScale();
+    _modified.Add( ETT_SCALE );
 }
 
 // Increment the object's size.
@@ -436,8 +436,8 @@ void iObject::IncSize( const CVector2 & size )
 {
     _size += size;
 
-    _modified.Remove( ETT_SCALE );
-    _modified.Add( ETT_SIZE );
+    UpdateScale();
+    _modified.Add( ETT_SCALE );
 }
 
 
@@ -446,7 +446,7 @@ void iObject::IncSize( const CVector2 & size )
 /// Get the object's size. 
 /// </summary>
 /// *************************************************************************
-const CVector3 & iObject::GetSize()
+const CVector3 & iObject::GetSize() const
 {
     return _size;
 }
@@ -463,7 +463,7 @@ void iObject::SetScale( float x, float y, float z )
     _scale.y = y;
     _scale.z = z;
 
-    _modified.Remove( ETT_SIZE );
+    UpdateSize();
     _modified.Add( ETT_SCALE );
 }
 
@@ -473,7 +473,7 @@ void iObject::SetScale( float x, float y )
     _scale.x = x;
     _scale.y = y;
 
-    _modified.Remove( ETT_SIZE );
+    UpdateSize();
     _modified.Add( ETT_SCALE );
 }
 
@@ -482,7 +482,7 @@ void iObject::SetScale( float xyz )
 {
     _scale = xyz;
 
-    _modified.Remove( ETT_SIZE );
+    UpdateSize();
     _modified.Add( ETT_SCALE );
 }
 
@@ -491,7 +491,7 @@ void iObject::SetScale( const CVector2 & scale )
 {
     _position = scale;
 
-    _modified.Remove( ETT_SIZE );
+    UpdateSize();
     _modified.Add( ETT_SCALE );
 }
 
@@ -500,7 +500,7 @@ void iObject::SetScale( const CVector3 & scale )
 {
     _scale = scale;
 
-    _modified.Remove( ETT_SIZE );
+    UpdateSize();
     _modified.Add( ETT_SCALE );
 }
 
@@ -509,7 +509,7 @@ void iObject::SetScaleX( float x )
 {
     _scale.x = x;
 
-    _modified.Remove( ETT_SIZE );
+    UpdateSize();
     _modified.Add( ETT_SCALE );
 }
 
@@ -518,7 +518,7 @@ void iObject::SetScaleY( float y )
 {
     _scale.y = y;
 
-    _modified.Remove( ETT_SIZE );
+    UpdateSize();
     _modified.Add( ETT_SCALE );
 }
 
@@ -527,7 +527,7 @@ void iObject::SetScaleZ( float z )
 {
     _scale.z = z;
 
-    _modified.Remove( ETT_SIZE );
+    UpdateSize();
     _modified.Add( ETT_SCALE );
 }
 
@@ -543,7 +543,7 @@ void iObject::IncScale( float x, float y, float z )
     _scale.y += y;
     _scale.z += z;
 
-    _modified.Remove( ETT_SIZE );
+    UpdateSize();
     _modified.Add( ETT_SCALE );
 }
 
@@ -553,7 +553,7 @@ void iObject::IncScale( float x, float y )
     _scale.x += x;
     _scale.y += y;
 
-    _modified.Remove( ETT_SIZE );
+    UpdateSize();
     _modified.Add( ETT_SCALE );
 }
 
@@ -562,7 +562,7 @@ void iObject::IncScale( float xyz )
 {
     _scale += xyz;
 
-    _modified.Remove( ETT_SIZE );
+    UpdateSize();
     _modified.Add( ETT_SCALE );
 }
 
@@ -571,7 +571,7 @@ void iObject::IncScale( const CVector2 & scale )
 {
     _scale += scale;
 
-    _modified.Remove( ETT_SIZE );
+    UpdateSize();
     _modified.Add( ETT_SCALE );
 }
 
@@ -580,7 +580,7 @@ void iObject::IncScale( const CVector3 & scale )
 {
     _scale += scale;
 
-    _modified.Remove( ETT_SIZE );
+    UpdateSize();
     _modified.Add( ETT_SCALE );
 }
 
@@ -590,7 +590,7 @@ void iObject::IncScale( const CVector3 & scale )
 /// Get the object's scale. 
 /// </summary>
 /// *************************************************************************
-const CVector3 & iObject::GetScale()
+const CVector3 & iObject::GetScale() const
 {
     return _scale;
 }
@@ -715,7 +715,7 @@ void iObject::IncColor( const CColor & color )
 /// Get the object's color. 
 /// </summary>
 /// *************************************************************************
-const CColor & iObject::GetColor()
+const CColor & iObject::GetColor() const
 {
     return _color;
 }
@@ -727,11 +727,15 @@ const CColor & iObject::GetColor()
 /// </summary>
 /// <param name="pParent"> The parent to set to. </param>
 /// *************************************************************************
-void iObject::SetParent( iObject * pParent )
+void iObject::SetParent( iObject * pParent, bool ignore )
 {
     _pParent = pParent;
     _pParent->CreateMatrix();
-    _modified = ETT_POSITION | ETT_ROTATION | ETT_SCALE;
+
+    if( ignore )
+        _modified = ETT_POSITION | ETT_ROTATION | ETT_SCALE | ETT_IGNORE;
+    else
+        _modified = ETT_POSITION | ETT_ROTATION | ETT_SCALE;
 }
 
 
@@ -815,62 +819,59 @@ void iObject::Update()
 /// <summary>
 /// Function to call the functions that update AGK. 
 /// </summary>
-/// <param name="updateMatrix"> Update the object's transformation matrix. </param>
 /// *************************************************************************
-void iObject::Transform( bool updateMatrix )
+void iObject::Transform()
 {
     // Make sure all parents are updated before updating this object.
     if( _pParent )
     {
-        _pParent->Transform( true );
+        _pParent->Transform();
 
         if( _pParent->GetModified().Contains( ETT_APPLIED ) )
         {
+            // If the parent was transformed by anything, the position has changed.
             if( _pParent->GetModified().ContainsOne( ETT_POSITION | ETT_ROTATION | ETT_SIZE | ETT_SCALE ) )
                 _modified.Add( ETT_POSITION );
 
             if( _pParent->GetModified().Contains( ETT_ROTATION ) )
                 _modified.Add( ETT_ROTATION );
 
-            if( _pParent->GetModified().Contains( ETT_SIZE ) )
-                _modified.Add( ETT_SIZE );
-
-            if( _pParent->GetModified().Contains( ETT_SCALE ) )
+            if( _pParent->GetModified().ContainsOne( ETT_SIZE | ETT_SCALE ) )
                 _modified.Add( ETT_SCALE );
         }
     }
 
     // Apply changes if there were changes and they haven't already been applied.
-    if( _modified > ETT_NULL && !_modified.Contains( ETT_APPLIED ) )
+    if( _modified.ContainsOne( ETT_POSITION | ETT_ROTATION | ETT_SCALE | ETT_COLOR ) )
     {
-        if( _modified.Contains( ETT_POSITION ) )
-            ApplyPosition();
+        if( !_modified.Contains( ETT_APPLIED ) )
+        {
+            if( _modified.Contains( ETT_POSITION ) )
+                ApplyPosition();
 
-        if( _modified.Contains( ETT_ROTATION ) )
-            ApplyRotation();
+            if( _modified.Contains( ETT_ROTATION ) )
+                ApplyRotation();
 
-        if( _modified.Contains( ETT_SIZE ) )
-            ApplySize();
+            if( _modified.Contains( ETT_SCALE ) )
+                ApplyScale();
 
-        if( _modified.Contains( ETT_SCALE ) )
-            ApplyScale();
+            if( _modified.Contains( ETT_COLOR ) )
+                ApplyColor();
+        }
 
-        if( _modified.Contains( ETT_COLOR ) )
-            ApplyColor();
-    }
+        // Update the object's matrix, if it has one.
+        if( _pMatrix && !_modified.Contains( ETT_MATRIX ) )
+        {
+            _pMatrix->Clear();
+            _pMatrix->SetRotation( _rotation );
+            _pMatrix->Scale( _scale );
+            _pMatrix->SetTranslation( _position );
 
-    // Update the object's matrix or create one if it doesn't have one.
-    if( _pMatrix && !_modified.Contains( ETT_MATRIX ) && _modified.ContainsOne( ETT_POSITION | ETT_ROTATION | ETT_SIZE | ETT_SCALE ) )
-    {
-        _pMatrix->Clear();
-        _pMatrix->SetRotation( _rotation );
-        _pMatrix->Scale( _scale );
-        _pMatrix->SetTranslation( _position );
+            if( _pParent )
+                *_pMatrix *= *_pParent->GetMatrix();
 
-        if( _pParent )
-            *_pMatrix *= *_pParent->GetMatrix();
-
-        _modified.Add( ETT_MATRIX );
+            _modified.Add( ETT_MATRIX );
+        }
     }
 
     _modified.Add( ETT_APPLIED );

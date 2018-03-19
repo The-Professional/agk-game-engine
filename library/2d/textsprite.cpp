@@ -160,29 +160,11 @@ void CTextSprite::ApplyRotation()
 
 /// *************************************************************************
 /// <summary>
-/// Update AGK with the sprite's current size.
-/// </summary>
-/// *************************************************************************
-void CTextSprite::ApplySize()
-{
-    _scale.x = _size.x / _pData->GetSize();
-
-    if( _pParent )
-        agk::SetTextSize( _id, _size.x * _pParent->GetWorldScale().x );
-    else
-        agk::SetTextSize( _id, _size.x );
-}
-
-
-/// *************************************************************************
-/// <summary>
 /// Update AGK with the sprite's current scale.
 /// </summary>
 /// *************************************************************************
 void CTextSprite::ApplyScale()
 {
-    _size.x = _pData->GetSize() * _scale.x;
-
     if( _pParent )
         agk::SetTextSize( _id, _size.x * _pParent->GetWorldScale().x );
     else
@@ -235,6 +217,28 @@ CVector3 CTextSprite::GetWorldSize() const
     return CVector3( agk::GetTextTotalWidth( _id ),
                      agk::GetTextTotalHeight( _id ),
                      agk::GetTextSize( _id ) );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Update the sprite's size using the scale.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::UpdateSize()
+{
+    _size.x = _pData->GetSize() * _scale.x;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Update the sprite's scale using the size.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::UpdateScale()
+{
+    _scale.x = _size.x / _pData->GetSize();
 }
 
 

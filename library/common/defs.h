@@ -47,14 +47,16 @@ namespace NDefs
     {
         ETT_NULL        = 0,
         ETT_APPLIED     = 1,
-        ETT_POSITION    = ETT_APPLIED << 1,
-        ETT_ROTATION    = ETT_POSITION << 1,
-        ETT_SIZE        = ETT_ROTATION << 1,
-        ETT_SCALE       = ETT_SIZE << 1,
-        ETT_MATRIX      = ETT_SCALE << 1,
-        ETT_COLOR       = ETT_MATRIX << 1,
-        ETT_FRAME       = ETT_COLOR << 1,
-        ETT_BONE        = ETT_FRAME << 1
+        ETT_POSITION    = 1 << 1,
+        ETT_ROTATION    = 1 << 2,
+        ETT_SIZE        = 1 << 3,
+        ETT_SCALE       = 1 << 4,
+        ETT_MATRIX      = 1 << 5,
+        ETT_COLOR       = 1 << 6,
+        ETT_FRAME       = 1 << 7,
+        ETT_BONE        = 1 << 8,
+
+        ETT_IGNORE      = 1 << 30
     };
 
     // The type of object field dimensions.
@@ -62,15 +64,15 @@ namespace NDefs
     {
         EFD_NULL    = 0,
         EFD_X       = 1,
-        EFD_Y       = EFD_X << 1,
-        EFD_Z       = EFD_Y << 1,
-        EFD_WIDTH   = EFD_Z << 1,
-        EFD_HEIGHT  = EFD_WIDTH << 1,
-        EFD_DEPTH   = EFD_HEIGHT << 1,
-        EFD_RED     = EFD_DEPTH << 1,
-        EFD_GREEN   = EFD_RED << 1,
-        EFD_BLUE    = EFD_GREEN << 1,
-        EFD_ALPHA   = EFD_BLUE << 1
+        EFD_Y       = 1 << 1,
+        EFD_Z       = 1 << 2,
+        EFD_WIDTH   = 1 << 3,
+        EFD_HEIGHT  = 1 << 4,
+        EFD_DEPTH   = 1 << 5,
+        EFD_RED     = 1 << 6,
+        EFD_GREEN   = 1 << 7,
+        EFD_BLUE    = 1 << 8,
+        EFD_ALPHA   = 1 << 9
     };
 
 
@@ -117,9 +119,9 @@ namespace NDefs
     {
         EA_CENTER   = 0,
         EA_LEFT     = 1,
-        EA_RIGHT    = 2,
-        EA_TOP      = 4,
-        EA_BOTTOM   = 8
+        EA_RIGHT    = 1 << 1,
+        EA_TOP      = 1 << 2,
+        EA_BOTTOM   = 1 << 3
     };
 
     // The types of text alignment.
@@ -149,9 +151,10 @@ namespace NDefs
     // The types of shadow rendering modes.
     enum EShadowMode
     {
+        ESM_NULL,
         ESM_UNIFORM = 1,
-        ESM_LIGHT_SPACE_PERSPECTIVE,
-        ESM_CASCADE
+        ESM_LIGHT_SPACE_PERSPECTIVE = 2,
+        ESM_CASCADE = 3
     };
 
     // The types of animation endings.
@@ -167,6 +170,7 @@ namespace NDefs
     {
         EST_NULL,    // Continue playing the animation normally.
         EST_STOP,    // Stop the animation completely in whatever state it currently is in.
+        EST_PAUSE,   // Pause the animation completely, where ever it is, but don't get rid of the animation's contexts.
         EST_BREAK,   // Break out of any loops but still play any animation outside of the loop.
         EST_FINISH   // Finish out the current loop and play any animation outside of the loop.
     };

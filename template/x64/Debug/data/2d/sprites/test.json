@@ -4,6 +4,8 @@
       "textureMap": "bottom"
     },
     "alignment": ["top", "left"],
-    "animations": ["colorTest"]
+    "animations": [
+      ["colorTest"]
+    ]
   }
 }

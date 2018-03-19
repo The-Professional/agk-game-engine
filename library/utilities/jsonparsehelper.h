@@ -75,6 +75,9 @@ namespace NParseHelper
     // Parse object field tags.
     bool GetObjectFields( nlohmann::json::const_iterator iter, const std::string & tag, CBitmask<uint> & fieldType );
 
+    // Parse animation list tags.
+    bool GetAnimationList( nlohmann::json::const_iterator iter, const std::string & tag, std::vector<std::vector<std::string>> & animationList );
+
     // Parse control type tags.
     bool GetControlType( nlohmann::json::const_iterator iter, const std::string & tag, NDefs::EControlType & controlType );
 

@@ -38,10 +38,6 @@ public:
     // Get the list of script functions.
     const std::vector<std::string> & GetFunctionList() const;
 
-    // Get the fields that are modified in the animation. This is used to determine
-    // which scripts conflict with each other.
-    CBitmask<uint> GetObjectFields() const;
-
 private:
 
     // The name of the animation.
@@ -55,9 +51,6 @@ private:
 
     // How the animation should end when it is stopped before it finishes.
     NDefs::EEndType _endType = NDefs::EET_NULL;
-
-    // The object fields that are modified in the animation. 
-    CBitmask<uint> _objectFields = NDefs::ETT_NULL;
 };
 
 #endif  // __animation_data_h__

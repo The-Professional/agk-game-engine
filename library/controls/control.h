@@ -43,6 +43,9 @@ public:
     virtual void SetState( NDefs::EControlState state );
     NDefs::EControlState GetState() const;
 
+    // Play an animation.
+    virtual void Play( const std::string & name, NDefs::EStopType stopType = NDefs::EST_NULL );
+
     // Reset the control's position using its previous position.
     virtual void Reposition();
 

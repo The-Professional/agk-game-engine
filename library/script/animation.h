@@ -26,11 +26,11 @@ class CAnimation
 public:
 
     CAnimation();
-    CAnimation( const CAnimationData * pData, iObject * pObject );
+    CAnimation( const CAnimationData * pData, iObject * pObject, uint conflictIndex );
     ~CAnimation();
 
     // Initialize the animation.
-    void Init( const CAnimationData * pData, iObject * pObject );
+    void Init( const CAnimationData * pData, iObject * pObject, uint conflictIndex );
 
     // Clear the animation.
     void Clear();
@@ -91,6 +91,9 @@ public:
     // Get the animation data.
     const CAnimationData * GetData() const;
 
+    // Get the index of whichever conflict list this animation belongs to.
+    uint GetConflictIndex() const;
+
     // Spawn another context to run concurrently.
     void Spawn( const std::string & function );
 
@@ -116,6 +119,9 @@ private:
 
     // This variable is set when the animation needs to stop prematurely.
     NDefs::EStopType _stopType = NDefs::EST_NULL;
+
+    // The index into whichever conflict list this animation belongs to. 
+    uint _conflictIndex = 0;
 };
 
 

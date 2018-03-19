@@ -233,10 +233,6 @@ CSprite3D * CSpriteManager::CreateSprite3D( const string & name, const string & 
         // Create the sprite object and add it to the sprite list.
         CSprite3D * pSprite = new CSprite3D( pData );
 
-        // If the data does not have a default size, set it to whatever the created sprite's size is.
-        if( !pData->GetVisualData()->IsSizeSet() )
-            pData->SetSize( pSprite->GetSize() );
-
         if( collection.empty() )
             _spriteList3d[name].push_back( pSprite );
         else
@@ -271,10 +267,6 @@ CSprite2D * CSpriteManager::CreateSprite2D( const std::string & name, const stri
 
         // Create the sprite object and add it to the sprite list.
         CSprite2D * pSprite = new CSprite2D( pData );
-
-        // If the data does not have a default size, set it to whatever the created sprite's size is.
-        if( !pData->GetVisualData()->IsSizeSet() )
-            pData->SetSize( pSprite->GetSize() );
 
         if( collection.empty() )
             _spriteList2d[name].push_back( pSprite );

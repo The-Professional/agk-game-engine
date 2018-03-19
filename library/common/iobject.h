@@ -43,6 +43,10 @@ public:
     virtual CVector3 GetWorldSize() const = 0;
     virtual CVector3 GetWorldScale() const;
 
+    // Update the size or scale, depending on which has been changed.
+    virtual void UpdateSize() = 0;
+    virtual void UpdateScale() = 0;
+
     // Set the object's fields using a collection object.
     virtual void Set( const CCollectionObject & collectionObject );
 
@@ -62,7 +66,7 @@ public:
     virtual void IncPos( float x, float y, float z );
     virtual void IncPos( const CVector2 & pos );
     virtual void IncPos( const CVector3 & pos );
-    virtual const CVector3 & GetPos();
+    virtual const CVector3 & GetPos() const;
 
     // Access functions for the object's rotation.
     virtual void SetRot( float x, float y, float z );
@@ -73,7 +77,7 @@ public:
     virtual void IncRot( float x, float y, float z );
     virtual void IncRot( const CVector3 & rot );
     virtual void IncRot( float z );
-    virtual const CVector3 & GetRot();
+    virtual const CVector3 & GetRot() const;
 
     // Access functions for the object's size.
     virtual void SetSize( float w, float h, float d );
@@ -89,23 +93,23 @@ public:
     virtual void IncSize( float wfd );
     virtual void IncSize( const CVector3 & size );
     virtual void IncSize( const CVector2 & size );
-    virtual const CVector3 & GetSize();
+    virtual const CVector3 & GetSize() const;
 
     // Access functions for the object's scale
     virtual void SetScale( float x, float y, float z );
     virtual void SetScale( float x, float y );
     virtual void SetScale( float xyz );
-    virtual void SetScale( const CVector2 & pos );
-    virtual void SetScale( const CVector3 & pos );
+    virtual void SetScale( const CVector2 & scale );
+    virtual void SetScale( const CVector3 & scale );
     virtual void SetScaleX( float x );
     virtual void SetScaleY( float y );
     virtual void SetScaleZ( float z );
     virtual void IncScale( float x, float y, float z );
     virtual void IncScale( float x, float y );
     virtual void IncScale( float xyz );
-    virtual void IncScale( const CVector2 & pos );
-    virtual void IncScale( const CVector3 & pos );
-    virtual const CVector3 & GetScale();
+    virtual void IncScale( const CVector2 & scale );
+    virtual void IncScale( const CVector3 & scale );
+    virtual const CVector3 & GetScale() const;
 
     // Access functions for the object's color.
     virtual void SetColor( int r, int g, int b, int a );
@@ -118,7 +122,7 @@ public:
     virtual void IncColor( int r, int g, int b, int a );
     virtual void IncColor( int r, int g, int b );
     virtual void IncColor( const CColor & color );
-    virtual const CColor & GetColor();
+    virtual const CColor & GetColor() const;
 
     // Text sprite related access functions.
     virtual void SetFont( uint font ) {}
@@ -141,7 +145,7 @@ public:
     virtual CBitmask<uint> GetAlignment() const { return 0; }
 
     // Access functions for the object's parent.
-    virtual void SetParent( iObject * pParent );
+    virtual void SetParent( iObject * pParent, bool ignore = false );
     virtual const iObject * GetParent() const;
 
     // Reset the object's position using its previous position.
@@ -163,7 +167,7 @@ public:
     virtual void Update();
 
     // Function to call the functions that update AGK.
-    virtual void Transform( bool updateMatrix = false );
+    virtual void Transform();
 
     // Clear the bitmask of modified fields.
     virtual void ClearModified();
@@ -179,7 +183,6 @@ protected:
     // Apply the current transformations and color to AGK.
     virtual void ApplyPosition() = 0;
     virtual void ApplyRotation() = 0;
-    virtual void ApplySize() = 0;
     virtual void ApplyScale() = 0;
     virtual void ApplyColor() = 0;
 

@@ -2,6 +2,7 @@
 #include "animationdata.h"
 
 using namespace NDefs;
+using namespace std;
 
 /// *************************************************************************
 /// <summary>
@@ -46,7 +47,6 @@ void CAnimationData::LoadFromIter( nlohmann::json::const_iterator iter )
     NParseHelper::GetString( iter, "functions", _functionList );
     NParseHelper::GetInt( iter, "loop", _loopCount );
     NParseHelper::GetEndType( iter, _endType );
-    NParseHelper::GetObjectFields( iter, "fields", _objectFields );
 }
 
 
@@ -88,19 +88,7 @@ EEndType CAnimationData::GetEndType() const
 /// Get the list of script functions.
 /// </summary>
 /// *************************************************************************
-const std::vector<std::string> & CAnimationData::GetFunctionList() const
+const vector<string> & CAnimationData::GetFunctionList() const
 {
     return _functionList;
-}
-
-
-/// *************************************************************************
-/// <summary> 
-/// Get the object fields that are modified in the animation. This is used to 
-/// determine which scripts conflict with each other.
-/// </summary>
-/// *************************************************************************
-CBitmask<uint> CAnimationData::GetObjectFields() const
-{
-    return _objectFields;
 }

@@ -76,10 +76,10 @@ void app::Begin()
 
     pObjectList = CCollectionManager::Instance().LoadCollection( "stage0" );
     pSprite = CSpriteManager::Instance().CreateSprite3D( "ball" );
-
+    pSprite->IncSize( 1 );
     CSpriteManager::Instance().Transform();
 
-    pObjectList[0]->SetParent( pSprite );
+    pObjectList[0]->SetParent( pSprite, true );
 }
 
 int app::Loop()
@@ -92,11 +92,11 @@ int app::Loop()
 
     if( CInputManager::Instance().IsReleased( "menu", "menu select" ) )
     {
-        pSprite->IncPos( 0, 1, 0 );
+        /*pSprite->IncPos( 0, 1, 0 );
         pSprite->IncRot( 0, 0, 10 );
-        pSprite->IncSize( 1 );
+        pSprite->IncSize( 1 );*/
+        pObjectList[2]->Play( "color", NDefs::EST_PAUSE );
     }
-        //pObjectList[2]->Play( "color", NDefs::EST_FINISH );
 
     CSpriteManager::Instance().Update();
     CSpriteManager::Instance().Transform();

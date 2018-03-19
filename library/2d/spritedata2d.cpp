@@ -47,7 +47,7 @@ void CSpriteData2D::LoadFromIter( const string & name, json::const_iterator iter
     }
 
     NParseHelper::GetAlignment( iter, "alignment", _alignment );
-    NParseHelper::GetString( iter, "animations", _animationList );
+    NParseHelper::GetAnimationList( iter, "animations", _animationList );
 }
 
 
@@ -89,7 +89,7 @@ const CBitmask<uint> & CSpriteData2D::GetAlignment() const
 /// Get the list of animations this sprite can perform.
 /// </summary>
 /// *************************************************************************
-const vector<string> & CSpriteData2D::GetAnimationList() const
+const vector<vector<string>> & CSpriteData2D::GetAnimationList() const
 {
     return _animationList;
 }

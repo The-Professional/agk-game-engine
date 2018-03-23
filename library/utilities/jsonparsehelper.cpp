@@ -332,15 +332,15 @@ namespace NParseHelper
     /// <param name="color"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetColor( json::const_iterator iter, CColor & color)
+    bool GetColor( json::const_iterator iter, CVector4 & color)
     {
         auto colorIter = iter->find("color");
         if( colorIter != iter->end() )
         {
-            GetInt( colorIter, "r", color.r );
-            GetInt( colorIter, "g", color.g );
-            GetInt( colorIter, "b", color.b );
-            GetInt( colorIter, "a", color.a );
+            GetFloat( colorIter, "r", color.r );
+            GetFloat( colorIter, "g", color.g );
+            GetFloat( colorIter, "b", color.b );
+            GetFloat( colorIter, "a", color.a );
 
             return true;
         }
@@ -656,7 +656,7 @@ namespace NParseHelper
             collectionObject.fields.Add( CCollectionObject::TEXT_SIZE );
         }
 
-        CColor color;
+        CVector4 color;
         if( GetColor( iter, color ) )
         {
             collectionObject.color = color;

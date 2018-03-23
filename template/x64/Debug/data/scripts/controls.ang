@@ -4,14 +4,14 @@
 void Ctrl_Test( CAnimation & anim )
 {
 	CColor startColor = anim.GetColor();
-    CColor color( 255, 255, 255, 0 );
+    CColor color( 1, 1, 1, 0 );
 	float time = 0;
 
 	// Main animation loop.
 	int i = 0;
 	do
 	{
-		time = ColorTo( anim, color, 1, time );
+		time = ColorTo( anim, color, time, 1 );
 
 		i++;
 	}
@@ -23,6 +23,6 @@ void Ctrl_Test( CAnimation & anim )
 	}
 	else if( anim.GetEndType() == EET_GRADUAL_RESET )
 	{
-		ColorTo( anim, startColor, 0.25f, time );
+		ColorTo( anim, startColor, time, 0.25f, false );
 	}
 }

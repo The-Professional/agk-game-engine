@@ -7,6 +7,6 @@
     "maxWidth": 1000,
     "textAlignment": "center",
     "alignment": ["top"],
-    "color": {"r": 0, "g": 255, "b": 255}
+    "color": {"r": 0, "g": 1, "b": 1}
   }
 }

@@ -49,8 +49,10 @@ void CSpriteVisualData3D::LoadFromIter( nlohmann::json::const_iterator iter )
     NParseHelper::GetBool( iter, "receiveShadow", _receiveShadow );
     NParseHelper::GetMeshType( iter, _type );
 
+    // If the size hasn't been set, whatever the size of this will be the same as its file.
+    // This means we don't have to resize anything after creating a sprite.
     if( !_sizeSet )
-        SetSize( { _width, _height, _depth } );
+        _sizeSameAsFile = true;
 }
 
 
@@ -92,7 +94,7 @@ const string & CSpriteVisualData3D::GetShader() const
 /// Get the sprite's default color.
 /// </summary>
 /// *************************************************************************
-const CColor & CSpriteVisualData3D::GetColor() const
+const CVector4 & CSpriteVisualData3D::GetColor() const
 {
     return _color;
 }
@@ -260,10 +262,21 @@ const CVector3 & CSpriteVisualData3D::GetSize() const
 
 /// *************************************************************************
 /// <summary> 
-/// Whether or not the size was set in the data file.
+/// Whether or not the size was set.
 /// </summary>
 /// *************************************************************************
 bool CSpriteVisualData3D::IsSizeSet() const
 {
     return _sizeSet;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Whether or not the size is the same as the file.
+/// </summary>
+/// *************************************************************************
+bool CSpriteVisualData3D::IsSizeSameAsFile() const
+{
+    return _sizeSameAsFile;
 }

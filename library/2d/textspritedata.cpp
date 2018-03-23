@@ -120,7 +120,7 @@ float CTextSpriteData::GetMaxWidth() const
 /// Get the color of the text.
 /// </summary>
 /// *************************************************************************
-const CColor & CTextSpriteData::GetColor() const
+const CVector4 & CTextSpriteData::GetColor() const
 {
     return _color;
 }

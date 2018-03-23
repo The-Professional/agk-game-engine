@@ -37,83 +37,11 @@ CControl::~CControl()
 /// *************************************************************************
 void CControl::DeleteObject()
 {
-    if( _id > 0 )
-    {
-        agk::DeleteSprite( _id );
-        _id = 0;
-    }
+    CSprite2D::DeleteObject();
 
     _pSpriteList.clear();
     _state = ECS_DISABLED;
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Update AGK with the control's current position.
-/// </summary>
-/// *************************************************************************
-void CControl::ApplyPosition( const CVector3 & position )
-{
-    agk::SetSpritePosition( _id, position.x, position.y );
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Update AGK with the control's current rotation.
-/// </summary>
-/// *************************************************************************
-void CControl::ApplyRotation( const CVector3 & rotation )
-{
-    // This doesn't do anything.
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Update AGK with the control's current size.
-/// </summary>
-/// *************************************************************************
-void CControl::ApplySize( const CVector3 & size )
-{
-    // This doesn't do anything.
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Get the current position set in AGK.
-/// </summary>
-/// *************************************************************************
-CVector3 CControl::GetWorldPos() const
-{
-    return CVector3( agk::GetSpriteX( _id ),
-                     agk::GetSpriteY( _id ),
-                     (float)agk::GetSpriteDepth( _id ) );
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Get the current rotation set in AGK.
-/// </summary>
-/// *************************************************************************
-CVector3 CControl::GetWorldRot() const
-{
-    return CVector3( 0, 0, agk::GetSpriteAngle( _id ) );
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Get the current size set in AGK.
-/// </summary>
-/// *************************************************************************
-CVector3 CControl::GetWorldSize() const
-{
-    return CVector3( agk::GetSpriteWidth( _id ),
-                     agk::GetSpriteHeight( _id ) );
+    _alignment = EA_CENTER;
 }
 
 
@@ -122,10 +50,9 @@ CVector3 CControl::GetWorldSize() const
 /// Update AGK with the control's current color.
 /// </summary>
 /// *************************************************************************
-void CControl::ApplyColor( const CColor & color )
+void CControl::ApplyColor()
 {
-    for( auto pSprite : _pSpriteList )
-        pSprite->SetColor( color );
+    // Does nothing. Color is only for child inheritance purposes.
 }
 
 
@@ -150,32 +77,25 @@ void CControl::SetState( EControlState state )
     switch( state )
     {
     case NDefs::ECS_DISABLED:
-        for( auto pSprite : _pSpriteList )
-            pSprite->Play( "disable", EST_FINISH );
+        Play( "disable", EST_FINISH );
         break;
     case NDefs::ECS_INACTIVE:
-        for( auto pSprite : _pSpriteList )
-            pSprite->Play( "inactive", EST_FINISH );
+        Play( "inactive", EST_FINISH );
         break;
     case NDefs::ECS_ACTIVE:
-        for( auto pSprite : _pSpriteList )
-            pSprite->Play( "active", EST_FINISH );
+        Play( "active", EST_FINISH );
         break;
     case NDefs::ECS_PRESSED:
-        for( auto pSprite : _pSpriteList )
-            pSprite->Play( "pressed", EST_FINISH );
+        Play( "pressed", EST_FINISH );
         break;
     case NDefs::ECS_RELEASED:
-        for( auto pSprite : _pSpriteList )
-            pSprite->Play( "released", EST_FINISH );
+        Play( "released", EST_FINISH );
         break;
     case NDefs::ECS_TRANSITION_IN:
-        for( auto pSprite : _pSpriteList )
-            pSprite->Play( "transition in", EST_FINISH );
+        Play( "transition in", EST_FINISH );
         break;
     case NDefs::ECS_TRANSITION_OUT:
-        for( auto pSprite : _pSpriteList )
-            pSprite->Play( "transition out", EST_FINISH );
+        Play( "transition out", EST_FINISH );
         break;
     }
 
@@ -196,8 +116,10 @@ EControlState CControl::GetState() const
 
 /// *************************************************************************
 /// <summary>
-/// Play an animation.
+/// Play an animation. 
 /// </summary>
+/// <param name="name"> Name of the animation to play. </param>
+/// <param name="stopType"> How to end any conflicting animations. </param>
 /// *************************************************************************
 void CControl::Play( const string & name, EStopType stopType )
 {
@@ -210,11 +132,63 @@ void CControl::Play( const string & name, EStopType stopType )
 
 /// *************************************************************************
 /// <summary>
-/// Reset the sprite's position using its previous position.
+/// Stop all animations.
 /// </summary>
+/// <param name="stopType"> How to end the animations. </param>
 /// *************************************************************************
-void CControl::Reposition()
+void CControl::Stop( NDefs::EStopType stopType )
 {
-    NMathFunc::AlignPosition( _alignment, _position );
-    agk::SetSpritePosition( _id, _position.x, _position.y );
+    iObject::Stop( stopType );
+
+    for( auto pSprite : _pSpriteList )
+        pSprite->Stop( stopType );
+}
+
+/// <summary>
+/// Stop an animation.
+/// </summary>
+/// <param name="name"> Name of the animation to stop. </param>
+/// <param name="stopType"> How to end the animation. </param>
+void CControl::Stop( const std::string & name, NDefs::EStopType stopType )
+{
+    iObject::Stop( name, stopType );
+
+    for( auto pSprite : _pSpriteList )
+        pSprite->Stop( name, stopType );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Whether or not an animation is playing.
+/// </summary>
+/// <param name="includePaused"> If paused animations should be consider "playing". </param>
+/// *************************************************************************
+bool CControl::IsPlaying( bool includePaused )
+{
+    if( iObject::IsPlaying( includePaused ) )
+        return true;
+
+    for( auto pSprite : _pSpriteList )
+        if( pSprite->IsPlaying( includePaused ) )
+            return true;
+
+    return false;
+}
+
+/// <summary>
+/// Whether or not an animation is playing.
+/// </summary>
+/// <param name="name"> Name of the animation to stop. </param>
+/// <param name="includePaused"> If paused animations should be consider "playing". </param>
+bool CControl::IsPlaying( const std::string & name, bool includePaused )
+{
+    if( iObject::IsPlaying( name, includePaused ) )
+        return true;
+
+    for( auto pSprite : _pSpriteList )
+        if( pSprite->IsPlaying( name, includePaused ) )
+            return true;
+
+    return false;
 }

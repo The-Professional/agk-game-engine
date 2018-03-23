@@ -5,7 +5,7 @@
 #include <common\defs.h>
 #include <common\vector2.h>
 #include <common\vector3.h>
-#include <common\color.h>
+#include <common\vector4.h>
 #include <common\bitmask.h>
 
 // Standard lib dependencies
@@ -42,6 +42,7 @@ public:
     virtual CVector3 GetWorldRot() const = 0;
     virtual CVector3 GetWorldSize() const = 0;
     virtual CVector3 GetWorldScale() const;
+    virtual CVector4 GetWorldColor() const;
 
     // Update the size or scale, depending on which has been changed.
     virtual void UpdateSize() = 0;
@@ -112,17 +113,17 @@ public:
     virtual const CVector3 & GetScale() const;
 
     // Access functions for the object's color.
-    virtual void SetColor( int r, int g, int b, int a );
-    virtual void SetColor( int r, int g, int b );
-    virtual void SetColor( const CColor & color );
-    virtual void SetColorR( int r );
-    virtual void SetColorG( int g );
-    virtual void SetColorB( int b );
-    virtual void SetColorA( int a );
-    virtual void IncColor( int r, int g, int b, int a );
-    virtual void IncColor( int r, int g, int b );
-    virtual void IncColor( const CColor & color );
-    virtual const CColor & GetColor() const;
+    virtual void SetColor( float r, float g, float b, float a );
+    virtual void SetColor( float r, float g, float b );
+    virtual void SetColor( const CVector4 & color );
+    virtual void SetColorR( float r );
+    virtual void SetColorG( float g );
+    virtual void SetColorB( float b );
+    virtual void SetColorA( float a );
+    virtual void IncColor( float r, float g, float b, float a );
+    virtual void IncColor( float r, float g, float b );
+    virtual void IncColor( const CVector4 & color );
+    virtual const CVector4 & GetColor() const;
 
     // Text sprite related access functions.
     virtual void SetFont( uint font ) {}
@@ -153,6 +154,14 @@ public:
 
     // Play an animation.
     virtual void Play( const std::string & name, NDefs::EStopType stopType = NDefs::EST_NULL );
+
+    // Stop an animation.
+    virtual void Stop( NDefs::EStopType = NDefs::EST_STOP );
+    virtual void Stop( const std::string & name, NDefs::EStopType stopType = NDefs::EST_STOP );
+
+    // Whether or not an animation is playing.
+    virtual bool IsPlaying( bool includePaused = false );
+    virtual bool IsPlaying( const std::string & name, bool includePaused = false );
 
     // Get the transformed bitmask.
     virtual CBitmask<uint> GetModified() const;
@@ -207,7 +216,7 @@ protected:
     CVector3 _scale = 1;
 
     // Color of the object.
-    CColor _color = 255;
+    CVector4 _color = 1;
 
     // A bit mask of all the fields that have been changed.
     CBitmask<uint> _modified = NDefs::ETT_NULL;

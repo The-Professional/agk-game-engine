@@ -76,7 +76,7 @@ void app::Begin()
 
     pObjectList = CCollectionManager::Instance().LoadCollection( "stage0" );
     pSprite = CSpriteManager::Instance().CreateSprite3D( "ball" );
-    pSprite->IncSize( 1 );
+    pSprite->SetScale( 2 );
     CSpriteManager::Instance().Transform();
 
     pObjectList[0]->SetParent( pSprite, true );
@@ -95,7 +95,10 @@ int app::Loop()
         /*pSprite->IncPos( 0, 1, 0 );
         pSprite->IncRot( 0, 0, 10 );
         pSprite->IncSize( 1 );*/
-        pObjectList[2]->Play( "color", NDefs::EST_PAUSE );
+        if( pObjectList[2]->IsPlaying() )
+            pObjectList[2]->Stop( NDefs::EST_BREAK );
+        else
+            pObjectList[2]->Play( "color", NDefs::EST_BREAK );
     }
 
     CSpriteManager::Instance().Update();

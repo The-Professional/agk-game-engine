@@ -6,6 +6,7 @@
       "radius": 1,
       "rows": 10,
       "columns": 16,
+      "size": {"w": 2, "h": 4, "d": 4},
       "castShadow": true,
       "receiveShadow": true
     }

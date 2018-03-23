@@ -11,6 +11,7 @@ enum EStopType
 {
     EST_NULL,    // Continue playing the animation normally.
     EST_STOP,    // Stop the animation completely in whatever state it currently is in.
+	EST_PAUSE,   // Pause the animation completely, where ever it is, but don't get rid of the animation's contexts.
     EST_BREAK,   // Break out of any loops but still play any animation outside of the loop.
     EST_FINISH   // Finish out the current loop and play any animation outside of the loop.
 }

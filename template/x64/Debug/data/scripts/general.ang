@@ -1,69 +1,64 @@
 /// *************************************************************************
 /// Gradually change the color to the passed in color.
 /// *************************************************************************
-shared float ColorTo( CAnimation & anim, CColor &in value, float endTime, float startTime = 0 )
+shared float ColorTo( CAnimation & anim, CColor &in value, float startTime, float endTime, bool allowBreak = true )
 {
     CColor current = anim.GetColor();
     CColor diff = value - current;
 	float currentTime = startTime;
 
-    do
-    {
-        if( anim.GetStopType() == EST_BREAK )
-            return 0;
+	if( allowBreak )
+		while( currentTime < endTime )
+		{
+			if( anim.GetStopType() == EST_BREAK )
+				return GetElapsedTime();
 	
-        currentTime += GetElapsedTime();
-	
-        if( currentTime >= endTime )
-            anim.SetColor( value );
-        else
-            anim.SetColor( current + diff * currentTime / endTime );
-	
-        Suspend();
-    }
-    while( currentTime < endTime );
+			anim.SetColor( current + diff * ( currentTime / endTime ) );
+			Suspend();
+			currentTime += GetElapsedTime();
+		}
+	else
+		while( currentTime < endTime )
+		{
+			anim.SetColor( current + diff * ( currentTime / endTime ) );
+			Suspend();
+			currentTime += GetElapsedTime();
+		}
 
-	return GetRemainingTime( currentTime, endTime );
+	anim.SetColor( value );
+
+	return currentTime - endTime;
 }
 
 
 /// *************************************************************************
 /// Gradually change the position to the passed in position.
 /// *************************************************************************
-shared float MoveTo( CAnimation & anim, CVector3 &in value, float endTime, float startTime = 0 )
+shared float MoveTo( CAnimation & anim, CVector3 &in value, float startTime, float endTime, bool allowBreak = true )
 {
     CVector3 current = anim.GetPos();
     CVector3 diff = value - current;
 	float currentTime = startTime;
 
-    do
-    {
-        if( anim.GetStopType() == EST_BREAK )
-            return 0;
+	if( allowBreak )
+		while( currentTime < endTime )
+		{
+			if( anim.GetStopType() == EST_BREAK )
+				return GetElapsedTime();
 	
-        currentTime += GetElapsedTime();
-	
-        if( currentTime >= endTime )
-            anim.SetPos( value );
-        else
-            anim.SetPos( current + diff * currentTime / endTime );
-	
-        Suspend();
-    }
-    while( currentTime < endTime );
+			anim.SetPos( current + diff * ( currentTime / endTime ) );
+			Suspend();
+			currentTime += GetElapsedTime();
+		}
+	else
+		while( currentTime < endTime )
+		{
+			anim.SetPos( current + diff * ( currentTime / endTime ) );
+			Suspend();
+			currentTime += GetElapsedTime();
+		}
 
-	return GetRemainingTime( currentTime, endTime );
-}
+	anim.SetPos( value );
 
-
-/// *************************************************************************
-/// Get the remaining time.
-/// *************************************************************************
-shared float GetRemainingTime( float currentTime, float endTime )
-{
-	// Get the number of times the current time fits into end time.
-	// This is so we don't hit any kind of spiral of death if the game lagged.
-	int d = currentTime / endTime;
-
-	return currentTime - endTime * d;
+	return currentTime - endTime;
 }

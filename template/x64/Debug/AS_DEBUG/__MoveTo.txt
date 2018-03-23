@@ -1,12 +1,13 @@
-float MoveTo(CAnimation&inout, CVector3&in, float, float = 0)
+float MoveTo(CAnimation&inout, CVector3&in, float, float, bool = true)
 
 Temps: 9, 11, 12, 15
 
 Variables: 
  000: CAnimation& anim
  -002: CVector3& value
- -004: float endTime
- -005: float startTime
+ -004: float startTime
+ -005: float endTime
+ -006: bool allowBreak
  003: CVector3 current
  006: CVector3 diff
  010: float currentTime
@@ -14,124 +15,154 @@ Variables:
  015: CVector3 {noname}
 
 
-- 35,5 -
+- 39,5 -
                VarDecl  0
                VarDecl  1
                VarDecl  2
                VarDecl  3
                VarDecl  4
+               VarDecl  5
     0  15 *    PshVPtr  v0
-    1  17 *    CALLSYS  160           (const CVector3& CAnimation::GetPos())
+    1  17 *    CALLSYS  166           (const CVector3& CAnimation::GetPos())
     3  15 *    PshRPtr
     4  17 *    PSF      v3
-    5  19 *    CALLSYS  125           (CVector3::CVector3(const CVector3&in))
-- 36,5 -
+    5  19 *    CALLSYS  131           (CVector3::CVector3(const CVector3&in))
+- 40,5 -
                ObjInfo  v3, 1
-               VarDecl  5
+               VarDecl  6
     7  15 *    VAR      v3
     8  17 *    PSF      v9
     9  19 *    PshVPtr  v-2
    10  21 *    GETREF   4
-   11  21 *    CALLSYS  131           (CVector3 CVector3::opSub(const CVector3&in))
+   11  21 *    CALLSYS  137           (CVector3 CVector3::opSub(const CVector3&in))
                ObjInfo  v9, 1
    13  15 *    PSF      v9
    14  17 *    PSF      v6
-   15  19 *    CALLSYS  125           (CVector3::CVector3(const CVector3&in))
+   15  19 *    CALLSYS  131           (CVector3::CVector3(const CVector3&in))
    17  15 *    PSF      v9
-   18  17 *    CALLSYS  128           (CVector3::~CVector3())
-- 37,2 -
+   18  17 *    CALLSYS  134           (CVector3::~CVector3())
+- 41,2 -
                ObjInfo  v9, 0
                ObjInfo  v6, 1
-               VarDecl  6
-   20  15 *    CpyVtoV4 v10, v-5
-- 41,9 -
-            1:
-            {
-   22  15 *    PshVPtr  v0
-   23  17 *    CALLSYS  147           (int CAnimation::GetStopType())
-   25  15 *    CpyRtoV4 v11
-   26  15 *    CMPIi    v11, 2
-   28  15 *    JNZ      +11              (d:41)
-- 42,13 -
-   30  15 *    SetV4    v12, 0x0          (i:0, f:0)
-            {
-   32  15 *    PSF      v6
-   33  17 *    CALLSYS  128           (CVector3::~CVector3())
-               ObjInfo  v6, 0
-   35  15 *    PSF      v3
-   36  17 *    CALLSYS  128           (CVector3::~CVector3())
-               ObjInfo  v3, 0
-            }
-   38  15 *    CpyVtoR4 v12
-   39  15 *    JMP      +65              (d:106)
-- 44,9 -
-            4:
-   41  15 *    CALLSYS  108           (float GetElapsedTime())
-   43  15 *    CpyRtoV4 v11
-   44  15 *    ADDf     v10, v10, v11
-- 46,9 -
-   46  15 *    CMPf     v10, v-4
-   48  15 *    JS       +7              (d:57)
-- 47,13 -
-   50  15 *    VAR      v-2
-   51  17 *    PshVPtr  v0
-   52  19 *    GETOBJREF 2
-   53  19 *    CALLSYS  149           (void CAnimation::SetPos(const CVector3&in))
-   55  15 *    JMP      +30              (d:87)
-- 49,13 -
-            5:
-   57  15 *    PshV4    v10
-   58  16 *    PSF      v9
-   59  18 *    PSF      v6
-   60  20 *    CALLSYS  136           (CVector3 CVector3::opMul(float))
-               ObjInfo  v9, 1
-   62  15 *    PshV4    v-4
-   63  16 *    PSF      v15
-   64  18 *    PSF      v9
-   65  20 *    CALLSYS  137           (CVector3 CVector3::opDiv(float))
-               ObjInfo  v15, 1
-   67  15 *    PSF      v9
-   68  17 *    CALLSYS  128           (CVector3::~CVector3())
-               ObjInfo  v9, 0
-   70  15 *    VAR      v15
-   71  17 *    PSF      v9
-   72  19 *    PSF      v3
-   73  21 *    GETREF   4
-   74  21 *    CALLSYS  130           (CVector3 CVector3::opAdd(const CVector3&in))
-               ObjInfo  v9, 1
-   76  15 *    PSF      v15
-   77  17 *    CALLSYS  128           (CVector3::~CVector3())
-               ObjInfo  v15, 0
-   79  15 *    VAR      v9
-   80  17 *    PshVPtr  v0
-   81  19 *    GETREF   2
-   82  19 *    CALLSYS  149           (void CAnimation::SetPos(const CVector3&in))
-   84  15 *    PSF      v9
-   85  17 *    CALLSYS  128           (CVector3::~CVector3())
-- 51,9 -
-               ObjInfo  v9, 0
-            6:
-   87  15 *    CALLSYS  110           (void Suspend())
-            }
+               VarDecl  7
+   20  15 *    CpyVtoV4 v10, v-4
+- 43,2 -
+   22  15 *    CpyVtoR4 v-6
+   23  15 *    JLowZ    +60              (d:85)
+- 44,3 -
             2:
-   89  15 *    SUSPEND
-- 53,12 -
-   90  15 *    CMPf     v10, v-4
-   92  15 *    JS       -72              (d:22)
-- 55,2 -
-            3:
-   94  15 *    PshV4    v-4
-   95  16 *    PshV4    v10
-   96  17 *    CALL     169           (float GetRemainingTime(float, float))
-   98  15 *    CpyRtoV4 v12
+   25  15 *    CMPf     v10, v-5
+   27  15 *    JNS      +54              (d:83)
+   29  15 *    SUSPEND
+- 46,4 -
             {
-   99  15 *    PSF      v6
-  100  17 *    CALLSYS  128           (CVector3::~CVector3())
+   30  15 *    PshVPtr  v0
+   31  17 *    CALLSYS  153           (int CAnimation::GetStopType())
+   33  15 *    CpyRtoV4 v11
+   34  15 *    CMPIi    v11, 3
+   36  15 *    JNZ      +12              (d:50)
+- 47,5 -
+   38  15 *    CALLSYS  108           (float GetElapsedTime())
+   40  15 *    CpyRtoV4 v12
+            {
+   41  15 *    PSF      v6
+   42  17 *    CALLSYS  134           (CVector3::~CVector3())
                ObjInfo  v6, 0
-  102  15 *    PSF      v3
-  103  17 *    CALLSYS  128           (CVector3::~CVector3())
+   44  15 *    PSF      v3
+   45  17 *    CALLSYS  134           (CVector3::~CVector3())
                ObjInfo  v3, 0
             }
-  105  15 *    CpyVtoR4 v12
+   47  15 *    CpyVtoR4 v12
+   48  15 *    JMP      +87              (d:137)
+- 49,4 -
+            4:
+   50  15 *    DIVf     v11, v10, v-5
+   52  15 *    PshV4    v11
+   53  16 *    PSF      v9
+   54  18 *    PSF      v6
+   55  20 *    CALLSYS  142           (CVector3 CVector3::opMul(float))
+               ObjInfo  v9, 1
+   57  15 *    VAR      v9
+   58  17 *    PSF      v15
+   59  19 *    PSF      v3
+   60  21 *    GETREF   4
+   61  21 *    CALLSYS  136           (CVector3 CVector3::opAdd(const CVector3&in))
+               ObjInfo  v15, 1
+   63  15 *    PSF      v9
+   64  17 *    CALLSYS  134           (CVector3::~CVector3())
+               ObjInfo  v9, 0
+   66  15 *    VAR      v15
+   67  17 *    PshVPtr  v0
+   68  19 *    GETREF   2
+   69  19 *    CALLSYS  155           (void CAnimation::SetPos(const CVector3&in))
+   71  15 *    PSF      v15
+   72  17 *    CALLSYS  134           (CVector3::~CVector3())
+- 50,4 -
+               ObjInfo  v15, 0
+   74  15 *    CALLSYS  110           (void Suspend())
+- 51,4 -
+   76  15 *    CALLSYS  108           (float GetElapsedTime())
+   78  15 *    CpyRtoV4 v12
+   79  15 *    ADDf     v10, v10, v12
+            }
+   81  15 *    JMP      -58              (d:25)
+            3:
+   83  15 *    JMP      +38              (d:123)
+- 54,3 -
+            1:
+            6:
+   85  15 *    CMPf     v10, v-5
+   87  15 *    JNS      +34              (d:123)
+   89  15 *    SUSPEND
+- 56,4 -
+            {
+   90  15 *    DIVf     v11, v10, v-5
+   92  15 *    PshV4    v11
+   93  16 *    PSF      v15
+   94  18 *    PSF      v6
+   95  20 *    CALLSYS  142           (CVector3 CVector3::opMul(float))
+               ObjInfo  v15, 1
+   97  15 *    VAR      v15
+   98  17 *    PSF      v9
+   99  19 *    PSF      v3
+  100  21 *    GETREF   4
+  101  21 *    CALLSYS  136           (CVector3 CVector3::opAdd(const CVector3&in))
+               ObjInfo  v9, 1
+  103  15 *    PSF      v15
+  104  17 *    CALLSYS  134           (CVector3::~CVector3())
+               ObjInfo  v15, 0
+  106  15 *    VAR      v9
+  107  17 *    PshVPtr  v0
+  108  19 *    GETREF   2
+  109  19 *    CALLSYS  155           (void CAnimation::SetPos(const CVector3&in))
+  111  15 *    PSF      v9
+  112  17 *    CALLSYS  134           (CVector3::~CVector3())
+- 57,4 -
+               ObjInfo  v9, 0
+  114  15 *    CALLSYS  110           (void Suspend())
+- 58,4 -
+  116  15 *    CALLSYS  108           (float GetElapsedTime())
+  118  15 *    CpyRtoV4 v11
+  119  15 *    ADDf     v10, v10, v11
+            }
+  121  15 *    JMP      -38              (d:85)
+- 61,2 -
+            7:
+            5:
+  123  15 *    VAR      v-2
+  124  17 *    PshVPtr  v0
+  125  19 *    GETOBJREF 2
+  126  19 *    CALLSYS  155           (void CAnimation::SetPos(const CVector3&in))
+- 63,2 -
+  128  15 *    SUBf     v11, v10, v-5
+            {
+  130  15 *    PSF      v6
+  131  17 *    CALLSYS  134           (CVector3::~CVector3())
+               ObjInfo  v6, 0
+  133  15 *    PSF      v3
+  134  17 *    CALLSYS  134           (CVector3::~CVector3())
+               ObjInfo  v3, 0
+            }
+  136  15 *    CpyVtoR4 v11
             0:
-  106  15 *    RET      6
+  137  15 *    RET      7

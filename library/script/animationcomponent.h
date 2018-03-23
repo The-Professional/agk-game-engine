@@ -37,10 +37,12 @@ public:
     void Play( const std::string & name, NDefs::EStopType stopType = NDefs::EST_NULL );
 
     // Stop an animation.
+    void Stop( NDefs::EStopType = NDefs::EST_STOP );
     void Stop( const std::string & name, NDefs::EStopType stopType = NDefs::EST_STOP );
 
     // Whether or not an animation is playing.
-    bool IsPlaying( const std::string & name = "", bool includePaused = false );
+    bool IsPlaying( bool includePaused = false );
+    bool IsPlaying( const std::string & name, bool includePaused = false );
 
     // Update the animation component.
     void Update();

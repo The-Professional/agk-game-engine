@@ -1,12 +1,13 @@
-float ColorTo(CAnimation&inout, CColor&in, float, float = 0)
+float ColorTo(CAnimation&inout, CColor&in, float, float, bool = true)
 
 Temps: 12, 14, 15, 19
 
 Variables: 
  000: CAnimation& anim
  -002: CColor& value
- -004: float endTime
- -005: float startTime
+ -004: float startTime
+ -005: float endTime
+ -006: bool allowBreak
  004: CColor current
  008: CColor diff
  013: float currentTime
@@ -20,14 +21,15 @@ Variables:
                VarDecl  2
                VarDecl  3
                VarDecl  4
+               VarDecl  5
     0  19 *    PshVPtr  v0
-    1  21 *    CALLSYS  163           (const CColor& CAnimation::GetColor())
+    1  21 *    CALLSYS  169           (const CColor& CAnimation::GetColor())
     3  19 *    PshRPtr
     4  21 *    PSF      v4
     5  23 *    CALLSYS  112           (CColor::CColor(const CColor&in))
 - 7,5 -
                ObjInfo  v4, 1
-               VarDecl  5
+               VarDecl  6
     7  19 *    VAR      v4
     8  21 *    PSF      v12
     9  23 *    PshVPtr  v-2
@@ -42,96 +44,125 @@ Variables:
 - 8,2 -
                ObjInfo  v12, 0
                ObjInfo  v8, 1
-               VarDecl  6
-   20  19 *    CpyVtoV4 v13, v-5
-- 12,9 -
-            1:
-            {
-   22  19 *    PshVPtr  v0
-   23  21 *    CALLSYS  147           (int CAnimation::GetStopType())
-   25  19 *    CpyRtoV4 v14
-   26  19 *    CMPIi    v14, 2
-   28  19 *    JNZ      +11              (d:41)
-- 13,13 -
-   30  19 *    SetV4    v15, 0x0          (i:0, f:0)
-            {
-   32  19 *    PSF      v8
-   33  21 *    CALLSYS  114           (CColor::~CColor())
-               ObjInfo  v8, 0
-   35  19 *    PSF      v4
-   36  21 *    CALLSYS  114           (CColor::~CColor())
-               ObjInfo  v4, 0
-            }
-   38  19 *    CpyVtoR4 v15
-   39  19 *    JMP      +65              (d:106)
-- 15,9 -
-            4:
-   41  19 *    CALLSYS  108           (float GetElapsedTime())
-   43  19 *    CpyRtoV4 v14
-   44  19 *    ADDf     v13, v13, v14
-- 17,9 -
-   46  19 *    CMPf     v13, v-4
-   48  19 *    JS       +7              (d:57)
-- 18,13 -
-   50  19 *    VAR      v-2
-   51  21 *    PshVPtr  v0
-   52  23 *    GETOBJREF 2
-   53  23 *    CALLSYS  152           (void CAnimation::SetColor(const CColor&in))
-   55  19 *    JMP      +30              (d:87)
-- 20,13 -
-            5:
-   57  19 *    PshV4    v13
-   58  20 *    PSF      v12
-   59  22 *    PSF      v8
-   60  24 *    CALLSYS  118           (CColor CColor::opMul(float))
-               ObjInfo  v12, 1
-   62  19 *    PshV4    v-4
-   63  20 *    PSF      v19
-   64  22 *    PSF      v12
-   65  24 *    CALLSYS  119           (CColor CColor::opDiv(float))
-               ObjInfo  v19, 1
-   67  19 *    PSF      v12
-   68  21 *    CALLSYS  114           (CColor::~CColor())
-               ObjInfo  v12, 0
-   70  19 *    VAR      v19
-   71  21 *    PSF      v12
-   72  23 *    PSF      v4
-   73  25 *    GETREF   4
-   74  25 *    CALLSYS  116           (CColor CColor::opAdd(const CColor&in))
-               ObjInfo  v12, 1
-   76  19 *    PSF      v19
-   77  21 *    CALLSYS  114           (CColor::~CColor())
-               ObjInfo  v19, 0
-   79  19 *    VAR      v12
-   80  21 *    PshVPtr  v0
-   81  23 *    GETREF   2
-   82  23 *    CALLSYS  152           (void CAnimation::SetColor(const CColor&in))
-   84  19 *    PSF      v12
-   85  21 *    CALLSYS  114           (CColor::~CColor())
-- 22,9 -
-               ObjInfo  v12, 0
-            6:
-   87  19 *    CALLSYS  110           (void Suspend())
-            }
+               VarDecl  7
+   20  19 *    CpyVtoV4 v13, v-4
+- 10,2 -
+   22  19 *    CpyVtoR4 v-6
+   23  19 *    JLowZ    +60              (d:85)
+- 11,3 -
             2:
-   89  19 *    SUSPEND
-- 24,12 -
-   90  19 *    CMPf     v13, v-4
-   92  19 *    JS       -72              (d:22)
-- 26,2 -
-            3:
-   94  19 *    PshV4    v-4
-   95  20 *    PshV4    v13
-   96  21 *    CALL     169           (float GetRemainingTime(float, float))
-   98  19 *    CpyRtoV4 v15
+   25  19 *    CMPf     v13, v-5
+   27  19 *    JNS      +54              (d:83)
+   29  19 *    SUSPEND
+- 13,4 -
             {
-   99  19 *    PSF      v8
-  100  21 *    CALLSYS  114           (CColor::~CColor())
+   30  19 *    PshVPtr  v0
+   31  21 *    CALLSYS  153           (int CAnimation::GetStopType())
+   33  19 *    CpyRtoV4 v14
+   34  19 *    CMPIi    v14, 3
+   36  19 *    JNZ      +12              (d:50)
+- 14,5 -
+   38  19 *    CALLSYS  108           (float GetElapsedTime())
+   40  19 *    CpyRtoV4 v15
+            {
+   41  19 *    PSF      v8
+   42  21 *    CALLSYS  114           (CColor::~CColor())
                ObjInfo  v8, 0
-  102  19 *    PSF      v4
-  103  21 *    CALLSYS  114           (CColor::~CColor())
+   44  19 *    PSF      v4
+   45  21 *    CALLSYS  114           (CColor::~CColor())
                ObjInfo  v4, 0
             }
-  105  19 *    CpyVtoR4 v15
+   47  19 *    CpyVtoR4 v15
+   48  19 *    JMP      +87              (d:137)
+- 16,4 -
+            4:
+   50  19 *    DIVf     v14, v13, v-5
+   52  19 *    PshV4    v14
+   53  20 *    PSF      v12
+   54  22 *    PSF      v8
+   55  24 *    CALLSYS  120           (CColor CColor::opMul(float))
+               ObjInfo  v12, 1
+   57  19 *    VAR      v12
+   58  21 *    PSF      v19
+   59  23 *    PSF      v4
+   60  25 *    GETREF   4
+   61  25 *    CALLSYS  116           (CColor CColor::opAdd(const CColor&in))
+               ObjInfo  v19, 1
+   63  19 *    PSF      v12
+   64  21 *    CALLSYS  114           (CColor::~CColor())
+               ObjInfo  v12, 0
+   66  19 *    VAR      v19
+   67  21 *    PshVPtr  v0
+   68  23 *    GETREF   2
+   69  23 *    CALLSYS  158           (void CAnimation::SetColor(const CColor&in))
+   71  19 *    PSF      v19
+   72  21 *    CALLSYS  114           (CColor::~CColor())
+- 17,4 -
+               ObjInfo  v19, 0
+   74  19 *    CALLSYS  110           (void Suspend())
+- 18,4 -
+   76  19 *    CALLSYS  108           (float GetElapsedTime())
+   78  19 *    CpyRtoV4 v15
+   79  19 *    ADDf     v13, v13, v15
+            }
+   81  19 *    JMP      -58              (d:25)
+            3:
+   83  19 *    JMP      +38              (d:123)
+- 21,3 -
+            1:
+            6:
+   85  19 *    CMPf     v13, v-5
+   87  19 *    JNS      +34              (d:123)
+   89  19 *    SUSPEND
+- 23,4 -
+            {
+   90  19 *    DIVf     v14, v13, v-5
+   92  19 *    PshV4    v14
+   93  20 *    PSF      v19
+   94  22 *    PSF      v8
+   95  24 *    CALLSYS  120           (CColor CColor::opMul(float))
+               ObjInfo  v19, 1
+   97  19 *    VAR      v19
+   98  21 *    PSF      v12
+   99  23 *    PSF      v4
+  100  25 *    GETREF   4
+  101  25 *    CALLSYS  116           (CColor CColor::opAdd(const CColor&in))
+               ObjInfo  v12, 1
+  103  19 *    PSF      v19
+  104  21 *    CALLSYS  114           (CColor::~CColor())
+               ObjInfo  v19, 0
+  106  19 *    VAR      v12
+  107  21 *    PshVPtr  v0
+  108  23 *    GETREF   2
+  109  23 *    CALLSYS  158           (void CAnimation::SetColor(const CColor&in))
+  111  19 *    PSF      v12
+  112  21 *    CALLSYS  114           (CColor::~CColor())
+- 24,4 -
+               ObjInfo  v12, 0
+  114  19 *    CALLSYS  110           (void Suspend())
+- 25,4 -
+  116  19 *    CALLSYS  108           (float GetElapsedTime())
+  118  19 *    CpyRtoV4 v14
+  119  19 *    ADDf     v13, v13, v14
+            }
+  121  19 *    JMP      -38              (d:85)
+- 28,2 -
+            7:
+            5:
+  123  19 *    VAR      v-2
+  124  21 *    PshVPtr  v0
+  125  23 *    GETOBJREF 2
+  126  23 *    CALLSYS  158           (void CAnimation::SetColor(const CColor&in))
+- 30,2 -
+  128  19 *    SUBf     v14, v13, v-5
+            {
+  130  19 *    PSF      v8
+  131  21 *    CALLSYS  114           (CColor::~CColor())
+               ObjInfo  v8, 0
+  133  19 *    PSF      v4
+  134  21 *    CALLSYS  114           (CColor::~CColor())
+               ObjInfo  v4, 0
+            }
+  136  19 *    CpyVtoR4 v14
             0:
-  106  19 *    RET      6
+  137  19 *    RET      7

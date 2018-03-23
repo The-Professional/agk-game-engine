@@ -4,7 +4,7 @@
 // Game lib dependencies
 #include <common\defs.h>
 #include <common\bitmask.h>
-#include <common\color.h>
+#include <common\vector4.h>
 #include <utilities\jsonparsehelper.h>
 
 // Standard lib dependencies
@@ -33,7 +33,7 @@ public:
     float GetTextSpacing() const;
     float GetLineSpacing() const;
     float GetMaxWidth() const;
-    const CColor & GetColor() const;
+    const CVector4 & GetColor() const;
     NDefs::ETextAlignment GetTextAlignment() const;
     const CBitmask<uint> & GetAlignment() const;
     const std::vector<std::string> & GetAnimationList() const;
@@ -59,7 +59,7 @@ private:
     float _maxWidth = 100;
 
     // The color of the text.
-    CColor _color;
+    CVector4 _color = 1;
 
     // The alignment of the text. (i.e. left, right, center)
     NDefs::ETextAlignment _textAlignment = NDefs::ETA_LEFT;

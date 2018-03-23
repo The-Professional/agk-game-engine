@@ -25,12 +25,12 @@ public:
     void LoadFromIter( const std::string & name, nlohmann::json::const_iterator iter );
 
     // Access functions for the sprite data.
-    const CSpriteVisualData3D * GetVisualData() const;
+    CSpriteVisualData3D * GetVisualData() const;
+    CSpriteVisualData3D * GetVisualData();
     const std::string & GetName() const;
     const std::vector<std::string> & GetAnimationList() const;
 
     // Access functions for the default size of the sprite.
-    void SetSize( const CVector3 & size );
     const CVector3 & GetSize() const;
 
 private:

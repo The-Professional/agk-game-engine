@@ -88,10 +88,9 @@ void CAnimationComponent::Clear()
 /// *************************************************************************
 void CAnimationComponent::Play( const string & name, EStopType stopType )
 {
-    CAnimation * pAnimation = NGeneralFuncs::GetMapValue( name, _pAnimationList );
-
     // If no animation was found, leave.
-    if( !pAnimation )
+    auto animIter = _pAnimationList.find( name );
+    if( animIter == _pAnimationList.end() )
         return;
 
     // If this animation is already queued up, don't queue it again.
@@ -100,7 +99,7 @@ void CAnimationComponent::Play( const string & name, EStopType stopType )
         return;
 
     // Get any conflicting animation playing.
-    CAnimation * pConflict = GetConflictingAnimation( pAnimation );
+    CAnimation * pConflict = GetConflictingAnimation( animIter->second );
 
     // If the end animation is null, it means we ignore this play call altogether if
     // a conflicting animation is playing. 
@@ -109,7 +108,7 @@ void CAnimationComponent::Play( const string & name, EStopType stopType )
 
     // The pause stop type is only acknowledged if the current conflicting animation is
     // the one we're trying to play.
-    if( stopType == EST_PAUSE && pAnimation == pConflict )
+    if( stopType == EST_PAUSE && animIter->second == pConflict )
         // If the animation is playing but currently paused, unpause it.
         if( pConflict->GetStopType() == EST_PAUSE )
             pConflict->Stop( EST_NULL );
@@ -122,27 +121,33 @@ void CAnimationComponent::Play( const string & name, EStopType stopType )
             pConflict->Stop( stopType );
 
         // Add this animation to the queue.
-        _pAnimationQueue.emplace( name, pAnimation );
+        _pAnimationQueue.emplace( name, animIter->second );
     }
 }
 
 
 /// *************************************************************************
 /// <summary>
+/// Stop all animations.
+/// </summary>
+/// <param name="stopType"> How to end the animations. </param>
+/// *************************************************************************
+void CAnimationComponent::Stop( NDefs::EStopType stopType )
+{
+    for( auto animIter : _pPlayingList )
+        animIter.second->Stop( stopType );
+}
+
+/// <summary>
 /// Stop an animation.
 /// </summary>
 /// <param name="name"> Name of the animation to stop. </param>
 /// <param name="stopType"> How to end the animation. </param>
-/// *************************************************************************
 void CAnimationComponent::Stop( const std::string & name, NDefs::EStopType stopType )
 {
-    CAnimation * pAnimation = NGeneralFuncs::GetMapValue( name, _pPlayingList );
-
-    // If the animation isn't playing, ignore the stop.
-    if( !pAnimation )
-        return;
-
-    pAnimation->Stop( stopType );
+    auto iter = _pPlayingList.find( name );
+    if( iter != _pPlayingList.end() )
+        iter->second->Stop( stopType );
 }
 
 
@@ -150,26 +155,31 @@ void CAnimationComponent::Stop( const std::string & name, NDefs::EStopType stopT
 /// <summary>
 /// Whether or not an animation is playing.
 /// </summary>
-/// <param name="name"> Name of the animation to stop. </param>
 /// <param name="includePaused"> If paused animations should be consider "playing". </param>
 /// *************************************************************************
+bool CAnimationComponent::IsPlaying( bool includePaused )
+{
+    if( includePaused )
+        return _pPlayingList.size() > 0;
+
+    for( auto animIter : _pPlayingList )
+        if( animIter.second->GetStopType() != EST_PAUSE )
+            return true;
+
+    return false;
+}
+
+/// <summary>
+/// Whether or not an animation is playing.
+/// </summary>
+/// <param name="name"> Name of the animation to stop. </param>
+/// <param name="includePaused"> If paused animations should be consider "playing". </param>
 bool CAnimationComponent::IsPlaying( const std::string & name, bool includePaused )
 {
-    // If no name was passed, check if any animations are playing.
-    if( name == "" )
+    auto iter = _pPlayingList.find( name );
+    if( iter != _pPlayingList.end() )
     {
-        if( includePaused )
-            return _pPlayingList.size() > 0;
-
-        for( auto animIter : _pPlayingList )
-            if( animIter.second->GetEndType() != EST_PAUSE )
-                return true;
-    }
-    
-    CAnimation * pAnimation = NGeneralFuncs::GetMapValue( name, _pPlayingList );
-    if( pAnimation )
-    {
-        if( includePaused && pAnimation->GetEndType() != EST_PAUSE )
+        if( includePaused && iter->second->GetStopType() != EST_PAUSE )
             return false;
 
         return true;
@@ -227,12 +237,11 @@ void CAnimationComponent::Update()
 /// *************************************************************************
 CAnimation * CAnimationComponent::GetConflictingAnimation( const string & name )
 {
-    CAnimation * pAnimation = NGeneralFuncs::GetMapValue( name, _pAnimationList );
+    auto iter = _pAnimationList.find( name );
+    if( iter != _pAnimationList.end() )
+        return GetConflictingAnimation( iter->second );
 
-    if( !pAnimation )
-        return nullptr;
-
-    return GetConflictingAnimation( pAnimation );
+    return nullptr;
 }
 
 

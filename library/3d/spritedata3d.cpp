@@ -34,7 +34,6 @@ CSpriteData3D::~CSpriteData3D()
 /// <summary>
 /// Load the sprite data from the passed in iterator.
 /// </summary>
-/// <param name="iter"> JSON node to parse. </param>
 /// *************************************************************************
 void CSpriteData3D::LoadFromIter( const std::string & name, nlohmann::json::const_iterator iter )
 {
@@ -55,9 +54,16 @@ void CSpriteData3D::LoadFromIter( const std::string & name, nlohmann::json::cons
 /// <summary>
 /// Get the visual data of the sprite.
 /// </summary>
-/// <returns> Object holding all of the sprite's visual data. </returns>
 /// *************************************************************************
-const CSpriteVisualData3D * CSpriteData3D::GetVisualData() const
+CSpriteVisualData3D * CSpriteData3D::GetVisualData() const
+{
+    return _pVisualData;
+}
+
+/// <summary>
+/// Get the visual data of the sprite.
+/// </summary>
+CSpriteVisualData3D * CSpriteData3D::GetVisualData()
 {
     return _pVisualData;
 }
@@ -67,7 +73,6 @@ const CSpriteVisualData3D * CSpriteData3D::GetVisualData() const
 /// <summary> 
 /// Get the name of the sprite.
 /// </summary>
-/// <returns> Sprite's name. </returns>
 /// *************************************************************************
 const std::string & CSpriteData3D::GetName() const
 {
@@ -91,24 +96,12 @@ const vector<string> & CSpriteData3D::GetAnimationList() const
 /// Set the default size of the sprite.
 /// </summary>
 /// *************************************************************************
-void CSpriteData3D::SetSize( const CVector3 & size )
-{
-    if( _pVisualData )
-        _pVisualData->SetSize( size );
-}
-
-
-/// *************************************************************************
-/// <summary> 
-/// Set the default size of the sprite.
-/// </summary>
-/// *************************************************************************
 const CVector3 & CSpriteData3D::GetSize() const
 {
-    if( !_pVisualData )
-        throw NExcept::CCriticalException( "Error",
-                                           "CSpriteData3D::GetSize()",
-                                           "Failed to get size of sprite '" + _name + "'." );
+    if( _pVisualData )
+        return _pVisualData->GetSize();
 
-    return _pVisualData->GetSize();
+    throw NExcept::CCriticalException( "Error",
+                                       "CSpriteData3D::GetSize()",
+                                       "Failed to get size of sprite '" + _name + "'." );
 }

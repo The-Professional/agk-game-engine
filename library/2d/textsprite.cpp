@@ -179,7 +179,10 @@ void CTextSprite::ApplyScale()
 /// *************************************************************************
 void CTextSprite::ApplyColor()
 {
-    agk::SetTextColor( _id, _color.r, _color.g, _color.b, _color.a );
+    agk::SetTextColor( _id, (int)(_color.r * 255),
+                            (int)(_color.g * 255),
+                            (int)(_color.b * 255),
+                            (int)(_color.a * 255) );
 }
 
 

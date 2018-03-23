@@ -12,7 +12,7 @@
 // Forward declarations
 class CVector2;
 class CVector3;
-class CColor;
+class CVector4;
 class CSpriteData3D;
 class CInputState;
 class CInputMapping;
@@ -61,7 +61,7 @@ namespace NParseHelper
     bool GetAlignment( nlohmann::json::const_iterator iter, const std::string & tag, CBitmask<uint> & alignment );
 
 	// Parse color tags.
-	bool GetColor( nlohmann::json::const_iterator iter, CColor & color );
+	bool GetColor( nlohmann::json::const_iterator iter, CVector4 & color );
 
 	// Parse orientation tags.
 	bool GetOrientation( nlohmann::json::const_iterator iter, NDefs::EOrentation & orientation );

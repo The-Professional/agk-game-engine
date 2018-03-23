@@ -79,7 +79,7 @@ void iObject::Set( const CCollectionObject & collectionObject )
         SetTextAlignment( collectionObject.textAlignment );
 
     if( collectionObject.fields.Contains( CCollectionObject::TEXT_SIZE ) )
-        SetTextSize( collectionObject.size.d );
+        SetTextSize( collectionObject.size.x );
 }
 
 
@@ -615,7 +615,7 @@ CVector3 iObject::GetWorldScale() const
 /// Set the object's color. 
 /// </summary>
 /// *************************************************************************
-void iObject::SetColor( int r, int g, int b, int a )
+void iObject::SetColor( float r, float g, float b, float a )
 {
     _color.r = r;
     _color.g = g;
@@ -626,7 +626,7 @@ void iObject::SetColor( int r, int g, int b, int a )
 }
 
 // Set the object's color. 
-void iObject::SetColor( int r, int g, int b )
+void iObject::SetColor( float r, float g, float b )
 {
     _color.r = r;
     _color.g = g;
@@ -636,7 +636,7 @@ void iObject::SetColor( int r, int g, int b )
 }
 
 // Set the object's color. 
-void iObject::SetColor( const CColor & color )
+void iObject::SetColor( const CVector4 & color )
 {
     _color = color;
 
@@ -644,7 +644,7 @@ void iObject::SetColor( const CColor & color )
 }
 
 // Set the object's red value. 
-void iObject::SetColorR( int r )
+void iObject::SetColorR( float r )
 {
     _color.r = r;
 
@@ -652,7 +652,7 @@ void iObject::SetColorR( int r )
 }
 
 // Set the object's green value. 
-void iObject::SetColorG( int g )
+void iObject::SetColorG( float g )
 {
     _color.g = g;
 
@@ -660,7 +660,7 @@ void iObject::SetColorG( int g )
 }
 
 // Set the object's blue value. 
-void iObject::SetColorB( int b )
+void iObject::SetColorB( float b )
 {
     _color.b = b;
 
@@ -668,7 +668,7 @@ void iObject::SetColorB( int b )
 }
 
 // Set the object's alpha value. 
-void iObject::SetColorA( int a )
+void iObject::SetColorA( float a )
 {
     _color.a = a;
 
@@ -681,7 +681,7 @@ void iObject::SetColorA( int a )
 /// Increment the object's color.
 /// </summary>
 /// *************************************************************************
-void iObject::IncColor( int r, int g, int b, int a )
+void iObject::IncColor( float r, float g, float b, float a )
 {
     _color.r += r;
     _color.g += g;
@@ -692,7 +692,7 @@ void iObject::IncColor( int r, int g, int b, int a )
 }
 
 // Increment the object's color.
-void iObject::IncColor( int r, int g, int b )
+void iObject::IncColor( float r, float g, float b )
 {
     _color.r += r;
     _color.g += g;
@@ -702,7 +702,7 @@ void iObject::IncColor( int r, int g, int b )
 }
 
 // Increment the object's color.
-void iObject::IncColor( const CColor & color )
+void iObject::IncColor( const CVector4 & color )
 {
     _color += color;
 
@@ -715,8 +715,22 @@ void iObject::IncColor( const CColor & color )
 /// Get the object's color. 
 /// </summary>
 /// *************************************************************************
-const CColor & iObject::GetColor() const
+const CVector4 & iObject::GetColor() const
 {
+    return _color;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the object's world color. 
+/// </summary>
+/// *************************************************************************
+CVector4 iObject::GetWorldColor() const
+{
+    if( _pParent )
+        return _color * _pParent->GetWorldColor();
+
     return _color;
 }
 
@@ -761,6 +775,58 @@ void iObject::Play( const std::string & name, EStopType stopType )
 {
     if( _pAnimationComponent )
         _pAnimationComponent->Play( name, stopType );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Stop all animations.
+/// </summary>
+/// <param name="stopType"> How to end the animations. </param>
+/// *************************************************************************
+void iObject::Stop( NDefs::EStopType stopType )
+{
+    if( _pAnimationComponent )
+        _pAnimationComponent->Stop( stopType );
+}
+
+/// <summary>
+/// Stop an animation.
+/// </summary>
+/// <param name="name"> Name of the animation to stop. </param>
+/// <param name="stopType"> How to end the animation. </param>
+void iObject::Stop( const std::string & name, NDefs::EStopType stopType )
+{
+    if( _pAnimationComponent )
+        _pAnimationComponent->Stop( name, stopType );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Whether or not an animation is playing.
+/// </summary>
+/// <param name="includePaused"> If paused animations should be consider "playing". </param>
+/// *************************************************************************
+bool iObject::IsPlaying( bool includePaused )
+{
+    if( _pAnimationComponent )
+        return _pAnimationComponent->IsPlaying( includePaused );
+
+    return false;
+}
+
+/// <summary>
+/// Whether or not an animation is playing.
+/// </summary>
+/// <param name="name"> Name of the animation to stop. </param>
+/// <param name="includePaused"> If paused animations should be consider "playing". </param>
+bool iObject::IsPlaying( const std::string & name, bool includePaused )
+{
+    if( _pAnimationComponent )
+        return _pAnimationComponent->IsPlaying( name, includePaused );
+
+    return false;
 }
 
 
@@ -830,14 +896,17 @@ void iObject::Transform()
         if( _pParent->GetModified().Contains( ETT_APPLIED ) )
         {
             // If the parent was transformed by anything, the position has changed.
-            if( _pParent->GetModified().ContainsOne( ETT_POSITION | ETT_ROTATION | ETT_SIZE | ETT_SCALE ) )
+            if( _pParent->GetModified().ContainsOne( ETT_POSITION ) )
                 _modified.Add( ETT_POSITION );
 
             if( _pParent->GetModified().Contains( ETT_ROTATION ) )
-                _modified.Add( ETT_ROTATION );
+                _modified.Add( ETT_POSITION | ETT_ROTATION );
 
-            if( _pParent->GetModified().ContainsOne( ETT_SIZE | ETT_SCALE ) )
-                _modified.Add( ETT_SCALE );
+            if( _pParent->GetModified().Contains( ETT_SCALE ) )
+                _modified.Add( ETT_POSITION | ETT_SCALE );
+
+            if( _pParent->GetModified().Contains( ETT_COLOR ) )
+                _modified.Add( ETT_COLOR );
         }
     }
 

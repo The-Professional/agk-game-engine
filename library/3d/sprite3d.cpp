@@ -62,7 +62,7 @@ void CSprite3D::Init( CSpriteData3D * pData )
     Clear();
 
     _pData = pData;
-    const CSpriteVisualData3D * pVisual = _pData->GetVisualData();
+    CSpriteVisualData3D * pVisual = _pData->GetVisualData();
 
     if( pVisual )
     {
@@ -138,12 +138,56 @@ void CSprite3D::Init( CSpriteData3D * pData )
                 agk::SetObjectReceiveShadow( _id, pVisual->WillReceiveShadow() );
             }
 
-            // If the data does not have a default size, set it to whatever the created sprite's size is.
-            if( !pData->GetVisualData()->IsSizeSet() )
-                pData->SetSize( GetWorldSize() );
+            // If the size is set in the data, pass the size to AGK.
+            if( pVisual->IsSizeSet() )
+            {
+                _size = pVisual->GetSize();
 
-            // Get the size of the sprite.
-            SetSize( pData->GetSize() );
+                if( !pVisual->IsSizeSameAsFile() )
+                {
+                    // If at least two dimensions are set, apply the permanent scale.
+                    if( !_size.IsEmptyX() + !_size.IsEmptyY() + !_size.IsEmptyZ() > 1 )
+                    {
+                        CVector3 scale = _size / GetWorldSize();
+                        agk::SetObjectScalePermanent( _id, scale.x, scale.y, scale.z );
+                    }
+                    // If only the width is set, calculate the height and depth.
+                    else if( _size.w > 0 )
+                    {
+                        CVector3 size = GetWorldSize();
+                        float scale = _size.w / size.w;
+                        _size.h = scale * size.h;
+                        _size.d = scale * size.d;
+                        agk::SetObjectScalePermanent( _id, scale, scale, scale );
+                    }
+                    // If only the height is set, calculate the width and depth.
+                    else if( _size.h > 0 )
+                    {
+                        CVector3 size = GetWorldSize();
+                        float scale = _size.h / size.h;
+                        _size.w = scale * size.w;
+                        _size.d = scale * size.d;
+                        agk::SetObjectScalePermanent( _id, scale, scale, scale );
+                    }
+                    // If only the depth is set, calculate the width and height.
+                    else if( _size.d > 0 )
+                    {
+                        CVector3 size = GetWorldSize();
+                        float scale = _size.d / size.d;
+                        _size.w = scale * size.w;
+                        _size.h = scale * size.h;
+                        agk::SetObjectScalePermanent( _id, scale, scale, scale );
+                    }
+
+                    pVisual->SetSize( _size );
+                }
+            }
+            else
+            {
+                // If the data does not have a default size, set it to whatever the created sprite's size is.
+                pVisual->SetSize( GetWorldSize() );
+                _size = pVisual->GetSize();
+            }
 
             // Set the sprite's color.
             SetColor( pVisual->GetColor() );
@@ -266,7 +310,10 @@ void CSprite3D::ApplyScale()
 /// *************************************************************************
 void CSprite3D::ApplyColor()
 {
-    agk::SetObjectColor( _id, _color.r, _color.g, _color.b, _color.a );
+    agk::SetObjectColor( _id, (int)(_color.r * 255),
+                              (int)(_color.g * 255),
+                              (int)(_color.b * 255),
+                              (int)(_color.a * 255) );
 }
 
 

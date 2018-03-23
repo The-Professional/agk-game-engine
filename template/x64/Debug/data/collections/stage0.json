@@ -5,7 +5,7 @@
     "sprite3d": [
       {
         "name": "ball",
-        "position":  {"x": 4, "y": 1, "z": 0}
+        "position":  {"x": 8, "y": 1, "z": 0}
       },
 
       {

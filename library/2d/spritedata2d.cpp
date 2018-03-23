@@ -56,7 +56,15 @@ void CSpriteData2D::LoadFromIter( const string & name, json::const_iterator iter
 /// Get the visual data of the sprite.
 /// </summary>
 /// *************************************************************************
-const CSpriteVisualData2D * CSpriteData2D::GetVisualData() const
+CSpriteVisualData2D * CSpriteData2D::GetVisualData() const
+{
+    return _pVisualData;
+}
+
+/// <summary>
+/// Get the visual data of the sprite.
+/// </summary>
+CSpriteVisualData2D * CSpriteData2D::GetVisualData()
 {
     return _pVisualData;
 }
@@ -100,24 +108,12 @@ const vector<vector<string>> & CSpriteData2D::GetAnimationList() const
 /// Set the default size of the sprite.
 /// </summary>
 /// *************************************************************************
-void CSpriteData2D::SetSize( const CVector2 & size )
-{
-    if( _pVisualData )
-        _pVisualData->SetSize( size );
-}
-
-
-/// *************************************************************************
-/// <summary> 
-/// Set the default size of the sprite.
-/// </summary>
-/// *************************************************************************
 const CVector2 & CSpriteData2D::GetSize() const
 {
-    if( !_pVisualData )
-        throw NExcept::CCriticalException( "Error",
-                                           "CSpriteData2D::GetSize()",
-                                           "Failed to get size of sprite '" + _name + "'." );
-        
-    return _pVisualData->GetSize();
+    if( _pVisualData )
+        return _pVisualData->GetSize();
+
+    throw NExcept::CCriticalException( "Error",
+                                       "CSpriteData2D::GetSize()",
+                                       "Failed to get size of sprite '" + _name + "'." );
 }

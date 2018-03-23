@@ -4,7 +4,7 @@
 // Game lib dependencies
 #include <common\defs.h>
 #include <common\vector3.h>
-#include <common\color.h>
+#include <common\vector4.h>
 
 // Standard lib dependencies
 #include <string>
@@ -69,14 +69,14 @@ public:
     const CVector3 & GetSize() const;
 
     // Access functions for the object's color.
-    void SetColor( const CColor & color );
-    void IncColor( const CColor & color );
-    const CColor & GetColor() const;
+    void SetColor( const CVector4 & color );
+    void IncColor( const CVector4 & color );
+    const CVector4 & GetColor() const;
 
     // Access functions for the object's transparency.
-    void SetColorA( int alpha );
-    void IncColorA( int alpha );
-    int GetColorA() const;
+    void SetColorA( float alpha );
+    void IncColorA( float alpha );
+    float GetColorA() const;
 
     // Access functions for the object's visibility.
     void SetVisible( bool visible );

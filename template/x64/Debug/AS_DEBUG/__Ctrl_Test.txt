@@ -15,7 +15,7 @@ Variables:
                VarDecl  0
                VarDecl  1
     0  18 *    PshVPtr  v0
-    1  20 *    CALLSYS  163           (const CColor& CAnimation::GetColor())
+    1  20 *    CALLSYS  169           (const CColor& CAnimation::GetColor())
     3  18 *    PshRPtr
     4  20 *    PSF      v4
     5  22 *    CALLSYS  112           (CColor::CColor(const CColor&in))
@@ -23,11 +23,11 @@ Variables:
                ObjInfo  v4, 1
                VarDecl  2
     7  18 *    PshC4    0x0          (i:0, f:0)
-    9  19 *    PshC4    0xff          (i:255, f:3.57331e-43)
-   11  20 *    PshC4    0xff          (i:255, f:3.57331e-43)
-   13  21 *    PshC4    0xff          (i:255, f:3.57331e-43)
+    9  19 *    PshC4    0x3f800000          (i:1065353216, f:1)
+   11  20 *    PshC4    0x3f800000          (i:1065353216, f:1)
+   13  21 *    PshC4    0x3f800000          (i:1065353216, f:1)
    15  22 *    PSF      v8
-   16  24 *    CALLSYS  113           (CColor::CColor(int, int, int, int))
+   16  24 *    CALLSYS  113           (CColor::CColor(float, float, float, float))
 - 8,2 -
                ObjInfo  v8, 1
                VarDecl  3
@@ -38,104 +38,108 @@ Variables:
 - 14,3 -
             1:
             {
-   22  18 *    PshV4    v13
-   23  19 *    PshC4    0x3f800000          (i:1065353216, f:1)
-   25  20 *    PSF      v8
-   26  22 *    PSF      v18
-   27  24 *    CALLSYS  112           (CColor::CColor(const CColor&in))
+   22  18 *    SetV1    v9, 0x1
+   24  18 *    PshV4    v9
+   25  19 *    PshC4    0x3f800000          (i:1065353216, f:1)
+   27  20 *    PshV4    v13
+   28  21 *    PSF      v8
+   29  23 *    PSF      v18
+   30  25 *    CALLSYS  112           (CColor::CColor(const CColor&in))
                ObjInfo  v18, 1
-   29  20 *    VAR      v18
-   30  22 *    PshVPtr  v0
-   31  24 *    GETREF   2
-   32  24 *    CALL     167           (float ColorTo(CAnimation&inout, CColor&in, float, float = 0))
-   34  18 *    CpyRtoV4 v12
-   35  18 *    PSF      v18
-   36  20 *    CALLSYS  114           (CColor::~CColor())
+   32  21 *    VAR      v18
+   33  23 *    PshVPtr  v0
+   34  25 *    GETREF   2
+   35  25 *    CALL     173           (float ColorTo(CAnimation&inout, CColor&in, float, float, bool = true))
+   37  18 *    CpyRtoV4 v11
+   38  18 *    PSF      v18
+   39  20 *    CALLSYS  114           (CColor::~CColor())
                ObjInfo  v18, 0
-   38  18 *    CpyVtoV4 v13, v12
+   41  18 *    CpyVtoV4 v13, v11
 - 16,3 -
-   40  18 *    IncVi    v14
+   43  18 *    IncVi    v14
             }
             2:
-   41  18 *    SUSPEND
+   44  18 *    SUSPEND
 - 18,9 -
-   42  18 *    PshVPtr  v0
-   43  20 *    CALLSYS  148           (int CAnimation::GetLoopCount())
-   45  18 *    CpyRtoV4 v12
-   46  18 *    CMPIi    v12, 0
-   48  18 *    JNZ      +4              (d:54)
-   50  18 *    SetV1    v11, 0x1
-   52  18 *    JMP      +10              (d:64)
+   45  18 *    PshVPtr  v0
+   46  20 *    CALLSYS  154           (int CAnimation::GetLoopCount())
+   48  18 *    CpyRtoV4 v11
+   49  18 *    CMPIi    v11, 0
+   51  18 *    JNZ      +4              (d:57)
+   53  18 *    SetV1    v10, 0x1
+   55  18 *    JMP      +10              (d:67)
             4:
-   54  18 *    PshVPtr  v0
-   55  20 *    CALLSYS  148           (int CAnimation::GetLoopCount())
-   57  18 *    CpyRtoV4 v11
-   58  18 *    CMPi     v14, v11
-   60  18 *    TS
-   61  18 *    CpyRtoV4 v12
-   62  18 *    CpyVtoV4 v11, v12
+   57  18 *    PshVPtr  v0
+   58  20 *    CALLSYS  154           (int CAnimation::GetLoopCount())
+   60  18 *    CpyRtoV4 v10
+   61  18 *    CMPi     v14, v10
+   63  18 *    TS
+   64  18 *    CpyRtoV4 v11
+   65  18 *    CpyVtoV4 v10, v11
             5:
-   64  18 *    CpyVtoR4 v11
-   65  18 *    JLowNZ   +4              (d:71)
-   67  18 *    SetV4    v12, 0x0          (i:0, f:0)
-   69  18 *    JMP      +10              (d:81)
+   67  18 *    CpyVtoR4 v10
+   68  18 *    JLowNZ   +4              (d:74)
+   70  18 *    SetV4    v11, 0x0          (i:0, f:0)
+   72  18 *    JMP      +10              (d:84)
             6:
-   71  18 *    PshVPtr  v0
-   72  20 *    CALLSYS  147           (int CAnimation::GetStopType())
-   74  18 *    CpyRtoV4 v10
-   75  18 *    CMPIi    v10, 0
-   77  18 *    TZ
-   78  18 *    CpyRtoV4 v9
-   79  18 *    CpyVtoV4 v12, v9
+   74  18 *    PshVPtr  v0
+   75  20 *    CALLSYS  153           (int CAnimation::GetStopType())
+   77  18 *    CpyRtoV4 v9
+   78  18 *    CMPIi    v9, 0
+   80  18 *    TZ
+   81  18 *    CpyRtoV4 v12
+   82  18 *    CpyVtoV4 v11, v12
             7:
-   81  18 *    CpyVtoR4 v12
-   82  18 *    JLowNZ   -62              (d:22)
+   84  18 *    CpyVtoR4 v11
+   85  18 *    JLowNZ   -65              (d:22)
 - 20,2 -
             3:
-   84  18 *    PshVPtr  v0
-   85  20 *    CALLSYS  146           (int CAnimation::GetEndType())
-   87  18 *    CpyRtoV4 v11
-   88  18 *    CMPIi    v11, 1
-   90  18 *    JNZ      +7              (d:99)
+   87  18 *    PshVPtr  v0
+   88  20 *    CALLSYS  152           (int CAnimation::GetEndType())
+   90  18 *    CpyRtoV4 v10
+   91  18 *    CMPIi    v10, 1
+   93  18 *    JNZ      +7              (d:102)
 - 22,3 -
             {
-   92  18 *    VAR      v4
-   93  20 *    PshVPtr  v0
-   94  22 *    GETREF   2
-   95  22 *    CALLSYS  152           (void CAnimation::SetColor(const CColor&in))
+   95  18 *    VAR      v4
+   96  20 *    PshVPtr  v0
+   97  22 *    GETREF   2
+   98  22 *    CALLSYS  158           (void CAnimation::SetColor(const CColor&in))
             }
-   97  18 *    JMP      +23              (d:122)
+  100  18 *    JMP      +26              (d:128)
 - 24,7 -
             8:
-   99  18 *    PshVPtr  v0
-  100  20 *    CALLSYS  146           (int CAnimation::GetEndType())
-  102  18 *    CpyRtoV4 v12
-  103  18 *    CMPIi    v12, 2
-  105  18 *    JNZ      +15              (d:122)
+  102  18 *    PshVPtr  v0
+  103  20 *    CALLSYS  152           (int CAnimation::GetEndType())
+  105  18 *    CpyRtoV4 v11
+  106  18 *    CMPIi    v11, 2
+  108  18 *    JNZ      +18              (d:128)
 - 26,3 -
             {
-  107  18 *    PshV4    v13
-  108  19 *    PshC4    0x3e800000          (i:1048576000, f:0.25)
-  110  20 *    PSF      v4
-  111  22 *    PSF      v18
-  112  24 *    CALLSYS  112           (CColor::CColor(const CColor&in))
+  110  18 *    SetV1    v12, 0x0
+  112  18 *    PshV4    v12
+  113  19 *    PshC4    0x3e800000          (i:1048576000, f:0.25)
+  115  20 *    PshV4    v13
+  116  21 *    PSF      v4
+  117  23 *    PSF      v18
+  118  25 *    CALLSYS  112           (CColor::CColor(const CColor&in))
                ObjInfo  v18, 1
-  114  20 *    VAR      v18
-  115  22 *    PshVPtr  v0
-  116  24 *    GETREF   2
-  117  24 *    CALL     167           (float ColorTo(CAnimation&inout, CColor&in, float, float = 0))
-  119  18 *    PSF      v18
-  120  20 *    CALLSYS  114           (CColor::~CColor())
+  120  21 *    VAR      v18
+  121  23 *    PshVPtr  v0
+  122  25 *    GETREF   2
+  123  25 *    CALL     173           (float ColorTo(CAnimation&inout, CColor&in, float, float, bool = true))
+  125  18 *    PSF      v18
+  126  20 *    CALLSYS  114           (CColor::~CColor())
 - 28,2 -
                ObjInfo  v18, 0
             }
             10:
             9:
-  122  18 *    PSF      v8
-  123  20 *    CALLSYS  114           (CColor::~CColor())
+  128  18 *    PSF      v8
+  129  20 *    CALLSYS  114           (CColor::~CColor())
                ObjInfo  v8, 0
-  125  18 *    PSF      v4
-  126  20 *    CALLSYS  114           (CColor::~CColor())
+  131  18 *    PSF      v4
+  132  20 *    CALLSYS  114           (CColor::~CColor())
                ObjInfo  v4, 0
             0:
-  128  18 *    RET      2
+  134  18 *    RET      2

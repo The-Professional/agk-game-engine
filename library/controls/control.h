@@ -2,7 +2,7 @@
 #define __control_h__
 
 // Physical component dependency
-#include <common\iobject.h>
+#include <2d\sprite2d.h>
 
 // Game lib dependencies
 #include <common\defs.h>
@@ -18,23 +18,12 @@
 /// Class to hold base control behavior.
 /// </summary>
 /// *************************************************************************
-class CControl : public iObject
+class CControl : public CSprite2D
 {
 public:
 
-    // Delete the dummy sprite that belongs to the AGK id.
+    // Delete the object that belongs to the AGK id.
     virtual void DeleteObject();
-
-    // Update AGK with the current color and transformation data.
-    virtual void ApplyPosition( const CVector3 & position );
-    virtual void ApplyRotation( const CVector3 & rotation );
-    virtual void ApplySize( const CVector3 & size );
-    virtual void ApplyColor( const CColor & color );
-
-    // Get the current transformation data set in AGK.
-    virtual CVector3 GetWorldPos() const;
-    virtual CVector3 GetWorldRot() const;
-    virtual CVector3 GetWorldSize() const;
 
     // Get the control type.
     NDefs::EControlType GetControlType() const;
@@ -46,8 +35,17 @@ public:
     // Play an animation.
     virtual void Play( const std::string & name, NDefs::EStopType stopType = NDefs::EST_NULL );
 
-    // Reset the control's position using its previous position.
-    virtual void Reposition();
+    // Stop an animation.
+    virtual void Stop( NDefs::EStopType = NDefs::EST_STOP );
+    virtual void Stop( const std::string & name, NDefs::EStopType stopType = NDefs::EST_STOP );
+
+    // Whether or not an animation is playing.
+    virtual bool IsPlaying( bool includePaused = false );
+    virtual bool IsPlaying( const std::string & name, bool includePaused = false );
+
+private:
+
+    void ApplyColor();
 
 private:
 

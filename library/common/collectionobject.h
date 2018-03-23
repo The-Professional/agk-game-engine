@@ -4,7 +4,7 @@
 // Game lib dependencies
 #include <common\defs.h>
 #include <common\vector3.h>
-#include <common\color.h>
+#include <common\vector4.h>
 #include <common\bitmask.h>
 #include <utilities\jsonparsehelper.h>
 
@@ -41,7 +41,7 @@ public:
     CVector3 position, rotation, size;
 
     // The object's color.
-    CColor color;
+    CVector4 color;
 
     // The object's visibility.
     bool visible = true;

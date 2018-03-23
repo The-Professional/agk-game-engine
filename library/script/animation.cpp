@@ -284,7 +284,7 @@ const CVector3 & CAnimation::GetSize() const
 /// Set the object's color.
 /// </summary>
 /// *************************************************************************
-void CAnimation::SetColor( const CColor & color )
+void CAnimation::SetColor( const CVector4 & color )
 {
     _pObject->SetColor( color );
 }
@@ -295,7 +295,7 @@ void CAnimation::SetColor( const CColor & color )
 /// Increment the object's color.
 /// </summary>
 /// *************************************************************************
-void CAnimation::IncColor( const CColor & color )
+void CAnimation::IncColor( const CVector4 & color )
 {
     _pObject->IncColor( color );
 }
@@ -306,7 +306,7 @@ void CAnimation::IncColor( const CColor & color )
 /// Get the object's color.
 /// </summary>
 /// *************************************************************************
-const CColor & CAnimation::GetColor() const
+const CVector4 & CAnimation::GetColor() const
 {
     return _pObject->GetColor();
 }
@@ -317,7 +317,7 @@ const CColor & CAnimation::GetColor() const
 /// Set the object's transparency.
 /// </summary>
 /// *************************************************************************
-void CAnimation::SetColorA( int a )
+void CAnimation::SetColorA( float a )
 {
     _pObject->SetColorA( a );
 }
@@ -328,7 +328,7 @@ void CAnimation::SetColorA( int a )
 /// Increment the object's transparency.
 /// </summary>
 /// *************************************************************************
-void CAnimation::IncColorA( int a )
+void CAnimation::IncColorA( float a )
 {
     _pObject->IncColor( 0, 0, 0, a );
 }
@@ -339,7 +339,7 @@ void CAnimation::IncColorA( int a )
 /// Get the object's transparency.
 /// </summary>
 /// *************************************************************************
-int CAnimation::GetColorA() const
+float CAnimation::GetColorA() const
 {
     return _pObject->GetColor().a;
 }

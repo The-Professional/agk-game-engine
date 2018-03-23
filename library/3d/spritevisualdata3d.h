@@ -4,8 +4,8 @@
 // Game lib dependencies
 #include <utilities\jsonparsehelper.h>
 #include <common\defs.h>
-#include <common\color.h>
 #include <common\vector3.h>
+#include <common\vector4.h>
 
 // Standard lib dependencies
 #include <string>
@@ -38,7 +38,7 @@ public:
     const std::string & GetShader() const;
 
     // Get the sprite's default color.
-    const CColor & GetColor() const;
+    const CVector4 & GetColor() const;
 
     // Get the sprite's image names.
     const std::string & GetTextureMap() const;
@@ -64,8 +64,11 @@ public:
     void SetSize( const CVector3 & size );
     const CVector3 & GetSize() const;
 
-    // Whether or not the size was set in the data file.
+    // Whether or not the size was set.
     bool IsSizeSet() const;
+
+    // Whether or not the size is the same as the file.
+    bool IsSizeSameAsFile() const;
 
 private:
 
@@ -79,7 +82,7 @@ private:
     std::string _shader;
 
     // Initial color of the sprite.
-    CColor _color;
+    CVector4 _color = 1;
 
     // Images to map onto the sprite.
     std::string _textureMap, _normalMap, _specularMap;
@@ -94,8 +97,11 @@ private:
     // If the sprite receives shadows cast upon it.
     bool _receiveShadow = false;
 
-    // Whether or not the size was set in the data file.
+    // Whether or not the size has been set.
     bool _sizeSet = false;
+
+    // Whether or not the size is the same as the file.
+    bool _sizeSameAsFile = false;
 
     // Size of the sprite.
     CVector3 _size;

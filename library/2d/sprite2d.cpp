@@ -60,7 +60,7 @@ void CSprite2D::Init( CSpriteData2D * pData )
     Clear();
 
     _pData = pData;
-    const CSpriteVisualData2D * pVisual = _pData->GetVisualData();
+    CSpriteVisualData2D * pVisual = _pData->GetVisualData();
 
     // Set the visual settings if a visual component exists.
     if( pVisual )
@@ -69,23 +69,42 @@ void CSprite2D::Init( CSpriteData2D * pData )
         int imageId = CResourceManager::Instance().LoadImage( pVisual->GetTextureMap() );
         _id = agk::CreateSprite( imageId );
 
-        // The height and width must be greater than zero to set the size.
-        if( pVisual->GetSize().w > 0 && pVisual->GetSize().h > 0 )
+        // Set the sprite color.
+        SetColor( pVisual->GetColor() );
+
+        // Handle the sprite size, if its set in the data.
+        if( pVisual->IsSizeSet() )
         {
             _size = pVisual->GetSize();
-            agk::SetSpriteSize( _size.w, _size.h );
+
+            // If the size is different from the file's, set the size in AGK.
+            if( !pVisual->IsSizeSameAsFile() )
+            {
+                // If both width and height are set, set the sprite size.
+                if( _size.w > 0 && _size.h > 0 )
+                    agk::SetSpriteSize( _id, _size.w, _size.h );
+                // If only the width is set, calculate the height.
+                else if( _size.w > 0 )
+                {
+                    float ratio = _size.w / agk::GetSpriteWidth( _id );
+                    _size.h *= ratio;
+                    agk::SetSpriteSize( _id, _size.w, _size.h );
+                }
+                // If only the height is set, calculate the width.
+                else if( _size.h > 0 )
+                {
+                    float ratio = _size.h / agk::GetSpriteHeight( _id );
+                    _size.w *= ratio;
+                    agk::SetSpriteSize( _id, _size.w, _size.h );
+                }
+            }
         }
         else
         {
             // If the data does not have a default size, set it to whatever the created sprite's size is.
-            if( !pData->GetVisualData()->IsSizeSet() )
-                pData->SetSize( GetWorldSize() );
-
-            SetSize( pData->GetSize() );
+            pVisual->SetSize( GetWorldSize() );
+            _size = pVisual->GetSize();
         }
-
-        // Set the sprite color.
-        SetColor( pVisual->GetColor() );
     }
 
     if( _pData->GetAnimationList().size() > 0 )
@@ -181,7 +200,16 @@ void CSprite2D::ApplyScale()
 /// *************************************************************************
 void CSprite2D::ApplyColor()
 {
-    agk::SetSpriteColor( _id, _color.r, _color.g, _color.b, _color.a );
+    if( _pParent )
+    {
+        CVector2 newScale = _pParent->GetWorldScale() * _scale;
+        agk::SetSpriteScale( _id, newScale.w, newScale.h );
+    }
+    else
+        agk::SetSpriteColor( _id, (int)(_color.r * 255 + 0.5f),
+                                  (int)(_color.g * 255 + 0.5f),
+                                  (int)(_color.b * 255 + 0.5f),
+                                  (int)(_color.a * 255 + 0.5f) );
 }
 
 

@@ -39,6 +39,11 @@ void CSpriteVisualData2D::LoadFromIter( nlohmann::json::const_iterator iter )
     NParseHelper::GetColor( iter, _color );
     NParseHelper::GetString( iter, "textureMap", _textureMap );
     _sizeSet = NParseHelper::GetWH( iter, "size", _size );
+
+    // If the size hasn't been set, whatever the size of this will be the same as its file.
+    // This means we don't have to resize anything after creating a sprite.
+    if( !_sizeSet )
+        _sizeSameAsFile = true;
 }
 
 
@@ -47,7 +52,7 @@ void CSpriteVisualData2D::LoadFromIter( nlohmann::json::const_iterator iter )
 /// Get the sprite's default color.
 /// </summary>
 /// *************************************************************************
-const CColor & CSpriteVisualData2D::GetColor() const
+const CVector4 & CSpriteVisualData2D::GetColor() const
 {
     return _color;
 }
@@ -94,10 +99,21 @@ const CVector2 & CSpriteVisualData2D::GetSize() const
 
 /// *************************************************************************
 /// <summary> 
-/// Whether or not the size was set in the data file.
+/// Whether or not the size was set.
 /// </summary>
 /// *************************************************************************
 bool CSpriteVisualData2D::IsSizeSet() const
 {
     return _sizeSet;
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Whether or not the size is the same as the file.
+/// </summary>
+/// *************************************************************************
+bool CSpriteVisualData2D::IsSizeSameAsFile() const
+{
+    return _sizeSameAsFile;
 }

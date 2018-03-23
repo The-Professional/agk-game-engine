@@ -3,8 +3,8 @@
 
 // Game lib dependencies
 #include <utilities\jsonparsehelper.h>
-#include <common\color.h>
 #include <common\vector2.h>
+#include <common\vector4.h>
 
 // Standard lib dependencies
 #include <string>
@@ -26,26 +26,32 @@ public:
     void LoadFromIter( nlohmann::json::const_iterator iter );
 
     // Access functions for the visual sprite data.
-    const CColor & GetColor() const;
+    const CVector4 & GetColor() const;
     const std::string & GetTextureMap() const;
 
     // Access functions for the visual sprite's size.
     void SetSize( const CVector2 & size );
     const CVector2 & GetSize() const;
 
-    // Whether or not the size was set in the data file.
+    // Whether or not the size has been set.
     bool IsSizeSet() const;
+
+    // Whether or not the size is the same as the file.
+    bool IsSizeSameAsFile() const;
 
 private:
 
     // Initial color of the sprite.
-    CColor _color;
+    CVector4 _color = 1;
 
     // Image to map onto the sprite.
     std::string _textureMap;
 
-    // Whether or not the size was set in the data file.
+    // Whether or not the size has been set.
     bool _sizeSet = false;
+
+    // Whether or not the size is the same as the file.
+    bool _sizeSameAsFile = false;
 
     // Size of the sprite.
     CVector2 _size;

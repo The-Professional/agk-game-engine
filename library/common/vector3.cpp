@@ -24,7 +24,7 @@ CVector3::CVector3( float _x, float _y, float _z )
 // Constructor
 CVector3::CVector3( const CVector2 & value )
 {
-    x = value.x; y = value.y;
+    x = value.x; y = value.y; z = 0;
 }
 
 
@@ -53,19 +53,25 @@ void CVector3::operator = ( const CVector2 & vec )
 /// *************************************************************************
 CVector3 CVector3::operator + ( const CVector3 & vec ) const
 {
-    return CVector3( x + vec.x, y + vec.y, z + vec.z );
+    return CVector3( x + vec.x,
+                     y + vec.y,
+                     z + vec.z );
 }
 
 // 3D vector addition.
 CVector3 CVector3::operator + ( const CVector2 & vec ) const
 {
-    return CVector3( x + vec.x, y + vec.y );
+    return CVector3( x + vec.x,
+                     y + vec.y,
+                     z );
 }
 
 // 3D vector addition.
 CVector3 CVector3::operator + ( float value ) const
 {
-    return CVector3( x + value, y + value, z + value );
+    return CVector3( x + value,
+                     y + value,
+                     z + value );
 }
 
 
@@ -104,19 +110,25 @@ void CVector3::operator += ( float value )
 /// *************************************************************************
 CVector3 CVector3::operator - ( const CVector3 & vec ) const
 {
-    return CVector3( x - vec.x, y - vec.y, z - vec.z );
+    return CVector3( x - vec.x,
+                     y - vec.y,
+                     z - vec.z );
 }
 
 // 3D vector subtraction.
 CVector3 CVector3::operator - ( const CVector2 & vec ) const
 {
-    return CVector3( x - vec.x, y - vec.y );
+    return CVector3( x - vec.x,
+                     y - vec.y,
+                     z );
 }
 
 // 3D vector subtraction.
 CVector3 CVector3::operator - ( float value ) const
 {
-    return CVector3( x - value, y - value, z - value );
+    return CVector3( x - value,
+                     y - value,
+                     z - value );
 }
 
 
@@ -155,19 +167,25 @@ void CVector3::operator -= ( float value )
 /// *************************************************************************
 CVector3 CVector3::operator * ( const CVector3 & vec ) const
 {
-    return CVector3( x * vec.x, y * vec.y, z * vec.z );
+    return CVector3( x * vec.x,
+                     y * vec.y,
+                     z * vec.z );
 }
 
 // 3D vector multiplation.
 CVector3 CVector3::operator * ( const CVector2 & vec ) const
 {
-    return CVector3( x * vec.x, y * vec.y );
+    return CVector3( x * vec.x,
+                     y * vec.y,
+                     z );
 }
 
 // 3D vector multiplation.
 CVector3 CVector3::operator * ( float value ) const
 {
-    return CVector3( x * value, y * value, z * value );
+    return CVector3( x * value,
+                     y * value,
+                     z * value );
 }
 
 
@@ -215,7 +233,8 @@ CVector3 CVector3::operator / ( const CVector3 & vec ) const
 CVector3 CVector3::operator / ( const CVector2 & vec ) const
 {
     return CVector3( vec.IsEmptyX() ? IsEmptyX() ? 1.f : 0 : x / vec.x,
-                     vec.IsEmptyY() ? IsEmptyY() ? 1.f : 0 : y / vec.y );
+                     vec.IsEmptyY() ? IsEmptyY() ? 1.f : 0 : y / vec.y,
+                     z );
 }
 
 // 3D vector division.
@@ -226,7 +245,9 @@ CVector3 CVector3::operator / ( float value ) const
                          IsEmptyY() ? 1.f : 0,
                          IsEmptyZ() ? 1.f : 0 );
 
-    return CVector3( x / value, y / value, z / value );
+    return CVector3( x / value, 
+                     y / value,
+                     z / value );
 }
 
 

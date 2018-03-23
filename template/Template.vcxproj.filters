@@ -35,6 +35,9 @@
     <Filter Include="data\animations">
       <UniqueIdentifier>{0c3728d7-05d4-4aab-9aeb-eaba43910fac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data\controls">
+      <UniqueIdentifier>{5fc3caa2-3b51-4f0f-b081-e1e104524f0b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="x64\Debug\data\3d\sprites\ball.json">

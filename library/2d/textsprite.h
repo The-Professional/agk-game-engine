@@ -8,7 +8,6 @@
 #include <common\defs.h>
 #include <common\vector2.h>
 #include <common\vector3.h>
-#include <common\color.h>
 #include <common\bitmask.h>
 
 // Standard lib dependencies
@@ -29,6 +28,9 @@ public:
     CTextSprite();
     CTextSprite( const CTextSpriteData * pData, const std::string & text );
     ~CTextSprite();
+
+    // Get the name of the sprite.
+    virtual const std::string & GetName() const;
 
     // Initialize the sprite using its sprite data.
     void Init( const CTextSpriteData * pData, const std::string & text );

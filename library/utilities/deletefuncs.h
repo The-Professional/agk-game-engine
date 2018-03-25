@@ -1,5 +1,5 @@
-#ifndef _deletefuncs_h
-#define _deletefuncs_h
+#ifndef __delete_funcs_h__
+#define __delete_funcs_h__
 
 // Standard lib dependencies.
 #include <map>
@@ -414,4 +414,4 @@ namespace NDelFunc
     }
 }
 
-#endif // _deletefunc_h
+#endif // __delete_funcs_h__

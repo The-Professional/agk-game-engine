@@ -2,8 +2,6 @@
 #include "spritevisualdata2d.h"
 
 // Game lib dependencies
-#include <common\color.h>
-#include <common\size.h>
 #include <utilities\jsonparsehelper.h>
 
 

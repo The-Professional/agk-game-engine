@@ -4,7 +4,7 @@
 // Game lib dependencies
 #include <script\animation.h>
 #include <script\animationdata.h>
-#include <script\scriptmanager.h>
+#include <managers\scriptmanager.h>
 #include <utilities\deletefuncs.h>
 #include <utilities\generalfuncs.h>
 

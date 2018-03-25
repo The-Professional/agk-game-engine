@@ -3,7 +3,7 @@
 
 // Game lib dependencies
 #include <common\defs.h>
-#include <managers\resourcefile.h>
+#include <common\resourcefile.h>
 
 // Standard lib dependencies
 #include <string>

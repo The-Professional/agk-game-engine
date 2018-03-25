@@ -3,7 +3,7 @@
 
 // Game lib dependencies
 #include <common\defs.h>
-#include <managers\inputmapping.h>
+#include <input\inputmapping.h>
 
 // Standard lib dependencies
 #include <string>

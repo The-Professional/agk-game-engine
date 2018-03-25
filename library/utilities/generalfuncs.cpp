@@ -13,7 +13,7 @@
 
 // Game lib dependencies
 #include <agk.h>
-#include <managers\resourcefile.h>
+#include <common\resourcefile.h>
 #include <utilities\exceptionhandling.h>
 #include <utilities\txtparsehelper.h>
 

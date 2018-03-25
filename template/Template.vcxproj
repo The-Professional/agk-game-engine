@@ -149,12 +149,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="x64\Debug\data\2d\sprites\pawprint.json" />
     <None Include="x64\Debug\data\2d\sprites\test.json" />
     <None Include="x64\Debug\data\2d\text\titan.json" />
     <None Include="x64\Debug\data\3d\sprites\ball.json" />
     <None Include="x64\Debug\data\3d\sprites\floor.json" />
     <None Include="x64\Debug\data\animations\colorTest.json" />
     <None Include="x64\Debug\data\collections\stage0.json" />
+    <None Include="x64\Debug\data\controls\testctrl.json" />
     <None Include="x64\Debug\data\inputs.json" />
     <None Include="x64\Debug\data\scripts\controls.ang" />
     <None Include="x64\Debug\data\scripts\defs.ang" />

@@ -50,8 +50,6 @@ namespace NParseHelper
     bool GetWHD( nlohmann::json::const_iterator iter, const std::string & tag, CVector3 & whd );
 
     // Parse generic w, h tags.
-    bool GetWH( nlohmann::json::const_iterator iter, const std::string & tag, CSize<int> & wh );
-    bool GetWH( nlohmann::json::const_iterator iter, const std::string & tag, CSize<float> & wh );
     bool GetWH( nlohmann::json::const_iterator iter, const std::string & tag, CVector2 & wh );
 
     // Parse mesh type tags.

@@ -7,6 +7,7 @@
 #include <3d\spritedata3d.h>
 #include <managers\resourcemanager.h>
 #include <utilities\settings.h>
+#include <utilities\exceptionhandling.h>
 
 using namespace std;
 using namespace NDefs;
@@ -44,6 +45,22 @@ CSprite3D::CSprite3D( CSpriteData3D * pData )
 CSprite3D::~CSprite3D()
 {
     Clear();
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the name of the sprite.
+/// </summary>
+/// *************************************************************************
+const string & CSprite3D::GetName() const
+{
+    if( !_pData )
+        throw NExcept::CCriticalException( "Error",
+                                           "CSprite2D::GetName()",
+                                           "Failed to get the sprite's name." );
+
+    return _pData->GetName();
 }
 
 

@@ -1,28 +1,49 @@
 
 Total count
+PshC4      : 6
+PshV4      : 79
+PSF        : 474
+CALL       : 2
+RET        : 3
+JMP        : 77
+JNZ        : 63
+JNS        : 77
+TS         : 1
+IncVi      : 1
+PshVPtr    : 148
+CMPf       : 77
+CMPi       : 1
+CMPIi      : 63
+PshRPtr    : 3
+CALLSYS    : 614
+SUSPEND    : 76
+GETOBJREF  : 2
+GETREF     : 154
+SetV4      : 3
+CpyVtoV4   : 4
+CpyVtoR4   : 6
+CpyRtoV4   : 141
+VAR        : 156
+ADDf       : 75
+SUBf       : 2
+DIVf       : 75
+SetV1      : 2
+JLowZ      : 2
+JLowNZ     : 2
 
 Never executed
 PopPtr    
 PshGPtr   
-PshC4     
-PshV4     
-PSF       
 SwapPtr   
 NOT       
 PshG4     
 LdGRdR4   
-CALL      
-RET       
-JMP       
 JZ        
-JNZ       
 JS        
-JNS       
 JP        
 JNP       
 TZ        
 TNZ       
-TS        
 TNS       
 TP        
 TNP       
@@ -39,7 +60,6 @@ INCf
 DECf      
 INCd      
 DECd      
-IncVi     
 DecVi     
 BNOT      
 BAND      
@@ -50,22 +70,15 @@ BSRL
 BSRA      
 COPY      
 PshC8     
-PshVPtr   
 RDSPtr    
 CMPd      
 CMPu      
-CMPf      
-CMPi      
-CMPIi     
 CMPIf     
 CMPIu     
 JMPP      
 PopRPtr   
-PshRPtr   
 STR       
-CALLSYS   
 CALLBND   
-SUSPEND   
 ALLOC     
 FREE      
 LOADOBJ   
@@ -73,21 +86,15 @@ STOREOBJ
 GETOBJ    
 REFCPY    
 CHKREF    
-GETOBJREF 
-GETREF    
 PshNull   
 ClrVPtr   
 OBJTYPE   
 TYPEID    
-SetV4     
 SetV8     
 ADDSi     
-CpyVtoV4  
 CpyVtoV8  
-CpyVtoR4  
 CpyVtoR8  
 CpyVtoG4  
-CpyRtoV4  
 CpyRtoV8  
 CpyGtoV4  
 WRTV1     
@@ -102,7 +109,6 @@ LDG
 LDV       
 PGA       
 CmpPtr    
-VAR       
 iTOf      
 fTOi      
 uTOf      
@@ -122,10 +128,7 @@ SUBi
 MULi      
 DIVi      
 MODi      
-ADDf      
-SUBf      
 MULf      
-DIVf      
 MODf      
 ADDd      
 SUBd      
@@ -144,7 +147,6 @@ ChkNullV
 CALLINTF  
 iTOb      
 iTOw      
-SetV1     
 SetV2     
 Cast      
 i64TOi    
@@ -189,8 +191,6 @@ MODu64
 LoadRObjR 
 LoadVObjR 
 RefCpyV   
-JLowZ     
-JLowNZ    
 AllocMem  
 SetListSiz
 PshListElm
@@ -205,3 +205,72 @@ POWu64
 Thiscall1 
 
 Sequences
+PshC4     , PshC4      : 3
+PshC4     , PshV4      : 2
+PshC4     , PSF        : 1
+PshV4     , PshC4      : 2
+PshV4     , PSF        : 77
+PSF       , PSF        : 154
+PSF       , PshVPtr    : 2
+PSF       , CALLSYS    : 243
+PSF       , GETREF     : 75
+CALL      , PshVPtr    : 2
+RET       , PSF        : 1
+RET       , CpyRtoV4   : 1
+JMP       , CMPf       : 75
+JMP       , CpyVtoR4   : 1
+JMP       , VAR        : 1
+JNZ       , PshVPtr    : 2
+JNZ       , DIVf       : 60
+JNZ       , SetV1      : 1
+JNS       , JMP        : 1
+JNS       , SUSPEND    : 75
+JNS       , VAR        : 1
+TS        , CpyRtoV4   : 1
+IncVi     , SUSPEND    : 1
+PshVPtr   , CALLSYS    : 67
+PshVPtr   , GETOBJREF  : 2
+PshVPtr   , GETREF     : 79
+CMPf      , JNS        : 77
+CMPi      , TS         : 1
+CMPIi     , JNZ        : 63
+PshRPtr   , PSF        : 3
+CALLSYS   , PshC4      : 1
+CALLSYS   , PSF        : 158
+CALLSYS   , RET        : 1
+CALLSYS   , PshRPtr    : 3
+CALLSYS   , CALLSYS    : 150
+CALLSYS   , SetV4      : 1
+CALLSYS   , CpyVtoV4   : 3
+CALLSYS   , CpyVtoR4   : 2
+CALLSYS   , CpyRtoV4   : 139
+CALLSYS   , VAR        : 154
+CALLSYS   , SUBf       : 2
+SUSPEND   , PshVPtr    : 61
+SUSPEND   , DIVf       : 15
+GETOBJREF , CALLSYS    : 2
+GETREF    , CALL       : 2
+GETREF    , CALLSYS    : 152
+SetV4     , JMP        : 1
+SetV4     , SetV4      : 1
+SetV4     , SetV1      : 1
+CpyVtoV4  , IncVi      : 1
+CpyVtoV4  , CpyVtoR4   : 3
+CpyVtoR4  , RET        : 2
+CpyVtoR4  , JLowZ      : 2
+CpyVtoR4  , JLowNZ     : 2
+CpyRtoV4  , PSF        : 1
+CpyRtoV4  , CMPi       : 1
+CpyRtoV4  , CMPIi      : 63
+CpyRtoV4  , CpyVtoV4   : 1
+CpyRtoV4  , ADDf       : 75
+VAR       , PSF        : 77
+VAR       , PshVPtr    : 79
+ADDf      , JMP        : 75
+SUBf      , PSF        : 2
+DIVf      , PshV4      : 75
+SetV1     , PshV4      : 2
+JLowZ     , CMPf       : 2
+JLowNZ    , PshVPtr    : 1
+JLowNZ    , SetV4      : 1
+LABEL     , PshVPtr    : 1

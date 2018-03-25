@@ -3,7 +3,7 @@
 
 // Game lib dependencies
 #include <common\defs.h>
-#include <managers\inputstate.h>
+#include <input\inputstate.h>
 
 // Standard lib dependencies
 #include <string>

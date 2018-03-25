@@ -25,6 +25,8 @@ class iObject
 {
 public:
 
+    virtual ~iObject() {}
+
     // Delete the object that belongs to the AGK id.
     virtual void DeleteObject() = 0;
 
@@ -33,6 +35,9 @@ public:
 
     // Return the id set by AGK.
     uint GetID() const;
+
+    // Get the name of the object.
+    virtual const std::string & GetName() const = 0;
 
     // Get the type of object this is.
     NDefs::EObjectType GetType() const;
@@ -183,11 +188,7 @@ public:
 
 protected:
 
-    // Constructor
     iObject() {}
-
-    // Destructor
-    virtual ~iObject() {}
 
     // Apply the current transformations and color to AGK.
     virtual void ApplyPosition() = 0;

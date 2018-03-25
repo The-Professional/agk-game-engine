@@ -22,17 +22,21 @@ public:
 
     enum : uint
     {
-        NAME = 1,
-        POSITION = NAME << 1,
-        ROTATION = POSITION << 1,
-        SIZE = ROTATION << 1,
-        COLOR = SIZE << 1,
-        VISIBLE = COLOR << 1,
-        ALIGNMENT = VISIBLE << 1,
-        TEXT = ALIGNMENT << 1,
-        TEXT_ALIGNMENT = TEXT << 1,
-        TEXT_SIZE = TEXT_ALIGNMENT << 1
+        TYPE            = 1,
+        NAME            = 1 << 1,
+        POSITION        = 1 << 2,
+        ROTATION        = 1 << 3,
+        SIZE            = 1 << 4,
+        COLOR           = 1 << 5,
+        VISIBLE         = 1 << 6,
+        ALIGNMENT       = 1 << 7,
+        TEXT            = 1 << 8,
+        TEXT_ALIGNMENT  = 1 << 9,
+        TEXT_SIZE       = 1 << 10
     };
+
+    // Type of object.
+    NDefs::EObjectType type;
 
     // Name of the object.
     std::string name;

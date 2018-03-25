@@ -3,7 +3,6 @@
 
 // Game lib dependencies
 #include <common\defs.h>
-#include <common\color.h>
 #include <utilities\jsonparsehelper.h>
 
 using namespace std;

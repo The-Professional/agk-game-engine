@@ -24,8 +24,8 @@ namespace NDefs
         _meshTypeList.emplace( "sphere", EMT_SPHERE );
         _meshTypeList.emplace( "mesh", EMT_MESH );
         
-        _objectTypeList.emplace( "sprite3d", EOT_SPRITE_3D );
-        _objectTypeList.emplace( "sprite2d", EOT_SPRITE_2D );
+        _objectTypeList.emplace( "sprite 3d", EOT_SPRITE_3D );
+        _objectTypeList.emplace( "sprite 2d", EOT_SPRITE_2D );
         _objectTypeList.emplace( "text sprite", EOT_TEXT_SPRITE );
         _objectTypeList.emplace( "light", EOT_LIGHT );
         _objectTypeList.emplace( "control", EOT_CONTROL );

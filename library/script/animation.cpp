@@ -5,7 +5,7 @@
 #include <angelscript.h>
 #include <common\iobject.h>
 #include <script\animationdata.h>
-#include <script\scriptmanager.h>
+#include <managers\scriptmanager.h>
 #include <script\scriptglobals.h>
 #include <utilities\exceptionhandling.h>
 

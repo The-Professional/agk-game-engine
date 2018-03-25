@@ -3,15 +3,13 @@
 
 // Game lib dependencies
 #include <agk.h>
-#include <common\size.h>
 #include <common\vector2.h>
 #include <common\vector3.h>
-#include <common\color.h>
 #include <common\bitmask.h>
 #include <common\iobject.h>
 #include <common\collectionobject.h>
-#include <managers\inputstate.h>
-#include <managers\inputmapping.h>
+#include <input\inputstate.h>
+#include <input\inputmapping.h>
 #include <managers\inputmanager.h>
 
 // Standard lib dependencies
@@ -199,51 +197,6 @@ namespace NParseHelper
             GetFloat( whdIter, "w", whd.w );
             GetFloat( whdIter, "h", whd.h );
             GetFloat( whdIter, "d", whd.d );
-
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse generic w, h tags.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="tag"> Tag to find. </param>
-    /// <param name="wh"> Value to set. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    bool GetWH( nlohmann::json::const_iterator iter, const string & tag, CSize<int> & wh )
-    {
-        auto whIter = iter->find( tag );
-        if( whIter != iter->end() )
-        {
-            GetInt( whIter, "w", wh.w );
-            GetInt( whIter, "h", wh.h );
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /// <summary> 
-    /// Parse generic w, h tags.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="tag"> Tag to find. </param>
-    /// <param name="wh"> Value to set. </param>
-    /// <returns> If the tag exists. </returns>
-    bool GetWH( nlohmann::json::const_iterator iter, const string & tag, CSize<float> & wh )
-    {
-        auto whIter = iter->find( tag );
-        if( whIter != iter->end() )
-        {
-            GetFloat( whIter, "w", wh.w );
-            GetFloat( whIter, "h", wh.h );
 
             return true;
         }
@@ -623,6 +576,13 @@ namespace NParseHelper
     /// *************************************************************************
     void GetCollectionObject( json::const_iterator iter, CCollectionObject & collectionObject )
     {
+        string type;
+        if( GetString( iter, "type", type ) )
+        {
+            collectionObject.type = CDefs::Instance().GetObjectType( type );
+            collectionObject.fields.Add( CCollectionObject::TYPE );
+        }
+
         string name;
         if( GetString( iter, "name", name ) )
         {

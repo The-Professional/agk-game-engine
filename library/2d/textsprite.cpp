@@ -7,6 +7,7 @@
 #include <2d\textspritedata.h>
 #include <managers\resourcemanager.h>
 #include <utilities\mathfunc.h>
+#include <utilities\exceptionhandling.h>
 
 using namespace std;
 
@@ -44,6 +45,22 @@ CTextSprite::CTextSprite( const CTextSpriteData * pData, const string & text )
 CTextSprite::~CTextSprite()
 {
     Clear();
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the name of the sprite.
+/// </summary>
+/// *************************************************************************
+const string & CTextSprite::GetName() const
+{
+    if( !_pData )
+        throw NExcept::CCriticalException( "Error",
+                                           "CSprite2D::GetName()",
+                                           "Failed to get the sprite's name." );
+
+    return _pData->GetName();
 }
 
 

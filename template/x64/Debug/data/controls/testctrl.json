@@ -1,0 +1,18 @@
+{
+  "control": {
+    "type": "button",
+
+    "collection": [
+      {
+        "type": "sprite 2d",
+        "name": "pawprint",
+        "position": {"x": -50}
+      },
+      {
+        "type": "text sprite",
+        "name": "titan",
+        "text": "Quit Game"
+      }
+    ]
+  }
+}

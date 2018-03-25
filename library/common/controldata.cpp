@@ -44,14 +44,15 @@ void CControlData::LoadFromIter( const string & name, json::const_iterator iter 
     NParseHelper::GetControlState( iter, "state", _state );
     NParseHelper::GetAlignment( iter, "alignment", _alignment );
 
-    auto collectionIter = iter->find( "sprites" );
+    auto collectionIter = iter->find( "collection" );
     if( collectionIter != iter->end() )
     {
-        auto spriteIter = collectionIter->begin();
-        while( spriteIter != collectionIter->end() )
+        auto objectIter = collectionIter->begin();
+        while( objectIter != collectionIter->end() )
         {
             _spriteList.push_back( CCollectionObject() );
-            NParseHelper::GetCollectionObject( spriteIter, _spriteList.back() );
+            NParseHelper::GetCollectionObject( objectIter, _spriteList.back() );
+            ++objectIter;
         }
     }
 }

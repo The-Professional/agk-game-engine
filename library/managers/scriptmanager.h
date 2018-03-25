@@ -4,7 +4,7 @@
 // Game lib dependencies
 //#include <utilities\smartpointers.h>
 #include <script\scriptparam.h>
-#include <managers\resourcefile.h>
+#include <common\resourcefile.h>
 
 // Standard lib dependencies
 #include <string>

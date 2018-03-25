@@ -7,7 +7,10 @@
 #include <utilities\exceptionhandling.h>
 #include <utilities\deletefuncs.h>
 #include <utilities\generalfuncs.h>
+#include <common\defs.h>
 #include <common\vector3.h>
+#include <common\iobject.h>
+#include <common\collectionobject.h>
 #include <3d\spritedata3d.h>
 #include <3d\sprite3d.h>
 #include <2d\spritedata2d.h>
@@ -20,6 +23,7 @@
 
 using namespace std;
 using namespace nlohmann;
+using namespace NDefs;
 
 /// *************************************************************************
 /// <summary> 
@@ -72,6 +76,17 @@ void CSpriteManager::LoadDataFileList2D( const std::string & path )
 void CSpriteManager::LoadTextDataFileList( const std::string & path )
 {
     NGeneralFuncs::AddFilesToMap( path, _textSpriteDataFileList );
+}
+
+
+/// *************************************************************************
+/// <summary> 
+/// Read the path and compile the list of collection files in that folder.
+/// </summary>
+/// *************************************************************************
+void CSpriteManager::LoadCollectionFileList( const string & path )
+{
+    NGeneralFuncs::AddFilesToMap( path, _collectionFileList );
 }
 
 
@@ -221,9 +236,10 @@ CTextSpriteData * CSpriteManager::GetTextSpriteData( const std::string & name )
 /// Create the 3d sprite.
 /// </summary>
 /// <param name="name"> Name of the sprite. </param>
-/// <param name="collection"> The collection the sprite belongs to. </param>
+/// <param name="key"> Key value to locate the sprite. 
+/// If not defined, the key will be the sprite's name. </param>
 /// *************************************************************************
-CSprite3D * CSpriteManager::CreateSprite3D( const string & name, const string & collection )
+CSprite3D * CSpriteManager::CreateSprite3D( const string & name, const string & key )
 {
     try
     {
@@ -233,10 +249,10 @@ CSprite3D * CSpriteManager::CreateSprite3D( const string & name, const string & 
         // Create the sprite object and add it to the sprite list.
         CSprite3D * pSprite = new CSprite3D( pData );
 
-        if( collection.empty() )
-            _spriteList3d[name].push_back( pSprite );
+        if( key.empty() )
+            _objectList[name].push_back( pSprite );
         else
-            _spriteList3d[collection].push_back( pSprite );
+            _objectList[key].push_back( pSprite );
 
         return pSprite;
     }
@@ -256,9 +272,10 @@ CSprite3D * CSpriteManager::CreateSprite3D( const string & name, const string & 
 /// Create the 2d sprite.
 /// </summary>
 /// <param name="name"> Name of the sprite. </param>
-/// <param name="collection"> The collection the sprite belongs to. </param>
+/// <param name="key"> Key value to locate the sprite. 
+/// If not defined, the key will be the sprite's name. </param>
 /// *************************************************************************
-CSprite2D * CSpriteManager::CreateSprite2D( const std::string & name, const string & collection )
+CSprite2D * CSpriteManager::CreateSprite2D( const std::string & name, const string & key )
 {
     try
     {
@@ -268,10 +285,10 @@ CSprite2D * CSpriteManager::CreateSprite2D( const std::string & name, const stri
         // Create the sprite object and add it to the sprite list.
         CSprite2D * pSprite = new CSprite2D( pData );
 
-        if( collection.empty() )
-            _spriteList2d[name].push_back( pSprite );
+        if( key.empty() )
+            _objectList[name].push_back( pSprite );
         else
-            _spriteList2d[collection].push_back( pSprite );
+            _objectList[key].push_back( pSprite );
 
         return pSprite;
     }
@@ -292,9 +309,10 @@ CSprite2D * CSpriteManager::CreateSprite2D( const std::string & name, const stri
 /// </summary>
 /// <param name="name"> Name of the sprite. </param>
 /// <param name="text"> The text to display. </param>
-/// <param name="collection"> The collection the sprite belongs to. </param>
+/// <param name="key"> Key value to locate the sprite. 
+/// If not defined, the key will be the sprite's name. </param>
 /// *************************************************************************
-CTextSprite * CSpriteManager::CreateTextSprite( const string & name, const string & text, const string & collection )
+CTextSprite * CSpriteManager::CreateTextSprite( const string & name, const string & text, const string & key )
 {
     try
     {
@@ -304,10 +322,10 @@ CTextSprite * CSpriteManager::CreateTextSprite( const string & name, const strin
         // Create the sprite object and add it to the sprite list.
         CTextSprite * pSprite = new CTextSprite( pData, text );
 
-        if( collection.empty() )
-            _textSpriteList[name].push_back( pSprite );
+        if( key.empty() )
+            _objectList[name].push_back( pSprite );
         else
-            _textSpriteList[collection].push_back( pSprite );
+            _objectList[key].push_back( pSprite );
 
         return pSprite;
     }
@@ -324,6 +342,85 @@ CTextSprite * CSpriteManager::CreateTextSprite( const string & name, const strin
 
 /// *************************************************************************
 /// <summary> 
+/// Load the collection.
+/// </summary>
+/// <param name="name"> Name of the collection. </param>
+/// <param name="key"> Key value to locate the sprite. 
+/// If not defined, the key will be the sprite's name. </param>
+/// <returns> List of loaded objects. </param>
+/// *************************************************************************
+vector<iObject *> CSpriteManager::CreateCollection( const string & name, const string & key )
+{
+    vector<iObject *> pObjectList;
+    try
+    {
+        auto mapIter = _collectionFileList.find( name );
+        if( mapIter != _collectionFileList.end() )
+        {
+            // Load the sprite data file.
+            ifstream ifile( mapIter->second );
+
+            // Parse the content into a json object.
+            json j;
+            ifile >> j;
+
+            auto collectionIter = j.find( "collection" );
+            if( collectionIter != j.end() )
+            {
+                string mapKey = key.empty() ? name : key;
+
+                auto objectIter = collectionIter->begin();
+                while( objectIter != collectionIter->end() )
+                {
+                    CCollectionObject collectionObject;
+                    NParseHelper::GetCollectionObject( objectIter, collectionObject );
+                    iObject * pObject = nullptr;
+
+                    switch( collectionObject.type )
+                    {
+                    case EOT_SPRITE_3D:
+                        pObject = CreateSprite3D( collectionObject.name, mapKey );
+                        pObjectList.push_back( pObject );
+                        pObject->Set( collectionObject );
+                        break;
+
+                    case EOT_SPRITE_2D:
+                        pObject = CreateSprite2D( collectionObject.name, mapKey );
+                        pObjectList.push_back( pObject );
+                        pObject->Set( collectionObject );
+                        break;
+
+                    case EOT_TEXT_SPRITE:
+                        pObject = CreateTextSprite( collectionObject.name, collectionObject.text, mapKey );
+                        pObjectList.push_back( pObject );
+                        pObject->Set( collectionObject );
+                        break;
+
+                    default:
+                        throw NExcept::CCriticalException( "Error",
+                                                           "CCollectionManager::LoadCollection()",
+                                                           "Invalid type for object in collection '" + name + "'." );
+                        break;
+                    }
+
+                    ++objectIter;
+                }
+            }
+        }
+    }
+    catch( exception e )
+    {
+        throw NExcept::CCriticalException( "Error",
+                                           "CCollectionManager::LoadCollection()",
+                                           "Failed to create collection list '" + name + "'.", e );
+    }
+
+    return pObjectList;
+}
+
+
+/// *************************************************************************
+/// <summary> 
 /// Free the loaded sprite data and all sprites of the same name.
 /// </summary>
 /// <param name="name"> Name of the sprite to free. 
@@ -335,18 +432,14 @@ void CSpriteManager::Clear( const string & name )
     {
         if( name.empty() )
         {
-            NDelFunc::DeleteMapVectorPointers( _spriteList3d );
-            NDelFunc::DeleteMapVectorPointers( _spriteList2d );
-            NDelFunc::DeleteMapVectorPointers( _textSpriteList );
+            NDelFunc::DeleteMapVectorPointers( _objectList );
             NDelFunc::DeleteMapPointers( _spriteDataList3d );
             NDelFunc::DeleteMapPointers( _spriteDataList2d );
             NDelFunc::DeleteMapPointers( _textSpriteDataList );
         }
         else
         {
-            NDelFunc::DeleteMapVectorPointers( name, _spriteList3d );
-            NDelFunc::DeleteMapVectorPointers( name, _spriteList2d );
-            NDelFunc::DeleteMapVectorPointers( name, _textSpriteList );
+            NDelFunc::DeleteMapVectorPointers( name, _objectList );
             NDelFunc::DeleteMapPointer( name, _spriteDataList3d );
             NDelFunc::DeleteMapPointer( name, _spriteDataList2d );
             NDelFunc::DeleteMapPointer( name, _textSpriteDataList );
@@ -365,23 +458,23 @@ void CSpriteManager::Clear( const string & name )
 /// Free the passed in sprite.
 /// </summary>
 /// <param name="pSprite"> Sprite to free. </param>
-void CSpriteManager::Clear( CSprite3D * pSprite )
+void CSpriteManager::Clear( iObject * pObject )
 {
     try
     {
-        auto iter = _spriteList3d.find( pSprite->GetData()->GetName() );
-        if( iter != _spriteList3d.end() )
-            NDelFunc::DeleteVectorPointer( pSprite, iter->second );
-    }
-    catch( NExcept::CCriticalException e )
-    {
-        throw e;
+        for( auto mapIter = _objectList.begin(); mapIter != _objectList.end(); ++mapIter )
+            for( auto pObj : mapIter->second )
+                if( pObject == pObj )
+                {
+                    NDelFunc::DeleteVectorPointer( pObject, mapIter->second );
+                    return;
+                }
     }
     catch( exception e )
     {
         throw NExcept::CCriticalException( "Error",
                                            "CSpriteManager::Clear()",
-                                           pSprite ? "Failed to clear sprite '" + pSprite->GetData()->GetName() + "'." :
+                                           pObject ? "Failed to clear sprite '" + pObject->GetName() + "'." :
                                                      "Failed to clear the sprite.", e );
     }
 }
@@ -394,12 +487,8 @@ void CSpriteManager::Clear( CSprite3D * pSprite )
 /// *************************************************************************
 void CSpriteManager::RepositionAllSprites2D()
 {
-    for( auto mapIter : _spriteList2d )
-        for( auto pSprite : mapIter.second )
-            pSprite->Reposition();
-
-    for( auto mapIter : _textSpriteList )
-        for( auto pSprite : mapIter.second )
+    for( auto mapIter = _objectList.begin(); mapIter != _objectList.end(); ++mapIter )
+        for( auto pSprite : mapIter->second )
             pSprite->Reposition();
 }
 
@@ -411,16 +500,8 @@ void CSpriteManager::RepositionAllSprites2D()
 /// *************************************************************************
 void CSpriteManager::Update()
 {
-    for( auto mapIter : _spriteList3d )
-        for( auto pSprite : mapIter.second )
-            pSprite->Update();
-
-    for( auto mapIter : _spriteList2d )
-        for( auto pSprite : mapIter.second )
-            pSprite->Update();
-
-    for( auto mapIter : _textSpriteList )
-        for( auto pSprite : mapIter.second )
+    for( auto mapIter = _objectList.begin(); mapIter != _objectList.end(); ++mapIter )
+        for( auto pSprite : mapIter->second )
             pSprite->Update();
 }
 
@@ -433,34 +514,12 @@ void CSpriteManager::Update()
 void CSpriteManager::Transform()
 {
     // Transform each of the sprites.
-    //for( auto mapIter : _spriteList3d )
-    for( auto mapIter = _spriteList3d.begin(); mapIter != _spriteList3d.end(); ++mapIter )
-        for( auto pSprite : mapIter->second )
-            pSprite->Transform();
-
-    //for( auto mapIter : _spriteList2d )
-    for( auto mapIter = _spriteList2d.begin(); mapIter != _spriteList2d.end(); ++mapIter )
-        for( auto pSprite : mapIter->second )
-            pSprite->Transform();
-
-    //for( auto mapIter : _textSpriteList )
-    for( auto mapIter = _textSpriteList.begin(); mapIter != _textSpriteList.end(); ++mapIter )
+    for( auto mapIter = _objectList.begin(); mapIter != _objectList.end(); ++mapIter )
         for( auto pSprite : mapIter->second )
             pSprite->Transform();
 
     // Clear the modified bitmask for each of the sprites.
-    //for( auto mapIter : _spriteList3d )
-    for( auto mapIter = _spriteList3d.begin(); mapIter != _spriteList3d.end(); ++mapIter )
-        for( auto pSprite : mapIter->second )
-            pSprite->ClearModified();
-
-    //for( auto mapIter : _spriteList2d )
-    for( auto mapIter = _spriteList2d.begin(); mapIter != _spriteList2d.end(); ++mapIter )
-        for( auto pSprite : mapIter->second )
-            pSprite->ClearModified();
-
-    //for( auto mapIter : _textSpriteList )
-    for( auto mapIter = _textSpriteList.begin(); mapIter != _textSpriteList.end(); ++mapIter )
+    for( auto mapIter = _objectList.begin(); mapIter != _objectList.end(); ++mapIter )
         for( auto pSprite : mapIter->second )
             pSprite->ClearModified();
 }

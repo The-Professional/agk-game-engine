@@ -6,8 +6,7 @@
 #include <managers\inputmanager.h>
 #include <managers\spritemanager.h>
 #include <managers\resourcemanager.h>
-#include <managers\collectionmanager.h>
-#include <script\scriptmanager.h>
+#include <managers\scriptmanager.h>
 #include <script\scriptglobals.h>
 #include <script\scriptcolor.h>
 #include <script\scriptvector3.h>
@@ -49,7 +48,7 @@ void app::Init()
     CSpriteManager::Instance().LoadDataFileList3D( "data/3d/sprites/" );
     CSpriteManager::Instance().LoadDataFileList2D( "data/2d/sprites/" );
     CSpriteManager::Instance().LoadTextDataFileList( "data/2d/text/" );
-    CCollectionManager::Instance().LoadCollectionFileList( "data/collections/" );
+    CSpriteManager::Instance().LoadCollectionFileList( "data/collections/" );
     CScriptManager::Instance().LoadScriptList( "data/scripts" );
     CScriptManager::Instance().LoadAnimationDataFileList( "data/animations" );
 
@@ -74,7 +73,7 @@ void app::Begin()
 	agk::SetSyncRate( 60, 0 );
 	agk::SetScissor( 0, 0, 0, 0 );
 
-    pObjectList = CCollectionManager::Instance().LoadCollection( "stage0" );
+    pObjectList = CSpriteManager::Instance().CreateCollection( "stage0" );
     pSprite = CSpriteManager::Instance().CreateSprite3D( "ball" );
     pSprite->SetScale( 2 );
     CSpriteManager::Instance().Transform();

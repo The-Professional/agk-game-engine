@@ -2,7 +2,7 @@
 #include "txtparsehelper.h"
 
 // Game lib dependencies
-#include <managers\resourcefile.h>
+#include <common\resourcefile.h>
 #include <utilities\exceptionhandling.h>
 
 // Standard lib depencencies

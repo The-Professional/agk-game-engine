@@ -27,6 +27,9 @@ public:
     CSprite3D( CSpriteData3D * pData );
     ~CSprite3D();
 
+    // Get the name of the sprite.
+    virtual const std::string & GetName() const;
+
     // Initialize the sprite using its sprite data.
     void Init( CSpriteData3D * pData );
 

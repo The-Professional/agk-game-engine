@@ -29,8 +29,10 @@ public:
 
     CSprite2D();
     CSprite2D( CSpriteData2D * pData );
-
     ~CSprite2D();
+
+    // Get the name of the sprite.
+    virtual const std::string & GetName() const;
 
     // Initialize the sprite using its sprite data.
     virtual void Init( CSpriteData2D * pData );

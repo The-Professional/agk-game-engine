@@ -2,8 +2,8 @@
 #define __settings_h__
 
 // Game lib dependencies
-#include <common\size.h>
 #include <common\defs.h>
+#include <common\vector2.h>
 #include <common\vector4.h>
 
 // Standard lib dependencies
@@ -37,8 +37,8 @@ public:
     void ApplySettings();
 
     // Get the window resolution.
-    const CSize<int> & GetResolution() const;
-    const CSize<int> & GetVirtualResolution() const;
+    const CVector2 & GetResolution() const;
+    const CVector2 & GetVirtualResolution() const;
 
     // Get the window aspect ratios.
     float GetAspectRatio() const;
@@ -63,7 +63,7 @@ public:
     int GetShadowMode() const;
 
     // Get the size of the map used for shadows.
-    const CSize<int> & GetShadowSize() const;
+    const CVector2 & GetShadowSize() const;
 
     // Get the amount of shadow smoothing. (0 = off, 1 = min, 2 = max)
     int GetShadowSmoothingLevel() const;
@@ -96,11 +96,11 @@ private:
     std::string _path;
 
     // Resolution of the game window.
-    CSize<int> _resolution;
+    CVector2 _resolution;
 
     // Virtual resolution fo the game window. 
     // This is the resolution your art was made for.
-    CSize<int> _vResolution;
+    CVector2 _vResolution;
 
     // Window aspect ratios.
     float _aspectRatio;
@@ -125,7 +125,7 @@ private:
     int _shadowMode;
 
     // Size of the map used for shadows.
-    CSize<int> _shadowSize;
+    CVector2 _shadowSize;
 
     // The amount of shadow smoothing. (0 = off, 1 = min, 2 = max)
     int _shadowSmoothing;

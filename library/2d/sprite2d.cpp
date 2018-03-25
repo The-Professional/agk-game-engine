@@ -7,7 +7,11 @@
 #include <2d\spritedata2d.h>
 #include <managers\resourcemanager.h>
 #include <utilities\mathfunc.h>
+#include <utilities\exceptionhandling.h>
 #include <script\animationcomponent.h>
+
+using namespace std;
+using namespace NDefs;
 
 /// *************************************************************************
 /// <summary>
@@ -16,7 +20,7 @@
 /// *************************************************************************
 CSprite2D::CSprite2D()
 {
-    _type = NDefs::EOT_SPRITE_2D;
+    _type = EOT_SPRITE_2D;
 }
 
 
@@ -28,7 +32,7 @@ CSprite2D::CSprite2D()
 /// *************************************************************************
 CSprite2D::CSprite2D( CSpriteData2D * pData )
 {
-    _type = NDefs::EOT_SPRITE_2D;
+    _type = EOT_SPRITE_2D;
 
     Init( pData );
 }
@@ -42,6 +46,22 @@ CSprite2D::CSprite2D( CSpriteData2D * pData )
 CSprite2D::~CSprite2D()
 {
     Clear();
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the name of the sprite.
+/// </summary>
+/// *************************************************************************
+const string & CSprite2D::GetName() const
+{
+    if( !_pData )
+        throw NExcept::CCriticalException( "Error",
+                                           "CSprite2D::GetName()",
+                                           "Failed to get the sprite's name." );
+
+    return _pData->GetName();
 }
 
 

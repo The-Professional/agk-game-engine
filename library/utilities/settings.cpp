@@ -12,6 +12,7 @@
 
 using namespace nlohmann;
 using namespace std;
+using namespace NDefs;
 
 /// *************************************************************************
 /// <summary> 
@@ -20,7 +21,7 @@ using namespace std;
 /// *************************************************************************
 CSettings::CSettings() :
     _fullscreen( false ),
-    _orientation( NDefs::EO_LANDSCAPE ),
+    _orientation( EO_LANDSCAPE ),
     _antialias( false )
 {
 }
@@ -41,7 +42,7 @@ CSettings::~CSettings()
 /// Set the file path for loading the settings file.
 /// </summary>
 /// *************************************************************************
-void CSettings::SetPath( const std::string & path )
+void CSettings::SetPath( const string & path )
 {
     _path = path;
 }
@@ -109,17 +110,17 @@ void CSettings::ApplySettings()
 {
     try
     {
-        agk::SetWindowSize( _resolution.w, _resolution.h, _fullscreen );
+        agk::SetWindowSize( (int)_resolution.w, (int)_resolution.h, _fullscreen );
 
         // Virtual resolution is the resolution your art is designed for in size and position.
-        agk::SetVirtualResolution( _vResolution.w, _vResolution.h );
+        agk::SetVirtualResolution( (int)_vResolution.w, (int)_vResolution.h );
 
         SetScreenBounds();
 
         if( !_fullscreen )
         {
-            int xPos = (GetSystemMetrics( SM_CXSCREEN ) - _resolution.w) / 2;
-            int yPos = (GetSystemMetrics( SM_CYSCREEN ) - _resolution.h) / 2;
+            int xPos = (GetSystemMetrics( SM_CXSCREEN ) - (int)_resolution.w) / 2;
+            int yPos = (GetSystemMetrics( SM_CYSCREEN ) - (int)_resolution.h) / 2;
 
             agk::SetWindowPosition( xPos, yPos );
         }
@@ -130,7 +131,7 @@ void CSettings::ApplySettings()
         {
             agk::SetShadowBias( _shadowBias );
             agk::SetShadowMappingMode( _shadowMode );
-            agk::SetShadowMapSize( _shadowSize.w, _shadowSize.h );
+            agk::SetShadowMapSize( (int)_shadowSize.w, (int)_shadowSize.h );
             agk::SetShadowSmoothing( _shadowSmoothing );
             agk::SetShadowRange( _shadowRange );
         }
@@ -159,7 +160,7 @@ void CSettings::SaveSettings()
 /// Get the window resolution.
 /// </summary>
 /// *************************************************************************
-const CSize<int> & CSettings::GetResolution() const
+const CVector2 & CSettings::GetResolution() const
 {
     return _resolution;
 }
@@ -170,7 +171,7 @@ const CSize<int> & CSettings::GetResolution() const
 /// Get the virtual resolution. This is the resolution your art was made for.
 /// </summary>
 /// *************************************************************************
-const CSize<int> & CSettings::GetVirtualResolution() const
+const CVector2 & CSettings::GetVirtualResolution() const
 {
     return _vResolution;
 }
@@ -270,7 +271,7 @@ int CSettings::GetShadowMode() const
 /// Get the size of the map used for shadows.
 /// </summary>
 /// *************************************************************************
-const CSize<int> & CSettings::GetShadowSize() const
+const CVector2 & CSettings::GetShadowSize() const
 {
     return _shadowSize;
 }

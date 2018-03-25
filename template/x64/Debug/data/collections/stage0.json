@@ -1,36 +1,26 @@
 {
-  "collection": {
-
-
-    "sprite3d": [
-      {
-        "name": "ball",
-        "position":  {"x": 8, "y": 1, "z": 0}
-      },
-
-      {
-        "name": "floor",
-        "position": {"y": -3},
-        "rotation": {"x": 90}
-      }
-    ],
-
-
-    "sprite2d": [
-      {
-        "name": "test"
-      }
-    ],
-
-
-    "textSprite": [
-      {
-        "name": "titan",
-        "text": "Hi world!\nHi new line!",
-        "position": {"x": 500}
-      }
-    ]
-
-
-  }
+  "collection": 
+  [
+    {
+      "type": "sprite 3d",
+      "name": "ball",
+      "position":  {"x": 8, "y": 1, "z": 0}
+    },
+    {
+      "type": "sprite 3d",
+      "name": "floor",
+      "position": {"y": -3},
+      "rotation": {"x": 90}
+    },
+    {
+      "type": "sprite 2d",
+      "name": "test"
+    },
+    {
+      "type": "text sprite",
+      "name": "titan",
+      "text": "Hi world!\nHi new line!",
+      "position": {"x": 500}
+    }
+  ]
 }

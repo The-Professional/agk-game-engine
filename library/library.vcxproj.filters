@@ -22,6 +22,9 @@
     <Filter Include="script">
       <UniqueIdentifier>{8d5443c7-6765-46a0-af02-dd41cab3af93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="input">
+      <UniqueIdentifier>{2f58e220-7a33-4a12-a9e7-8e432e4c5a64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utilities\mathfunc.h">
@@ -33,20 +36,11 @@
     <ClInclude Include="common\bitmask.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="common\color.h">
-      <Filter>common</Filter>
-    </ClInclude>
     <ClInclude Include="common\defs.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="common\size.h">
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="common\vector3.h">
       <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="managers\resourcefile.h">
-      <Filter>managers</Filter>
     </ClInclude>
     <ClInclude Include="managers\resourcemanager.h">
       <Filter>managers</Filter>
@@ -81,12 +75,6 @@
     <ClInclude Include="utilities\generalfuncs.h">
       <Filter>utilities</Filter>
     </ClInclude>
-    <ClInclude Include="managers\inputstate.h">
-      <Filter>managers</Filter>
-    </ClInclude>
-    <ClInclude Include="managers\inputmapping.h">
-      <Filter>managers</Filter>
-    </ClInclude>
     <ClInclude Include="2d\sprite2d.h">
       <Filter>2d</Filter>
     </ClInclude>
@@ -116,12 +104,6 @@
     </ClInclude>
     <ClInclude Include="common\vector4.h">
       <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="managers\collectionmanager.h">
-      <Filter>managers</Filter>
-    </ClInclude>
-    <ClInclude Include="script\scriptmanager.h">
-      <Filter>script</Filter>
     </ClInclude>
     <ClInclude Include="script\scriptparam.h">
       <Filter>script</Filter>
@@ -153,6 +135,21 @@
     <ClInclude Include="common\collectionobject.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="input\inputmapping.h">
+      <Filter>input</Filter>
+    </ClInclude>
+    <ClInclude Include="input\inputstate.h">
+      <Filter>input</Filter>
+    </ClInclude>
+    <ClInclude Include="common\resourcefile.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="managers\scriptmanager.h">
+      <Filter>managers</Filter>
+    </ClInclude>
+    <ClInclude Include="managers\menumanager.h">
+      <Filter>managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="utilities\settings.cpp">
@@ -181,12 +178,6 @@
     </ClCompile>
     <ClCompile Include="utilities\generalfuncs.cpp">
       <Filter>utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="managers\inputstate.cpp">
-      <Filter>managers</Filter>
-    </ClCompile>
-    <ClCompile Include="managers\inputmapping.cpp">
-      <Filter>managers</Filter>
     </ClCompile>
     <ClCompile Include="2d\sprite2d.cpp">
       <Filter>2d</Filter>
@@ -221,12 +212,6 @@
     <ClCompile Include="common\vector4.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="managers\collectionmanager.cpp">
-      <Filter>managers</Filter>
-    </ClCompile>
-    <ClCompile Include="script\scriptmanager.cpp">
-      <Filter>script</Filter>
-    </ClCompile>
     <ClCompile Include="script\scriptglobals.cpp">
       <Filter>script</Filter>
     </ClCompile>
@@ -256,6 +241,18 @@
     </ClCompile>
     <ClCompile Include="common\controldata.cpp">
       <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="input\inputmapping.cpp">
+      <Filter>input</Filter>
+    </ClCompile>
+    <ClCompile Include="input\inputstate.cpp">
+      <Filter>input</Filter>
+    </ClCompile>
+    <ClCompile Include="managers\scriptmanager.cpp">
+      <Filter>managers</Filter>
+    </ClCompile>
+    <ClCompile Include="managers\menumanager.cpp">
+      <Filter>managers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -33,7 +33,7 @@ public:
     float GetTextSpacing() const;
     float GetLineSpacing() const;
     float GetMaxWidth() const;
-    const CVector4 & GetColor() const;
+    const CVector4<float> & GetColor() const;
     NDefs::ETextAlignment GetTextAlignment() const;
     const CBitmask<uint> & GetAlignment() const;
     const std::vector<std::string> & GetAnimationList() const;
@@ -59,7 +59,7 @@ private:
     float _maxWidth = 100;
 
     // The color of the text.
-    CVector4 _color = 1;
+    CVector4<float> _color = 1;
 
     // The alignment of the text. (i.e. left, right, center)
     NDefs::ETextAlignment _textAlignment = NDefs::ETA_LEFT;

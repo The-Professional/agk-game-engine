@@ -185,7 +185,7 @@ bool CAnimation::IsInitalized() const
 /// Set the object's position.
 /// </summary>
 /// *************************************************************************
-void CAnimation::SetPos( const CVector3 & pos )
+void CAnimation::SetPos( const CVector3<float> & pos )
 {
     _pObject->SetPos( pos );
 }
@@ -196,7 +196,7 @@ void CAnimation::SetPos( const CVector3 & pos )
 /// Increment the object's position.
 /// </summary>
 /// *************************************************************************
-void CAnimation::IncPos( const CVector3 & pos )
+void CAnimation::IncPos( const CVector3<float> & pos )
 {
     _pObject->IncPos( pos );
 }
@@ -207,7 +207,7 @@ void CAnimation::IncPos( const CVector3 & pos )
 /// Get the object's position.
 /// </summary>
 /// *************************************************************************
-const CVector3 & CAnimation::GetPos() const
+const CVector3<float> & CAnimation::GetPos() const
 {
     return _pObject->GetPos();
 }
@@ -218,7 +218,7 @@ const CVector3 & CAnimation::GetPos() const
 /// Set the object's rotation.
 /// </summary>
 /// *************************************************************************
-void CAnimation::SetRot( const CVector3 & rot )
+void CAnimation::SetRot( const CVector3<float> & rot )
 {
     _pObject->SetRot( rot );
 }
@@ -229,7 +229,7 @@ void CAnimation::SetRot( const CVector3 & rot )
 /// Increment the object's rotation.
 /// </summary>
 /// *************************************************************************
-void CAnimation::IncRot( const CVector3 & rot )
+void CAnimation::IncRot( const CVector3<float> & rot )
 {
     _pObject->IncRot( rot );
 }
@@ -240,7 +240,7 @@ void CAnimation::IncRot( const CVector3 & rot )
 /// Get the object's rotation.
 /// </summary>
 /// *************************************************************************
-const CVector3 & CAnimation::GetRot() const
+const CVector3<float> & CAnimation::GetRot() const
 {
     return _pObject->GetRot();
 }
@@ -251,7 +251,7 @@ const CVector3 & CAnimation::GetRot() const
 /// Set the object's size.
 /// </summary>
 /// *************************************************************************
-void CAnimation::SetSize( const CVector3 & size )
+void CAnimation::SetSize( const CVector3<float> & size )
 {
     _pObject->SetSize( size );
 }
@@ -262,7 +262,7 @@ void CAnimation::SetSize( const CVector3 & size )
 /// Increment the object's size.
 /// </summary>
 /// *************************************************************************
-void CAnimation::IncSize( const CVector3 & size )
+void CAnimation::IncSize( const CVector3<float> & size )
 {
     _pObject->IncSize( size );
 }
@@ -273,7 +273,7 @@ void CAnimation::IncSize( const CVector3 & size )
 /// Get the object's size.
 /// </summary>
 /// *************************************************************************
-const CVector3 & CAnimation::GetSize() const
+const CVector3<float> & CAnimation::GetSize() const
 {
     return _pObject->GetSize();
 }
@@ -284,7 +284,7 @@ const CVector3 & CAnimation::GetSize() const
 /// Set the object's color.
 /// </summary>
 /// *************************************************************************
-void CAnimation::SetColor( const CVector4 & color )
+void CAnimation::SetColor( const CVector4<float> & color )
 {
     _pObject->SetColor( color );
 }
@@ -295,7 +295,7 @@ void CAnimation::SetColor( const CVector4 & color )
 /// Increment the object's color.
 /// </summary>
 /// *************************************************************************
-void CAnimation::IncColor( const CVector4 & color )
+void CAnimation::IncColor( const CVector4<float> & color )
 {
     _pObject->IncColor( color );
 }
@@ -306,7 +306,7 @@ void CAnimation::IncColor( const CVector4 & color )
 /// Get the object's color.
 /// </summary>
 /// *************************************************************************
-const CVector4 & CAnimation::GetColor() const
+const CVector4<float> & CAnimation::GetColor() const
 {
     return _pObject->GetColor();
 }

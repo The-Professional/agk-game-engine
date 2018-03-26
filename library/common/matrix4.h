@@ -5,8 +5,11 @@
 #include <common\defs.h>
 
 // Forward declarations
+template <class T>
 class CVector2;
+template <class T>
 class CVector3;
+template <class T>
 class CVector4;
 
 /// *************************************************************************
@@ -21,7 +24,7 @@ public:
     CMatrix4();
     CMatrix4( const CMatrix4 & n );
     CMatrix4( float _m[16] );
-    CMatrix4( const CVector3 & translation, const CVector3 & rotation, const CVector3 & scale );
+    CMatrix4( const CVector3<float> & translation, const CVector3<float> & rotation, const CVector3<float> & scale );
     CMatrix4( float _m11, float _m12, float _m13, float _m14,
               float _m21, float _m22, float _m23, float _m24, 
               float _m31, float _m32, float _m33, float _m34, 
@@ -29,8 +32,8 @@ public:
 
     // 4x4 matrix multiplication.
     CMatrix4 operator * ( const CMatrix4 & n ) const;
-    CVector3 operator * ( const CVector3 & v ) const;
-    CVector4 operator * ( const CVector4 & v ) const;
+    CVector3<float> operator * ( const CVector3<float> & v ) const;
+    CVector4<float> operator * ( const CVector4<float> & v ) const;
     void operator *= ( const CMatrix4 & n );
 
     // Get inverted 4x4 matrix.
@@ -43,29 +46,29 @@ public:
     void Clear();
 
     // Set the translation portion of the matrix.
-    void SetTranslation( const CVector3 & value );
-    void SetTranslation( const CVector2 & value );
+    void SetTranslation( const CVector3<float> & value );
+    void SetTranslation( const CVector2<float> & value );
 
     // Set the rotation portion of the matrix.
-    void SetRotation( const CVector3 & value );
+    void SetRotation( const CVector3<float> & value );
     void SetRotation( float value );
 
     // Set the scale portion of the matrix.
-    void SetScale( const CVector3 & value );
-    void SetScale( const CVector2 & value );
+    void SetScale( const CVector3<float> & value );
+    void SetScale( const CVector2<float> & value );
     void SetScale( float value );
 
     // Translate the matrix.
-    void Translate( const CVector3 & value );
-    void Translate( const CVector2 & value );
+    void Translate( const CVector3<float> & value );
+    void Translate( const CVector2<float> & value );
 
     // Rotate the matrix.
-    void Rotate( const CVector3 & value );
+    void Rotate( const CVector3<float> & value );
     void Rotate( float value );
 
     // Scale the matrix.
-    void Scale( const CVector3 & value );
-    void Scale( const CVector2 & value );
+    void Scale( const CVector3<float> & value );
+    void Scale( const CVector2<float> & value );
     void Scale( float value );
 
 private:

@@ -38,7 +38,7 @@ public:
     const std::string & GetShader() const;
 
     // Get the sprite's default color.
-    const CVector4 & GetColor() const;
+    const CVector4<float> & GetColor() const;
 
     // Get the sprite's image names.
     const std::string & GetTextureMap() const;
@@ -61,8 +61,8 @@ public:
     bool WillReceiveShadow() const;
 
     // Access functions for the sprite's size.
-    void SetSize( const CVector3 & size );
-    const CVector3 & GetSize() const;
+    void SetSize( const CVector3<float> & size );
+    const CVector3<float> & GetSize() const;
 
     // Whether or not the size was set.
     bool IsSizeSet() const;
@@ -82,7 +82,7 @@ private:
     std::string _shader;
 
     // Initial color of the sprite.
-    CVector4 _color = 1;
+    CVector4<float> _color = 1;
 
     // Images to map onto the sprite.
     std::string _textureMap, _normalMap, _specularMap;
@@ -104,7 +104,7 @@ private:
     bool _sizeSameAsFile = false;
 
     // Size of the sprite.
-    CVector3 _size;
+    CVector3<float> _size;
 };
 
 #endif  // __sprite_visual_data_3d_h__

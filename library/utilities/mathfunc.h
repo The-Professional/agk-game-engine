@@ -15,11 +15,12 @@ namespace NMathFunc
     bool Approximate( float v1, float v2, float error = 0.0001f );
 
     // Get the new position correctly aligned with the window.
-    void AlignPosition( const CBitmask<uint> & alignment, CVector3 & vPos );
+    void AlignPosition( const CBitmask<uint> & alignment, CVector3<float> & vPos );
     void AlignPositionX( const CBitmask<uint> & alignment, float & x );
     void AlignPositionY( const CBitmask<uint> & alignment, float & y );
 
     // Perform a modulus operation on floats.
+    int Modulus( int v1, int v2 );
     float Modulus( float v1, float v2 );
 }
 

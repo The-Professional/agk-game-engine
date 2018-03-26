@@ -26,12 +26,12 @@ public:
     void LoadFromIter( nlohmann::json::const_iterator iter );
 
     // Access functions for the visual sprite data.
-    const CVector4 & GetColor() const;
+    const CVector4<float> & GetColor() const;
     const std::string & GetTextureMap() const;
 
     // Access functions for the visual sprite's size.
-    void SetSize( const CVector2 & size );
-    const CVector2 & GetSize() const;
+    void SetSize( const CVector2<float> & size );
+    const CVector2<float> & GetSize() const;
 
     // Whether or not the size has been set.
     bool IsSizeSet() const;
@@ -42,7 +42,7 @@ public:
 private:
 
     // Initial color of the sprite.
-    CVector4 _color = 1;
+    CVector4<float> _color = 1;
 
     // Image to map onto the sprite.
     std::string _textureMap;
@@ -54,7 +54,7 @@ private:
     bool _sizeSameAsFile = false;
 
     // Size of the sprite.
-    CVector2 _size;
+    CVector2<float> _size;
 };
 
 #endif  // __sprite_visual_data_2d_h__

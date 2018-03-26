@@ -165,13 +165,13 @@ void CSprite3D::Init( CSpriteData3D * pData )
                     // If at least two dimensions are set, apply the permanent scale.
                     if( !_size.IsEmptyX() + !_size.IsEmptyY() + !_size.IsEmptyZ() > 1 )
                     {
-                        CVector3 scale = _size / GetWorldSize();
+                        CVector3<float> scale = _size / GetWorldSize();
                         agk::SetObjectScalePermanent( _id, scale.x, scale.y, scale.z );
                     }
                     // If only the width is set, calculate the height and depth.
                     else if( _size.w > 0 )
                     {
-                        CVector3 size = GetWorldSize();
+                        CVector3<float> size = GetWorldSize();
                         float scale = _size.w / size.w;
                         _size.h = scale * size.h;
                         _size.d = scale * size.d;
@@ -180,7 +180,7 @@ void CSprite3D::Init( CSpriteData3D * pData )
                     // If only the height is set, calculate the width and depth.
                     else if( _size.h > 0 )
                     {
-                        CVector3 size = GetWorldSize();
+                        CVector3<float> size = GetWorldSize();
                         float scale = _size.h / size.h;
                         _size.w = scale * size.w;
                         _size.d = scale * size.d;
@@ -189,7 +189,7 @@ void CSprite3D::Init( CSpriteData3D * pData )
                     // If only the depth is set, calculate the width and height.
                     else if( _size.d > 0 )
                     {
-                        CVector3 size = GetWorldSize();
+                        CVector3<float> size = GetWorldSize();
                         float scale = _size.d / size.d;
                         _size.w = scale * size.w;
                         _size.h = scale * size.h;
@@ -261,7 +261,7 @@ void CSprite3D::ApplyPosition()
         }
         else
         {
-            CVector3 newPos = *_pParent->GetMatrix() * _position;
+            CVector3<float> newPos = *_pParent->GetMatrix() * _position;
             agk::SetObjectPosition( _id, newPos.x, newPos.y, newPos.z );
         }
     }
@@ -287,7 +287,7 @@ void CSprite3D::ApplyRotation()
         }
         else
         {
-            CVector3 newRot = _pParent->GetWorldRot() + _rotation;
+            CVector3<float> newRot = _pParent->GetWorldRot() + _rotation;
             agk::SetObjectRotation( _id, newRot.x, newRot.y, newRot.z );
         }
     }
@@ -307,11 +307,11 @@ void CSprite3D::ApplyScale()
     {
         if( _modified.Contains( ETT_IGNORE ) )
         {
-            _scale *= CVector3( 1 ) / _pParent->GetWorldScale();
+            _scale *= CVector3<float>( 1 ) / _pParent->GetWorldScale();
         }
         else
         {
-            CVector3 newScale = _pParent->GetWorldScale() * _scale;
+            CVector3<float> newScale = _pParent->GetWorldScale() * _scale;
             agk::SetObjectScale( _id, newScale.w, newScale.h, newScale.d );
         }
     }
@@ -339,9 +339,9 @@ void CSprite3D::ApplyColor()
 /// Get the current position set in AGK.
 /// </summary>
 /// *************************************************************************
-CVector3 CSprite3D::GetWorldPos() const
+CVector3<float> CSprite3D::GetWorldPos() const
 {
-    return CVector3( agk::GetObjectX( _id ),
+    return CVector3<float>( agk::GetObjectX( _id ),
                      agk::GetObjectY( _id ),
                      agk::GetObjectZ( _id ) );
 }
@@ -352,9 +352,9 @@ CVector3 CSprite3D::GetWorldPos() const
 /// Get the current rotation set in AGK.
 /// </summary>
 /// *************************************************************************
-CVector3 CSprite3D::GetWorldRot() const
+CVector3<float> CSprite3D::GetWorldRot() const
 {
-    return CVector3( agk::GetObjectAngleX( _id ),
+    return CVector3<float>( agk::GetObjectAngleX( _id ),
                      agk::GetObjectAngleY( _id ), 
                      agk::GetObjectAngleZ( _id ) );
 }
@@ -365,9 +365,9 @@ CVector3 CSprite3D::GetWorldRot() const
 /// Get the current size set in AGK.
 /// </summary>
 /// *************************************************************************
-CVector3 CSprite3D::GetWorldSize() const
+CVector3<float> CSprite3D::GetWorldSize() const
 {
-    return CVector3( abs( agk::GetObjectSizeMaxX( _id ) - agk::GetObjectSizeMinX( _id ) ),
+    return CVector3<float>( abs( agk::GetObjectSizeMaxX( _id ) - agk::GetObjectSizeMinX( _id ) ),
                      abs( agk::GetObjectSizeMaxY( _id ) - agk::GetObjectSizeMinY( _id ) ),
                      abs( agk::GetObjectSizeMaxZ( _id ) - agk::GetObjectSizeMinZ( _id ) ) );
 }

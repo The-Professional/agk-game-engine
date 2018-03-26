@@ -54,24 +54,24 @@ public:
     bool IsInitalized() const;
 
     // Access functions for the object's position.
-    void SetPos( const CVector3 & pos );
-    void IncPos( const CVector3 & pos );
-    const CVector3 & GetPos() const;
+    void SetPos( const CVector3<float> & pos );
+    void IncPos( const CVector3<float> & pos );
+    const CVector3<float> & GetPos() const;
 
     // Access functions for the object's rotation. 
-    void SetRot( const CVector3 & rot );
-    void IncRot( const CVector3 & rot );
-    const CVector3 & GetRot() const;
+    void SetRot( const CVector3<float> & rot );
+    void IncRot( const CVector3<float> & rot );
+    const CVector3<float> & GetRot() const;
 
     // Access functions for the object's size.
-    void SetSize( const CVector3 & size );
-    void IncSize( const CVector3 & size );
-    const CVector3 & GetSize() const;
+    void SetSize( const CVector3<float> & size );
+    void IncSize( const CVector3<float> & size );
+    const CVector3<float> & GetSize() const;
 
     // Access functions for the object's color.
-    void SetColor( const CVector4 & color );
-    void IncColor( const CVector4 & color );
-    const CVector4 & GetColor() const;
+    void SetColor( const CVector4<float> & color );
+    void IncColor( const CVector4<float> & color );
+    const CVector4<float> & GetColor() const;
 
     // Access functions for the object's transparency.
     void SetColorA( float alpha );

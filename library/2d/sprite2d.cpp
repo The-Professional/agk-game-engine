@@ -170,7 +170,7 @@ void CSprite2D::ApplyPosition()
 {
     if( _pParent )
     {
-        CVector2 newPos = *_pParent->GetMatrix() * _position;
+        CVector2<float> newPos = *_pParent->GetMatrix() * _position;
         agk::SetSpritePosition( _id, newPos.x, newPos.y );
     }
     else
@@ -205,7 +205,7 @@ void CSprite2D::ApplyScale()
 {
     if( _pParent )
     {
-        CVector2 newScale = _pParent->GetWorldScale() * _scale;
+        CVector2<float> newScale = _pParent->GetWorldScale() * _scale;
         agk::SetSpriteScale( _id, newScale.w, newScale.h );
     }
     else
@@ -222,7 +222,7 @@ void CSprite2D::ApplyColor()
 {
     if( _pParent )
     {
-        CVector2 newScale = _pParent->GetWorldScale() * _scale;
+        CVector2<float> newScale = _pParent->GetWorldScale() * _scale;
         agk::SetSpriteScale( _id, newScale.w, newScale.h );
     }
     else
@@ -238,9 +238,9 @@ void CSprite2D::ApplyColor()
 /// Get the current position set in AGK.
 /// </summary>
 /// *************************************************************************
-CVector3 CSprite2D::GetWorldPos() const
+CVector3<float> CSprite2D::GetWorldPos() const
 {
-    return CVector3( agk::GetSpriteX( _id ), 
+    return CVector3<float>( agk::GetSpriteX( _id ), 
                      agk::GetSpriteY( _id ), 
                      (float)agk::GetSpriteDepth( _id ) );
 }
@@ -251,9 +251,9 @@ CVector3 CSprite2D::GetWorldPos() const
 /// Get the current rotation set in AGK.
 /// </summary>
 /// *************************************************************************
-CVector3 CSprite2D::GetWorldRot() const
+CVector3<float> CSprite2D::GetWorldRot() const
 {
-    return CVector3( 0, 0, agk::GetSpriteAngle( _id ) );
+    return CVector3<float>( 0, 0, agk::GetSpriteAngle( _id ) );
 }
 
 
@@ -262,9 +262,9 @@ CVector3 CSprite2D::GetWorldRot() const
 /// Get the current size set in AGK.
 /// </summary>
 /// *************************************************************************
-CVector3 CSprite2D::GetWorldSize() const
+CVector3<float> CSprite2D::GetWorldSize() const
 {
-    return CVector3( agk::GetSpriteWidth( _id ), 
+    return CVector3<float>( agk::GetSpriteWidth( _id ), 
                      agk::GetSpriteHeight( _id ) );
 }
 

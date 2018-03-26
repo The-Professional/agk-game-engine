@@ -72,9 +72,9 @@ void CSettings::LoadSettings()
             {
                 NParseHelper::GetWH( displayIter, "resolution", _resolution );
                 NParseHelper::GetWH( displayIter, "vResolution", _vResolution );
-                NParseHelper::GetBool( displayIter, "fullscreen", _fullscreen );
+                NParseHelper::GetValue( displayIter, "fullscreen", _fullscreen );
                 NParseHelper::GetOrientation( displayIter, _orientation );
-                NParseHelper::GetBool( displayIter, "anitalias", _antialias );
+                NParseHelper::GetValue( displayIter, "anitalias", _antialias );
 
                 _aspectRatio = (float)_resolution.h / (float)_resolution.w;
                 _vAspectRatio = (float)_vResolution.h / (float)_vResolution.w;
@@ -83,12 +83,12 @@ void CSettings::LoadSettings()
             auto shadowsIter = settingsIter->find( "shadows" );
             if( shadowsIter != settingsIter->end() )
             {
-                NParseHelper::GetBool( shadowsIter, "enabled", _shadowsEnabled );
-                NParseHelper::GetFloat( shadowsIter, "bias", _shadowBias );
-                NParseHelper::GetInt( shadowsIter, "shadowMode", _shadowMode );
+                NParseHelper::GetValue( shadowsIter, "enabled", _shadowsEnabled );
+                NParseHelper::GetValue( shadowsIter, "bias", _shadowBias );
+                NParseHelper::GetValue( shadowsIter, "shadowMode", _shadowMode );
                 NParseHelper::GetWH( shadowsIter, "size", _shadowSize );
-                NParseHelper::GetInt( shadowsIter, "smoothing", _shadowSmoothing );
-                NParseHelper::GetFloat( shadowsIter, "range", _shadowRange );
+                NParseHelper::GetValue( shadowsIter, "smoothing", _shadowSmoothing );
+                NParseHelper::GetValue( shadowsIter, "range", _shadowRange );
             }
         }
     }
@@ -110,17 +110,17 @@ void CSettings::ApplySettings()
 {
     try
     {
-        agk::SetWindowSize( (int)_resolution.w, (int)_resolution.h, _fullscreen );
+        agk::SetWindowSize( _resolution.w, _resolution.h, _fullscreen );
 
         // Virtual resolution is the resolution your art is designed for in size and position.
-        agk::SetVirtualResolution( (int)_vResolution.w, (int)_vResolution.h );
+        agk::SetVirtualResolution( _vResolution.w, _vResolution.h );
 
         SetScreenBounds();
 
         if( !_fullscreen )
         {
-            int xPos = (GetSystemMetrics( SM_CXSCREEN ) - (int)_resolution.w) / 2;
-            int yPos = (GetSystemMetrics( SM_CYSCREEN ) - (int)_resolution.h) / 2;
+            int xPos = (GetSystemMetrics( SM_CXSCREEN ) - _resolution.w) / 2;
+            int yPos = (GetSystemMetrics( SM_CYSCREEN ) - _resolution.h) / 2;
 
             agk::SetWindowPosition( xPos, yPos );
         }
@@ -131,7 +131,7 @@ void CSettings::ApplySettings()
         {
             agk::SetShadowBias( _shadowBias );
             agk::SetShadowMappingMode( _shadowMode );
-            agk::SetShadowMapSize( (int)_shadowSize.w, (int)_shadowSize.h );
+            agk::SetShadowMapSize( _shadowSize.w, _shadowSize.h );
             agk::SetShadowSmoothing( _shadowSmoothing );
             agk::SetShadowRange( _shadowRange );
         }
@@ -160,7 +160,7 @@ void CSettings::SaveSettings()
 /// Get the window resolution.
 /// </summary>
 /// *************************************************************************
-const CVector2 & CSettings::GetResolution() const
+const CVector2<int> & CSettings::GetResolution() const
 {
     return _resolution;
 }
@@ -171,7 +171,7 @@ const CVector2 & CSettings::GetResolution() const
 /// Get the virtual resolution. This is the resolution your art was made for.
 /// </summary>
 /// *************************************************************************
-const CVector2 & CSettings::GetVirtualResolution() const
+const CVector2<int> & CSettings::GetVirtualResolution() const
 {
     return _vResolution;
 }
@@ -271,7 +271,7 @@ int CSettings::GetShadowMode() const
 /// Get the size of the map used for shadows.
 /// </summary>
 /// *************************************************************************
-const CVector2 & CSettings::GetShadowSize() const
+const CVector2<int> & CSettings::GetShadowSize() const
 {
     return _shadowSize;
 }
@@ -357,7 +357,7 @@ void CSettings::SetScreenBounds()
 /// Get the positions of each screen boundary.
 /// </summary>
 /// *************************************************************************
-const CVector4 & CSettings::GetScreenBounds() const
+const CVector4<float> & CSettings::GetScreenBounds() const
 {
     return _screenBounds;
 }

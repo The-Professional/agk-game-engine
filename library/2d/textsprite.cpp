@@ -149,7 +149,7 @@ void CTextSprite::ApplyPosition()
 {
     if( _pParent )
     {
-        CVector2 newPos = *_pParent->GetMatrix() * _position;
+        CVector2<float> newPos = *_pParent->GetMatrix() * _position;
         agk::SetTextPosition( _id, newPos.x, newPos.y );
     }
     else
@@ -208,9 +208,9 @@ void CTextSprite::ApplyColor()
 /// Get the current position set in AGK.
 /// </summary>
 /// *************************************************************************
-CVector3 CTextSprite::GetWorldPos() const
+CVector3<float> CTextSprite::GetWorldPos() const
 {
-    return CVector3( agk::GetTextX( _id ),
+    return CVector3<float>( agk::GetTextX( _id ),
                      agk::GetTextY( _id ),
                      (float)agk::GetTextDepth( _id ) );
 }
@@ -221,9 +221,9 @@ CVector3 CTextSprite::GetWorldPos() const
 /// Get the current rotation set in AGK.
 /// </summary>
 /// *************************************************************************
-CVector3 CTextSprite::GetWorldRot() const
+CVector3<float> CTextSprite::GetWorldRot() const
 {
-    return _rotation.z;
+    return _rotation;
 }
 
 
@@ -232,9 +232,9 @@ CVector3 CTextSprite::GetWorldRot() const
 /// Get the current size set in AGK.
 /// </summary>
 /// *************************************************************************
-CVector3 CTextSprite::GetWorldSize() const
+CVector3<float> CTextSprite::GetWorldSize() const
 {
-    return CVector3( agk::GetTextTotalWidth( _id ),
+    return CVector3<float>( agk::GetTextTotalWidth( _id ),
                      agk::GetTextTotalHeight( _id ),
                      agk::GetTextSize( _id ) );
 }

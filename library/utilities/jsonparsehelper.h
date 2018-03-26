@@ -10,56 +10,72 @@
 #include <vector>
 
 // Forward declarations
-class CVector2;
-class CVector3;
-class CVector4;
 class CSpriteData3D;
 class CInputState;
 class CInputMapping;
 class iObject;
 class CCollectionObject;
 
-template <typename type>
+template <class T>
 class CBitmask;
 
-template <typename type>
-class CSize;
+template <class T>
+class CVector2;
+
+template <class T>
+class CVector3;
+
+template <class T>
+class CVector4;
+
 
 namespace NParseHelper
 {
-    // Parse a string value.
-    bool GetString( nlohmann::json::const_iterator iter, const std::string & tag, std::string & value );
-    bool GetString( nlohmann::json::const_iterator iter, const std::string & tag, std::vector<std::string> & value );
+    // Parse a value.
+    template <class T>
+    bool GetValue( nlohmann::json::const_iterator iter, const std::string & tag, T & value );
 
-    // Parse an int value.
-    bool GetInt( nlohmann::json::const_iterator iter, const std::string & tag, int & value );
-
-    // Parse a float value.
-    bool GetFloat( nlohmann::json::const_iterator iter, const std::string & tag, float & value );
-
-    // Parse a bool value.
-    bool GetBool( nlohmann::json::const_iterator iter, const std::string & tag, bool & value );
+    // Parse a list of values.
+    template <class T>
+    bool GetValueList( nlohmann::json::const_iterator iter, const std::string & tag, std::vector<T> & value );
 
     // Whether the tag exists.
     bool TagExists( nlohmann::json::const_iterator iter, const std::string & tag );
 
     // Parse generic x, y, z tags.
-    bool GetXYZ( nlohmann::json::const_iterator iter, const std::string & tag, CVector3 & xyz );
+    template <class T>
+    bool GetXYZ( nlohmann::json::const_iterator iter, const std::string & tag, CVector3<T> & xyz );
 
     // Parse generic w, h, d tags.
-    bool GetWHD( nlohmann::json::const_iterator iter, const std::string & tag, CVector3 & whd );
+    template <class T>
+    bool GetWHD( nlohmann::json::const_iterator iter, const std::string & tag, CVector3<T> & whd );
 
     // Parse generic w, h tags.
-    bool GetWH( nlohmann::json::const_iterator iter, const std::string & tag, CVector2 & wh );
+    template <class T>
+    bool GetWH( nlohmann::json::const_iterator iter, const std::string & tag, CVector2<T> & wh )
+    {
+        auto whIter = iter->find( tag );
+        if( whIter != iter->end() )
+        {
+            GetValue( whIter, "w", wh.w );
+            GetValue( whIter, "h", wh.h );
+
+            return true;
+        }
+
+        return false;
+    }
 
     // Parse mesh type tags.
     bool GetMeshType( nlohmann::json::const_iterator iter, NDefs::EMeshType & meshType );
 
     // Parse alignment tags.
-    bool GetAlignment( nlohmann::json::const_iterator iter, const std::string & tag, CBitmask<uint> & alignment );
+    template <class T>
+    bool GetAlignment( nlohmann::json::const_iterator iter, const std::string & tag, CBitmask<T> & alignment );
 
 	// Parse color tags.
-	bool GetColor( nlohmann::json::const_iterator iter, CVector4 & color );
+    template <class T>
+	bool GetColor( nlohmann::json::const_iterator iter, CVector4<T> & color );
 
 	// Parse orientation tags.
 	bool GetOrientation( nlohmann::json::const_iterator iter, NDefs::EOrentation & orientation );
@@ -71,7 +87,8 @@ namespace NParseHelper
     bool GetEndType( nlohmann::json::const_iterator iter, NDefs::EEndType & endType );
 
     // Parse object field tags.
-    bool GetObjectFields( nlohmann::json::const_iterator iter, const std::string & tag, CBitmask<uint> & fieldType );
+    template <class T>
+    bool GetObjectFields( nlohmann::json::const_iterator iter, const std::string & tag, CBitmask<T> & fieldType );
 
     // Parse animation list tags.
     bool GetAnimationList( nlohmann::json::const_iterator iter, const std::string & tag, std::vector<std::vector<std::string>> & animationList );

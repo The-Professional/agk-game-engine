@@ -37,15 +37,15 @@ CSpriteVisualData3D::~CSpriteVisualData3D()
 /// *************************************************************************
 void CSpriteVisualData3D::LoadFromIter( nlohmann::json::const_iterator iter )
 {
-    NParseHelper::GetString( iter, "mesh", _mesh );
+    NParseHelper::GetValue( iter, "mesh", _mesh );
     NParseHelper::GetColor( iter, _color );
     _sizeSet = NParseHelper::GetWHD( iter, "size", _size );
-    NParseHelper::GetString( iter, "textureMap", _textureMap );
-    NParseHelper::GetString( iter, "normalMap", _normalMap );
-    NParseHelper::GetString( iter, "specularMap", _specularMap );
+    NParseHelper::GetValue( iter, "textureMap", _textureMap );
+    NParseHelper::GetValue( iter, "normalMap", _normalMap );
+    NParseHelper::GetValue( iter, "specularMap", _specularMap );
     NParseHelper::GetDimensions( iter, _width, _height, _depth, _radius, _rows, _columns );
-    NParseHelper::GetBool( iter, "castShadow", _castShadow );
-    NParseHelper::GetBool( iter, "receiveShadow", _receiveShadow );
+    NParseHelper::GetValue( iter, "castShadow", _castShadow );
+    NParseHelper::GetValue( iter, "receiveShadow", _receiveShadow );
     NParseHelper::GetMeshType( iter, _type );
 
     // If the size hasn't been set, whatever the size of this will be the same as its file.
@@ -93,7 +93,7 @@ const string & CSpriteVisualData3D::GetShader() const
 /// Get the sprite's default color.
 /// </summary>
 /// *************************************************************************
-const CVector4 & CSpriteVisualData3D::GetColor() const
+const CVector4<float> & CSpriteVisualData3D::GetColor() const
 {
     return _color;
 }
@@ -238,7 +238,7 @@ bool CSpriteVisualData3D::WillReceiveShadow() const
 /// after we create the first sprite and know its size.
 /// </summary>
 /// *************************************************************************
-void CSpriteVisualData3D::SetSize( const CVector3 & size )
+void CSpriteVisualData3D::SetSize( const CVector3<float> & size )
 {
     if( !size.IsEmptyX() + !size.IsEmptyY() + !size.IsEmptyZ() > 1 )
     {
@@ -253,7 +253,7 @@ void CSpriteVisualData3D::SetSize( const CVector3 & size )
 /// Get the sprite's size.
 /// </summary>
 /// *************************************************************************
-const CVector3 & CSpriteVisualData3D::GetSize() const
+const CVector3<float> & CSpriteVisualData3D::GetSize() const
 {
     return _size;
 }

@@ -31,7 +31,7 @@ public:
     const std::vector<std::string> & GetAnimationList() const;
 
     // Access functions for the default size of the sprite.
-    const CVector3 & GetSize() const;
+    const CVector3<float> & GetSize() const;
 
 private:
 

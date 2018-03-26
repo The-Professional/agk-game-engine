@@ -149,7 +149,7 @@ void CInputManager::LoadInputMap()
             while( stateIter != inputStateListIter->end() )
             {
                 string name;
-                NParseHelper::GetString( stateIter, "name", name );
+                NParseHelper::GetValue( stateIter, "name", name );
 
                 CInputState state;
                 NParseHelper::GetInputState( stateIter, state );

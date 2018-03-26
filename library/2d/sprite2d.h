@@ -47,9 +47,9 @@ public:
     const CSpriteData2D * GetData() const;
 
     // Get the current transformation data set in AGK.
-    virtual CVector3 GetWorldPos() const;
-    virtual CVector3 GetWorldRot() const;
-    virtual CVector3 GetWorldSize() const;
+    virtual CVector3<float> GetWorldPos() const;
+    virtual CVector3<float> GetWorldRot() const;
+    virtual CVector3<float> GetWorldSize() const;
 
     // Update the size or scale, depending on which has been changed.
     virtual void UpdateSize();

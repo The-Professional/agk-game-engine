@@ -33,7 +33,7 @@ namespace NMathFunc
     /// <param name="alignment"> Alignment of the sprite with the screen. </param>
     /// <param name="pos"> Position to be converted. </param>
     /// *************************************************************************
-    void AlignPosition( const CBitmask<uint> & alignment, CVector3 & pos )
+    void AlignPosition( const CBitmask<uint> & alignment, CVector3<float> & pos )
     {
         if( alignment == NDefs::EA_CENTER )
             return;
@@ -82,6 +82,16 @@ namespace NMathFunc
     /// <param name="v1"> Value to be restricted. </param>
     /// <param name="v2"> Value to be restricted to. </param>
     /// *************************************************************************
+    int Modulus( int v1, int v2 )
+    {
+        return v1 % v2;
+    }
+
+    /// <summary>
+    /// Perform a modulus operation on floats. 
+    /// </summary>
+    /// <param name="v1"> Value to be restricted. </param>
+    /// <param name="v2"> Value to be restricted to. </param>
     float Modulus( float v1, float v2 )
     {
         if( abs(v1) < v2 )

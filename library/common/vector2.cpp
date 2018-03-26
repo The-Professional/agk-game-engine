@@ -9,7 +9,8 @@
 /// Constructor
 /// </summary>
 /// *************************************************************************
-CVector2::CVector2( float value )
+template <class T>
+CVector2<T>::CVector2( T value )
 {
     x = y = value;
 }
@@ -17,7 +18,8 @@ CVector2::CVector2( float value )
 /// <summary> 
 /// Constructor
 /// </summary>
-CVector2::CVector2( float _x, float _y )
+template <class T>
+CVector2<T>::CVector2( T _x, T _y )
 {
     x = _x; y = _y;
 }
@@ -25,7 +27,8 @@ CVector2::CVector2( float _x, float _y )
 /// <summary> 
 /// Constructor
 /// </summary>
-CVector2::CVector2( const CVector3 & value )
+template <class T>
+CVector2<T>::CVector2( const CVector3<T> & value )
 {
     *this = value;
 }
@@ -36,14 +39,16 @@ CVector2::CVector2( const CVector3 & value )
 /// 2D vector assignment.
 /// </summary>
 /// *************************************************************************
-void CVector2::operator = ( float value )
+template <class T>
+void CVector2<T>::operator = ( T value )
 {
     x = value;
     y = value;
 }
 
 // 2D vector assignment.
-void CVector2::operator = ( const CVector3 & value )
+template <class T>
+void CVector2<T>::operator = ( const CVector3<T> & value )
 {
     x = value.x;
     y = value.y;
@@ -55,21 +60,24 @@ void CVector2::operator = ( const CVector3 & value )
 /// 3D vector addition.
 /// </summary>
 /// *************************************************************************
-CVector2 CVector2::operator + ( const CVector3 & value ) const
+template <class T>
+CVector2<T> CVector2<T>::operator + ( const CVector3<T> & value ) const
 {
-    return CVector2( x + value.x, y + value.y );
+    return CVector2<T>( x + value.x, y + value.y );
 }
 
 // 3D vector addition.
-CVector2 CVector2::operator + ( const CVector2 & value ) const
+template <class T>
+CVector2<T> CVector2<T>::operator + ( const CVector2<T> & value ) const
 {
-    return CVector2( x + value.x, y + value.y );
+    return CVector2<T>( x + value.x, y + value.y );
 }
 
 // 3D vector addition.
-CVector2 CVector2::operator + ( float value ) const
+template <class T>
+CVector2<T> CVector2<T>::operator + ( T value ) const
 {
-    return CVector2( x + value, y + value );
+    return CVector2<T>( x + value, y + value );
 }
 
 
@@ -78,21 +86,24 @@ CVector2 CVector2::operator + ( float value ) const
 /// 3D vector addition.
 /// </summary>
 /// *************************************************************************
-void CVector2::operator += ( const CVector3 & value )
+template <class T>
+void CVector2<T>::operator += ( const CVector3<T> & value )
 {
     x += value.x;
     y += value.y;
 }
 
 // 3D vector addition.
-void CVector2::operator += ( const CVector2 & value )
+template <class T>
+void CVector2<T>::operator += ( const CVector2<T> & value )
 {
     x += value.x;
     y += value.y;
 }
 
 // 3D vector addition.
-void CVector2::operator += ( float value )
+template <class T>
+void CVector2<T>::operator += ( T value )
 {
     x += value;
     y += value;
@@ -104,21 +115,24 @@ void CVector2::operator += ( float value )
 /// 3D vector subtraction.
 /// </summary>
 /// *************************************************************************
-CVector2 CVector2::operator - ( const CVector3 & value ) const
+template <class T>
+CVector2<T> CVector2<T>::operator - ( const CVector3<T> & value ) const
 {
-    return CVector2( x - value.x, y - value.y );
+    return CVector2<T>( x - value.x, y - value.y );
 }
 
 // 3D vector subtraction.
-CVector2 CVector2::operator - ( const CVector2 & value ) const
+template <class T>
+CVector2<T> CVector2<T>::operator - ( const CVector2<T> & value ) const
 {
-    return CVector2( x - value.x, y - value.y );
+    return CVector2<T>( x - value.x, y - value.y );
 }
 
 // 3D vector subtraction.
-CVector2 CVector2::operator - ( float value ) const
+template <class T>
+CVector2<T> CVector2<T>::operator - ( T value ) const
 {
-    return CVector2( x - value, y - value );
+    return CVector2<T>( x - value, y - value );
 }
 
 
@@ -127,21 +141,24 @@ CVector2 CVector2::operator - ( float value ) const
 /// 3D vector subtraction.
 /// </summary>
 /// *************************************************************************
-void CVector2::operator -= ( const CVector3 & value )
+template <class T>
+void CVector2<T>::operator -= ( const CVector3<T> & value )
 {
     x -= value.x;
     y -= value.y;
 }
 
 // 3D vector subtraction.
-void CVector2::operator -= ( const CVector2 & value )
+template <class T>
+void CVector2<T>::operator -= ( const CVector2<T> & value )
 {
     x -= value.x;
     y -= value.y;
 }
 
 // 3D vector subtraction.
-void CVector2::operator -= ( float value )
+template <class T>
+void CVector2<T>::operator -= ( T value )
 {
     x -= value;
     y -= value;
@@ -153,21 +170,24 @@ void CVector2::operator -= ( float value )
 /// 3D vector multiplation.
 /// </summary>
 /// *************************************************************************
-CVector2 CVector2::operator * ( const CVector3 & value ) const
+template <class T>
+CVector2<T> CVector2<T>::operator * ( const CVector3<T> & value ) const
 {
-    return CVector2( x * value.x, y * value.y );
+    return CVector2<T>( x * value.x, y * value.y );
 }
 
 // 3D vector multiplation.
-CVector2 CVector2::operator * ( const CVector2 & value ) const
+template <class T>
+CVector2<T> CVector2<T>::operator * ( const CVector2<T> & value ) const
 {
-    return CVector2( x * value.x, y * value.y );
+    return CVector2<T>( x * value.x, y * value.y );
 }
 
 // 3D vector multiplation.
-CVector2 CVector2::operator * ( float value ) const
+template <class T>
+CVector2<T> CVector2<T>::operator * ( T value ) const
 {
-    return CVector2( x * value, y * value );
+    return CVector2<T>( x * value, y * value );
 }
 
 
@@ -176,21 +196,24 @@ CVector2 CVector2::operator * ( float value ) const
 /// 3D vector multiplation.
 /// </summary>
 /// *************************************************************************
-void CVector2::operator *= ( const CVector3 & value )
+template <class T>
+void CVector2<T>::operator *= ( const CVector3<T> & value )
 {
     x *= value.x;
     y *= value.y;
 }
 
 // 3D vector multiplation.
-void CVector2::operator *= ( const CVector2 & value )
+template <class T>
+void CVector2<T>::operator *= ( const CVector2<T> & value )
 {
     x *= value.x;
     y *= value.y;
 }
 
 // 3D vector multiplation.
-void CVector2::operator *= ( float value )
+template <class T>
+void CVector2<T>::operator *= ( T value )
 {
     x *= value;
     y *= value;
@@ -202,26 +225,29 @@ void CVector2::operator *= ( float value )
 /// 3D vector division.
 /// </summary>
 /// *************************************************************************
-CVector2 CVector2::operator / ( const CVector3 & value ) const
+template <class T>
+CVector2<T> CVector2<T>::operator / ( const CVector3<T> & value ) const
 {
-    return CVector3( value.IsEmptyX() ? 0 : x / value.x,
-                     value.IsEmptyY() ? 0 : y / value.y );
+    return CVector2<T>( value.IsEmptyX() ? 0 : x / value.x,
+                        value.IsEmptyY() ? 0 : y / value.y );
 }
 
 // 3D vector division.
-CVector2 CVector2::operator / ( const CVector2 & value ) const
+template <class T>
+CVector2<T> CVector2<T>::operator / ( const CVector2<T> & value ) const
 {
-    return CVector3( value.IsEmptyX() ? 0 : x / value.x,
-                     value.IsEmptyY() ? 0 : y / value.y );
+    return CVector2<T>( value.IsEmptyX() ? 0 : x / value.x,
+                        value.IsEmptyY() ? 0 : y / value.y );
 }
 
 // 3D vector division.
-CVector2 CVector2::operator / ( float value ) const
+template <class T>
+CVector2<T> CVector2<T>::operator / ( T value ) const
 {
     if( *(int*)&value == 0 )
-        return CVector2();
+        return CVector2<T>();
 
-    return CVector2( x / value, y / value );
+    return CVector2<T>( x / value, y / value );
 }
 
 
@@ -230,21 +256,24 @@ CVector2 CVector2::operator / ( float value ) const
 /// 3D vector division.
 /// </summary>
 /// *************************************************************************
-void CVector2::operator /= ( const CVector3 & value )
+template <class T>
+void CVector2<T>::operator /= ( const CVector3<T> & value )
 {
     x = value.IsEmptyX() ? 0 : x / value.x;
     y = value.IsEmptyY() ? 0 : y / value.y;
 }
 
 // 3D vector division.
-void CVector2::operator /= ( const CVector2 & value )
+template <class T>
+void CVector2<T>::operator /= ( const CVector2<T> & value )
 {
     x = value.IsEmptyX() ? 0 : x / value.x;
     y = value.IsEmptyY() ? 0 : y / value.y;
 }
 
 // 3D vector division.
-void CVector2::operator /= ( float value )
+template <class T>
+void CVector2<T>::operator /= ( T value )
 {
     if( *(int*)&value == 0 )
         x = y = 0;
@@ -261,7 +290,8 @@ void CVector2::operator /= ( float value )
 /// Whether or not the vector is empty.
 /// </summary>
 /// *************************************************************************
-bool CVector2::IsEmpty() const
+template <class T>
+bool CVector2<T>::IsEmpty() const
 {
     if( IsEmptyX() && IsEmptyY() )
         return true;
@@ -275,7 +305,8 @@ bool CVector2::IsEmpty() const
 /// Whether or not the vector's x component is empty.
 /// </summary>
 /// *************************************************************************
-bool CVector2::IsEmptyX() const
+template <class T>
+bool CVector2<T>::IsEmptyX() const
 {
     return *(int*)&x == 0;
 }
@@ -286,7 +317,8 @@ bool CVector2::IsEmptyX() const
 /// Whether or not the vector's y component is empty.
 /// </summary>
 /// *************************************************************************
-bool CVector2::IsEmptyY() const
+template <class T>
+bool CVector2<T>::IsEmptyY() const
 {
     return *(int*)&y == 0;
 }
@@ -297,10 +329,15 @@ bool CVector2::IsEmptyY() const
 /// Whether or not each dimension has a value.
 /// </summary>
 /// *************************************************************************
-bool CVector2::IsFilled() const
+template <class T>
+bool CVector2<T>::IsFilled() const
 {
     if( !IsEmptyX() && !IsEmptyY() )
         return true;
 
     return false;
 }
+
+// Explicit template instantiation
+template class CVector2<float>;
+template class CVector2<int>;

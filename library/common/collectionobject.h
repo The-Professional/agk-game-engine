@@ -42,10 +42,10 @@ public:
     std::string name;
 
     // The object's transformation.
-    CVector3 position, rotation, size;
+    CVector3<float> position, rotation, size;
 
     // The object's color.
-    CVector4 color;
+    CVector4<float> color;
 
     // The object's visibility.
     bool visible = true;

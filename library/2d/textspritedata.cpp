@@ -37,15 +37,15 @@ void CTextSpriteData::LoadFromIter( const string & name, json::const_iterator it
 {
     _name = name;
 
-    NParseHelper::GetString( iter, "font", _font );
-    NParseHelper::GetFloat( iter, "size", _size );
-    NParseHelper::GetFloat( iter, "textSpacing", _textSpacing );
-    NParseHelper::GetFloat( iter, "lineSpacing", _lineSpacing );
-    NParseHelper::GetFloat( iter, "maxWidth", _maxWidth );
+    NParseHelper::GetValue( iter, "font", _font );
+    NParseHelper::GetValue( iter, "size", _size );
+    NParseHelper::GetValue( iter, "textSpacing", _textSpacing );
+    NParseHelper::GetValue( iter, "lineSpacing", _lineSpacing );
+    NParseHelper::GetValue( iter, "maxWidth", _maxWidth );
     NParseHelper::GetColor( iter, _color );
     NParseHelper::GetTextAlignment( iter, _textAlignment );
     NParseHelper::GetAlignment( iter, "alignment", _alignment );
-    NParseHelper::GetString( iter, "animations", _animationList );
+    NParseHelper::GetValueList( iter, "animations", _animationList );
 }
 
 
@@ -120,7 +120,7 @@ float CTextSpriteData::GetMaxWidth() const
 /// Get the color of the text.
 /// </summary>
 /// *************************************************************************
-const CVector4 & CTextSpriteData::GetColor() const
+const CVector4<float> & CTextSpriteData::GetColor() const
 {
     return _color;
 }

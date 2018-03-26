@@ -46,7 +46,7 @@ void CSpriteData3D::LoadFromIter( const std::string & name, nlohmann::json::cons
         _pVisualData->LoadFromIter( visualIter );
     }
 
-    NParseHelper::GetString( iter, "animations", _animationList );
+    NParseHelper::GetValueList( iter, "animations", _animationList );
 }
 
 
@@ -96,7 +96,7 @@ const vector<string> & CSpriteData3D::GetAnimationList() const
 /// Set the default size of the sprite.
 /// </summary>
 /// *************************************************************************
-const CVector3 & CSpriteData3D::GetSize() const
+const CVector3<float> & CSpriteData3D::GetSize() const
 {
     if( _pVisualData )
         return _pVisualData->GetSize();

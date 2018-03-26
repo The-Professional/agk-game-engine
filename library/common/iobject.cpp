@@ -107,7 +107,7 @@ void iObject::SetPos( float x, float y, float z )
 }
 
 // Set the object's position. 
-void iObject::SetPos( const CVector2 & pos )
+void iObject::SetPos( const CVector2<float> & pos )
 {
     _position = pos;
 
@@ -115,7 +115,7 @@ void iObject::SetPos( const CVector2 & pos )
 }
 
 // Set the object's position. 
-void iObject::SetPos( const CVector3 & pos )
+void iObject::SetPos( const CVector3<float> & pos )
 {
     _position = pos;
 
@@ -171,7 +171,7 @@ void iObject::IncPos( float x, float y, float z )
 }
 
 // Increment the object's position. 
-void iObject::IncPos( const CVector2 & pos )
+void iObject::IncPos( const CVector2<float> & pos )
 {
     _position += pos;
 
@@ -179,7 +179,7 @@ void iObject::IncPos( const CVector2 & pos )
 }
 
 // Increment the object's position. 
-void iObject::IncPos( const CVector3 & pos )
+void iObject::IncPos( const CVector3<float> & pos )
 {
     _position += pos;
 
@@ -192,7 +192,7 @@ void iObject::IncPos( const CVector3 & pos )
 /// Get the object's position. 
 /// </summary>
 /// *************************************************************************
-const CVector3 & iObject::GetPos() const
+const CVector3<float> & iObject::GetPos() const
 {
     return _position;
 }
@@ -213,7 +213,7 @@ void iObject::SetRot( float x, float y, float z )
 }
 
 // Set the object's rotation. 
-void iObject::SetRot( const CVector3 & rot )
+void iObject::SetRot( const CVector3<float> & rot )
 {
     _rotation = rot;
 
@@ -260,7 +260,7 @@ void iObject::IncRot( float x, float y, float z )
 }
 
 // Increment the object's rotation. 
-void iObject::IncRot( const CVector3 & rot )
+void iObject::IncRot( const CVector3<float> & rot )
 {
     _rotation += rot;
 
@@ -281,7 +281,7 @@ void iObject::IncRot( float z )
 /// Get the object's rotation. 
 /// </summary>
 /// *************************************************************************
-const CVector3 & iObject::GetRot() const
+const CVector3<float> & iObject::GetRot() const
 {
     return _rotation;
 }
@@ -322,7 +322,7 @@ void iObject::SetSize( float whd )
 }
 
 // Set the object's size. 
-void iObject::SetSize( const CVector3 & size )
+void iObject::SetSize( const CVector3<float> & size )
 {
     _size = size;
 
@@ -331,7 +331,7 @@ void iObject::SetSize( const CVector3 & size )
 }
 
 // Set the object's size. 
-void iObject::SetSize( const CVector2 & size )
+void iObject::SetSize( const CVector2<float> & size )
 {
     _size = size;
 
@@ -423,7 +423,7 @@ void iObject::IncSize( float whd )
 }
 
 // Increment the object's size.
-void iObject::IncSize( const CVector3 & size )
+void iObject::IncSize( const CVector3<float> & size )
 {
     _size += size;
 
@@ -432,7 +432,7 @@ void iObject::IncSize( const CVector3 & size )
 }
 
 // Increment the object's size.
-void iObject::IncSize( const CVector2 & size )
+void iObject::IncSize( const CVector2<float> & size )
 {
     _size += size;
 
@@ -446,7 +446,7 @@ void iObject::IncSize( const CVector2 & size )
 /// Get the object's size. 
 /// </summary>
 /// *************************************************************************
-const CVector3 & iObject::GetSize() const
+const CVector3<float> & iObject::GetSize() const
 {
     return _size;
 }
@@ -487,7 +487,7 @@ void iObject::SetScale( float xyz )
 }
 
 // Set the object's scale. 
-void iObject::SetScale( const CVector2 & scale )
+void iObject::SetScale( const CVector2<float> & scale )
 {
     _position = scale;
 
@@ -496,7 +496,7 @@ void iObject::SetScale( const CVector2 & scale )
 }
 
 // Set the object's scale. 
-void iObject::SetScale( const CVector3 & scale )
+void iObject::SetScale( const CVector3<float> & scale )
 {
     _scale = scale;
 
@@ -567,7 +567,7 @@ void iObject::IncScale( float xyz )
 }
 
 // Increment the object's scale. 
-void iObject::IncScale( const CVector2 & scale )
+void iObject::IncScale( const CVector2<float> & scale )
 {
     _scale += scale;
 
@@ -576,7 +576,7 @@ void iObject::IncScale( const CVector2 & scale )
 }
 
 // Increment the object's scale. 
-void iObject::IncScale( const CVector3 & scale )
+void iObject::IncScale( const CVector3<float> & scale )
 {
     _scale += scale;
 
@@ -590,7 +590,7 @@ void iObject::IncScale( const CVector3 & scale )
 /// Get the object's scale. 
 /// </summary>
 /// *************************************************************************
-const CVector3 & iObject::GetScale() const
+const CVector3<float> & iObject::GetScale() const
 {
     return _scale;
 }
@@ -601,7 +601,7 @@ const CVector3 & iObject::GetScale() const
 /// Get the object's world scale. 
 /// </summary>
 /// *************************************************************************
-CVector3 iObject::GetWorldScale() const
+CVector3<float> iObject::GetWorldScale() const
 {
     if( _pParent )
         return _scale * _pParent->GetWorldScale();
@@ -636,7 +636,7 @@ void iObject::SetColor( float r, float g, float b )
 }
 
 // Set the object's color. 
-void iObject::SetColor( const CVector4 & color )
+void iObject::SetColor( const CVector4<float> & color )
 {
     _color = color;
 
@@ -702,7 +702,7 @@ void iObject::IncColor( float r, float g, float b )
 }
 
 // Increment the object's color.
-void iObject::IncColor( const CVector4 & color )
+void iObject::IncColor( const CVector4<float> & color )
 {
     _color += color;
 
@@ -715,7 +715,7 @@ void iObject::IncColor( const CVector4 & color )
 /// Get the object's color. 
 /// </summary>
 /// *************************************************************************
-const CVector4 & iObject::GetColor() const
+const CVector4<float> & iObject::GetColor() const
 {
     return _color;
 }
@@ -726,7 +726,7 @@ const CVector4 & iObject::GetColor() const
 /// Get the object's world color. 
 /// </summary>
 /// *************************************************************************
-CVector4 iObject::GetWorldColor() const
+CVector4<float> iObject::GetWorldColor() const
 {
     if( _pParent )
         return _color * _pParent->GetWorldColor();

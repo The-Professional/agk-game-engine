@@ -43,9 +43,9 @@ CAnimationData::~CAnimationData()
 /// *************************************************************************
 void CAnimationData::LoadFromIter( nlohmann::json::const_iterator iter )
 {
-    NParseHelper::GetString( iter, "name", _name );
-    NParseHelper::GetString( iter, "functions", _functionList );
-    NParseHelper::GetInt( iter, "loop", _loopCount );
+    NParseHelper::GetValue( iter, "name", _name );
+    NParseHelper::GetValueList( iter, "functions", _functionList );
+    NParseHelper::GetValue( iter, "loop", _loopCount );
     NParseHelper::GetEndType( iter, _endType );
 }
 

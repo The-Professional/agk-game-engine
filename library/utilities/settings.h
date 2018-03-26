@@ -37,8 +37,8 @@ public:
     void ApplySettings();
 
     // Get the window resolution.
-    const CVector2 & GetResolution() const;
-    const CVector2 & GetVirtualResolution() const;
+    const CVector2<int> & GetResolution() const;
+    const CVector2<int> & GetVirtualResolution() const;
 
     // Get the window aspect ratios.
     float GetAspectRatio() const;
@@ -63,7 +63,7 @@ public:
     int GetShadowMode() const;
 
     // Get the size of the map used for shadows.
-    const CVector2 & GetShadowSize() const;
+    const CVector2<int> & GetShadowSize() const;
 
     // Get the amount of shadow smoothing. (0 = off, 1 = min, 2 = max)
     int GetShadowSmoothingLevel() const;
@@ -80,7 +80,7 @@ public:
 
     // Access functions for the positions of each screen boundary.
     void SetScreenBounds();
-    const CVector4 & GetScreenBounds() const;
+    const CVector4<float> & GetScreenBounds() const;
 
 private:
 
@@ -96,11 +96,11 @@ private:
     std::string _path;
 
     // Resolution of the game window.
-    CVector2 _resolution;
+    CVector2<int> _resolution;
 
     // Virtual resolution fo the game window. 
     // This is the resolution your art was made for.
-    CVector2 _vResolution;
+    CVector2<int> _vResolution;
 
     // Window aspect ratios.
     float _aspectRatio;
@@ -125,7 +125,7 @@ private:
     int _shadowMode;
 
     // Size of the map used for shadows.
-    CVector2 _shadowSize;
+    CVector2<int> _shadowSize;
 
     // The amount of shadow smoothing. (0 = off, 1 = min, 2 = max)
     int _shadowSmoothing;
@@ -137,7 +137,7 @@ private:
     bool _windowResized;
 
     // The positions of each screen boundary.
-    CVector4 _screenBounds;
+    CVector4<float> _screenBounds;
 };
 
 #endif  // __settings_h__

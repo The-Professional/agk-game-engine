@@ -3,9 +3,10 @@
 
 // Game lib dependencies
 #include <agk.h>
+#include <common\bitmask.h>
 #include <common\vector2.h>
 #include <common\vector3.h>
-#include <common\bitmask.h>
+#include <common\vector4.h>
 #include <common\iobject.h>
 #include <common\collectionobject.h>
 #include <input\inputstate.h>
@@ -23,40 +24,20 @@ namespace NParseHelper
 {
     /// *************************************************************************
     /// <summary> 
-    /// Parse a string value.
+    /// Parse a value.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
     /// <param name="tag"> Tag to find. </param>
     /// <param name="value"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetString( json::const_iterator iter, const string & tag, string & value )
+    template <class T>
+    bool GetValue( nlohmann::json::const_iterator iter, const string & tag, T & value )
     {
-        auto strIter = iter->find( tag );
-        if( strIter != iter->end() )
+        auto valueIter = iter->find( tag );
+        if( valueIter != iter->end() )
         {
-            value = strIter->get<string>();
-            return true;
-        }
-
-        return false;
-    }
-
-    /// <summary> 
-    /// Parse a list of string values.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="tag"> Tag to find. </param>
-    /// <param name="value"> List to add to. </param>
-    /// <returns> If the tag exists. </returns>
-    bool GetString( json::const_iterator iter, const string & tag, vector<string> & value )
-    {
-        auto strListIter = iter->find( tag );
-        if( strListIter != iter->end() )
-        {
-            for( auto & strIter : *strListIter )
-                value.push_back( strIter.get<string>() );
-
+            value = valueIter->get<T>();
             return true;
         }
 
@@ -66,63 +47,22 @@ namespace NParseHelper
 
     /// *************************************************************************
     /// <summary> 
-    /// Parse an int value.
+    /// Parse a list of values.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
     /// <param name="tag"> Tag to find. </param>
-    /// <param name="value"> Value to set. </param>
+    /// <param name="list"> List to add to. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetInt( json::const_iterator iter, const string & tag, int & value )
+    template <class T>
+    bool GetValueList( nlohmann::json::const_iterator iter, const string & tag, vector<T> & list )
     {
-        auto intIter = iter->find( tag );
-        if( intIter != iter->end() )
+        auto valueListIter = iter->find( tag );
+        if( valueListIter != iter->end() )
         {
-            value = intIter->get<int>();
-            return true;
-        }
+            for( auto & valueIter : *valueListIter )
+                list.push_back( valueIter.get<T>() );
 
-        return false;
-    }
-
-
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse a float value.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="tag"> Tag to find. </param>
-    /// <param name="value"> Value to set. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    bool GetFloat( json::const_iterator iter, const string & tag, float & value )
-    {
-        auto floatIter = iter->find( tag );
-        if( floatIter != iter->end() )
-        {
-            value = floatIter->get<float>();
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse a bool value.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="tag"> Tag to find. </param>
-    /// <param name="value"> Value to set. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    bool GetBool( json::const_iterator iter, const string & tag, bool & value )
-    {
-        auto boolIter = iter->find( tag );
-        if( boolIter != iter->end() )
-        {
-            value = boolIter->get<bool>();
             return true;
         }
 
@@ -157,21 +97,22 @@ namespace NParseHelper
     /// <param name="xyz"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetXYZ( json::const_iterator iter, const string & tag, CVector3 & xyz )
+    template <class T>
+    bool GetXYZ( json::const_iterator iter, const string & tag, CVector3<T> & xyz )
     {
         auto xyzIter = iter->find( tag );
         if( xyzIter != iter->end() )
         {
-            float u = 0;
-            if( GetFloat( xyzIter, "xyz", u ) )
+            T u = 0;
+            if( GetValue( xyzIter, "xyz", u ) )
             {
                 xyz = u;
                 return true;
             }
 
-            GetFloat( xyzIter, "x", xyz.x );
-            GetFloat( xyzIter, "y", xyz.y );
-            GetFloat( xyzIter, "z", xyz.z );
+            GetValue( xyzIter, "x", xyz.x );
+            GetValue( xyzIter, "y", xyz.y );
+            GetValue( xyzIter, "z", xyz.z );
 
             return true;
         }
@@ -189,14 +130,15 @@ namespace NParseHelper
     /// <param name="whd"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetWHD( json::const_iterator iter, const string & tag, CVector3 & whd )
+    template <class T>
+    bool GetWHD( json::const_iterator iter, const string & tag, CVector3<T> & whd )
     {
         auto whdIter = iter->find( tag );
         if( whdIter != iter->end() )
         {
-            GetFloat( whdIter, "w", whd.w );
-            GetFloat( whdIter, "h", whd.h );
-            GetFloat( whdIter, "d", whd.d );
+            GetValue( whdIter, "w", whd.w );
+            GetValue( whdIter, "h", whd.h );
+            GetValue( whdIter, "d", whd.d );
 
             return true;
         }
@@ -204,26 +146,27 @@ namespace NParseHelper
         return false;
     }
 
-    /// <summary> 
+    /*/// <summary> 
     /// Parse generic w, h tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
     /// <param name="tag"> Tag to find. </param>
     /// <param name="wh"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
-    bool GetWH( nlohmann::json::const_iterator iter, const string & tag, CVector2 & wh )
+    template <class T>
+    bool GetWH( json::const_iterator iter, const string & tag, CVector2<T> & wh )
     {
         auto whIter = iter->find( tag );
         if( whIter != iter->end() )
         {
-            GetFloat( whIter, "w", wh.w );
-            GetFloat( whIter, "h", wh.h );
+            GetValue( whIter, "w", wh.w );
+            GetValue( whIter, "h", wh.h );
 
             return true;
         }
 
         return false;
-    }
+    }*/
 
 
     // .
@@ -235,10 +178,10 @@ namespace NParseHelper
     /// <param name="meshType"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetMeshType( nlohmann::json::const_iterator iter, NDefs::EMeshType & meshType )
+    bool GetMeshType( json::const_iterator iter, NDefs::EMeshType & meshType )
     {
         string str;
-        if( GetString( iter, "type", str ) )
+        if( GetValue( iter, "type", str ) )
         {
             meshType = CDefs::Instance().GetMeshType( str );
             return true;
@@ -256,10 +199,11 @@ namespace NParseHelper
     /// <param name="alignment"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetAlignment( json::const_iterator iter, const string & tag, CBitmask<uint> & alignment )
+    template <class T>
+    bool GetAlignment( json::const_iterator iter, const string & tag, CBitmask<T> & alignment )
     {
         vector<string> align;
-        if( GetString( iter, tag, align ) )
+        if( GetValueList( iter, tag, align ) )
         {
             for( auto & a : align )
                 alignment.Add( CDefs::Instance().GetAlignment( a ) );
@@ -285,15 +229,16 @@ namespace NParseHelper
     /// <param name="color"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetColor( json::const_iterator iter, CVector4 & color)
+    template <class T>
+    bool GetColor( json::const_iterator iter, CVector4<T> & color)
     {
         auto colorIter = iter->find("color");
         if( colorIter != iter->end() )
         {
-            GetFloat( colorIter, "r", color.r );
-            GetFloat( colorIter, "g", color.g );
-            GetFloat( colorIter, "b", color.b );
-            GetFloat( colorIter, "a", color.a );
+            GetValue( colorIter, "r", color.r );
+            GetValue( colorIter, "g", color.g );
+            GetValue( colorIter, "b", color.b );
+            GetValue( colorIter, "a", color.a );
 
             return true;
         }
@@ -313,7 +258,7 @@ namespace NParseHelper
     bool GetOrientation( json::const_iterator iter, EOrentation & orientation )
     {
         string str;
-        if( GetString( iter, "orientation", str ) )
+        if( GetValue( iter, "orientation", str ) )
         {
             orientation = CDefs::Instance().GetOrientation( str );
             return true;
@@ -334,7 +279,7 @@ namespace NParseHelper
     bool GetTextAlignment( json::const_iterator iter, ETextAlignment & alignment )
     {
         string str;
-        if( GetString( iter, "textAlignment", str ) )
+        if( GetValue( iter, "textAlignment", str ) )
         {
             alignment = CDefs::Instance().GetTextAlignment( str );
             return true;
@@ -355,7 +300,7 @@ namespace NParseHelper
     bool GetEndType( json::const_iterator iter, NDefs::EEndType & endType )
     {
         string str;
-        if( GetString( iter, "end", str ) )
+        if( GetValue( iter, "end", str ) )
         {
             endType = CDefs::Instance().GetEndType( str );
             return true;
@@ -374,10 +319,11 @@ namespace NParseHelper
     /// <param name="fieldType"> Value to set. </param>
     /// <returns> If the tag exists. </returns>
     /// *************************************************************************
-    bool GetObjectFields( json::const_iterator iter, const string & tag, CBitmask<uint> & fieldType )
+    template <class T>
+    bool GetObjectFields( json::const_iterator iter, const string & tag, CBitmask<T> & fieldType )
     {
         vector<string> field;
-        if( GetString( iter, tag, field ) )
+        if( GetValueList( iter, tag, field ) )
         {
             for( auto & f : field )
                 fieldType.Add( CDefs::Instance().GetObjectField( f ) );
@@ -429,7 +375,7 @@ namespace NParseHelper
     bool GetControlType( json::const_iterator iter, const string & tag, EControlType & controlType )
     {
         string str;
-        if( GetString( iter, tag, str ) )
+        if( GetValue( iter, tag, str ) )
         {
             controlType = CDefs::Instance().GetControlType( str );
             return true;
@@ -451,7 +397,7 @@ namespace NParseHelper
     bool GetControlState( json::const_iterator iter, const string & tag, EControlState & controlState )
     {
         string str;
-        if( GetString( iter, tag, str ) )
+        if( GetValue( iter, tag, str ) )
         {
             controlState = CDefs::Instance().GetControlState( str );
             return true;
@@ -470,18 +416,18 @@ namespace NParseHelper
     /// *************************************************************************
     void GetDimensions( json::const_iterator iter, float & width, float & height, float & depth, float & radius, int & rows, int & columns )
     {
-        GetFloat( iter, "width", width );
-        GetFloat( iter, "height", height );
-        GetFloat( iter, "depth", depth );
+        GetValue( iter, "width", width );
+        GetValue( iter, "height", height );
+        GetValue( iter, "depth", depth );
 
-        if( !GetFloat( iter, "radius", radius ) )
+        if( !GetValue( iter, "radius", radius ) )
         {
-            GetFloat( iter, "diameter", radius );
+            GetValue( iter, "diameter", radius );
             radius *= 0.5f;
         }
 
-        GetInt( iter, "rows", rows );
-        GetInt( iter, "columns", columns );
+        GetValue( iter, "rows", rows );
+        GetValue( iter, "columns", columns );
     }
 
 
@@ -501,7 +447,7 @@ namespace NParseHelper
             while( actionIter != inputIter->end() )
             {
                 string name;
-                GetString( actionIter, "name", name );
+                GetValue( actionIter, "name", name );
 
                 CInputMapping mapping;
                 GetInputMapping( actionIter, mapping );
@@ -577,78 +523,39 @@ namespace NParseHelper
     void GetCollectionObject( json::const_iterator iter, CCollectionObject & collectionObject )
     {
         string type;
-        if( GetString( iter, "type", type ) )
+        if( GetValue( iter, "type", type ) )
         {
             collectionObject.type = CDefs::Instance().GetObjectType( type );
             collectionObject.fields.Add( CCollectionObject::TYPE );
         }
 
-        string name;
-        if( GetString( iter, "name", name ) )
-        {
-            collectionObject.name = name;
+        if( GetValue( iter, "name", collectionObject.name ) )
             collectionObject.fields.Add( CCollectionObject::NAME );
-        }
 
-        CVector3 position;
-        if( GetXYZ( iter, "position", position ) )
-        {
-            collectionObject.position = position;
+        if( GetXYZ( iter, "position", collectionObject.position ) )
             collectionObject.fields.Add( CCollectionObject::POSITION );
-        }
 
-        CVector3 rotation;
-        if( GetXYZ( iter, "rotation", rotation ) )
-        {
-            collectionObject.rotation = rotation;
+        if( GetXYZ( iter, "rotation", collectionObject.rotation ) )
             collectionObject.fields.Add( CCollectionObject::ROTATION );
-        }
 
-        CVector3 size;
-        if( GetWHD( iter, "size", size ) )
-        {
-            collectionObject.size = size;
+        if( GetWHD( iter, "size", collectionObject.size ) )
             collectionObject.fields.Add( CCollectionObject::SIZE );
-        }
-        else if( GetFloat( iter, "size", size.d ) )
-        {
-            collectionObject.size.d = size.d;
+        else if( GetValue( iter, "size", collectionObject.size.d ) )
             collectionObject.fields.Add( CCollectionObject::TEXT_SIZE );
-        }
 
-        CVector4 color;
-        if( GetColor( iter, color ) )
-        {
-            collectionObject.color = color;
+        if( GetColor( iter, collectionObject.color ) )
             collectionObject.fields.Add( CCollectionObject::COLOR );
-        }
 
-        bool visible = false;
-        if( GetBool( iter, "visible", visible ) )
-        {
-            collectionObject.visible = visible;
+        if( GetValue( iter, "visible", collectionObject.visible ) )
             collectionObject.fields.Add( CCollectionObject::VISIBLE );
-        }
 
-        CBitmask<uint> alignment;
-        if( GetAlignment( iter, "alignment", alignment ) )
-        {
-            collectionObject.alignment = alignment;
+        if( GetAlignment( iter, "alignment", collectionObject.alignment ) )
             collectionObject.fields.Add( CCollectionObject::ALIGNMENT );
-        }
 
-        string text;
-        if( GetString( iter, "text", text ) )
-        {
-            collectionObject.text = text;
+        if( GetValue( iter, "text", collectionObject.text ) )
             collectionObject.fields.Add( CCollectionObject::TEXT );
-        }
 
-        ETextAlignment textAlignment;
-        if( GetTextAlignment( iter, textAlignment ) )
-        {
-            collectionObject.textAlignment = textAlignment;
+        if( GetTextAlignment( iter, collectionObject.textAlignment ) )
             collectionObject.fields.Add( CCollectionObject::TEXT_ALIGNMENT );
-        }
     }
 }

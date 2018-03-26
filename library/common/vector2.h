@@ -1,7 +1,8 @@
-#ifndef __vector2_h__
-#define __vector2_h__
+#ifndef __vector_2_h__
+#define __vector_2_h__
 
 // Forward declarations
+template <class T>
 class CVector3;
 
 /// *************************************************************************
@@ -9,57 +10,58 @@ class CVector3;
 /// Class to hold two dimensions of values.
 /// </summary>
 /// *************************************************************************
+template <class T>
 class CVector2
 {
 public:
 
-    CVector2( float value = 0 );
-    CVector2( float _x, float _y );
-    CVector2( const CVector3 & value );
+    CVector2( T value = 0 );
+    CVector2( T _x, T _y );
+    CVector2( const CVector3<T> & value );
 
     // 2D vector assignment.
-    void operator = ( float value );
-    void operator = ( const CVector3 & value );
+    void operator = ( T value );
+    void operator = ( const CVector3<T> & value );
 
     // 2D vector addition.
-    CVector2 operator + ( const CVector3 & value ) const;
-    CVector2 operator + ( const CVector2 & value ) const;
-    CVector2 operator + ( float value ) const;
+    CVector2<T> operator + ( const CVector3<T> & value ) const;
+    CVector2<T> operator + ( const CVector2<T> & value ) const;
+    CVector2<T> operator + ( T value ) const;
 
     // 2D vector addition.
-    void operator += ( const CVector3 & value );
-    void operator += ( const CVector2 & value );
-    void operator += ( float value );
+    void operator += ( const CVector3<T> & value );
+    void operator += ( const CVector2<T> & value );
+    void operator += ( T value );
 
     // 2D vector subtraction.
-    CVector2 operator - ( const CVector3 & value ) const;
-    CVector2 operator - ( const CVector2 & value ) const;
-    CVector2 operator - ( float value ) const;
+    CVector2<T> operator - ( const CVector3<T> & value ) const;
+    CVector2<T> operator - ( const CVector2<T> & value ) const;
+    CVector2<T> operator - ( T value ) const;
 
     // 2D vector subtraction.
-    void operator -= ( const CVector3 & value );
-    void operator -= ( const CVector2 & value );
-    void operator -= ( float value );
+    void operator -= ( const CVector3<T> & value );
+    void operator -= ( const CVector2<T> & value );
+    void operator -= ( T value );
 
     // 2D vector multiplation.
-    CVector2 operator * ( const CVector3 & value ) const;
-    CVector2 operator * ( const CVector2 & value ) const;
-    CVector2 operator * ( float value ) const;
+    CVector2<T> operator * ( const CVector3<T> & value ) const;
+    CVector2<T> operator * ( const CVector2<T> & value ) const;
+    CVector2<T> operator * ( T value ) const;
 
     // 2D vector multiplation.
-    void operator *= ( const CVector3 & value );
-    void operator *= ( const CVector2 & value );
-    void operator *= ( float value );
+    void operator *= ( const CVector3<T> & value );
+    void operator *= ( const CVector2<T> & value );
+    void operator *= ( T value );
 
     // 2D vector division.
-    CVector2 operator / ( const CVector3 & value ) const;
-    CVector2 operator / ( const CVector2 & value ) const;
-    CVector2 operator / ( float value ) const;
+    CVector2<T> operator / ( const CVector3<T> & value ) const;
+    CVector2<T> operator / ( const CVector2<T> & value ) const;
+    CVector2<T> operator / ( T value ) const;
 
     // 2D vector division.
-    void operator /= ( const CVector3 & vec );
-    void operator /= ( const CVector2 & vec );
-    void operator /= ( float value );
+    void operator /= ( const CVector3<T> & vec );
+    void operator /= ( const CVector2<T> & vec );
+    void operator /= ( T value );
 
     // Functions to determine whether or not the vector is empty.
     bool IsEmpty() const;
@@ -73,11 +75,11 @@ public:
 
     union
     {
-        struct { float x, y; };
-        struct { float w, h; };
+        struct { T x, y; };
+        struct { T w, h; };
     };
 
 };
 
 
-#endif  // __vector2_h__
+#endif  // __vector_2_h__

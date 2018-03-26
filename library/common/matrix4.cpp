@@ -52,7 +52,7 @@ CMatrix4::CMatrix4( const CMatrix4 & n )
 /// <summary> 
 /// Constructor
 /// </summary>
-CMatrix4::CMatrix4( const CVector3 & translation, const CVector3 & rotation, const CVector3 & scale )
+CMatrix4::CMatrix4( const CVector3<float> & translation, const CVector3<float> & rotation, const CVector3<float> & scale )
 {
     SetRotation( rotation );
     SetTranslation( translation );
@@ -99,9 +99,9 @@ CMatrix4 CMatrix4::operator * ( const CMatrix4 & n ) const
 /// <summary> 
 /// 4x4 matrix multiplication.
 /// </summary>
-CVector3 CMatrix4::operator * ( const CVector3 & v ) const
+CVector3<float> CMatrix4::operator * ( const CVector3<float> & v ) const
 {
-    return CVector3( m11 * v.x + m12 * v.y + m13 * v.z + m14,
+    return CVector3<float>( m11 * v.x + m12 * v.y + m13 * v.z + m14,
                      m21 * v.x + m22 * v.y + m23 * v.z + m24,
                      m31 * v.x + m32 * v.y + m33 * v.z + m34 );
 }
@@ -109,9 +109,9 @@ CVector3 CMatrix4::operator * ( const CVector3 & v ) const
 /// <summary> 
 /// 4x4 matrix multiplication.
 /// </summary>
-CVector4 CMatrix4::operator * ( const CVector4 & v ) const
+CVector4<float> CMatrix4::operator * ( const CVector4<float> & v ) const
 {
-    return CVector4( m11 * v.x + m12 * v.y + m13 * v.z + m14 * v.w,
+    return CVector4<float>( m11 * v.x + m12 * v.y + m13 * v.z + m14 * v.w,
                      m21 * v.x + m22 * v.y + m23 * v.z + m24 * v.w,
                      m31 * v.x + m32 * v.y + m33 * v.z + m34 * v.w,
                      m41 * v.x + m42 * v.y + m43 * v.z + m44 * v.w );
@@ -199,7 +199,7 @@ void CMatrix4::Clear()
 /// Set the translation portion of the matrix.
 /// </summary>
 /// *************************************************************************
-void CMatrix4::SetTranslation( const CVector3 & value )
+void CMatrix4::SetTranslation( const CVector3<float> & value )
 {
     m14 = value.x;
     m24 = value.y;
@@ -209,7 +209,7 @@ void CMatrix4::SetTranslation( const CVector3 & value )
 /// <summary> 
 /// Set the translation portion of the matrix.
 /// </summary>
-void CMatrix4::SetTranslation( const CVector2 & value )
+void CMatrix4::SetTranslation( const CVector2<float> & value )
 {
     m14 = value.x;
     m24 = value.y;
@@ -222,7 +222,7 @@ void CMatrix4::SetTranslation( const CVector2 & value )
 /// Set the rotation portion of the matrix.
 /// </summary>
 /// *************************************************************************
-void CMatrix4::SetRotation( const CVector3 & value )
+void CMatrix4::SetRotation( const CVector3<float> & value )
 {
     CBitmask<uint> flags = EFD_NULL;
 
@@ -385,7 +385,7 @@ void CMatrix4::SetRotationZ( float value )
 /// Set the scale portion of the matrix.
 /// </summary>
 /// *************************************************************************
-void CMatrix4::SetScale( const CVector3 & value )
+void CMatrix4::SetScale( const CVector3<float> & value )
 {
     m11 = value.x;
     m22 = value.y;
@@ -395,7 +395,7 @@ void CMatrix4::SetScale( const CVector3 & value )
 /// <summary> 
 /// Set the scale portion of the matrix.
 /// </summary>
-void CMatrix4::SetScale( const CVector2 & value )
+void CMatrix4::SetScale( const CVector2<float> & value )
 {
     m11 = value.x;
     m22 = value.y;
@@ -418,7 +418,7 @@ void CMatrix4::SetScale( float value )
 /// Translate the matrix.
 /// </summary>
 /// *************************************************************************
-void CMatrix4::Translate( const CVector3 & value )
+void CMatrix4::Translate( const CVector3<float> & value )
 {
     m14 += value.x;
     m24 += value.y;
@@ -428,7 +428,7 @@ void CMatrix4::Translate( const CVector3 & value )
 /// <summary> 
 /// Translate the matrix.
 /// </summary>
-void CMatrix4::Translate( const CVector2 & value )
+void CMatrix4::Translate( const CVector2<float> & value )
 {
     m14 += value.x;
     m24 += value.y;
@@ -440,7 +440,7 @@ void CMatrix4::Translate( const CVector2 & value )
 /// Rotate the matrix.
 /// </summary>
 /// *************************************************************************
-void CMatrix4::Rotate( const CVector3 & value )
+void CMatrix4::Rotate( const CVector3<float> & value )
 {
     CMatrix4 matrix;
     matrix.SetRotation( value );
@@ -463,7 +463,7 @@ void CMatrix4::Rotate( float value )
 /// Scale the matrix.
 /// </summary>
 /// *************************************************************************
-void CMatrix4::Scale( const CVector3 & value )
+void CMatrix4::Scale( const CVector3<float> & value )
 {
     m11 *= value.x;
     m12 *= value.y;
@@ -479,7 +479,7 @@ void CMatrix4::Scale( const CVector3 & value )
 /// <summary> 
 /// Scale the matrix.
 /// </summary>
-void CMatrix4::Scale( const CVector2 & value )
+void CMatrix4::Scale( const CVector2<float> & value )
 {
     m11 *= value.x;
     m12 *= value.y;

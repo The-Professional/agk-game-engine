@@ -35,7 +35,7 @@ CSpriteVisualData2D::~CSpriteVisualData2D()
 void CSpriteVisualData2D::LoadFromIter( nlohmann::json::const_iterator iter )
 {
     NParseHelper::GetColor( iter, _color );
-    NParseHelper::GetString( iter, "textureMap", _textureMap );
+    NParseHelper::GetValue( iter, "textureMap", _textureMap );
     _sizeSet = NParseHelper::GetWH( iter, "size", _size );
 
     // If the size hasn't been set, whatever the size of this will be the same as its file.
@@ -50,7 +50,7 @@ void CSpriteVisualData2D::LoadFromIter( nlohmann::json::const_iterator iter )
 /// Get the sprite's default color.
 /// </summary>
 /// *************************************************************************
-const CVector4 & CSpriteVisualData2D::GetColor() const
+const CVector4<float> & CSpriteVisualData2D::GetColor() const
 {
     return _color;
 }
@@ -74,7 +74,7 @@ const std::string & CSpriteVisualData2D::GetTextureMap() const
 /// after we create the first sprite and know its size.
 /// </summary>
 /// *************************************************************************
-void CSpriteVisualData2D::SetSize( const CVector2 & size )
+void CSpriteVisualData2D::SetSize( const CVector2<float> & size )
 {
     if( size.IsFilled() )
     {
@@ -89,7 +89,7 @@ void CSpriteVisualData2D::SetSize( const CVector2 & size )
 /// Get the sprite's size.
 /// </summary>
 /// *************************************************************************
-const CVector2 & CSpriteVisualData2D::GetSize() const
+const CVector2<float> & CSpriteVisualData2D::GetSize() const
 {
     return _size;
 }

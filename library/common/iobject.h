@@ -43,11 +43,11 @@ public:
     NDefs::EObjectType GetType() const;
 
     // Get the current transformation data set in AGK.
-    virtual CVector3 GetWorldPos() const = 0;
-    virtual CVector3 GetWorldRot() const = 0;
-    virtual CVector3 GetWorldSize() const = 0;
-    virtual CVector3 GetWorldScale() const;
-    virtual CVector4 GetWorldColor() const;
+    virtual CVector3<float> GetWorldPos() const = 0;
+    virtual CVector3<float> GetWorldRot() const = 0;
+    virtual CVector3<float> GetWorldSize() const = 0;
+    virtual CVector3<float> GetWorldScale() const;
+    virtual CVector4<float> GetWorldColor() const;
 
     // Update the size or scale, depending on which has been changed.
     virtual void UpdateSize() = 0;
@@ -63,72 +63,72 @@ public:
     // Access functions for the object's position.
     virtual void SetPos( float x, float y );
     virtual void SetPos( float x, float y, float z );
-    virtual void SetPos( const CVector2 & pos );
-    virtual void SetPos( const CVector3 & pos );
+    virtual void SetPos( const CVector2<float> & pos );
+    virtual void SetPos( const CVector3<float> & pos );
     virtual void SetPosX( float x );
     virtual void SetPosY( float y );
     virtual void SetPosZ( float z );
     virtual void IncPos( float x, float y );
     virtual void IncPos( float x, float y, float z );
-    virtual void IncPos( const CVector2 & pos );
-    virtual void IncPos( const CVector3 & pos );
-    virtual const CVector3 & GetPos() const;
+    virtual void IncPos( const CVector2<float> & pos );
+    virtual void IncPos( const CVector3<float> & pos );
+    virtual const CVector3<float> & GetPos() const;
 
     // Access functions for the object's rotation.
     virtual void SetRot( float x, float y, float z );
-    virtual void SetRot( const CVector3 & rot );
+    virtual void SetRot( const CVector3<float> & rot );
     virtual void SetRotX( float x );
     virtual void SetRotY( float y );
     virtual void SetRotZ( float z );
     virtual void IncRot( float x, float y, float z );
-    virtual void IncRot( const CVector3 & rot );
+    virtual void IncRot( const CVector3<float> & rot );
     virtual void IncRot( float z );
-    virtual const CVector3 & GetRot() const;
+    virtual const CVector3<float> & GetRot() const;
 
     // Access functions for the object's size.
     virtual void SetSize( float w, float h, float d );
     virtual void SetSize( float w, float h );
     virtual void SetSize( float whd );
-    virtual void SetSize( const CVector3 & size );
-    virtual void SetSize( const CVector2 & size );
+    virtual void SetSize( const CVector3<float> & size );
+    virtual void SetSize( const CVector2<float> & size );
     virtual void SetSizeW( float w, bool uniform = false );
     virtual void SetSizeH( float h, bool uniform = false );
     virtual void SetSizeD( float d, bool uniform = false );
     virtual void IncSize( float w, float h, float d );
     virtual void IncSize( float w, float h );
     virtual void IncSize( float wfd );
-    virtual void IncSize( const CVector3 & size );
-    virtual void IncSize( const CVector2 & size );
-    virtual const CVector3 & GetSize() const;
+    virtual void IncSize( const CVector3<float> & size );
+    virtual void IncSize( const CVector2<float> & size );
+    virtual const CVector3<float> & GetSize() const;
 
     // Access functions for the object's scale
     virtual void SetScale( float x, float y, float z );
     virtual void SetScale( float x, float y );
     virtual void SetScale( float xyz );
-    virtual void SetScale( const CVector2 & scale );
-    virtual void SetScale( const CVector3 & scale );
+    virtual void SetScale( const CVector2<float> & scale );
+    virtual void SetScale( const CVector3<float> & scale );
     virtual void SetScaleX( float x );
     virtual void SetScaleY( float y );
     virtual void SetScaleZ( float z );
     virtual void IncScale( float x, float y, float z );
     virtual void IncScale( float x, float y );
     virtual void IncScale( float xyz );
-    virtual void IncScale( const CVector2 & scale );
-    virtual void IncScale( const CVector3 & scale );
-    virtual const CVector3 & GetScale() const;
+    virtual void IncScale( const CVector2<float> & scale );
+    virtual void IncScale( const CVector3<float> & scale );
+    virtual const CVector3<float> & GetScale() const;
 
     // Access functions for the object's color.
     virtual void SetColor( float r, float g, float b, float a );
     virtual void SetColor( float r, float g, float b );
-    virtual void SetColor( const CVector4 & color );
+    virtual void SetColor( const CVector4<float> & color );
     virtual void SetColorR( float r );
     virtual void SetColorG( float g );
     virtual void SetColorB( float b );
     virtual void SetColorA( float a );
     virtual void IncColor( float r, float g, float b, float a );
     virtual void IncColor( float r, float g, float b );
-    virtual void IncColor( const CVector4 & color );
-    virtual const CVector4 & GetColor() const;
+    virtual void IncColor( const CVector4<float> & color );
+    virtual const CVector4<float> & GetColor() const;
 
     // Text sprite related access functions.
     virtual void SetFont( uint font ) {}
@@ -205,19 +205,19 @@ protected:
     NDefs::EObjectType _type;
 
     // Translation of the object.
-    CVector3 _position = 0;
+    CVector3<float> _position = 0;
 
     // Rotation of the object.
-    CVector3 _rotation = 0;
+    CVector3<float> _rotation = 0;
 
     // Size of the object.
-    CVector3 _size = 0;
+    CVector3<float> _size = 0;
 
     // Scale of the object. 
-    CVector3 _scale = 1;
+    CVector3<float> _scale = 1;
 
     // Color of the object.
-    CVector4 _color = 1;
+    CVector4<float> _color = 1;
 
     // A bit mask of all the fields that have been changed.
     CBitmask<uint> _modified = NDefs::ETT_NULL;

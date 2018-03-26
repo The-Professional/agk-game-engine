@@ -108,7 +108,7 @@ const vector<vector<string>> & CSpriteData2D::GetAnimationList() const
 /// Set the default size of the sprite.
 /// </summary>
 /// *************************************************************************
-const CVector2 & CSpriteData2D::GetSize() const
+const CVector2<float> & CSpriteData2D::GetSize() const
 {
     if( _pVisualData )
         return _pVisualData->GetSize();

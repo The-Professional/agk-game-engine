@@ -23,18 +23,21 @@ class CSprite3D : public iObject
 {
 public:
 
-    CSprite3D();
-    CSprite3D( CSpriteData3D * pData );
+    CSprite3D( const std::string & name );
     ~CSprite3D();
 
     // Get the name of the sprite.
     virtual const std::string & GetName() const;
 
     // Initialize the sprite using its sprite data.
-    void Init( CSpriteData3D * pData );
+    void Init( const std::string & name );
 
     // Delete the object that belongs to the AGK id.
     virtual void DeleteObject();
+
+    // Access functions for whether the sprite is marked for deletion.
+    virtual void MarkForDeletion();
+    virtual bool IsMarkedForDeletion() const;
 
     // Get the data used to create the sprite.
     const CSpriteData3D * GetData() const;
@@ -48,17 +51,20 @@ public:
     virtual void UpdateSize();
     virtual void UpdateScale();
 
-    // Access functions for the sprite's visibility.
-    virtual void SetVisible( bool visible );
+    // Get the sprite's visibility.
     virtual bool IsVisible() const;
 
 protected:
 
-    // Apply the current transformations and color to AGK.
+    // Clears all of the sprite's data that belong to it.
+    virtual void Clear();
+
+    // Apply changes to AGK.
     virtual void ApplyPosition();
     virtual void ApplyRotation();
     virtual void ApplyScale();
     virtual void ApplyColor();
+    virtual void ApplyVisibility();
 
 protected:
 

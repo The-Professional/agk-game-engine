@@ -39,7 +39,8 @@ namespace NDefs
         EOT_SPRITE_2D,
         EOT_TEXT_SPRITE,
         EOT_LIGHT,
-        EOT_CONTROL
+        EOT_CONTROL,
+        EOT_MENU
     };
 
     // The types of object fields.
@@ -55,6 +56,7 @@ namespace NDefs
         ETT_COLOR       = 1 << 6,
         ETT_FRAME       = 1 << 7,
         ETT_BONE        = 1 << 8,
+        ETT_VISIBILITY  = 1 << 9,
 
         ETT_IGNORE      = 1 << 30
     };

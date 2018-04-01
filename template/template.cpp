@@ -29,6 +29,7 @@ using namespace std;
 app App;
 
 CSprite3D * pSprite;
+iObject * pPawPrint;
 vector<iObject *> pObjectList;
 
 void app::Init()
@@ -76,6 +77,7 @@ void app::Begin()
     pObjectList = CSpriteManager::Instance().CreateCollection( "stage0" );
     pSprite = CSpriteManager::Instance().CreateSprite3D( "ball" );
     pSprite->SetScale( 2 );
+    pPawPrint = pObjectList[2];
     CSpriteManager::Instance().Transform();
 
     pObjectList[0]->SetParent( pSprite, true );
@@ -91,13 +93,20 @@ int app::Loop()
 
     if( CInputManager::Instance().IsReleased( "menu", "menu select" ) )
     {
+        if( pSprite )
+        {
+            pSprite->MarkForDeletion();
+            pSprite = nullptr;
+            pObjectList.erase( pObjectList.begin() );
+        }
+        //pSprite->SetVisible( !pSprite->IsVisible() );
         /*pSprite->IncPos( 0, 1, 0 );
         pSprite->IncRot( 0, 0, 10 );
         pSprite->IncSize( 1 );*/
-        if( pObjectList[2]->IsPlaying() )
-            pObjectList[2]->Stop( NDefs::EST_BREAK );
+        if( pPawPrint->IsPlaying() )
+            pPawPrint->Stop( NDefs::EST_BREAK );
         else
-            pObjectList[2]->Play( "color", NDefs::EST_BREAK );
+            pPawPrint->Play( "color", NDefs::EST_BREAK );
     }
 
     CSpriteManager::Instance().Update();

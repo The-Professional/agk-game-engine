@@ -1,0 +1,13 @@
+{
+  "menu": {
+    "collection": [
+      {
+        "name": "pawprint"
+      },
+      {
+        "name": "pawprint",
+        "position": {"y": 50}
+      }
+    ]
+  }
+}

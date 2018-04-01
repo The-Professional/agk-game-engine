@@ -243,11 +243,8 @@ CSprite3D * CSpriteManager::CreateSprite3D( const string & name, const string & 
 {
     try
     {
-        // Get the data used to create the sprite.
-        auto pData = GetSpriteData3D( name );
-
         // Create the sprite object and add it to the sprite list.
-        CSprite3D * pSprite = new CSprite3D( pData );
+        CSprite3D * pSprite = new CSprite3D( name );
 
         if( key.empty() )
             _objectList[name].push_back( pSprite );
@@ -279,11 +276,8 @@ CSprite2D * CSpriteManager::CreateSprite2D( const std::string & name, const stri
 {
     try
     {
-        // Get the data used to create the sprite.
-        auto pData = GetSpriteData2D( name );
-
         // Create the sprite object and add it to the sprite list.
-        CSprite2D * pSprite = new CSprite2D( pData );
+        CSprite2D * pSprite = new CSprite2D( name );
 
         if( key.empty() )
             _objectList[name].push_back( pSprite );
@@ -316,11 +310,8 @@ CTextSprite * CSpriteManager::CreateTextSprite( const string & name, const strin
 {
     try
     {
-        // Get the data used to create the sprite.
-        auto pData = GetTextSpriteData( name );
-
         // Create the sprite object and add it to the sprite list.
-        CTextSprite * pSprite = new CTextSprite( pData, text );
+        CTextSprite * pSprite = new CTextSprite( name, text );
 
         if( key.empty() )
             _objectList[name].push_back( pSprite );
@@ -454,38 +445,13 @@ void CSpriteManager::Clear( const string & name )
     }
 }
 
-/// <summary> 
-/// Free the passed in sprite.
-/// </summary>
-/// <param name="pSprite"> Sprite to free. </param>
-void CSpriteManager::Clear( iObject * pObject )
-{
-    try
-    {
-        for( auto mapIter = _objectList.begin(); mapIter != _objectList.end(); ++mapIter )
-            for( auto pObj : mapIter->second )
-                if( pObject == pObj )
-                {
-                    NDelFunc::DeleteVectorPointer( pObject, mapIter->second );
-                    return;
-                }
-    }
-    catch( exception e )
-    {
-        throw NExcept::CCriticalException( "Error",
-                                           "CSpriteManager::Clear()",
-                                           pObject ? "Failed to clear sprite '" + pObject->GetName() + "'." :
-                                                     "Failed to clear the sprite.", e );
-    }
-}
-
 
 /// *************************************************************************
 /// <summary> 
-/// Reposition all 2d sprites.
+/// Reposition all sprites.
 /// </summary>
 /// *************************************************************************
-void CSpriteManager::RepositionAllSprites2D()
+void CSpriteManager::RepositionAllSprites()
 {
     for( auto mapIter = _objectList.begin(); mapIter != _objectList.end(); ++mapIter )
         for( auto pSprite : mapIter->second )
@@ -500,9 +466,38 @@ void CSpriteManager::RepositionAllSprites2D()
 /// *************************************************************************
 void CSpriteManager::Update()
 {
+    // If an object's parent has been marked for deletion, it should be marked too.
     for( auto mapIter = _objectList.begin(); mapIter != _objectList.end(); ++mapIter )
         for( auto pSprite : mapIter->second )
-            pSprite->Update();
+            pSprite->UpdateForDeletion();
+
+    // Go through each object and either delete or update them.
+    auto mapIter = _objectList.begin();
+    while( mapIter != _objectList.end() )
+    {
+        auto objectIter = mapIter->second.begin();
+        while( objectIter != mapIter->second.end() )
+        {
+            // If the object is marked for deletion, delete it.
+            if( (*objectIter)->IsMarkedForDeletion() )
+            {
+                NDelFunc::Delete( (*objectIter) );
+                objectIter = mapIter->second.erase( objectIter );
+            }
+            // Otherwise update it.
+            else
+            {
+                (*objectIter)->Update();
+                ++objectIter;
+            }
+        }
+
+        // If a deletion happened and a vector is now empty, delete the vector.
+        if( mapIter->second.empty() )
+            mapIter = _objectList.erase( mapIter );
+        else
+            ++mapIter;
+    }
 }
 
 

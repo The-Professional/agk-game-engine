@@ -20,7 +20,7 @@ class iObject;
 
 /// *************************************************************************
 /// <summary> 
-/// Class to load and hold 3d mesh id's.
+/// Class to load and hold objects.
 /// </summary>
 /// *************************************************************************
 class CSpriteManager
@@ -29,8 +29,8 @@ public:
     // Get the instance of the singleton class
     static CSpriteManager & Instance()
     {
-        static CSpriteManager spriteDataManager;
-        return spriteDataManager;
+        static CSpriteManager spriteManager;
+        return spriteManager;
     }
 
     // Read the file and compile the list of sprite data files.
@@ -43,7 +43,11 @@ public:
 
     // Free the loaded sprite data.
     void Clear( const std::string & name = "" );
-    void Clear( iObject * pSprite );
+
+    // Load the sprite data.
+    CSpriteData3D * GetSpriteData3D( const std::string & name );
+    CSpriteData2D * GetSpriteData2D( const std::string & name );
+    CTextSpriteData * GetTextSpriteData( const std::string & name );
 
     // Create the sprite.
     CSprite3D * CreateSprite3D( const std::string & name, const std::string & key = "" );
@@ -53,8 +57,8 @@ public:
     // Create the collection of objects.
     std::vector<iObject *> CreateCollection( const std::string & name, const std::string & key = "" );
 
-    // Reposition all 2d sprites.
-    void RepositionAllSprites2D();
+    // Reposition all sprites.
+    void RepositionAllSprites();
 
     // Update all sprites in the manager.
     void Update();
@@ -66,11 +70,6 @@ private:
 
     CSpriteManager();
     virtual ~CSpriteManager();
-
-    // Load the sprite data.
-    CSpriteData3D * GetSpriteData3D( const std::string & name );
-    CSpriteData2D * GetSpriteData2D( const std::string & name );
-    CTextSpriteData * GetTextSpriteData( const std::string & name );
 
 private:
 
@@ -87,10 +86,7 @@ private:
     std::map<const std::string, CSpriteData2D *> _spriteDataList2d;
     std::map<const std::string, CTextSpriteData *> _textSpriteDataList;
 
-    //// Map containing the list of loaded sprites.
-    //std::map<const std::string, std::vector<CSprite3D *>> _spriteList3d;
-    //std::map<const std::string, std::vector<CSprite2D *>> _spriteList2d;
-    //std::map<const std::string, std::vector<CTextSprite *>> _textSpriteList;
+    // Map containing the list of loaded objects.
     std::map<const std::string, std::vector<iObject *>> _objectList;
 };
 

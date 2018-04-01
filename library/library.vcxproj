@@ -28,7 +28,6 @@
     <ClInclude Include="3d\spritedata3d.h" />
     <ClInclude Include="3d\spritevisualdata3d.h" />
     <ClInclude Include="common\bitmask.h" />
-    <ClInclude Include="common\controldata.h" />
     <ClInclude Include="common\defs.h" />
     <ClInclude Include="common\iobject.h" />
     <ClInclude Include="common\matrix4.h" />
@@ -38,6 +37,9 @@
     <ClInclude Include="common\vector3.h" />
     <ClInclude Include="common\vector4.h" />
     <ClInclude Include="controls\control.h" />
+    <ClInclude Include="controls\controldata.h" />
+    <ClInclude Include="controls\menu.h" />
+    <ClInclude Include="controls\menudata.h" />
     <ClInclude Include="input\inputmapping.h" />
     <ClInclude Include="input\inputstate.h" />
     <ClInclude Include="managers\inputmanager.h" />
@@ -70,7 +72,6 @@
     <ClCompile Include="3d\sprite3d.cpp" />
     <ClCompile Include="3d\spritedata3d.cpp" />
     <ClCompile Include="3d\spritevisualdata3d.cpp" />
-    <ClCompile Include="common\controldata.cpp" />
     <ClCompile Include="common\defs.cpp" />
     <ClCompile Include="common\iobject.cpp" />
     <ClCompile Include="common\matrix4.cpp" />
@@ -78,6 +79,9 @@
     <ClCompile Include="common\vector3.cpp" />
     <ClCompile Include="common\vector4.cpp" />
     <ClCompile Include="controls\control.cpp" />
+    <ClCompile Include="controls\controldata.cpp" />
+    <ClCompile Include="controls\menu.cpp" />
+    <ClCompile Include="controls\menudata.cpp" />
     <ClCompile Include="input\inputmapping.cpp" />
     <ClCompile Include="input\inputstate.cpp" />
     <ClCompile Include="managers\inputmanager.cpp" />

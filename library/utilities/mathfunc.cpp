@@ -33,13 +33,15 @@ namespace NMathFunc
     /// <param name="alignment"> Alignment of the sprite with the screen. </param>
     /// <param name="pos"> Position to be converted. </param>
     /// *************************************************************************
-    void AlignPosition( const CBitmask<uint> & alignment, CVector3<float> & pos )
+    bool AlignPosition( const CBitmask<uint> & alignment, CVector3<float> & pos )
     {
         if( alignment == NDefs::EA_CENTER )
-            return;
+            return false;
 
         AlignPositionX( alignment, pos.x );
         AlignPositionY( alignment, pos.y );
+
+        return true;
     }
 
 

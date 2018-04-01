@@ -29,6 +29,7 @@ namespace NDefs
         _objectTypeList.emplace( "text sprite", EOT_TEXT_SPRITE );
         _objectTypeList.emplace( "light", EOT_LIGHT );
         _objectTypeList.emplace( "control", EOT_CONTROL );
+        _objectTypeList.emplace( "menu", EOT_MENU );
         
         _objectFieldList.emplace( "transformed", ETT_APPLIED );
         _objectFieldList.emplace( "position", ETT_POSITION );
@@ -39,6 +40,7 @@ namespace NDefs
         _objectFieldList.emplace( "color", ETT_COLOR );
         _objectFieldList.emplace( "frame", ETT_FRAME );
         _objectFieldList.emplace( "bone", ETT_BONE );
+        _objectFieldList.emplace( "visibility", ETT_VISIBILITY );
         _objectFieldList.emplace( "ignore", ETT_IGNORE );
 
         _imageTypeList.emplace( "texture", ETS_TEXTURE );

@@ -253,6 +253,27 @@ namespace NDelFunc
         }
     }
 
+    /// <summary>
+    /// Templetized safe-delete function to delete a single pointer in a map.
+    /// </summary>
+    template <class key, class ptr>
+    inline void DeleteMapPointer( ptr _ptr, std::map<const key, ptr> & obj )
+    {
+        // Find the object to delete.
+        for( auto iter = obj.begin();
+             iter != obj.end();
+             ++iter )
+        {
+            if( iter->second == _ptr )
+            {
+                // Delete the pointer and remove it from the map.
+                Delete( iter->second );
+                obj.erase( iter );
+                return;
+            }
+        }
+    }
+
 
     /// *************************************************************************
     /// <summary>
@@ -410,6 +431,48 @@ namespace NDelFunc
             // Delete the pointer and remove it from the map.
             DeleteVectorPointers( iter->second );
             obj.erase( iter );
+        }
+    }
+
+    /// <summary>
+    /// Safe-delete function for maps where the 'second' is a vector
+    /// containing allocated objects.
+    /// </summary>
+    template <class key, class ptr>
+    inline void DeleteMapVectorPointer( ptr _ptr, std::map<key, ptr> & obj )
+    {
+        // Find the object to delete.
+        auto iter = obj.begin();
+        while( iter != obj.end() )
+        {
+            // Delete the pointer and remove it from the map.
+            DeleteVectorPointer( _ptr, iter->second );
+
+            if( iter->second.size() == 0 )
+                iter = obj.erase( iter );
+            else
+                ++iter;
+        }
+    }
+
+    /// <summary>
+    /// Safe-delete function for maps where the 'second' is a vector
+    /// containing allocated objects.
+    /// </summary>
+    template <class key, class ptr>
+    inline void DeleteMapVectorPointer( ptr _ptr, std::map<const key, ptr> & obj )
+    {
+        // Find the object to delete.
+        auto iter = obj.begin();
+        while( iter != obj.end() )
+        {
+            // Delete the pointer and remove it from the map.
+            DeleteVectorPointer( _ptr, iter->second );
+
+            if( iter->second.size() == 0 )
+                iter = obj.erase( iter );
+            else
+                ++iter;
         }
     }
 }

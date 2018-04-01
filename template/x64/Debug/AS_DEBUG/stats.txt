@@ -1,35 +1,35 @@
 
 Total count
-PshC4      : 12
-PshV4      : 120
-PSF        : 720
-CALL       : 4
-RET        : 6
-JMP        : 116
-JNZ        : 90
-JNS        : 116
-TS         : 2
-IncVi      : 2
-PshVPtr    : 221
-CMPf       : 116
-CMPi       : 2
-CMPIi      : 90
-PshRPtr    : 6
-CALLSYS    : 926
-SUSPEND    : 115
-GETOBJREF  : 3
-GETREF     : 232
-SetV4      : 6
-CpyVtoV4   : 8
-CpyVtoR4   : 12
-CpyRtoV4   : 209
-VAR        : 235
-ADDf       : 112
-SUBf       : 3
-DIVf       : 112
-SetV1      : 4
-JLowZ      : 4
-JLowNZ     : 4
+PshC4      : 24
+PshV4      : 279
+PSF        : 1674
+CALL       : 8
+RET        : 12
+JMP        : 271
+JNZ        : 219
+JNS        : 271
+TS         : 4
+IncVi      : 4
+PshVPtr    : 520
+CMPf       : 271
+CMPi       : 4
+CMPIi      : 219
+PshRPtr    : 12
+CALLSYS    : 2164
+SUSPEND    : 269
+GETOBJREF  : 6
+GETREF     : 542
+SetV4      : 12
+CpyVtoV4   : 16
+CpyVtoR4   : 24
+CpyRtoV4   : 496
+VAR        : 548
+ADDf       : 263
+SUBf       : 6
+DIVf       : 263
+SetV1      : 8
+JLowZ      : 8
+JLowNZ     : 8
 
 Never executed
 PopPtr    
@@ -205,76 +205,76 @@ POWu64
 Thiscall1 
 
 Sequences
-PshC4     , PshC4      : 6
-PshC4     , PshV4      : 4
-PshC4     , PSF        : 2
-PshV4     , PshC4      : 4
-PshV4     , PSF        : 116
-PSF       , PSF        : 232
-PSF       , PshVPtr    : 4
-PSF       , CALLSYS    : 372
-PSF       , GETREF     : 112
-CALL      , PshVPtr    : 4
-RET       , PSF        : 2
-RET       , PshVPtr    : 1
-RET       , CpyRtoV4   : 2
-JMP       , RET        : 1
-JMP       , CMPf       : 112
-JMP       , CpyVtoR4   : 2
-JMP       , VAR        : 1
-JNZ       , PshVPtr    : 4
-JNZ       , CALLSYS    : 1
-JNZ       , DIVf       : 83
-JNZ       , SetV1      : 2
-JNS       , JMP        : 1
-JNS       , SUSPEND    : 113
-JNS       , VAR        : 2
-TS        , CpyRtoV4   : 2
-IncVi     , SUSPEND    : 2
-PshVPtr   , CALLSYS    : 98
-PshVPtr   , GETOBJREF  : 3
-PshVPtr   , GETREF     : 120
-CMPf      , JNS        : 116
-CMPi      , TS         : 2
-CMPIi     , JNZ        : 90
-PshRPtr   , PSF        : 6
-CALLSYS   , PshC4      : 2
-CALLSYS   , PSF        : 240
-CALLSYS   , RET        : 2
-CALLSYS   , PshRPtr    : 6
-CALLSYS   , CALLSYS    : 224
-CALLSYS   , SetV4      : 2
-CALLSYS   , CpyVtoV4   : 6
-CALLSYS   , CpyVtoR4   : 4
-CALLSYS   , CpyRtoV4   : 205
-CALLSYS   , VAR        : 232
-CALLSYS   , SUBf       : 3
-SUSPEND   , PshVPtr    : 86
-SUSPEND   , DIVf       : 29
-GETOBJREF , CALLSYS    : 3
-GETREF    , CALL       : 4
-GETREF    , CALLSYS    : 228
-SetV4     , JMP        : 2
-SetV4     , SetV4      : 2
-SetV4     , SetV1      : 2
-CpyVtoV4  , IncVi      : 2
-CpyVtoV4  , CpyVtoR4   : 6
-CpyVtoR4  , RET        : 3
-CpyVtoR4  , JMP        : 1
-CpyVtoR4  , JLowZ      : 4
-CpyVtoR4  , JLowNZ     : 4
-CpyRtoV4  , PSF        : 3
-CpyRtoV4  , CMPi       : 2
-CpyRtoV4  , CMPIi      : 90
-CpyRtoV4  , CpyVtoV4   : 2
-CpyRtoV4  , ADDf       : 112
-VAR       , PSF        : 116
-VAR       , PshVPtr    : 119
-ADDf      , JMP        : 112
-SUBf      , PSF        : 3
-DIVf      , PshV4      : 112
-SetV1     , PshV4      : 4
-JLowZ     , CMPf       : 4
-JLowNZ    , PshVPtr    : 2
-JLowNZ    , SetV4      : 2
+PshC4     , PshC4      : 12
+PshC4     , PshV4      : 8
+PshC4     , PSF        : 4
+PshV4     , PshC4      : 8
+PshV4     , PSF        : 271
+PSF       , PSF        : 542
+PSF       , PshVPtr    : 8
+PSF       , CALLSYS    : 861
+PSF       , GETREF     : 263
+CALL      , PshVPtr    : 8
+RET       , PSF        : 4
+RET       , PshVPtr    : 3
+RET       , CpyRtoV4   : 4
+JMP       , RET        : 2
+JMP       , CMPf       : 263
+JMP       , CpyVtoR4   : 4
+JMP       , VAR        : 2
+JNZ       , PshVPtr    : 8
+JNZ       , CALLSYS    : 2
+JNZ       , DIVf       : 205
+JNZ       , SetV1      : 4
+JNS       , JMP        : 2
+JNS       , SUSPEND    : 265
+JNS       , VAR        : 4
+TS        , CpyRtoV4   : 4
+IncVi     , SUSPEND    : 4
+PshVPtr   , CALLSYS    : 235
+PshVPtr   , GETOBJREF  : 6
+PshVPtr   , GETREF     : 279
+CMPf      , JNS        : 271
+CMPi      , TS         : 4
+CMPIi     , JNZ        : 219
+PshRPtr   , PSF        : 12
+CALLSYS   , PshC4      : 4
+CALLSYS   , PSF        : 558
+CALLSYS   , RET        : 4
+CALLSYS   , PshRPtr    : 12
+CALLSYS   , CALLSYS    : 526
+CALLSYS   , SetV4      : 4
+CALLSYS   , CpyVtoV4   : 12
+CALLSYS   , CpyVtoR4   : 8
+CALLSYS   , CpyRtoV4   : 488
+CALLSYS   , VAR        : 542
+CALLSYS   , SUBf       : 6
+SUSPEND   , PshVPtr    : 211
+SUSPEND   , DIVf       : 58
+GETOBJREF , CALLSYS    : 6
+GETREF    , CALL       : 8
+GETREF    , CALLSYS    : 534
+SetV4     , JMP        : 4
+SetV4     , SetV4      : 4
+SetV4     , SetV1      : 4
+CpyVtoV4  , IncVi      : 4
+CpyVtoV4  , CpyVtoR4   : 12
+CpyVtoR4  , RET        : 6
+CpyVtoR4  , JMP        : 2
+CpyVtoR4  , JLowZ      : 8
+CpyVtoR4  , JLowNZ     : 8
+CpyRtoV4  , PSF        : 6
+CpyRtoV4  , CMPi       : 4
+CpyRtoV4  , CMPIi      : 219
+CpyRtoV4  , CpyVtoV4   : 4
+CpyRtoV4  , ADDf       : 263
+VAR       , PSF        : 271
+VAR       , PshVPtr    : 277
+ADDf      , JMP        : 263
+SUBf      , PSF        : 6
+DIVf      , PshV4      : 263
+SetV1     , PshV4      : 8
+JLowZ     , CMPf       : 8
+JLowNZ    , PshVPtr    : 4
+JLowNZ    , SetV4      : 4
 LABEL     , PshVPtr    : 1

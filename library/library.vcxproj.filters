@@ -16,14 +16,14 @@
     <Filter Include="2d">
       <UniqueIdentifier>{051fc22a-3240-4503-857c-747ec6414c30}</UniqueIdentifier>
     </Filter>
-    <Filter Include="controls">
-      <UniqueIdentifier>{b28de89e-f1c5-4b56-9314-c575d7087bdf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="script">
       <UniqueIdentifier>{8d5443c7-6765-46a0-af02-dd41cab3af93}</UniqueIdentifier>
     </Filter>
     <Filter Include="input">
       <UniqueIdentifier>{2f58e220-7a33-4a12-a9e7-8e432e4c5a64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gui">
+      <UniqueIdentifier>{b28de89e-f1c5-4b56-9314-c575d7087bdf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -91,7 +91,7 @@
       <Filter>utilities</Filter>
     </ClInclude>
     <ClInclude Include="controls\control.h">
-      <Filter>controls</Filter>
+      <Filter>gui</Filter>
     </ClInclude>
     <ClInclude Include="2d\textsprite.h">
       <Filter>2d</Filter>
@@ -129,9 +129,6 @@
     <ClInclude Include="common\matrix4.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="common\controldata.h">
-      <Filter>controls</Filter>
-    </ClInclude>
     <ClInclude Include="common\collectionobject.h">
       <Filter>common</Filter>
     </ClInclude>
@@ -149,6 +146,15 @@
     </ClInclude>
     <ClInclude Include="managers\menumanager.h">
       <Filter>managers</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\controldata.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\menu.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\menudata.h">
+      <Filter>gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -192,7 +198,7 @@
       <Filter>utilities</Filter>
     </ClCompile>
     <ClCompile Include="controls\control.cpp">
-      <Filter>controls</Filter>
+      <Filter>gui</Filter>
     </ClCompile>
     <ClCompile Include="2d\textsprite.cpp">
       <Filter>2d</Filter>
@@ -239,9 +245,6 @@
     <ClCompile Include="common\vector2.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="common\controldata.cpp">
-      <Filter>controls</Filter>
-    </ClCompile>
     <ClCompile Include="input\inputmapping.cpp">
       <Filter>input</Filter>
     </ClCompile>
@@ -253,6 +256,15 @@
     </ClCompile>
     <ClCompile Include="managers\menumanager.cpp">
       <Filter>managers</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\controldata.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\menu.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\menudata.cpp">
+      <Filter>gui</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

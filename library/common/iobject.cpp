@@ -46,7 +46,22 @@ void iObject::Clear()
     _position = 0;
     _rotation = 0;
     _size = 0;
-    _color = 255;
+    _color = 1;
+
+    _pParent = nullptr;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Set the object's visibility. 
+/// </summary>
+/// *************************************************************************
+void iObject::SetVisible( bool visible )
+{
+    _visible = visible;
+
+    _modified.Add( ETT_VISIBILITY );
 }
 
 
@@ -871,6 +886,18 @@ const CMatrix4 * iObject::GetMatrix()
 
 /// *************************************************************************
 /// <summary>
+/// Mark the object as deleted if its parent has been deleted. 
+/// </summary>
+/// *************************************************************************
+void iObject::UpdateForDeletion()
+{
+    if( _pParent && _pParent->IsMarkedForDeletion() )
+        MarkForDeletion();
+}
+
+
+/// *************************************************************************
+/// <summary>
 /// Update the object. 
 /// </summary>
 /// *************************************************************************
@@ -896,7 +923,7 @@ void iObject::Transform()
         if( _pParent->GetModified().Contains( ETT_APPLIED ) )
         {
             // If the parent was transformed by anything, the position has changed.
-            if( _pParent->GetModified().ContainsOne( ETT_POSITION ) )
+            if( _pParent->GetModified().Contains( ETT_POSITION ) )
                 _modified.Add( ETT_POSITION );
 
             if( _pParent->GetModified().Contains( ETT_ROTATION ) )
@@ -907,11 +934,14 @@ void iObject::Transform()
 
             if( _pParent->GetModified().Contains( ETT_COLOR ) )
                 _modified.Add( ETT_COLOR );
+
+            if( _pParent->GetModified().Contains( ETT_VISIBILITY ) )
+                _modified.Add( ETT_VISIBILITY );
         }
     }
 
     // Apply changes if there were changes and they haven't already been applied.
-    if( _modified.ContainsOne( ETT_POSITION | ETT_ROTATION | ETT_SCALE | ETT_COLOR ) )
+    if( _modified.ContainsOne( ETT_POSITION | ETT_ROTATION | ETT_SCALE | ETT_COLOR | ETT_VISIBILITY ) )
     {
         if( !_modified.Contains( ETT_APPLIED ) )
         {
@@ -926,6 +956,9 @@ void iObject::Transform()
 
             if( _modified.Contains( ETT_COLOR ) )
                 ApplyColor();
+
+            if( _modified.Contains( ETT_VISIBILITY ) )
+                ApplyVisibility();
         }
 
         // Update the object's matrix, if it has one.

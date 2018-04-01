@@ -2,6 +2,10 @@
   "spriteData2d": {
     "visual": {
       "textureMap": "pawprint"
-    }
+    },
+    "alignment": ["top", "left"],
+    "animations": [
+      ["colorTest"]
+    ]
   }
 }

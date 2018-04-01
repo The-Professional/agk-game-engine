@@ -47,14 +47,14 @@ private:
     // Image to map onto the sprite.
     std::string _textureMap;
 
+    // Size of the sprite.
+    CVector2<float> _size;
+
     // Whether or not the size has been set.
     bool _sizeSet = false;
 
     // Whether or not the size is the same as the file.
     bool _sizeSameAsFile = false;
-
-    // Size of the sprite.
-    CVector2<float> _size;
 };
 
 #endif  // __sprite_visual_data_2d_h__

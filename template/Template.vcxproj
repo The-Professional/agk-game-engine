@@ -157,6 +157,7 @@
     <None Include="x64\Debug\data\animations\colorTest.json" />
     <None Include="x64\Debug\data\collections\stage0.json" />
     <None Include="x64\Debug\data\controls\testctrl.json" />
+    <None Include="x64\Debug\data\controls\testmenu.json" />
     <None Include="x64\Debug\data\inputs.json" />
     <None Include="x64\Debug\data\scripts\controls.ang" />
     <None Include="x64\Debug\data\scripts\defs.ang" />

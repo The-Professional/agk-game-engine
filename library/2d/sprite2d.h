@@ -27,21 +27,21 @@ class CSprite2D : public iObject
 {
 public:
 
-    CSprite2D();
-    CSprite2D( CSpriteData2D * pData );
+    CSprite2D( const std::string & name );
     ~CSprite2D();
 
     // Get the name of the sprite.
     virtual const std::string & GetName() const;
 
     // Initialize the sprite using its sprite data.
-    virtual void Init( CSpriteData2D * pData );
-
-    // Clears all of the sprite's data that belong to it.
-    virtual void Clear();
+    virtual void Init( const std::string & name );
 
     // Delete the object that belongs to the AGK id.
     virtual void DeleteObject();
+
+    // Access functions for whether the sprite is marked for deletion.
+    virtual void MarkForDeletion();
+    virtual bool IsMarkedForDeletion() const;
 
     // Get the data used to create the sprite.
     const CSpriteData2D * GetData() const;
@@ -55,8 +55,7 @@ public:
     virtual void UpdateSize();
     virtual void UpdateScale();
 
-    // Access functions for the sprite's visibility.
-    virtual void SetVisible( bool visible );
+    // Get the sprite's visibility.
     virtual bool IsVisible() const;
 
     // Access functions for the sprite's alignment.
@@ -68,11 +67,15 @@ public:
 
 protected:
 
-    // Apply the current transformations and color to AGK.
+    // Clears all of the sprite's data that belong to it.
+    virtual void Clear();
+
+    // Apply changes to AGK.
     virtual void ApplyPosition();
     virtual void ApplyRotation();
     virtual void ApplyScale();
     virtual void ApplyColor();
+    virtual void ApplyVisibility();
 
 protected:
 

@@ -25,21 +25,24 @@ class CTextSprite : public iObject
 {
 public:
 
-    CTextSprite();
-    CTextSprite( const CTextSpriteData * pData, const std::string & text );
+    CTextSprite( const std::string & name, const std::string & text );
     ~CTextSprite();
 
     // Get the name of the sprite.
     virtual const std::string & GetName() const;
 
     // Initialize the sprite using its sprite data.
-    void Init( const CTextSpriteData * pData, const std::string & text );
+    void Init( const std::string & name, const std::string & text );
 
     // Clears all of the text sprite's data that belong to it.
     virtual void Clear();
 
     // Delete the object that belongs to the AGK id.
     virtual void DeleteObject();
+
+    // Access functions for whether the sprite is marked for deletion.
+    virtual void MarkForDeletion();
+    virtual bool IsMarkedForDeletion() const;
 
     // Get the data used to create the sprite.
     const CTextSpriteData * GetData() const;
@@ -54,7 +57,6 @@ public:
     virtual void UpdateScale();
 
     // Access functions for the sprite's visibility.
-    virtual void SetVisible( bool visible );
     virtual bool IsVisible() const;
 
     // Access functions for the text sprite's font.
@@ -94,11 +96,12 @@ public:
 
 protected:
 
-    // Apply the current transformations and color to AGK.
+    // Apply changes to AGK.
     virtual void ApplyPosition();
     virtual void ApplyRotation();
     virtual void ApplyScale();
     virtual void ApplyColor();
+    virtual void ApplyVisibility();
 
 protected:
 

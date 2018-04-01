@@ -24,54 +24,6 @@ namespace NParseHelper
 {
     /// *************************************************************************
     /// <summary> 
-    /// Parse a value.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="tag"> Tag to find. </param>
-    /// <param name="value"> Value to set. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    template <class T>
-    bool GetValue( nlohmann::json::const_iterator iter, const string & tag, T & value )
-    {
-        auto valueIter = iter->find( tag );
-        if( valueIter != iter->end() )
-        {
-            value = valueIter->get<T>();
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse a list of values.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="tag"> Tag to find. </param>
-    /// <param name="list"> List to add to. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    template <class T>
-    bool GetValueList( nlohmann::json::const_iterator iter, const string & tag, vector<T> & list )
-    {
-        auto valueListIter = iter->find( tag );
-        if( valueListIter != iter->end() )
-        {
-            for( auto & valueIter : *valueListIter )
-                list.push_back( valueIter.get<T>() );
-
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /// *************************************************************************
-    /// <summary> 
     /// Whether the tag exists.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
@@ -90,88 +42,6 @@ namespace NParseHelper
 
     /// *************************************************************************
     /// <summary> 
-    /// Parse generic x, y, z tags.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="tag"> Tag to find. </param>
-    /// <param name="xyz"> Value to set. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    template <class T>
-    bool GetXYZ( json::const_iterator iter, const string & tag, CVector3<T> & xyz )
-    {
-        auto xyzIter = iter->find( tag );
-        if( xyzIter != iter->end() )
-        {
-            T u = 0;
-            if( GetValue( xyzIter, "xyz", u ) )
-            {
-                xyz = u;
-                return true;
-            }
-
-            GetValue( xyzIter, "x", xyz.x );
-            GetValue( xyzIter, "y", xyz.y );
-            GetValue( xyzIter, "z", xyz.z );
-
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse generic w, h, d tags.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="tag"> Tag to find. </param>
-    /// <param name="whd"> Value to set. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    template <class T>
-    bool GetWHD( json::const_iterator iter, const string & tag, CVector3<T> & whd )
-    {
-        auto whdIter = iter->find( tag );
-        if( whdIter != iter->end() )
-        {
-            GetValue( whdIter, "w", whd.w );
-            GetValue( whdIter, "h", whd.h );
-            GetValue( whdIter, "d", whd.d );
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /*/// <summary> 
-    /// Parse generic w, h tags.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="tag"> Tag to find. </param>
-    /// <param name="wh"> Value to set. </param>
-    /// <returns> If the tag exists. </returns>
-    template <class T>
-    bool GetWH( json::const_iterator iter, const string & tag, CVector2<T> & wh )
-    {
-        auto whIter = iter->find( tag );
-        if( whIter != iter->end() )
-        {
-            GetValue( whIter, "w", wh.w );
-            GetValue( whIter, "h", wh.h );
-
-            return true;
-        }
-
-        return false;
-    }*/
-
-
-    // .
-    /// *************************************************************************
-    /// <summary> 
     /// Parse mesh type tags.
     /// </summary>
     /// <param name="iter"> JSON node to parse. </param>
@@ -184,62 +54,6 @@ namespace NParseHelper
         if( GetValue( iter, "type", str ) )
         {
             meshType = CDefs::Instance().GetMeshType( str );
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse alignment tags.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="alignment"> Value to set. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    template <class T>
-    bool GetAlignment( json::const_iterator iter, const string & tag, CBitmask<T> & alignment )
-    {
-        vector<string> align;
-        if( GetValueList( iter, tag, align ) )
-        {
-            for( auto & a : align )
-                alignment.Add( CDefs::Instance().GetAlignment( a ) );
-
-            if( alignment.Contains( EA_LEFT | EA_RIGHT ) )
-                alignment.Remove( EA_LEFT | EA_RIGHT );
-
-            if( alignment.Contains( EA_TOP | EA_BOTTOM ) )
-                alignment.Remove( EA_TOP | EA_BOTTOM );
-
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse color tag.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="color"> Value to set. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    template <class T>
-    bool GetColor( json::const_iterator iter, CVector4<T> & color)
-    {
-        auto colorIter = iter->find("color");
-        if( colorIter != iter->end() )
-        {
-            GetValue( colorIter, "r", color.r );
-            GetValue( colorIter, "g", color.g );
-            GetValue( colorIter, "b", color.b );
-            GetValue( colorIter, "a", color.a );
-
             return true;
         }
 
@@ -303,31 +117,6 @@ namespace NParseHelper
         if( GetValue( iter, "end", str ) )
         {
             endType = CDefs::Instance().GetEndType( str );
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /// *************************************************************************
-    /// <summary> 
-    /// Parse object field tags.
-    /// </summary>
-    /// <param name="iter"> JSON node to parse. </param>
-    /// <param name="tag"> Tag to find. </param>
-    /// <param name="fieldType"> Value to set. </param>
-    /// <returns> If the tag exists. </returns>
-    /// *************************************************************************
-    template <class T>
-    bool GetObjectFields( json::const_iterator iter, const string & tag, CBitmask<T> & fieldType )
-    {
-        vector<string> field;
-        if( GetValueList( iter, tag, field ) )
-        {
-            for( auto & f : field )
-                fieldType.Add( CDefs::Instance().GetObjectField( f ) );
-
             return true;
         }
 

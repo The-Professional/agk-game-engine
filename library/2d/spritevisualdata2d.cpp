@@ -1,9 +1,6 @@
 // Physical component dependency
 #include "spritevisualdata2d.h"
 
-// Game lib dependencies
-#include <utilities\jsonparsehelper.h>
-
 
 /// *************************************************************************
 /// <summary> 

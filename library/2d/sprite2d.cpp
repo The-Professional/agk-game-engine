@@ -6,6 +6,7 @@
 #include <common\matrix4.h>
 #include <2d\spritedata2d.h>
 #include <managers\resourcemanager.h>
+#include <managers\spritemanager.h>
 #include <utilities\mathfunc.h>
 #include <utilities\exceptionhandling.h>
 #include <script\animationcomponent.h>
@@ -13,28 +14,18 @@
 using namespace std;
 using namespace NDefs;
 
-/// *************************************************************************
-/// <summary>
-/// Constructor
-/// </summary>
-/// *************************************************************************
-CSprite2D::CSprite2D()
-{
-    _type = EOT_SPRITE_2D;
-}
-
 
 /// *************************************************************************
 /// <summary> 
 /// Constructor
 /// </summary>
-/// <param name="pData"> Sprite data used to create the sprite. </param> 
+/// <param name="name"> Name of the sprite to create. </param> 
 /// *************************************************************************
-CSprite2D::CSprite2D( CSpriteData2D * pData )
+CSprite2D::CSprite2D( const std::string & name )
 {
     _type = EOT_SPRITE_2D;
 
-    Init( pData );
+    Init( name );
 }
 
 
@@ -56,11 +47,6 @@ CSprite2D::~CSprite2D()
 /// *************************************************************************
 const string & CSprite2D::GetName() const
 {
-    if( !_pData )
-        throw NExcept::CCriticalException( "Error",
-                                           "CSprite2D::GetName()",
-                                           "Failed to get the sprite's name." );
-
     return _pData->GetName();
 }
 
@@ -69,13 +55,17 @@ const string & CSprite2D::GetName() const
 /// <summary>
 /// Initialize the sprite using its sprite data.
 /// </summary>
-/// <param name="pData"> Sprite data used to create the sprite. </param> 
+/// <param name="pData"> Name of the sprite to initialize. </param> 
 /// *************************************************************************
-void CSprite2D::Init( CSpriteData2D * pData )
+void CSprite2D::Init( const std::string & name )
 {
+    CSpriteData2D * pData = CSpriteManager::Instance().GetSpriteData2D( name );
+
     // Leave if there's no data to initialize with.
     if( !pData )
-        return;
+        throw NExcept::CCriticalException( "Error",
+                                           "CSprite2D::Init()",
+                                           "No sprite exists by the name of '" + name + "'." );
 
     Clear();
 
@@ -136,12 +126,15 @@ void CSprite2D::Init( CSpriteData2D * pData )
 
 /// *************************************************************************
 /// <summary>
-/// Get the data used to create the sprite.
+/// Clears all of the sprite's data that belong to it.
 /// </summary>
 /// *************************************************************************
-const CSpriteData2D * CSprite2D::GetData() const
+void CSprite2D::Clear()
 {
-    return _pData;
+    iObject::Clear();
+
+    _alignment = NDefs::EA_CENTER;
+    _pData = nullptr;
 }
 
 
@@ -158,6 +151,39 @@ void CSprite2D::DeleteObject()
 
         _id = 0;
     }
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Mark the sprite for deletion.
+/// </summary>
+/// *************************************************************************
+void CSprite2D::MarkForDeletion()
+{
+    _pData = nullptr;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Whether the sprite is marked for deletion.
+/// </summary>
+/// *************************************************************************
+bool CSprite2D::IsMarkedForDeletion() const
+{
+    return !_pData;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Get the data used to create the sprite.
+/// </summary>
+/// *************************************************************************
+const CSpriteData2D * CSprite2D::GetData() const
+{
+    return _pData;
 }
 
 
@@ -235,14 +261,28 @@ void CSprite2D::ApplyColor()
 
 /// *************************************************************************
 /// <summary>
+/// Update AGK with the sprite's current visibility.
+/// </summary>
+/// *************************************************************************
+void CSprite2D::ApplyVisibility()
+{
+    if( _pParent )
+        agk::SetSpriteVisible( _id, _pParent->IsVisible() && _visible );
+    else
+        agk::SetSpriteVisible( _id, _visible );
+}
+
+
+/// *************************************************************************
+/// <summary>
 /// Get the current position set in AGK.
 /// </summary>
 /// *************************************************************************
 CVector3<float> CSprite2D::GetWorldPos() const
 {
     return CVector3<float>( agk::GetSpriteX( _id ), 
-                     agk::GetSpriteY( _id ), 
-                     (float)agk::GetSpriteDepth( _id ) );
+                            agk::GetSpriteY( _id ), 
+                            (float)agk::GetSpriteDepth( _id ) );
 }
 
 
@@ -265,7 +305,7 @@ CVector3<float> CSprite2D::GetWorldRot() const
 CVector3<float> CSprite2D::GetWorldSize() const
 {
     return CVector3<float>( agk::GetSpriteWidth( _id ), 
-                     agk::GetSpriteHeight( _id ) );
+                            agk::GetSpriteHeight( _id ) );
 }
 
 
@@ -288,31 +328,6 @@ void CSprite2D::UpdateSize()
 void CSprite2D::UpdateScale()
 {
     _scale = _size / _pData->GetSize();
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Clears all of the sprite's data that belong to it.
-/// </summary>
-/// *************************************************************************
-void CSprite2D::Clear()
-{
-    iObject::Clear();
-
-    _alignment = NDefs::EA_CENTER;
-    _pData = nullptr;
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Set the sprite's visibility.
-/// </summary>
-/// *************************************************************************
-void CSprite2D::SetVisible( bool visible )
-{
-    agk::SetSpriteVisible( _id, visible );
 }
 
 
@@ -356,6 +371,11 @@ CBitmask<uint> CSprite2D::GetAlignment() const
 /// *************************************************************************
 void CSprite2D::Reposition()
 {
-    NMathFunc::AlignPosition( _alignment, _position );
-    agk::SetSpritePosition( _id, _position.x, _position.y );
+    // The parent's alignment overrides the child's alignment.
+    if( _pParent )
+        return;
+
+    CVector3<float> pos = _position;
+    if( NMathFunc::AlignPosition( _alignment, pos ) )
+        SetPos( pos );
 }

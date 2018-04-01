@@ -35,7 +35,7 @@
     <Filter Include="data\animations">
       <UniqueIdentifier>{0c3728d7-05d4-4aab-9aeb-eaba43910fac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="data\controls">
+    <Filter Include="data\gui">
       <UniqueIdentifier>{5fc3caa2-3b51-4f0f-b081-e1e104524f0b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -74,10 +74,13 @@
       <Filter>data\scripts</Filter>
     </None>
     <None Include="x64\Debug\data\controls\testctrl.json">
-      <Filter>data\controls</Filter>
+      <Filter>data\gui</Filter>
     </None>
     <None Include="x64\Debug\data\2d\sprites\pawprint.json">
       <Filter>data\2d\sprites</Filter>
+    </None>
+    <None Include="x64\Debug\data\controls\testmenu.json">
+      <Filter>data\gui</Filter>
     </None>
   </ItemGroup>
 </Project>

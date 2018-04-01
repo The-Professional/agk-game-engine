@@ -1,5 +1,5 @@
-#ifndef __control_h__
-#define __control_h__
+#ifndef __menu_h__
+#define __menu_h__
 
 // Physical component dependency
 #include <common\iobject.h>
@@ -13,24 +13,27 @@
 #include <map>
 
 // Forward declarations
-class CControlData;
+class CMenuData;
+class iControl;
 
 /// *************************************************************************
 /// <summary> 
 /// Class to hold base control behavior.
 /// </summary>
 /// *************************************************************************
-class iControl : public iObject
+class CMenu : public iObject
 {
 public:
+    CMenu( const std::string & name );
+    virtual ~CMenu();
 
-    // Destructor.
-    virtual ~iControl();
-
-    // Get the name of the control.
+    // Get the name of the menu.
     virtual const std::string & GetName() const;
 
-    // Clears all of the control's data that belong to it.
+    // Initialize the menu using the menu's name.
+    virtual void Init( const std::string & name );
+
+    // Clears all of the menu's data that belong to it.
     virtual void Clear();
 
     // Delete the object that belongs to the AGK id.
@@ -40,8 +43,8 @@ public:
     virtual void MarkForDeletion();
     virtual bool IsMarkedForDeletion() const;
 
-    // Get the data used to create the control.
-    const CControlData * GetData() const;
+    // Get the data used to create the menu.
+    const CMenuData * GetData() const;
 
     // Get the current transformation data set in AGK.
     virtual CVector3<float> GetWorldPos() const;
@@ -52,22 +55,19 @@ public:
     virtual void UpdateSize();
     virtual void UpdateScale();
 
-    // Get the control's visibility.
+    // Get the menu's visibility.
     virtual bool IsVisible() const;
 
-    // Access functions for the control's alignment.
+    // Access functions for the menu's alignment.
     virtual void SetAlignment( const CBitmask<uint> & alignment );
     virtual CBitmask<uint> GetAlignment() const;
 
-    // Reset the control's position using its previous position.
+    // Reset the menu's position using its previous position.
     virtual void Reposition();
 
-    // Get the control type.
-    NDefs::EControlType GetControlType() const;
-
-    // Access functions for the control's state.
-    virtual void SetState( NDefs::EControlState state );
-    NDefs::EControlState GetState() const;
+    // Access functions for the menu's state.
+    virtual void SetEnabled( bool enabled );
+    virtual bool IsEnabled() const;
 
     // Play an animation.
     virtual void Play( const std::string & name, NDefs::EStopType stopType = NDefs::EST_NULL );
@@ -82,9 +82,6 @@ public:
 
 protected:
 
-    // Abstract Constructor.
-    iControl();
-
     // Apply changes to AGK.
     virtual void ApplyPosition();
     virtual void ApplyRotation();
@@ -94,20 +91,20 @@ protected:
 
 protected:
 
-    // Control data this control is based off of. The control does not own this.
-    const CControlData * _pData = nullptr;
+    // Menu data this menu is based off of. The menu does not own this.
+    const CMenuData * _pData = nullptr;
 
-    // The type of control.
-    NDefs::EControlType _controlType;
-
-    // List of sprites associated with the control.
+    // List of sprites associated with the menu.
     std::vector<iObject *> _pSpriteList;
 
-    // The current state of the control.
-    NDefs::EControlState _state = NDefs::ECS_DISABLED;
+    // List of controls associated with the menu.
+    std::vector<iControl *> _pControlList;
 
-    // The window alignment of the control.
+    // The current state of the menu.
+    bool _enabled = true;
+
+    // The window alignment of the menu.
     CBitmask<uint> _alignment = NDefs::EA_CENTER;
 };
 
-#endif  // __control_h__
+#endif  // __menu_h__

@@ -1,10 +1,11 @@
 // Physical component dependency
-#include "control.h"
+#include "menu.h"
 
 // Game lib dependencies
 #include <agk.h>
 #include <common\matrix4.h>
-#include <controls\controldata.h>
+#include <controls\menudata.h>
+#include <controls\control.h>
 #include <utilities\mathfunc.h>
 #include <utilities\exceptionhandling.h>
 
@@ -16,9 +17,11 @@ using namespace NDefs;
 /// Constructor
 /// </summary>
 /// *************************************************************************
-iControl::iControl()
+CMenu::CMenu( const string & name )
 {
-    _type = EOT_CONTROL;
+    _type = EOT_MENU;
+
+    Init( name );
 }
 
 
@@ -27,7 +30,7 @@ iControl::iControl()
 /// Destructor
 /// </summary>
 /// *************************************************************************
-iControl::~iControl()
+CMenu::~CMenu()
 {
     Clear();
 }
@@ -35,10 +38,10 @@ iControl::~iControl()
 
 /// *************************************************************************
 /// <summary>
-/// Get the name of the control.
+/// Get the name of the menu.
 /// </summary>
 /// *************************************************************************
-const string & iControl::GetName() const
+const string & CMenu::GetName() const
 {
     return _pData->GetName();
 }
@@ -46,15 +49,15 @@ const string & iControl::GetName() const
 
 /// *************************************************************************
 /// <summary>
-/// Clears all of the control's data that belong to it.
+/// Clears all of the menu's data that belong to it.
 /// </summary>
 /// *************************************************************************
-void iControl::Clear()
+void CMenu::Clear()
 {
     iObject::Clear();
 
     _pSpriteList.clear();
-    _state = ECS_DISABLED;
+    _pControlList.clear();
     _alignment = EA_CENTER;
 }
 
@@ -64,7 +67,7 @@ void iControl::Clear()
 /// Delete the object that belongs to the AGK id.
 /// </summary>
 /// *************************************************************************
-void iControl::DeleteObject()
+void CMenu::DeleteObject()
 {
     if( _id > 0 )
     {
@@ -77,10 +80,10 @@ void iControl::DeleteObject()
 
 /// *************************************************************************
 /// <summary>
-/// Mark the control for deletion.
+/// Mark the menu for deletion.
 /// </summary>
 /// *************************************************************************
-void iControl::MarkForDeletion()
+void CMenu::MarkForDeletion()
 {
     _pData = nullptr;
 }
@@ -88,10 +91,10 @@ void iControl::MarkForDeletion()
 
 /// *************************************************************************
 /// <summary>
-/// Whether the control is marked for deletion.
+/// Whether the menu is marked for deletion.
 /// </summary>
 /// *************************************************************************
-bool iControl::IsMarkedForDeletion() const
+bool CMenu::IsMarkedForDeletion() const
 {
     return !_pData;
 }
@@ -99,10 +102,10 @@ bool iControl::IsMarkedForDeletion() const
 
 /// *************************************************************************
 /// <summary>
-/// Get the data used to create the control.
+/// Get the data used to create the menu.
 /// </summary>
 /// *************************************************************************
-const CControlData * iControl::GetData() const
+const CMenuData * CMenu::GetData() const
 {
     return _pData;
 }
@@ -110,10 +113,10 @@ const CControlData * iControl::GetData() const
 
 /// *************************************************************************
 /// <summary>
-/// Update AGK with the control's current position.
+/// Update AGK with the menu's current position.
 /// </summary>
 /// *************************************************************************
-void iControl::ApplyPosition()
+void CMenu::ApplyPosition()
 {
     if( _pParent )
     {
@@ -129,10 +132,10 @@ void iControl::ApplyPosition()
 
 /// *************************************************************************
 /// <summary>
-/// Update AGK with the control's current rotation.
+/// Update AGK with the menu's current rotation.
 /// </summary>
 /// *************************************************************************
-void iControl::ApplyRotation()
+void CMenu::ApplyRotation()
 {
     _rotation %= 360;
 
@@ -145,10 +148,10 @@ void iControl::ApplyRotation()
 
 /// *************************************************************************
 /// <summary>
-/// Update AGK with the control's current scale.
+/// Update AGK with the menu's current scale.
 /// </summary>
 /// *************************************************************************
-void iControl::ApplyScale()
+void CMenu::ApplyScale()
 {
     if( _pParent )
     {
@@ -162,10 +165,10 @@ void iControl::ApplyScale()
 
 /// *************************************************************************
 /// <summary>
-/// Update AGK with the control's current color.
+/// Update AGK with the menu's current color.
 /// </summary>
 /// *************************************************************************
-void iControl::ApplyColor()
+void CMenu::ApplyColor()
 {
     // Does nothing. Color is only for child inheritance purposes.
 }
@@ -173,10 +176,10 @@ void iControl::ApplyColor()
 
 /// *************************************************************************
 /// <summary>
-/// Update AGK with the control's current visibility.
+/// Update AGK with the menu's current visibility.
 /// </summary>
 /// *************************************************************************
-void iControl::ApplyVisibility()
+void CMenu::ApplyVisibility()
 {
     // Does nothing. Visibility is only for child inheritance purposes.
 }
@@ -187,7 +190,7 @@ void iControl::ApplyVisibility()
 /// Get the current position set in AGK.
 /// </summary>
 /// *************************************************************************
-CVector3<float> iControl::GetWorldPos() const
+CVector3<float> CMenu::GetWorldPos() const
 {
     return CVector3<float>( agk::GetSpriteX( _id ),
                             agk::GetSpriteY( _id ),
@@ -200,7 +203,7 @@ CVector3<float> iControl::GetWorldPos() const
 /// Get the current rotation set in AGK.
 /// </summary>
 /// *************************************************************************
-CVector3<float> iControl::GetWorldRot() const
+CVector3<float> CMenu::GetWorldRot() const
 {
     return CVector3<float>( 0, 0, agk::GetSpriteAngle( _id ) );
 }
@@ -211,7 +214,7 @@ CVector3<float> iControl::GetWorldRot() const
 /// Get the current size set in AGK.
 /// </summary>
 /// *************************************************************************
-CVector3<float> iControl::GetWorldSize() const
+CVector3<float> CMenu::GetWorldSize() const
 {
     return CVector3<float>( agk::GetSpriteWidth( _id ),
                             agk::GetSpriteHeight( _id ) );
@@ -220,10 +223,10 @@ CVector3<float> iControl::GetWorldSize() const
 
 /// *************************************************************************
 /// <summary>
-/// Update the control's size using the scale.
+/// Update the menu's size using the scale.
 /// </summary>
 /// *************************************************************************
-void iControl::UpdateSize()
+void CMenu::UpdateSize()
 {
     _size = _pData->GetSize() * _scale;
 }
@@ -231,10 +234,10 @@ void iControl::UpdateSize()
 
 /// *************************************************************************
 /// <summary>
-/// Update the control's scale using the size.
+/// Update the menu's scale using the size.
 /// </summary>
 /// *************************************************************************
-void iControl::UpdateScale()
+void CMenu::UpdateScale()
 {
     _scale = _size / _pData->GetSize();
 }
@@ -242,10 +245,10 @@ void iControl::UpdateScale()
 
 /// *************************************************************************
 /// <summary>
-/// Get the control's visibility.
+/// Get the menu's visibility.
 /// </summary>
 /// *************************************************************************
-bool iControl::IsVisible() const
+bool CMenu::IsVisible() const
 {
     if( _pParent )
         return _pParent->IsVisible() && _visible;
@@ -256,10 +259,10 @@ bool iControl::IsVisible() const
 
 /// *************************************************************************
 /// <summary>
-/// Set the control's alignment.
+/// Set the menu's alignment.
 /// </summary>
 /// *************************************************************************
-void iControl::SetAlignment( const CBitmask<uint> & alignment )
+void CMenu::SetAlignment( const CBitmask<uint> & alignment )
 {
     _alignment = alignment;
 }
@@ -267,10 +270,10 @@ void iControl::SetAlignment( const CBitmask<uint> & alignment )
 
 /// *************************************************************************
 /// <summary>
-/// Get the control's alignment.
+/// Get the menu's alignment.
 /// </summary>
 /// *************************************************************************
-CBitmask<uint> iControl::GetAlignment() const
+CBitmask<uint> CMenu::GetAlignment() const
 {
     return _alignment;
 }
@@ -278,10 +281,10 @@ CBitmask<uint> iControl::GetAlignment() const
 
 /// *************************************************************************
 /// <summary>
-/// Reset the control's position using its previous position.
+/// Reset the menu's position using its previous position.
 /// </summary>
 /// *************************************************************************
-void iControl::Reposition()
+void CMenu::Reposition()
 {
     // The parent's alignment overrides the child's alignment.
     if( _pParent )
@@ -295,59 +298,23 @@ void iControl::Reposition()
 
 /// *************************************************************************
 /// <summary>
-/// Get the control type.
+/// Set the menu's state.
 /// </summary>
 /// *************************************************************************
-EControlType iControl::GetControlType() const
+void CMenu::SetEnabled( bool enabled )
 {
-    return _controlType;
+    _enabled = enabled;
 }
 
 
 /// *************************************************************************
 /// <summary>
-/// Set the control's state.
+/// Get the menu's state.
 /// </summary>
 /// *************************************************************************
-void iControl::SetState( EControlState state )
+bool CMenu::IsEnabled() const
 {
-    switch( state )
-    {
-    case NDefs::ECS_DISABLED:
-        Play( "disable", EST_FINISH );
-        break;
-    case NDefs::ECS_INACTIVE:
-        Play( "inactive", EST_FINISH );
-        break;
-    case NDefs::ECS_ACTIVE:
-        Play( "active", EST_FINISH );
-        break;
-    case NDefs::ECS_PRESSED:
-        Play( "pressed", EST_FINISH );
-        break;
-    case NDefs::ECS_RELEASED:
-        Play( "released", EST_FINISH );
-        break;
-    case NDefs::ECS_TRANSITION_IN:
-        Play( "transition in", EST_FINISH );
-        break;
-    case NDefs::ECS_TRANSITION_OUT:
-        Play( "transition out", EST_FINISH );
-        break;
-    }
-
-    _state = state;
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Get the control's state.
-/// </summary>
-/// *************************************************************************
-EControlState iControl::GetState() const
-{
-    return _state;
+    return _enabled;
 }
 
 
@@ -358,7 +325,7 @@ EControlState iControl::GetState() const
 /// <param name="name"> Name of the animation to play. </param>
 /// <param name="stopType"> How to end any conflicting animations. </param>
 /// *************************************************************************
-void iControl::Play( const string & name, EStopType stopType )
+void CMenu::Play( const string & name, EStopType stopType )
 {
     iObject::Play( name, stopType );
 
@@ -373,7 +340,7 @@ void iControl::Play( const string & name, EStopType stopType )
 /// </summary>
 /// <param name="stopType"> How to end the animations. </param>
 /// *************************************************************************
-void iControl::Stop( NDefs::EStopType stopType )
+void CMenu::Stop( NDefs::EStopType stopType )
 {
     iObject::Stop( stopType );
 
@@ -386,7 +353,7 @@ void iControl::Stop( NDefs::EStopType stopType )
 /// </summary>
 /// <param name="name"> Name of the animation to stop. </param>
 /// <param name="stopType"> How to end the animation. </param>
-void iControl::Stop( const std::string & name, NDefs::EStopType stopType )
+void CMenu::Stop( const std::string & name, NDefs::EStopType stopType )
 {
     iObject::Stop( name, stopType );
 
@@ -401,7 +368,7 @@ void iControl::Stop( const std::string & name, NDefs::EStopType stopType )
 /// </summary>
 /// <param name="includePaused"> If paused animations should be consider "playing". </param>
 /// *************************************************************************
-bool iControl::IsPlaying( bool includePaused )
+bool CMenu::IsPlaying( bool includePaused )
 {
     if( iObject::IsPlaying( includePaused ) )
         return true;
@@ -418,7 +385,7 @@ bool iControl::IsPlaying( bool includePaused )
 /// </summary>
 /// <param name="name"> Name of the animation to stop. </param>
 /// <param name="includePaused"> If paused animations should be consider "playing". </param>
-bool iControl::IsPlaying( const std::string & name, bool includePaused )
+bool CMenu::IsPlaying( const std::string & name, bool includePaused )
 {
     if( iObject::IsPlaying( name, includePaused ) )
         return true;

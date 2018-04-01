@@ -6,34 +6,25 @@
 #include <common\matrix4.h>
 #include <2d\textspritedata.h>
 #include <managers\resourcemanager.h>
+#include <managers\spritemanager.h>
 #include <utilities\mathfunc.h>
 #include <utilities\exceptionhandling.h>
 
 using namespace std;
-
-/// *************************************************************************
-/// <summary>
-/// Constructor
-/// </summary>
-/// *************************************************************************
-CTextSprite::CTextSprite()
-{
-    _type = NDefs::EOT_TEXT_SPRITE;
-}
 
 
 /// *************************************************************************
 /// <summary> 
 /// Constructor
 /// </summary>
-/// <param name="pData"> Sprite data used to create the sprite. </param> 
+/// <param name="name"> Name of the sprite to create. </param> 
 /// <param name="text"> The text to display. </param>
 /// *************************************************************************
-CTextSprite::CTextSprite( const CTextSpriteData * pData, const string & text )
+CTextSprite::CTextSprite( const std::string & name, const string & text )
 {
     _type = NDefs::EOT_TEXT_SPRITE;
 
-    Init( pData, text );
+    Init( name, text );
 }
 
 
@@ -55,11 +46,6 @@ CTextSprite::~CTextSprite()
 /// *************************************************************************
 const string & CTextSprite::GetName() const
 {
-    if( !_pData )
-        throw NExcept::CCriticalException( "Error",
-                                           "CSprite2D::GetName()",
-                                           "Failed to get the sprite's name." );
-
     return _pData->GetName();
 }
 
@@ -68,14 +54,18 @@ const string & CTextSprite::GetName() const
 /// <summary>
 /// Initialize the sprite using its sprite data.
 /// </summary>
-/// <param name="pData"> Sprite data used to create the sprite. </param> 
+/// <param name="name"> Name of the sprite to initialize. </param> 
 /// <param name="text"> The text to display. </param>
 /// *************************************************************************
-void CTextSprite::Init( const CTextSpriteData * pData, const string & text )
+void CTextSprite::Init( const std::string & name, const string & text )
 {
+    CTextSpriteData * pData = CSpriteManager::Instance().GetTextSpriteData( name );
+
     // Leave if there's no data to initialize with.
     if( !pData )
-        return;
+        throw NExcept::CCriticalException( "Error",
+                                           "CTextSprite::Init()",
+                                           "No sprite exists by the name of '" + name + "'." );
 
     Clear();
 
@@ -117,6 +107,7 @@ void CTextSprite::Clear()
 {
     iObject::Clear();
 
+    _pData = nullptr;
     _fontId = 0;
     _maxWidth = 0;
     _textAlignment = NDefs::ETA_LEFT;
@@ -137,6 +128,28 @@ void CTextSprite::DeleteObject()
         agk::DeleteText( _id );
         _id = 0;
     }
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Mark the sprite for deletion.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::MarkForDeletion()
+{
+    _pData = nullptr;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Whether the sprite is marked for deletion.
+/// </summary>
+/// *************************************************************************
+bool CTextSprite::IsMarkedForDeletion() const
+{
+    return !_pData;
 }
 
 
@@ -196,10 +209,24 @@ void CTextSprite::ApplyScale()
 /// *************************************************************************
 void CTextSprite::ApplyColor()
 {
-    agk::SetTextColor( _id, (int)(_color.r * 255),
-                            (int)(_color.g * 255),
-                            (int)(_color.b * 255),
-                            (int)(_color.a * 255) );
+    agk::SetTextColor( _id, (int)(_color.r * 255 + 0.5f),
+                            (int)(_color.g * 255 + 0.5f),
+                            (int)(_color.b * 255 + 0.5f),
+                            (int)(_color.a * 255 + 0.5f) );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Update AGK with the sprite's current visibility.
+/// </summary>
+/// *************************************************************************
+void CTextSprite::ApplyVisibility()
+{
+    if( _pParent )
+        agk::SetTextVisible( _id, _pParent->IsVisible() && _visible );
+    else
+        agk::SetTextVisible( _id, _visible );
 }
 
 
@@ -211,8 +238,8 @@ void CTextSprite::ApplyColor()
 CVector3<float> CTextSprite::GetWorldPos() const
 {
     return CVector3<float>( agk::GetTextX( _id ),
-                     agk::GetTextY( _id ),
-                     (float)agk::GetTextDepth( _id ) );
+                            agk::GetTextY( _id ),
+                            (float)agk::GetTextDepth( _id ) );
 }
 
 
@@ -235,8 +262,8 @@ CVector3<float> CTextSprite::GetWorldRot() const
 CVector3<float> CTextSprite::GetWorldSize() const
 {
     return CVector3<float>( agk::GetTextTotalWidth( _id ),
-                     agk::GetTextTotalHeight( _id ),
-                     agk::GetTextSize( _id ) );
+                            agk::GetTextTotalHeight( _id ),
+                            agk::GetTextSize( _id ) );
 }
 
 
@@ -259,17 +286,6 @@ void CTextSprite::UpdateSize()
 void CTextSprite::UpdateScale()
 {
     _scale.x = _size.x / _pData->GetSize();
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Set the text sprite's visibility.
-/// </summary>
-/// *************************************************************************
-void CTextSprite::SetVisible( bool visible )
-{
-    agk::SetTextVisible( _id, visible );
 }
 
 
@@ -471,6 +487,11 @@ CBitmask<uint> CTextSprite::GetAlignment() const
 /// *************************************************************************
 void CTextSprite::Reposition()
 {
-    NMathFunc::AlignPosition( _alignment, _position );
-    agk::SetTextPosition( _id, _position.x, _position.y );
+    // The parent's alignment overrides the child's alignment.
+    if( _pParent )
+        return;
+
+    CVector3<float> pos = _position;
+    if( NMathFunc::AlignPosition( _alignment, pos ) )
+        SetPos( pos );
 }

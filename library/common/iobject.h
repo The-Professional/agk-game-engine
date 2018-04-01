@@ -25,13 +25,11 @@ class iObject
 {
 public:
 
+    // Destructor.
     virtual ~iObject() {}
 
     // Delete the object that belongs to the AGK id.
     virtual void DeleteObject() = 0;
-
-    // Clear the object and reset its id.
-    virtual void Clear();
 
     // Return the id set by AGK.
     uint GetID() const;
@@ -39,8 +37,16 @@ public:
     // Get the name of the object.
     virtual const std::string & GetName() const = 0;
 
+    // Access functions for whether the object is marked for deletion.
+    virtual void MarkForDeletion() = 0;
+    virtual bool IsMarkedForDeletion() const = 0;
+
     // Get the type of object this is.
     NDefs::EObjectType GetType() const;
+
+    // Access functions for the object's visibility.
+    virtual void SetVisible( bool visible );
+    virtual bool IsVisible() const = 0;
 
     // Get the current transformation data set in AGK.
     virtual CVector3<float> GetWorldPos() const = 0;
@@ -55,10 +61,6 @@ public:
 
     // Set the object's fields using a collection object.
     virtual void Set( const CCollectionObject & collectionObject );
-
-    // Access functions for the object's visibility.
-    virtual void SetVisible( bool visible ) = 0;
-    virtual bool IsVisible() const = 0;
 
     // Access functions for the object's position.
     virtual void SetPos( float x, float y );
@@ -178,6 +180,7 @@ public:
     const CMatrix4 * GetMatrix();
 
     // Update the object.
+    virtual void UpdateForDeletion();
     virtual void Update();
 
     // Function to call the functions that update AGK.
@@ -188,13 +191,18 @@ public:
 
 protected:
 
+    // Abstract Constructor.
     iObject() {}
 
-    // Apply the current transformations and color to AGK.
+    // Clear the object and reset its id.
+    virtual void Clear();
+
+    // Apply changes to AGK.
     virtual void ApplyPosition() = 0;
     virtual void ApplyRotation() = 0;
     virtual void ApplyScale() = 0;
     virtual void ApplyColor() = 0;
+    virtual void ApplyVisibility() = 0;
 
 protected:
 
@@ -218,6 +226,9 @@ protected:
 
     // Color of the object.
     CVector4<float> _color = 1;
+
+    // Whether or not the object is visible.
+    bool _visible = true;
 
     // A bit mask of all the fields that have been changed.
     CBitmask<uint> _modified = NDefs::ETT_NULL;

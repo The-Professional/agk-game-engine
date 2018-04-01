@@ -6,34 +6,25 @@
 #include <common\matrix4.h>
 #include <3d\spritedata3d.h>
 #include <managers\resourcemanager.h>
+#include <managers\spritemanager.h>
 #include <utilities\settings.h>
 #include <utilities\exceptionhandling.h>
 
 using namespace std;
 using namespace NDefs;
 
-/// *************************************************************************
-/// <summary>
-/// Constructor
-/// </summary>
-/// *************************************************************************
-CSprite3D::CSprite3D()
-{
-    _type = EOT_SPRITE_3D;
-}
-
 
 /// *************************************************************************
 /// <summary> 
 /// Constructor
 /// </summary>
-/// <param name="pData"> Sprite data used to create the sprite. </param> 
+/// <param name="name"> Name of the sprite to create. </param> 
 /// *************************************************************************
-CSprite3D::CSprite3D( CSpriteData3D * pData )
+CSprite3D::CSprite3D( const std::string & name )
 {
     _type = EOT_SPRITE_3D;
 
-    Init( pData );
+    Init( name );
 }
 
 
@@ -55,11 +46,6 @@ CSprite3D::~CSprite3D()
 /// *************************************************************************
 const string & CSprite3D::GetName() const
 {
-    if( !_pData )
-        throw NExcept::CCriticalException( "Error",
-                                           "CSprite2D::GetName()",
-                                           "Failed to get the sprite's name." );
-
     return _pData->GetName();
 }
 
@@ -68,13 +54,17 @@ const string & CSprite3D::GetName() const
 /// <summary>
 /// Initialize the sprite using its sprite data.
 /// </summary>
-/// <param name="pData"> Sprite data used to create the sprite. </param> 
+/// <param name="name"> Name of the sprite to initialize. </param> 
 /// *************************************************************************
-void CSprite3D::Init( CSpriteData3D * pData )
+void CSprite3D::Init( const std::string & name )
 {
+    CSpriteData3D * pData = CSpriteManager::Instance().GetSpriteData3D( name );
+
     // Leave if there's no data to initialize with.
     if( !pData )
-        return;
+        throw NExcept::CCriticalException( "Error",
+                                           "CSprite3D::Init()",
+                                           "No sprite exists by the name of '" + name + "'." );
 
     Clear();
 
@@ -215,6 +205,19 @@ void CSprite3D::Init( CSpriteData3D * pData )
 
 /// *************************************************************************
 /// <summary>
+/// Clears all of the sprite's data that belong to it.
+/// </summary>
+/// *************************************************************************
+void CSprite3D::Clear()
+{
+    iObject::Clear();
+
+    _pData = nullptr;
+}
+
+
+/// *************************************************************************
+/// <summary>
 /// Get the data used to create the sprite.
 /// </summary>
 /// *************************************************************************
@@ -243,6 +246,28 @@ void CSprite3D::DeleteObject()
     }
 
     _pData = nullptr;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Mark the sprite for deletion.
+/// </summary>
+/// *************************************************************************
+void CSprite3D::MarkForDeletion()
+{
+    _pData = nullptr;
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Whether the sprite is marked for deletion.
+/// </summary>
+/// *************************************************************************
+bool CSprite3D::IsMarkedForDeletion() const
+{
+    return !_pData;
 }
 
 
@@ -327,10 +352,36 @@ void CSprite3D::ApplyScale()
 /// *************************************************************************
 void CSprite3D::ApplyColor()
 {
-    agk::SetObjectColor( _id, (int)(_color.r * 255),
-                              (int)(_color.g * 255),
-                              (int)(_color.b * 255),
-                              (int)(_color.a * 255) );
+    agk::SetObjectColor( _id, (int)(_color.r * 255 + 0.5f),
+                              (int)(_color.g * 255 + 0.5f),
+                              (int)(_color.b * 255 + 0.5f),
+                              (int)(_color.a * 255 + 0.5f) );
+}
+
+
+/// *************************************************************************
+/// <summary>
+/// Update AGK with the sprite's current visibility.
+/// </summary>
+/// *************************************************************************
+void CSprite3D::ApplyVisibility()
+{
+    if( _pParent )
+        agk::SetObjectVisible( _id, _pParent->IsVisible() && _visible );
+    else
+        agk::SetObjectVisible( _id, _visible );
+
+    const CSpriteVisualData3D * pVisual = _pData->GetVisualData();
+
+    // If a sprite casts or receives shadows, we want to disable/enable it upon visibility changes.
+    if( CSettings::Instance().ShadowsEnabled() && pVisual )
+    {
+        if( pVisual->WillCastShadow() )
+            agk::SetObjectCastShadow( _id, IsVisible() );
+
+        if( pVisual->WillReceiveShadow() )
+            agk::SetObjectReceiveShadow( _id, IsVisible() );
+    }
 }
 
 
@@ -342,8 +393,8 @@ void CSprite3D::ApplyColor()
 CVector3<float> CSprite3D::GetWorldPos() const
 {
     return CVector3<float>( agk::GetObjectX( _id ),
-                     agk::GetObjectY( _id ),
-                     agk::GetObjectZ( _id ) );
+                            agk::GetObjectY( _id ),
+                            agk::GetObjectZ( _id ) );
 }
 
 
@@ -355,8 +406,8 @@ CVector3<float> CSprite3D::GetWorldPos() const
 CVector3<float> CSprite3D::GetWorldRot() const
 {
     return CVector3<float>( agk::GetObjectAngleX( _id ),
-                     agk::GetObjectAngleY( _id ), 
-                     agk::GetObjectAngleZ( _id ) );
+                            agk::GetObjectAngleY( _id ), 
+                            agk::GetObjectAngleZ( _id ) );
 }
 
 
@@ -368,8 +419,8 @@ CVector3<float> CSprite3D::GetWorldRot() const
 CVector3<float> CSprite3D::GetWorldSize() const
 {
     return CVector3<float>( abs( agk::GetObjectSizeMaxX( _id ) - agk::GetObjectSizeMinX( _id ) ),
-                     abs( agk::GetObjectSizeMaxY( _id ) - agk::GetObjectSizeMinY( _id ) ),
-                     abs( agk::GetObjectSizeMaxZ( _id ) - agk::GetObjectSizeMinZ( _id ) ) );
+                            abs( agk::GetObjectSizeMaxY( _id ) - agk::GetObjectSizeMinY( _id ) ),
+                            abs( agk::GetObjectSizeMaxZ( _id ) - agk::GetObjectSizeMinZ( _id ) ) );
 }
 
 
@@ -392,17 +443,6 @@ void CSprite3D::UpdateSize()
 void CSprite3D::UpdateScale()
 {
     _scale = _size / _pData->GetSize();
-}
-
-
-/// *************************************************************************
-/// <summary>
-/// Set the sprite's visibility.
-/// </summary>
-/// *************************************************************************
-void CSprite3D::SetVisible( bool visible )
-{
-    agk::SetObjectVisible( _id, visible );
 }
 
 

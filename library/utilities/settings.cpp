@@ -332,7 +332,7 @@ void CSettings::CheckForWindowSizeChange()
     if( _windowResized )
     {
         _windowResized = false;
-        CSpriteManager::Instance().RepositionAllSprites2D();
+        CSpriteManager::Instance().RepositionAllSprites();
         SetScreenBounds();
     }
 }
